@@ -19,40 +19,40 @@
 <meta property="og:site_name" content="九层台">
 <meta property="og:description" content="前言本篇主要学习下线代中向量与矩阵相关的知识，包括多维向量内积与机器学习中递推的关系，矩阵的基础概念和计算等；在书中也只提到与机器学习有关联的基础知识点，整体难度不算高； 正文向量的定义假设现在有两个点 A和B，那么 A-&gt;B 就是一个有位置（A的位置）有方向（A指向B的方向）有大小（AB线段的长度）的向量  一个向量可以由如下三种方式表达  坐标表示如果我们建立一个直角坐标系，把A点移动到">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/71fcf9abe4cf84ccdf69198ee36452be.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/5eae25838ca2d51298397b331f3dcd95.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/9dc05c87e6d85424c9dafb5923d78d82.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/985fc8e016335ab5e75cc5ab7310ec7c.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/eebd483f2154a38c1a629abb68e290f4.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/8e41f1fd1b9b902f1acb977167f7b704.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/b80cf4d035409a3f04f44ea88e121fc2.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/3adbe84110de2eb8aec197b121aaaeed.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/633f2e284855ccfe75ec2c866da93599.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/fa8a9531d9237ac930c4ed8fa52d5948.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/c49c95822909e699acfca2adce0cdbb9.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/5edb3c5e8e9b1bcb6dad9e807a8e299d.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/dfd75925865f3209460b5497e6dc9045.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/e3bc35d08d0db9e3bead1c576531fd20.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/d888ad0529ce9a4fbb313a34e108e287.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/e0000b6558885945cf7c390d9c5ea14c.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/a91264ac5dc6e42f7cc5abba14738c89.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/16524812f6b8be480b6dab3de161fd7f.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/5a157249ae30df526ab61bc1bae971e5.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/c5a4aadb6e5914eca1b00ebfaceba22b.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/168d1ecbdf5f3d22d37ba15981087de5.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/33844b120320569680c367382817b80d.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/a447cc6278ae257e1687b27e11f17daf.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/a222c96bf0b5f0a2aea4fd8473ac1b1e.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/6a7e83e16e31ab8bf95a9a372bb56ccc.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/2dbc8abbdac3f682df11ca709a798b78.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/71fcf9abe4cf84ccdf69198ee36452be.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/5eae25838ca2d51298397b331f3dcd95.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/9dc05c87e6d85424c9dafb5923d78d82.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/985fc8e016335ab5e75cc5ab7310ec7c.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/eebd483f2154a38c1a629abb68e290f4.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/8e41f1fd1b9b902f1acb977167f7b704.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/b80cf4d035409a3f04f44ea88e121fc2.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/3adbe84110de2eb8aec197b121aaaeed.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/633f2e284855ccfe75ec2c866da93599.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/fa8a9531d9237ac930c4ed8fa52d5948.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/c49c95822909e699acfca2adce0cdbb9.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/5edb3c5e8e9b1bcb6dad9e807a8e299d.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/dfd75925865f3209460b5497e6dc9045.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/e3bc35d08d0db9e3bead1c576531fd20.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/d888ad0529ce9a4fbb313a34e108e287.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/e0000b6558885945cf7c390d9c5ea14c.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/a91264ac5dc6e42f7cc5abba14738c89.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/16524812f6b8be480b6dab3de161fd7f.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/5a157249ae30df526ab61bc1bae971e5.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/c5a4aadb6e5914eca1b00ebfaceba22b.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/168d1ecbdf5f3d22d37ba15981087de5.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/33844b120320569680c367382817b80d.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/a447cc6278ae257e1687b27e11f17daf.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/a222c96bf0b5f0a2aea4fd8473ac1b1e.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/6a7e83e16e31ab8bf95a9a372bb56ccc.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/2dbc8abbdac3f682df11ca709a798b78.png">
 <meta property="article:published_time" content="2020-02-26T13:44:24.000Z">
-<meta property="article:modified_time" content="2022-05-06T10:55:20.165Z">
+<meta property="article:modified_time" content="2022-05-06T18:08:41.124Z">
 <meta property="article:author" content="Jeffrey Wang">
 <meta property="article:tag" content="机器学习">
 <meta property="article:tag" content="向量">
 <meta property="article:tag" content="矩阵">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/71fcf9abe4cf84ccdf69198ee36452be.png">
+<meta name="twitter:image" content="https://blog.wj2015.com/static/uploads/2020/02/71fcf9abe4cf84ccdf69198ee36452be.png">
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"
@@ -62,9 +62,9 @@
         href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"
     />
     
-    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651834533658">
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651834533658">
-    <link rel="stylesheet" href="/css/style.css?v=1651834533658">
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651860541703">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651860541703">
+    <link rel="stylesheet" href="/css/style.css?v=1651860541703">
      
     
 <meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
@@ -244,32 +244,32 @@
     <a><i class="nexmoefont icon-calendar-fill"></i>2020年02月26日</a>
 </div>
 
-      <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本篇主要学习下线代中向量与矩阵相关的知识，包括多维向量内积与机器学习中递推的关系，矩阵的基础概念和计算等；在书中也只提到与机器学习有关联的基础知识点，整体难度不算高；</p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="向量的定义"><a href="#向量的定义" class="headerlink" title="向量的定义"></a>向量的定义</h3><p>假设现在有两个点 A和B，那么 A-&gt;B 就是一个<strong>有位置</strong>（A的位置）<strong>有方向</strong>（A指向B的方向）<strong>有大小</strong>（AB线段的长度）的向量 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/71fcf9abe4cf84ccdf69198ee36452be.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/71fcf9abe4cf84ccdf69198ee36452be.png"></a> 一个向量可以由如下三种方式表达 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/5eae25838ca2d51298397b331f3dcd95.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/5eae25838ca2d51298397b331f3dcd95.png"></a></p>
-<h4 id="坐标表示"><a href="#坐标表示" class="headerlink" title="坐标表示"></a>坐标表示</h4><p>如果我们建立一个直角坐标系，把A点移动到坐标原点，B点相对A点的位置不变，那么B点的坐标就可以看作是向量 A-&gt;B 的坐标表示 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/9dc05c87e6d85424c9dafb5923d78d82.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/9dc05c87e6d85424c9dafb5923d78d82.png"></a> 也可以把这个定义推广到三维甚至N维直角坐标系上，下图表示 A(1, 1, 1) 向量 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/985fc8e016335ab5e75cc5ab7310ec7c.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/985fc8e016335ab5e75cc5ab7310ec7c.png"></a></p>
-<h4 id="向量的大小"><a href="#向量的大小" class="headerlink" title="向量的大小"></a>向量的大小</h4><p>向量的大小用 a 表示，与绝对值符号相同 向量的大小即向量的长度，通过直角坐标系可以很方便的理解，比如 a &#x3D; (3, 4)，根据勾股定理，该向量的大小就是 5 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/eebd483f2154a38c1a629abb68e290f4.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/eebd483f2154a38c1a629abb68e290f4.png"></a> 再推广到三维，a &#x3D; (1, 2, 2)，那么向量 a 的大小就是： <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/8e41f1fd1b9b902f1acb977167f7b704.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/8e41f1fd1b9b902f1acb977167f7b704.png"></a> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/b80cf4d035409a3f04f44ea88e121fc2.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/b80cf4d035409a3f04f44ea88e121fc2.png"></a></p>
-<h3 id="向量内积"><a href="#向量内积" class="headerlink" title="向量内积"></a>向量内积</h3><p>向量的内积定义为两个向量的大小乘以向量夹角的 cos <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/3adbe84110de2eb8aec197b121aaaeed.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/3adbe84110de2eb8aec197b121aaaeed.png"></a> a和b，只要有一个为0，那么内积就是0 同理，这种解法也适用于三维向量 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/633f2e284855ccfe75ec2c866da93599.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/633f2e284855ccfe75ec2c866da93599.png"></a></p>
-<h4 id="柯西不等式"><a href="#柯西不等式" class="headerlink" title="柯西不等式"></a>柯西不等式</h4><p>因为任意的θ都会另 -1 &lt; cos(θ) &lt; 1，所以很容易推出下面的不等式 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/fa8a9531d9237ac930c4ed8fa52d5948.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/fa8a9531d9237ac930c4ed8fa52d5948.png"></a> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/c49c95822909e699acfca2adce0cdbb9.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/c49c95822909e699acfca2adce0cdbb9.png"></a> 结合这个不等式，可以得到如下三种情况 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/5edb3c5e8e9b1bcb6dad9e807a8e299d.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/5edb3c5e8e9b1bcb6dad9e807a8e299d.png"></a></p>
+      <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本篇主要学习下线代中向量与矩阵相关的知识，包括多维向量内积与机器学习中递推的关系，矩阵的基础概念和计算等；在书中也只提到与机器学习有关联的基础知识点，整体难度不算高；</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="向量的定义"><a href="#向量的定义" class="headerlink" title="向量的定义"></a>向量的定义</h3><p>假设现在有两个点 A和B，那么 A-&gt;B 就是一个<strong>有位置</strong>（A的位置）<strong>有方向</strong>（A指向B的方向）<strong>有大小</strong>（AB线段的长度）的向量 <a href="/static/uploads/2020/02/71fcf9abe4cf84ccdf69198ee36452be.png"><img src="/static/uploads/2020/02/71fcf9abe4cf84ccdf69198ee36452be.png"></a> 一个向量可以由如下三种方式表达 <a href="/static/uploads/2020/02/5eae25838ca2d51298397b331f3dcd95.png"><img src="/static/uploads/2020/02/5eae25838ca2d51298397b331f3dcd95.png"></a></p>
+<h4 id="坐标表示"><a href="#坐标表示" class="headerlink" title="坐标表示"></a>坐标表示</h4><p>如果我们建立一个直角坐标系，把A点移动到坐标原点，B点相对A点的位置不变，那么B点的坐标就可以看作是向量 A-&gt;B 的坐标表示 <a href="/static/uploads/2020/02/9dc05c87e6d85424c9dafb5923d78d82.png"><img src="/static/uploads/2020/02/9dc05c87e6d85424c9dafb5923d78d82.png"></a> 也可以把这个定义推广到三维甚至N维直角坐标系上，下图表示 A(1, 1, 1) 向量 <a href="/static/uploads/2020/02/985fc8e016335ab5e75cc5ab7310ec7c.png"><img src="/static/uploads/2020/02/985fc8e016335ab5e75cc5ab7310ec7c.png"></a></p>
+<h4 id="向量的大小"><a href="#向量的大小" class="headerlink" title="向量的大小"></a>向量的大小</h4><p>向量的大小用 a 表示，与绝对值符号相同 向量的大小即向量的长度，通过直角坐标系可以很方便的理解，比如 a = (3, 4)，根据勾股定理，该向量的大小就是 5 <a href="/static/uploads/2020/02/eebd483f2154a38c1a629abb68e290f4.png"><img src="/static/uploads/2020/02/eebd483f2154a38c1a629abb68e290f4.png"></a> 再推广到三维，a = (1, 2, 2)，那么向量 a 的大小就是： <a href="/static/uploads/2020/02/8e41f1fd1b9b902f1acb977167f7b704.png"><img src="/static/uploads/2020/02/8e41f1fd1b9b902f1acb977167f7b704.png"></a> <a href="/static/uploads/2020/02/b80cf4d035409a3f04f44ea88e121fc2.png"><img src="/static/uploads/2020/02/b80cf4d035409a3f04f44ea88e121fc2.png"></a></p>
+<h3 id="向量内积"><a href="#向量内积" class="headerlink" title="向量内积"></a>向量内积</h3><p>向量的内积定义为两个向量的大小乘以向量夹角的 cos <a href="/static/uploads/2020/02/3adbe84110de2eb8aec197b121aaaeed.png"><img src="/static/uploads/2020/02/3adbe84110de2eb8aec197b121aaaeed.png"></a> a和b，只要有一个为0，那么内积就是0 同理，这种解法也适用于三维向量 <a href="/static/uploads/2020/02/633f2e284855ccfe75ec2c866da93599.png"><img src="/static/uploads/2020/02/633f2e284855ccfe75ec2c866da93599.png"></a></p>
+<h4 id="柯西不等式"><a href="#柯西不等式" class="headerlink" title="柯西不等式"></a>柯西不等式</h4><p>因为任意的θ都会另 -1 &lt; cos(θ) &lt; 1，所以很容易推出下面的不等式 <a href="/static/uploads/2020/02/fa8a9531d9237ac930c4ed8fa52d5948.png"><img src="/static/uploads/2020/02/fa8a9531d9237ac930c4ed8fa52d5948.png"></a> <a href="/static/uploads/2020/02/c49c95822909e699acfca2adce0cdbb9.png"><img src="/static/uploads/2020/02/c49c95822909e699acfca2adce0cdbb9.png"></a> 结合这个不等式，可以得到如下三种情况 <a href="/static/uploads/2020/02/5edb3c5e8e9b1bcb6dad9e807a8e299d.png"><img src="/static/uploads/2020/02/5edb3c5e8e9b1bcb6dad9e807a8e299d.png"></a></p>
 <ul>
 <li>两个向量方向相反时，内积最小</li>
 <li>两个向量方向相同是，内积最大</li>
 <li>两个向量方向夹脚在 0 ~ 180° 时，内积大小会从最大到最小</li>
 </ul>
-<p>书中特意提到，第一条性质（两个向量方向相反时，内积最小） 是日后梯度下降法的基本原理 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/dfd75925865f3209460b5497e6dc9045.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/dfd75925865f3209460b5497e6dc9045.png"></a></p>
-<h4 id="内积的坐标表示"><a href="#内积的坐标表示" class="headerlink" title="内积的坐标表示"></a>内积的坐标表示</h4><p>还是首先以二维直角坐标系为例，内积可以以坐标的形式进行计算 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/e3bc35d08d0db9e3bead1c576531fd20.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/e3bc35d08d0db9e3bead1c576531fd20.png"></a> 三维向量一样有这样的性质 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/d888ad0529ce9a4fbb313a34e108e287.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/d888ad0529ce9a4fbb313a34e108e287.png"></a></p>
-<h3 id="多维向量一般化（重点）"><a href="#多维向量一般化（重点）" class="headerlink" title="多维向量一般化（重点）"></a>多维向量一般化（重点）</h3><p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/e0000b6558885945cf7c390d9c5ea14c.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/e0000b6558885945cf7c390d9c5ea14c.png"></a></p>
+<p>书中特意提到，第一条性质（两个向量方向相反时，内积最小） 是日后梯度下降法的基本原理 <a href="/static/uploads/2020/02/dfd75925865f3209460b5497e6dc9045.png"><img src="/static/uploads/2020/02/dfd75925865f3209460b5497e6dc9045.png"></a></p>
+<h4 id="内积的坐标表示"><a href="#内积的坐标表示" class="headerlink" title="内积的坐标表示"></a>内积的坐标表示</h4><p>还是首先以二维直角坐标系为例，内积可以以坐标的形式进行计算 <a href="/static/uploads/2020/02/e3bc35d08d0db9e3bead1c576531fd20.png"><img src="/static/uploads/2020/02/e3bc35d08d0db9e3bead1c576531fd20.png"></a> 三维向量一样有这样的性质 <a href="/static/uploads/2020/02/d888ad0529ce9a4fbb313a34e108e287.png"><img src="/static/uploads/2020/02/d888ad0529ce9a4fbb313a34e108e287.png"></a></p>
+<h3 id="多维向量一般化（重点）"><a href="#多维向量一般化（重点）" class="headerlink" title="多维向量一般化（重点）"></a>多维向量一般化（重点）</h3><p><a href="/static/uploads/2020/02/e0000b6558885945cf7c390d9c5ea14c.png"><img src="/static/uploads/2020/02/e0000b6558885945cf7c390d9c5ea14c.png"></a></p>
 <blockquote>
 <p>关于推导，我也尝试用我撇脚的数学推算过，算了一两页纸发现越算越复杂，推不出来，找了个别人的推导过程，有兴趣的可以研究下 <a target="_blank" rel="noopener" href="https://blog.csdn.net/zhangyingjie09/article/details/88375120">https://blog.csdn.net/zhangyingjie09/article/details/88375120</a></p>
 </blockquote>
-<p>看到这个向量内积公式，有没有想到之前提到的神经单元的加权输入： <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/a91264ac5dc6e42f7cc5abba14738c89.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/a91264ac5dc6e42f7cc5abba14738c89.png"></a> 就可以表现为两个向量的内积加上偏置，向量 w &#x3D; (w1, w2, w3, w4, …)，x &#x3D; (x1, x2, x3, x4, …)，即： <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/16524812f6b8be480b6dab3de161fd7f.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/16524812f6b8be480b6dab3de161fd7f.png"></a></p>
-<h3 id="矩阵的定义"><a href="#矩阵的定义" class="headerlink" title="矩阵的定义"></a>矩阵的定义</h3><p>矩阵是数的阵列，横排为行，竖排为列，行数与列数相同称为<strong>方阵</strong>（类比正方形） 以及如下图X,Y所示的 行向量和列向量 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/5a157249ae30df526ab61bc1bae971e5.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/5a157249ae30df526ab61bc1bae971e5.png"></a> 可以定义一个 m行n列的向量，第 i 行 j 列的元素用 aij 表示， <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/c5a4aadb6e5914eca1b00ebfaceba22b.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/c5a4aadb6e5914eca1b00ebfaceba22b.png"></a></p>
-<h4 id="单位矩阵"><a href="#单位矩阵" class="headerlink" title="单位矩阵"></a>单位矩阵</h4><p>单位矩阵是一个特殊的矩阵，矩阵的斜对角线元素(aii)都是1，其他元素都是0 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/168d1ecbdf5f3d22d37ba15981087de5.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/168d1ecbdf5f3d22d37ba15981087de5.png"></a></p>
-<h3 id="矩阵的运算"><a href="#矩阵的运算" class="headerlink" title="矩阵的运算"></a>矩阵的运算</h3><h4 id="矩阵比较、和差常数积"><a href="#矩阵比较、和差常数积" class="headerlink" title="矩阵比较、和差常数积"></a>矩阵比较、和差常数积</h4><p>A和B相等的含义是两个矩阵对应的元素包括行数列数完全相等 两个矩阵的和、差、常数倍都符合四则运算，和与差都是相同位置的元素直接进行加减，常数倍的乘法直接乘到对应的元素中去，如下： <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/33844b120320569680c367382817b80d.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/33844b120320569680c367382817b80d.png"></a></p>
-<h4 id="矩阵乘积（重点）"><a href="#矩阵乘积（重点）" class="headerlink" title="矩阵乘积（重点）"></a>矩阵乘积（重点）</h4><p>把<strong>向量A的i行</strong>看作行向量，<strong>向量B的j列</strong>看作列向量，<strong>其内积</strong>作为结果的 <strong>i行j列</strong> 的元素 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/a447cc6278ae257e1687b27e11f17daf.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/a447cc6278ae257e1687b27e11f17daf.png"></a> 比如，两个向量乘积计算过程如下： <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/a222c96bf0b5f0a2aea4fd8473ac1b1e.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/a222c96bf0b5f0a2aea4fd8473ac1b1e.png"></a></p>
-<h4 id="哈达玛积"><a href="#哈达玛积" class="headerlink" title="哈达玛积"></a>哈达玛积</h4><p>Hadamard积适用于两个相同形状的矩阵，符号的含义是相同行数相同列数的数相乘，作为新矩阵对应函数和列数的值 下图表现了哈达玛积的计算过程，很直观 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/6a7e83e16e31ab8bf95a9a372bb56ccc.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/6a7e83e16e31ab8bf95a9a372bb56ccc.png"></a></p>
-<h4 id="转置矩阵"><a href="#转置矩阵" class="headerlink" title="转置矩阵"></a>转置矩阵</h4><p>转置矩阵是将矩阵A的i行j列的元素转换为新矩阵的j行i列，转置矩阵在原矩阵左上角加上一个小t表示 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/2dbc8abbdac3f682df11ca709a798b78.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/2dbc8abbdac3f682df11ca709a798b78.png"></a></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本片博客主要介绍向量和矩阵的基础知识，其中多维向量内积与神经单元加权输入的关系（w &#x3D; (w1, w2, w3, w4, …)，b &#x3D; (x1, x2, x3, x4, …)，则 z &#x3D; w*x + b）以及矩阵的乘积计算（i行j列 &#x3D; A的i行向量与B的j列向量内积）是重点。</p>
-
+<p>看到这个向量内积公式，有没有想到之前提到的神经单元的加权输入： <a href="/static/uploads/2020/02/a91264ac5dc6e42f7cc5abba14738c89.png"><img src="/static/uploads/2020/02/a91264ac5dc6e42f7cc5abba14738c89.png"></a> 就可以表现为两个向量的内积加上偏置，向量 w = (w1, w2, w3, w4, …)，x = (x1, x2, x3, x4, …)，即： <a href="/static/uploads/2020/02/16524812f6b8be480b6dab3de161fd7f.png"><img src="/static/uploads/2020/02/16524812f6b8be480b6dab3de161fd7f.png"></a></p>
+<h3 id="矩阵的定义"><a href="#矩阵的定义" class="headerlink" title="矩阵的定义"></a>矩阵的定义</h3><p>矩阵是数的阵列，横排为行，竖排为列，行数与列数相同称为<strong>方阵</strong>（类比正方形） 以及如下图X,Y所示的 行向量和列向量 <a href="/static/uploads/2020/02/5a157249ae30df526ab61bc1bae971e5.png"><img src="/static/uploads/2020/02/5a157249ae30df526ab61bc1bae971e5.png"></a> 可以定义一个 m行n列的向量，第 i 行 j 列的元素用 aij 表示， <a href="/static/uploads/2020/02/c5a4aadb6e5914eca1b00ebfaceba22b.png"><img src="/static/uploads/2020/02/c5a4aadb6e5914eca1b00ebfaceba22b.png"></a></p>
+<h4 id="单位矩阵"><a href="#单位矩阵" class="headerlink" title="单位矩阵"></a>单位矩阵</h4><p>单位矩阵是一个特殊的矩阵，矩阵的斜对角线元素(aii)都是1，其他元素都是0 <a href="/static/uploads/2020/02/168d1ecbdf5f3d22d37ba15981087de5.png"><img src="/static/uploads/2020/02/168d1ecbdf5f3d22d37ba15981087de5.png"></a></p>
+<h3 id="矩阵的运算"><a href="#矩阵的运算" class="headerlink" title="矩阵的运算"></a>矩阵的运算</h3><h4 id="矩阵比较、和差常数积"><a href="#矩阵比较、和差常数积" class="headerlink" title="矩阵比较、和差常数积"></a>矩阵比较、和差常数积</h4><p>A和B相等的含义是两个矩阵对应的元素包括行数列数完全相等 两个矩阵的和、差、常数倍都符合四则运算，和与差都是相同位置的元素直接进行加减，常数倍的乘法直接乘到对应的元素中去，如下： <a href="/static/uploads/2020/02/33844b120320569680c367382817b80d.png"><img src="/static/uploads/2020/02/33844b120320569680c367382817b80d.png"></a></p>
+<h4 id="矩阵乘积（重点）"><a href="#矩阵乘积（重点）" class="headerlink" title="矩阵乘积（重点）"></a>矩阵乘积（重点）</h4><p>把<strong>向量A的i行</strong>看作行向量，<strong>向量B的j列</strong>看作列向量，<strong>其内积</strong>作为结果的 <strong>i行j列</strong> 的元素 <a href="/static/uploads/2020/02/a447cc6278ae257e1687b27e11f17daf.png"><img src="/static/uploads/2020/02/a447cc6278ae257e1687b27e11f17daf.png"></a> 比如，两个向量乘积计算过程如下： <a href="/static/uploads/2020/02/a222c96bf0b5f0a2aea4fd8473ac1b1e.png"><img src="/static/uploads/2020/02/a222c96bf0b5f0a2aea4fd8473ac1b1e.png"></a></p>
+<h4 id="哈达玛积"><a href="#哈达玛积" class="headerlink" title="哈达玛积"></a>哈达玛积</h4><p>Hadamard积适用于两个相同形状的矩阵，符号的含义是相同行数相同列数的数相乘，作为新矩阵对应函数和列数的值 下图表现了哈达玛积的计算过程，很直观 <a href="/static/uploads/2020/02/6a7e83e16e31ab8bf95a9a372bb56ccc.png"><img src="/static/uploads/2020/02/6a7e83e16e31ab8bf95a9a372bb56ccc.png"></a></p>
+<h4 id="转置矩阵"><a href="#转置矩阵" class="headerlink" title="转置矩阵"></a>转置矩阵</h4><p>转置矩阵是将矩阵A的i行j列的元素转换为新矩阵的j行i列，转置矩阵在原矩阵左上角加上一个小t表示 <a href="/static/uploads/2020/02/2dbc8abbdac3f682df11ca709a798b78.png"><img src="/static/uploads/2020/02/2dbc8abbdac3f682df11ca709a798b78.png"></a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本片博客主要介绍向量和矩阵的基础知识，其中多维向量内积与神经单元加权输入的关系（w = (w1, w2, w3, w4, …)，b = (x1, x2, x3, x4, …)，则 z = w*x + b）以及矩阵的乘积计算（i行j列 = A的i行向量与B的j列向量内积）是重点。</p>
+</body></html>
   </article>
 
   
@@ -358,10 +358,10 @@
 
  
 
-<script async src="/js/app.js?v=1651834533660"></script>
+<script async src="/js/app.js?v=1651860541706"></script>
 
 
-	<script async src="/js/search.js?v=1651834533660"></script>
+	<script async src="/js/search.js?v=1651860541706"></script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>

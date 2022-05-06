@@ -19,21 +19,21 @@
 <meta property="og:site_name" content="九层台">
 <meta property="og:description" content="前言本篇博客主要分享数据结构中关于散列表的定义和编程实现 正文什么是散列表散列表也成为Hash表，用于存储 Key 和 Value 的集合，对于某一个Key，散列表能以接近O(1)的时间复杂度获取到对应的value Hash的数据结构散列表读取的时间复杂度能达到 O(1)，这与其结构脱不了干系 学过基础数据结构都应该知道，通过数组的索引进行顺序读写时间复杂度就是O(1)，那么Hash就借用了这一特">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/1c5b33f7419028f658ef9f3368ce5971.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/30cc3dbd16510d5c23840a5a61f31ee8.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/dd0c170a48ca52e6012fc7a7aaff83c1.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/634feb403da107e2561d1dfe314d1049.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/327a906e04249aad558a046b08c87b9c.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/30cc3dbd16510d5c23840a5a61f31ee8.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/1bd2e72fe93f36cb47a36e0ed8b4a692.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/1c5b33f7419028f658ef9f3368ce5971.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/30cc3dbd16510d5c23840a5a61f31ee8.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/dd0c170a48ca52e6012fc7a7aaff83c1.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/634feb403da107e2561d1dfe314d1049.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/327a906e04249aad558a046b08c87b9c.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/30cc3dbd16510d5c23840a5a61f31ee8.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/1bd2e72fe93f36cb47a36e0ed8b4a692.png">
 <meta property="article:published_time" content="2020-03-03T15:03:01.000Z">
-<meta property="article:modified_time" content="2022-05-06T10:55:20.165Z">
+<meta property="article:modified_time" content="2022-05-06T18:08:41.124Z">
 <meta property="article:author" content="Jeffrey Wang">
 <meta property="article:tag" content="Hash">
 <meta property="article:tag" content="散列表">
 <meta property="article:tag" content="数据结构">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/1c5b33f7419028f658ef9f3368ce5971.png">
+<meta name="twitter:image" content="https://blog.wj2015.com/static/uploads/2020/03/1c5b33f7419028f658ef9f3368ce5971.png">
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"
@@ -43,9 +43,9 @@
         href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"
     />
     
-    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651834533640">
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651834533640">
-    <link rel="stylesheet" href="/css/style.css?v=1651834533640">
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651860541679">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651860541679">
+    <link rel="stylesheet" href="/css/style.css?v=1651860541679">
      
     
 <meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
@@ -225,20 +225,20 @@
     <a><i class="nexmoefont icon-calendar-fill"></i>2020年03月03日</a>
 </div>
 
-      <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本篇博客主要分享数据结构中关于散列表的定义和编程实现</p>
+      <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本篇博客主要分享数据结构中关于散列表的定义和编程实现</p>
 <h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="什么是散列表"><a href="#什么是散列表" class="headerlink" title="什么是散列表"></a>什么是散列表</h3><p>散列表也成为Hash表，用于存储 Key 和 Value 的集合，对于某一个Key，散列表能以接近O(1)的时间复杂度获取到对应的value</p>
 <h4 id="Hash的数据结构"><a href="#Hash的数据结构" class="headerlink" title="Hash的数据结构"></a>Hash的数据结构</h4><p>散列表读取的时间复杂度能达到 O(1)，这与其结构脱不了干系 学过基础数据结构都应该知道，通过数组的索引进行顺序读写时间复杂度就是O(1)，那么Hash就借用了这一特点 在进行数据存储或者读取的时候，首先通过<strong>散列函数</strong>计算出Key这个字符串对应的数字，简单取模，得到 0~当前数组长度的一个索引，根据索引顺序存取，时间复杂度就是O(n)</p>
-<h4 id="存储数据的数组"><a href="#存储数据的数组" class="headerlink" title="存储数据的数组"></a>存储数据的数组</h4><p>如下就是Hash表存储数据的数组的示意图，其中长度为4 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/1c5b33f7419028f658ef9f3368ce5971.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/1c5b33f7419028f658ef9f3368ce5971.png"></a></p>
-<h4 id="散列函数"><a href="#散列函数" class="headerlink" title="散列函数"></a>散列函数</h4><h4 id="Hash的负载因子"><a href="#Hash的负载因子" class="headerlink" title="Hash的负载因子"></a>Hash的负载因子</h4><p>负载因子用于表示Hash的空间使用程度，计算公式为 Hash有效数据长度&#x2F;数组长度（空间） 负载因子越高，Hash的查找效率可能就会收到影响，因为负载因子越高就越容易出现<strong>Hash冲突</strong>，无论是开放寻址法还是链表法都会让查找速度降低 一般在负载因子达到一定限制的时候，Hash就需要自动扩容，以保证足够的查找性能</p>
-<h5 id="开放寻址法"><a href="#开放寻址法" class="headerlink" title="开放寻址法"></a>开放寻址法</h5><p>当Hash冲突的时候，存放元素的时候往后移至空位，查找到对应索引时如果当前索引已经存在元素，那么就往后找到一个空白的位置放入 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/30cc3dbd16510d5c23840a5a61f31ee8.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/30cc3dbd16510d5c23840a5a61f31ee8.png"></a></p>
-<h5 id="链表法"><a href="#链表法" class="headerlink" title="链表法"></a>链表法</h5><p>当Hash冲突后，存放元素的item中的链表指针域往后追加新的元素 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/dd0c170a48ca52e6012fc7a7aaff83c1.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/dd0c170a48ca52e6012fc7a7aaff83c1.png"></a></p>
-<h3 id="Hash结构的几个操作"><a href="#Hash结构的几个操作" class="headerlink" title="Hash结构的几个操作"></a>Hash结构的几个操作</h3><h4 id="读操作"><a href="#读操作" class="headerlink" title="读操作"></a>读操作</h4><h5 id="开放寻址法的读操作"><a href="#开放寻址法的读操作" class="headerlink" title="开放寻址法的读操作"></a>开放寻址法的读操作</h5><p>开放寻址法中，由于冲突时元素向后查找空位，所以查找的时候需要判断查找的key和存储的key是否相同，不相同的时候需要向后查找相同key的元素，直到为空或者找到相同key的元素 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/634feb403da107e2561d1dfe314d1049.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/634feb403da107e2561d1dfe314d1049.png"></a></p>
-<h5 id="链表法的读操作"><a href="#链表法的读操作" class="headerlink" title="链表法的读操作"></a>链表法的读操作</h5><p>链表法中，冲突元素直接挂在Hash数组的指针域中，所以查找的时候，首先判断查找的key和存储在数组中的key是否相同，不相同的时候需要在指针域对应的链表中查找（时间复杂度O(N)） <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/327a906e04249aad558a046b08c87b9c.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/327a906e04249aad558a046b08c87b9c.png"></a></p>
-<h4 id="写操作"><a href="#写操作" class="headerlink" title="写操作"></a>写操作</h4><h5 id="开放寻址法的写操作"><a href="#开放寻址法的写操作" class="headerlink" title="开放寻址法的写操作"></a>开放寻址法的写操作</h5><p>先使用散列函数计算key对应的索引，如果冲突，则往后查找到一个非空的位置写入 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/30cc3dbd16510d5c23840a5a61f31ee8.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/30cc3dbd16510d5c23840a5a61f31ee8.png"></a></p>
+<h4 id="存储数据的数组"><a href="#存储数据的数组" class="headerlink" title="存储数据的数组"></a>存储数据的数组</h4><p>如下就是Hash表存储数据的数组的示意图，其中长度为4 <a href="/static/uploads/2020/03/1c5b33f7419028f658ef9f3368ce5971.png"><img src="/static/uploads/2020/03/1c5b33f7419028f658ef9f3368ce5971.png"></a></p>
+<h4 id="散列函数"><a href="#散列函数" class="headerlink" title="散列函数"></a>散列函数</h4><h4 id="Hash的负载因子"><a href="#Hash的负载因子" class="headerlink" title="Hash的负载因子"></a>Hash的负载因子</h4><p>负载因子用于表示Hash的空间使用程度，计算公式为 Hash有效数据长度/数组长度（空间） 负载因子越高，Hash的查找效率可能就会收到影响，因为负载因子越高就越容易出现<strong>Hash冲突</strong>，无论是开放寻址法还是链表法都会让查找速度降低 一般在负载因子达到一定限制的时候，Hash就需要自动扩容，以保证足够的查找性能</p>
+<h5 id="开放寻址法"><a href="#开放寻址法" class="headerlink" title="开放寻址法"></a>开放寻址法</h5><p>当Hash冲突的时候，存放元素的时候往后移至空位，查找到对应索引时如果当前索引已经存在元素，那么就往后找到一个空白的位置放入 <a href="/static/uploads/2020/03/30cc3dbd16510d5c23840a5a61f31ee8.png"><img src="/static/uploads/2020/03/30cc3dbd16510d5c23840a5a61f31ee8.png"></a></p>
+<h5 id="链表法"><a href="#链表法" class="headerlink" title="链表法"></a>链表法</h5><p>当Hash冲突后，存放元素的item中的链表指针域往后追加新的元素 <a href="/static/uploads/2020/03/dd0c170a48ca52e6012fc7a7aaff83c1.png"><img src="/static/uploads/2020/03/dd0c170a48ca52e6012fc7a7aaff83c1.png"></a></p>
+<h3 id="Hash结构的几个操作"><a href="#Hash结构的几个操作" class="headerlink" title="Hash结构的几个操作"></a>Hash结构的几个操作</h3><h4 id="读操作"><a href="#读操作" class="headerlink" title="读操作"></a>读操作</h4><h5 id="开放寻址法的读操作"><a href="#开放寻址法的读操作" class="headerlink" title="开放寻址法的读操作"></a>开放寻址法的读操作</h5><p>开放寻址法中，由于冲突时元素向后查找空位，所以查找的时候需要判断查找的key和存储的key是否相同，不相同的时候需要向后查找相同key的元素，直到为空或者找到相同key的元素 <a href="/static/uploads/2020/03/634feb403da107e2561d1dfe314d1049.png"><img src="/static/uploads/2020/03/634feb403da107e2561d1dfe314d1049.png"></a></p>
+<h5 id="链表法的读操作"><a href="#链表法的读操作" class="headerlink" title="链表法的读操作"></a>链表法的读操作</h5><p>链表法中，冲突元素直接挂在Hash数组的指针域中，所以查找的时候，首先判断查找的key和存储在数组中的key是否相同，不相同的时候需要在指针域对应的链表中查找（时间复杂度O(N)） <a href="/static/uploads/2020/03/327a906e04249aad558a046b08c87b9c.png"><img src="/static/uploads/2020/03/327a906e04249aad558a046b08c87b9c.png"></a></p>
+<h4 id="写操作"><a href="#写操作" class="headerlink" title="写操作"></a>写操作</h4><h5 id="开放寻址法的写操作"><a href="#开放寻址法的写操作" class="headerlink" title="开放寻址法的写操作"></a>开放寻址法的写操作</h5><p>先使用散列函数计算key对应的索引，如果冲突，则往后查找到一个非空的位置写入 <a href="/static/uploads/2020/03/30cc3dbd16510d5c23840a5a61f31ee8.png"><img src="/static/uploads/2020/03/30cc3dbd16510d5c23840a5a61f31ee8.png"></a></p>
 <h5 id="链表法的写入"><a href="#链表法的写入" class="headerlink" title="链表法的写入"></a>链表法的写入</h5><p>散列计算key对应的索引，如果冲突，追加到数组元素中的链表域</p>
-<h4 id="扩容"><a href="#扩容" class="headerlink" title="扩容"></a>扩容</h4><p>无论是开放寻址法还是链表法，扩容都需要新建一个哈希表，重新计算Hash值之后返回新的哈希表 负载因子过小的时候也可以触发收缩，重新计算所有元素的Hash值，以节省空间 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/1bd2e72fe93f36cb47a36e0ed8b4a692.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/1bd2e72fe93f36cb47a36e0ed8b4a692.png"></a></p>
+<h4 id="扩容"><a href="#扩容" class="headerlink" title="扩容"></a>扩容</h4><p>无论是开放寻址法还是链表法，扩容都需要新建一个哈希表，重新计算Hash值之后返回新的哈希表 负载因子过小的时候也可以触发收缩，重新计算所有元素的Hash值，以节省空间 <a href="/static/uploads/2020/03/1bd2e72fe93f36cb47a36e0ed8b4a692.png"><img src="/static/uploads/2020/03/1bd2e72fe93f36cb47a36e0ed8b4a692.png"></a></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本篇介绍了Hash表的数据结构基础，以及两种解决Hash冲突的策略，以及对应策略的读取、写入、扩容操作的底层操作</p>
-
+</body></html>
   </article>
 
   
@@ -327,10 +327,10 @@
 
  
 
-<script async src="/js/app.js?v=1651834533642"></script>
+<script async src="/js/app.js?v=1651860541682"></script>
 
 
-	<script async src="/js/search.js?v=1651834533642"></script>
+	<script async src="/js/search.js?v=1651860541682"></script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>

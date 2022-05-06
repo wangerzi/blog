@@ -12,15 +12,15 @@
     
 
     <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
-    <meta name="description" content="背景今天在配置nginx服务器的过程中，发现php能正常访问，但是$_GET始终为空，就此开始了解决问题之旅。 方法网上的方法大多是：  将&#x2F;etc&#x2F;nginx&#x2F;conf&#x2F;conf.d&#x2F;virtual.conf中对应虚拟机的try_files改变为： try_files $uri $uri&#x2F; &#x2F;index.php?$query_">
+    <meta name="description" content="背景今天在配置nginx服务器的过程中，发现php能正常访问，但是$_GET始终为空，就此开始了解决问题之旅。 方法网上的方法大多是：  将&#x2F;etc&#x2F;nginx&#x2F;conf&#x2F;conf.d&#x2F;virtual.conf中对应虚拟机的try_files改变为： try_files $uri $uri&#x2F; &#x2F;index.php?$query_string;  原： 1234location &#x2F; {">
 <meta property="og:type" content="article">
 <meta property="og:title" content="nginx+php-fpm出现无法获取GET参数问题的解决办法">
 <meta property="og:url" content="https://blog.wj2015.com/2018/03/07/nginxphp-fpm%E5%87%BA%E7%8E%B0%E6%97%A0%E6%B3%95%E8%8E%B7%E5%8F%96get%E5%8F%82%E6%95%B0%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/">
 <meta property="og:site_name" content="九层台">
-<meta property="og:description" content="背景今天在配置nginx服务器的过程中，发现php能正常访问，但是$_GET始终为空，就此开始了解决问题之旅。 方法网上的方法大多是：  将&#x2F;etc&#x2F;nginx&#x2F;conf&#x2F;conf.d&#x2F;virtual.conf中对应虚拟机的try_files改变为： try_files $uri $uri&#x2F; &#x2F;index.php?$query_">
+<meta property="og:description" content="背景今天在配置nginx服务器的过程中，发现php能正常访问，但是$_GET始终为空，就此开始了解决问题之旅。 方法网上的方法大多是：  将&#x2F;etc&#x2F;nginx&#x2F;conf&#x2F;conf.d&#x2F;virtual.conf中对应虚拟机的try_files改变为： try_files $uri $uri&#x2F; &#x2F;index.php?$query_string;  原： 1234location &#x2F; {">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-03-07T02:28:58.000Z">
-<meta property="article:modified_time" content="2022-05-06T10:55:20.161Z">
+<meta property="article:modified_time" content="2022-05-06T18:08:41.120Z">
 <meta property="article:author" content="Jeffrey Wang">
 <meta property="article:tag" content="nginx">
 <meta property="article:tag" content="php-fpm">
@@ -35,9 +35,9 @@
         href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"
     />
     
-    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651834533787">
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651834533787">
-    <link rel="stylesheet" href="/css/style.css?v=1651834533787">
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651860541869">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651860541869">
+    <link rel="stylesheet" href="/css/style.css?v=1651860541869">
      
     
 <meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
@@ -217,26 +217,26 @@
     <a><i class="nexmoefont icon-calendar-fill"></i>2018年03月07日</a>
 </div>
 
-      <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>今天在配置nginx服务器的过程中，发现php能正常访问，但是$_GET始终为空，就此开始了解决问题之旅。</p>
+      <html><head></head><body><h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>今天在配置nginx服务器的过程中，发现php能正常访问，但是$_GET始终为空，就此开始了解决问题之旅。</p>
 <h1 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h1><p>网上的方法大多是：</p>
 <blockquote>
-<p>将&#x2F;etc&#x2F;nginx&#x2F;conf&#x2F;conf.d&#x2F;virtual.conf中对应虚拟机的try_files改变为： try_files $uri $uri&#x2F; &#x2F;index.php?$query_string;</p>
+<p>将/etc/nginx/conf/conf.d/virtual.conf中对应虚拟机的try_files改变为： try_files $uri $uri/ /index.php?$query_string;</p>
 </blockquote>
 <p>原：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">            try_files $uri $uri/ /index.php?s=$args;</span><br><span class="line">            # try_files $uri $uri/;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">location / {</span><br><span class="line">            try_files $uri $uri/ /index.php?s=$args;</span><br><span class="line">            # try_files $uri $uri/;</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
 
 <p>目标：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">            try_files $uri $uri/ /index.php?$query_string;</span><br><span class="line">            # try_files $uri $uri/;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">location / {</span><br><span class="line">            try_files $uri $uri/ /index.php?$query_string;</span><br><span class="line">            # try_files $uri $uri/;</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
 
 <p>但是，亲测无效</p>
 <blockquote>
-<p>最后，通过与功能完善的nginx配置文件进行对比，发现我在&#x2F;etc&#x2F;nginx&#x2F;fastcgi_params中配置顺序有问题。 经测试，SCRIPT_FILENAME参数只能在最前边，放最后就会导致$_GET为空的情况。</p>
+<p>最后，通过与功能完善的nginx配置文件进行对比，发现我在/etc/nginx/fastcgi_params中配置顺序有问题。 经测试，SCRIPT_FILENAME参数只能在最前边，放最后就会导致$_GET为空的情况。</p>
 </blockquote>
 <p>正确配置：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;</span><br><span class="line">fastcgi_param  QUERY_STRING       $query_string;</span><br><span class="line">fastcgi_param  REQUEST_METHOD     $request_method;</span><br><span class="line">fastcgi_param  CONTENT_TYPE       $content_type;</span><br><span class="line">fastcgi_param  CONTENT_LENGTH     $content_length;</span><br><span class="line"></span><br><span class="line">fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;</span><br><span class="line">fastcgi_param  REQUEST_URI        $request_uri;</span><br><span class="line">fastcgi_param  DOCUMENT_URI       $document_uri;</span><br><span class="line">fastcgi_param  DOCUMENT_ROOT      $document_root;</span><br><span class="line">fastcgi_param  SERVER_PROTOCOL    $server_protocol;</span><br><span class="line">fastcgi_param  REQUEST_SCHEME     $scheme;</span><br><span class="line">fastcgi_param  HTTPS              $https if_not_empty;</span><br><span class="line"></span><br><span class="line">fastcgi_param  GATEWAY_INTERFACE  CGI/1.1;</span><br><span class="line">fastcgi_param  SERVER_SOFTWARE    nginx/$nginx_version;</span><br><span class="line"></span><br><span class="line">fastcgi_param  REMOTE_ADDR        $remote_addr;</span><br><span class="line">fastcgi_param  REMOTE_PORT        $remote_port;</span><br><span class="line">fastcgi_param  SERVER_ADDR        $server_addr;</span><br><span class="line">fastcgi_param  SERVER_PORT        $server_port;</span><br><span class="line">fastcgi_param  SERVER_NAME        $server_name;</span><br><span class="line"></span><br><span class="line"># PHP only, required if PHP was built with --enable-force-cgi-redirect</span><br><span class="line">fastcgi_param  REDIRECT_STATUS    200;</span><br><span class="line"># fastcgi_param PATH_INFO                $fastcgi_script_name;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;</span><br><span class="line">fastcgi_param  QUERY_STRING       $query_string;</span><br><span class="line">fastcgi_param  REQUEST_METHOD     $request_method;</span><br><span class="line">fastcgi_param  CONTENT_TYPE       $content_type;</span><br><span class="line">fastcgi_param  CONTENT_LENGTH     $content_length;</span><br><span class="line"></span><br><span class="line">fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;</span><br><span class="line">fastcgi_param  REQUEST_URI        $request_uri;</span><br><span class="line">fastcgi_param  DOCUMENT_URI       $document_uri;</span><br><span class="line">fastcgi_param  DOCUMENT_ROOT      $document_root;</span><br><span class="line">fastcgi_param  SERVER_PROTOCOL    $server_protocol;</span><br><span class="line">fastcgi_param  REQUEST_SCHEME     $scheme;</span><br><span class="line">fastcgi_param  HTTPS              $https if_not_empty;</span><br><span class="line"></span><br><span class="line">fastcgi_param  GATEWAY_INTERFACE  CGI/1.1;</span><br><span class="line">fastcgi_param  SERVER_SOFTWARE    nginx/$nginx_version;</span><br><span class="line"></span><br><span class="line">fastcgi_param  REMOTE_ADDR        $remote_addr;</span><br><span class="line">fastcgi_param  REMOTE_PORT        $remote_port;</span><br><span class="line">fastcgi_param  SERVER_ADDR        $server_addr;</span><br><span class="line">fastcgi_param  SERVER_PORT        $server_port;</span><br><span class="line">fastcgi_param  SERVER_NAME        $server_name;</span><br><span class="line"></span><br><span class="line"># PHP only, required if PHP was built with --enable-force-cgi-redirect</span><br><span class="line">fastcgi_param  REDIRECT_STATUS    200;</span><br><span class="line"># fastcgi_param PATH_INFO                $fastcgi_script_name;</span><br></pre></td></tr></tbody></table></figure>
 
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>之所以出现这个问题就是因为当初配置php-fpm参数的时候，听从网上的答案，在fastcgi_params追加了两行配置，结果浪费我1个多小时的时间，谨记教训！！！！</p>
-
+</body></html>
   </article>
 
   
@@ -325,10 +325,10 @@
 
  
 
-<script async src="/js/app.js?v=1651834533789"></script>
+<script async src="/js/app.js?v=1651860541872"></script>
 
 
-	<script async src="/js/search.js?v=1651834533789"></script>
+	<script async src="/js/search.js?v=1651860541872"></script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>

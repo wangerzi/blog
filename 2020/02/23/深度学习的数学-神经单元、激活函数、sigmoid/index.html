@@ -19,21 +19,21 @@
 <meta property="og:site_name" content="九层台">
 <meta property="og:description" content="前言阅读《深度学习的数学》书中第一部分提到了关于 神经元、神经单元、激活函数以及一个非常具有代表性的 Sigmoid 函数，本博客的目的既是对此做一个总结 正文生物学中的神经元生物中的神经元可归纳为如下几个知识点   每个神经元由胞体、轴突和树突组成 轴突上的突触可以用来接受其他神经元的信号 树突用来发送信号   很多个神经元形成神经网络 如果一个神经元收到的其他神经元传递的带权重信号之和不超过某">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/4fe312a30061c14e8a3b2ceed9adc8ff.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/e9c14f347efd8d0f6e1bb7121e2ef4e4.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/636c311a0b959f10fefd33e438a776af.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/cdb747b628d8506daf042ef2b6f0dacd.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/df9852cb76a83b868c5b8c5060018a6c.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/bc6f331021d64206646e8fc2a18c6b8f.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/ccdc877796770b79c618bb62b7d400d9.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/0269a1865034d017200c286e334a159e.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/4fe312a30061c14e8a3b2ceed9adc8ff.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/e9c14f347efd8d0f6e1bb7121e2ef4e4.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/636c311a0b959f10fefd33e438a776af.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/cdb747b628d8506daf042ef2b6f0dacd.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/df9852cb76a83b868c5b8c5060018a6c.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/bc6f331021d64206646e8fc2a18c6b8f.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/ccdc877796770b79c618bb62b7d400d9.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/0269a1865034d017200c286e334a159e.png">
 <meta property="article:published_time" content="2020-02-23T08:36:27.000Z">
-<meta property="article:modified_time" content="2022-05-06T10:55:20.165Z">
+<meta property="article:modified_time" content="2022-05-06T18:08:41.124Z">
 <meta property="article:author" content="Jeffrey Wang">
 <meta property="article:tag" content="python">
 <meta property="article:tag" content="机器学习">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/4fe312a30061c14e8a3b2ceed9adc8ff.png">
+<meta name="twitter:image" content="https://blog.wj2015.com/static/uploads/2020/02/4fe312a30061c14e8a3b2ceed9adc8ff.png">
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"
@@ -43,9 +43,9 @@
         href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"
     />
     
-    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651834533676">
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651834533676">
-    <link rel="stylesheet" href="/css/style.css?v=1651834533676">
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651860541733">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651860541733">
+    <link rel="stylesheet" href="/css/style.css?v=1651860541733">
      
     
 <meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
@@ -225,8 +225,8 @@
     <a><i class="nexmoefont icon-calendar-fill"></i>2020年02月23日</a>
 </div>
 
-      <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>阅读《深度学习的数学》书中第一部分提到了关于 神经元、神经单元、激活函数以及一个非常具有代表性的 Sigmoid 函数，本博客的目的既是对此做一个总结</p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="生物学中的神经元"><a href="#生物学中的神经元" class="headerlink" title="生物学中的神经元"></a>生物学中的神经元</h3><p>生物中的神经元可归纳为如下几个知识点 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/4fe312a30061c14e8a3b2ceed9adc8ff.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/4fe312a30061c14e8a3b2ceed9adc8ff.png"></a></p>
+      <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>阅读《深度学习的数学》书中第一部分提到了关于 神经元、神经单元、激活函数以及一个非常具有代表性的 Sigmoid 函数，本博客的目的既是对此做一个总结</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="生物学中的神经元"><a href="#生物学中的神经元" class="headerlink" title="生物学中的神经元"></a>生物学中的神经元</h3><p>生物中的神经元可归纳为如下几个知识点 <a href="/static/uploads/2020/02/4fe312a30061c14e8a3b2ceed9adc8ff.png"><img src="/static/uploads/2020/02/4fe312a30061c14e8a3b2ceed9adc8ff.png"></a></p>
 <ul>
 <li>每个神经元由胞体、轴突和树突组成<ul>
 <li>轴突上的突触可以用来接受其他神经元的信号</li>
@@ -237,13 +237,13 @@
 <li>如果一个神经元收到的其他神经元传递的<strong>带权重信号之和</strong>不超过某个固定大小的值，则不做出任何反应</li>
 <li>如果一个神经元收到其他神经元传递的<strong>带权重信号之和</strong>超过某个固定大小的值，则向其他相连的神经元传递<strong>固定强度</strong>的信号，俗称<strong>“点火”</strong></li>
 </ul>
-<p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/e9c14f347efd8d0f6e1bb7121e2ef4e4.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/e9c14f347efd8d0f6e1bb7121e2ef4e4.png"></a></p>
-<h3 id="深度学习中的神经单元"><a href="#深度学习中的神经单元" class="headerlink" title="深度学习中的神经单元"></a>深度学习中的神经单元</h3><p>根据生物学上的神经元规律来看，一个神经单元拥有带权值的一个或多个输入，输出分为『有输出&#x2F;无输出』，带权值之和大于某个固定值则输出信号 所以，假设神经元输出为 <code>y</code>，固定值为 <code>θ</code>，输入信号的权值和输入信号的强度为 <code>wn</code> 和 <code>xn</code> 可得到如下表达式： <code>w1*x1 + w2*x2 + ... wn*xn &lt; θ =&gt; y=0</code> <code>w1*x1 + w2*x2 + ... wn*xn &gt; θ =&gt; y=1</code></p>
-<h4 id="数学上的表达"><a href="#数学上的表达" class="headerlink" title="数学上的表达"></a>数学上的表达</h4><p>数学上有一个 <code>单位阶跃函数</code>的定义，自变量大于0时，函数值为1；自变量小于0时，函数值为0，自变量为0时函数值为不确定或不定义 单位阶跃函数的数学定义如下： <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/636c311a0b959f10fefd33e438a776af.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/636c311a0b959f10fefd33e438a776af.png"></a> 结合神经单元的表达式，可得到 <code>z = w1*x1 + w2*x2 + ... + wn*xn - θ</code> <strong>点火</strong>的数学表达式即可确定为 <code>y = u(w1*x1 + w2*x2 + ... + wn*xn - θ)</code> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/cdb747b628d8506daf042ef2b6f0dacd.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/cdb747b628d8506daf042ef2b6f0dacd.png"></a></p>
-<h3 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h3><p>上述 <strong>点火</strong> 的数学表达式其实就是一个激活函数，但是 <code>u</code> 一般表示单位阶跃函数，<code>- θ</code> 也不够一般化，所以式子换成了这个样子： <code>y = a(w1*x1 + w2*x2 + ... + wn*xn + b)</code> 输出也不限于 0&#x2F;1，也可能是其他变量，书中提到可类比 “兴奋度”、“反应度” <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/df9852cb76a83b868c5b8c5060018a6c.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/df9852cb76a83b868c5b8c5060018a6c.png"></a> 其中 <code>a</code> 就是激活函数，是建模者定义的函数，有一个代表就是 <code>Sigmoid</code> 函数 其中 <code>b</code> 被称作 <strong>偏置</strong>，相当于 <code>-θ</code>，<code>θ</code> 表示一个神经元的感受能力，<code>θ</code> 越高越不容易被点火（迟钝），<code>θ</code>越低越容易被点火（敏感） 至此 一个神经元可以如下图表示 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/bc6f331021d64206646e8fc2a18c6b8f.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/bc6f331021d64206646e8fc2a18c6b8f.png"></a></p>
-<h4 id="Sigmoid"><a href="#Sigmoid" class="headerlink" title="Sigmoid"></a>Sigmoid</h4><p>激活函数的代表就是 <code>Sigmoid</code> 函数，书中介绍其，定义如下： <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/ccdc877796770b79c618bb62b7d400d9.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/ccdc877796770b79c618bb62b7d400d9.png"></a> 其函数图像可由下图所示，对应的输入和权重映射到 y 的输出，y越接近1兴奋度越高，越接近0兴奋度越低 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/0269a1865034d017200c286e334a159e.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/0269a1865034d017200c286e334a159e.png"></a></p>
+<p><a href="/static/uploads/2020/02/e9c14f347efd8d0f6e1bb7121e2ef4e4.png"><img src="/static/uploads/2020/02/e9c14f347efd8d0f6e1bb7121e2ef4e4.png"></a></p>
+<h3 id="深度学习中的神经单元"><a href="#深度学习中的神经单元" class="headerlink" title="深度学习中的神经单元"></a>深度学习中的神经单元</h3><p>根据生物学上的神经元规律来看，一个神经单元拥有带权值的一个或多个输入，输出分为『有输出/无输出』，带权值之和大于某个固定值则输出信号 所以，假设神经元输出为 <code>y</code>，固定值为 <code>θ</code>，输入信号的权值和输入信号的强度为 <code>wn</code> 和 <code>xn</code> 可得到如下表达式： <code>w1*x1 + w2*x2 + ... wn*xn &lt; θ =&gt; y=0</code> <code>w1*x1 + w2*x2 + ... wn*xn &gt; θ =&gt; y=1</code></p>
+<h4 id="数学上的表达"><a href="#数学上的表达" class="headerlink" title="数学上的表达"></a>数学上的表达</h4><p>数学上有一个 <code>单位阶跃函数</code>的定义，自变量大于0时，函数值为1；自变量小于0时，函数值为0，自变量为0时函数值为不确定或不定义 单位阶跃函数的数学定义如下： <a href="/static/uploads/2020/02/636c311a0b959f10fefd33e438a776af.png"><img src="/static/uploads/2020/02/636c311a0b959f10fefd33e438a776af.png"></a> 结合神经单元的表达式，可得到 <code>z = w1*x1 + w2*x2 + ... + wn*xn - θ</code> <strong>点火</strong>的数学表达式即可确定为 <code>y = u(w1*x1 + w2*x2 + ... + wn*xn - θ)</code> <a href="/static/uploads/2020/02/cdb747b628d8506daf042ef2b6f0dacd.png"><img src="/static/uploads/2020/02/cdb747b628d8506daf042ef2b6f0dacd.png"></a></p>
+<h3 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h3><p>上述 <strong>点火</strong> 的数学表达式其实就是一个激活函数，但是 <code>u</code> 一般表示单位阶跃函数，<code>- θ</code> 也不够一般化，所以式子换成了这个样子： <code>y = a(w1*x1 + w2*x2 + ... + wn*xn + b)</code> 输出也不限于 0/1，也可能是其他变量，书中提到可类比 “兴奋度”、“反应度” <a href="/static/uploads/2020/02/df9852cb76a83b868c5b8c5060018a6c.png"><img src="/static/uploads/2020/02/df9852cb76a83b868c5b8c5060018a6c.png"></a> 其中 <code>a</code> 就是激活函数，是建模者定义的函数，有一个代表就是 <code>Sigmoid</code> 函数 其中 <code>b</code> 被称作 <strong>偏置</strong>，相当于 <code>-θ</code>，<code>θ</code> 表示一个神经元的感受能力，<code>θ</code> 越高越不容易被点火（迟钝），<code>θ</code>越低越容易被点火（敏感） 至此 一个神经元可以如下图表示 <a href="/static/uploads/2020/02/bc6f331021d64206646e8fc2a18c6b8f.png"><img src="/static/uploads/2020/02/bc6f331021d64206646e8fc2a18c6b8f.png"></a></p>
+<h4 id="Sigmoid"><a href="#Sigmoid" class="headerlink" title="Sigmoid"></a>Sigmoid</h4><p>激活函数的代表就是 <code>Sigmoid</code> 函数，书中介绍其，定义如下： <a href="/static/uploads/2020/02/ccdc877796770b79c618bb62b7d400d9.png"><img src="/static/uploads/2020/02/ccdc877796770b79c618bb62b7d400d9.png"></a> 其函数图像可由下图所示，对应的输入和权重映射到 y 的输出，y越接近1兴奋度越高，越接近0兴奋度越低 <a href="/static/uploads/2020/02/0269a1865034d017200c286e334a159e.png"><img src="/static/uploads/2020/02/0269a1865034d017200c286e334a159e.png"></a></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>由生物学中的神经元特性推导出深度学习中的神经单元模型 在生物学中，对每一组输入的权值求和，超过阈值即输出1（激发态，点火），否则输出0（静息态） 深度学习中的神经单元，使用激活函数来表示一个神经元在一定的输入下的激活状态，表达式如下 <code>y = a(x1*w1 + x2*w2 + ... xn*wn + b)</code> 上述表达式中的 <code>a</code> 即为激活函数，<code>b</code> 为偏置，越高则神经元越敏感 <code>Sigmoid</code> 是激活函数的代表，输出接近1表示兴奋度越高，接近0表示兴奋度越低</p>
-
+</body></html>
   </article>
 
   
@@ -332,10 +332,10 @@
 
  
 
-<script async src="/js/app.js?v=1651834533680"></script>
+<script async src="/js/app.js?v=1651860541736"></script>
 
 
-	<script async src="/js/search.js?v=1651834533680"></script>
+	<script async src="/js/search.js?v=1651860541736"></script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>

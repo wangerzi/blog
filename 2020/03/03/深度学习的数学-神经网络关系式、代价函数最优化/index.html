@@ -12,46 +12,46 @@
     
 
     <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
-    <meta name="description" content="前言本篇博客主要讲解神经网络中的变量表示法、各层的输入输出关系式，了解正解和预测值，代价函数的计算及其最小化，以及参数规模和需要的数据规模计算 正文神经网络的参数表示法据书中表述，神经网络是一种数学模型，像权重和偏置在数学上看就是参数 下图中，权重 w1&#x2F;w2&#x2F;w3 偏置 b 就是神经单元的参数，加权输入即为z1，经过激活函数 a 的计算得到结果为 a1  命名规则（重点）上面">
+    <meta name="description" content="前言本篇博客主要讲解神经网络中的变量表示法、各层的输入输出关系式，了解正解和预测值，代价函数的计算及其最小化，以及参数规模和需要的数据规模计算 正文神经网络的参数表示法据书中表述，神经网络是一种数学模型，像权重和偏置在数学上看就是参数 下图中，权重 w1&#x2F;w2&#x2F;w3 偏置 b 就是神经单元的参数，加权输入即为z1，经过激活函数 a 的计算得到结果为 a1  命名规则（重点）上面简单看了下一个神经单">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深度学习的数学-神经网络关系式、代价函数最优化">
 <meta property="og:url" content="https://blog.wj2015.com/2020/03/03/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%85%B3%E7%B3%BB%E5%BC%8F%E3%80%81%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0%E6%9C%80%E4%BC%98%E5%8C%96/">
 <meta property="og:site_name" content="九层台">
-<meta property="og:description" content="前言本篇博客主要讲解神经网络中的变量表示法、各层的输入输出关系式，了解正解和预测值，代价函数的计算及其最小化，以及参数规模和需要的数据规模计算 正文神经网络的参数表示法据书中表述，神经网络是一种数学模型，像权重和偏置在数学上看就是参数 下图中，权重 w1&#x2F;w2&#x2F;w3 偏置 b 就是神经单元的参数，加权输入即为z1，经过激活函数 a 的计算得到结果为 a1  命名规则（重点）上面">
+<meta property="og:description" content="前言本篇博客主要讲解神经网络中的变量表示法、各层的输入输出关系式，了解正解和预测值，代价函数的计算及其最小化，以及参数规模和需要的数据规模计算 正文神经网络的参数表示法据书中表述，神经网络是一种数学模型，像权重和偏置在数学上看就是参数 下图中，权重 w1&#x2F;w2&#x2F;w3 偏置 b 就是神经单元的参数，加权输入即为z1，经过激活函数 a 的计算得到结果为 a1  命名规则（重点）上面简单看了下一个神经单">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/c615e69a65081650e171a2142b35cfad.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/0d8441147155791a6aec4b7be8629996.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/2642de1695617fe32fbf21a282f4eaf0.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/0cd8898b000269d147f9d791667771d6.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/a2c104fccd1a42c316a286ace825382a.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/9c76900cb465b81df043a795976c8daa.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/c268881e2d96e33ca7014a2ea134caa8.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/b5a41b4eb5c45f024e6b6d8e05a78983.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/2bbce8c6288840614bc321ceccde5ed9.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/f3fed5bc267fff83fbeba3a291df7d13.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/b0b7f58f7f93317e7d61211683e47d4a.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/e5b45f555765ec7131989ec9556e4c28.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/9ea8b4a2b870a8c472dedb08e9a0d6df.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/420fdd98ad666c88f0cc1d3af370c3d9.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/a306422d57f2cf704e36bcdbfcbcf130.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/3bf1bafe49f525a0af52e8fcc34487c4.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/1ba601cc5124122a00f3b6b375daa5c0.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/5b2e60c35f1bcc58378909777da18064.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/fe6e5b6845c32d28541c211aafef72fd.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/4bc0859ed218c6c93338bb68e24cee11.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/ca995cc301765edff1cb2cfcfabda03b.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/0b93b544e89a31cd091da369376289ea.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/8bc9549d9c7a672d88c2e30ba31bfb4f.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/0de8e93a8656dd4985dc6607b059ccc6.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/c615e69a65081650e171a2142b35cfad.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/0d8441147155791a6aec4b7be8629996.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/2642de1695617fe32fbf21a282f4eaf0.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/0cd8898b000269d147f9d791667771d6.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/a2c104fccd1a42c316a286ace825382a.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/9c76900cb465b81df043a795976c8daa.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/c268881e2d96e33ca7014a2ea134caa8.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/b5a41b4eb5c45f024e6b6d8e05a78983.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/2bbce8c6288840614bc321ceccde5ed9.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/f3fed5bc267fff83fbeba3a291df7d13.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/b0b7f58f7f93317e7d61211683e47d4a.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/e5b45f555765ec7131989ec9556e4c28.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/9ea8b4a2b870a8c472dedb08e9a0d6df.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/420fdd98ad666c88f0cc1d3af370c3d9.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/a306422d57f2cf704e36bcdbfcbcf130.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/3bf1bafe49f525a0af52e8fcc34487c4.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/1ba601cc5124122a00f3b6b375daa5c0.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/5b2e60c35f1bcc58378909777da18064.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/fe6e5b6845c32d28541c211aafef72fd.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/4bc0859ed218c6c93338bb68e24cee11.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/ca995cc301765edff1cb2cfcfabda03b.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/0b93b544e89a31cd091da369376289ea.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/8bc9549d9c7a672d88c2e30ba31bfb4f.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/03/0de8e93a8656dd4985dc6607b059ccc6.png">
 <meta property="article:published_time" content="2020-03-03T10:03:22.000Z">
-<meta property="article:modified_time" content="2022-05-06T10:55:20.165Z">
+<meta property="article:modified_time" content="2022-05-06T18:08:41.124Z">
 <meta property="article:author" content="Jeffrey Wang">
 <meta property="article:tag" content="机器学习">
 <meta property="article:tag" content="代价函数">
 <meta property="article:tag" content="关系式">
 <meta property="article:tag" content="命名规则">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/c615e69a65081650e171a2142b35cfad.png">
+<meta name="twitter:image" content="https://blog.wj2015.com/static/uploads/2020/03/c615e69a65081650e171a2142b35cfad.png">
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"
@@ -61,9 +61,9 @@
         href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"
     />
     
-    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651834533643">
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651834533643">
-    <link rel="stylesheet" href="/css/style.css?v=1651834533643">
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651860541683">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651860541683">
+    <link rel="stylesheet" href="/css/style.css?v=1651860541683">
      
     
 <meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
@@ -243,10 +243,10 @@
     <a><i class="nexmoefont icon-calendar-fill"></i>2020年03月03日</a>
 </div>
 
-      <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本篇博客主要讲解神经网络中的变量表示法、各层的输入输出关系式，了解正解和预测值，代价函数的计算及其最小化，以及参数规模和需要的数据规模计算</p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="神经网络的参数表示法"><a href="#神经网络的参数表示法" class="headerlink" title="神经网络的参数表示法"></a>神经网络的参数表示法</h3><p>据书中表述，神经网络是一种数学模型，像权重和偏置在数学上看就是<strong>参数</strong> 下图中，权重 <code>w1</code>&#x2F;<code>w2</code>&#x2F;<code>w3</code> 偏置 <code>b</code> 就是神经单元的参数，加权输入即为<code>z1</code>，经过激活函数 <code>a</code> 的计算得到结果为 <code>a1</code> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/c615e69a65081650e171a2142b35cfad.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/c615e69a65081650e171a2142b35cfad.png"></a></p>
+      <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本篇博客主要讲解神经网络中的变量表示法、各层的输入输出关系式，了解正解和预测值，代价函数的计算及其最小化，以及参数规模和需要的数据规模计算</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="神经网络的参数表示法"><a href="#神经网络的参数表示法" class="headerlink" title="神经网络的参数表示法"></a>神经网络的参数表示法</h3><p>据书中表述，神经网络是一种数学模型，像权重和偏置在数学上看就是<strong>参数</strong> 下图中，权重 <code>w1</code>/<code>w2</code>/<code>w3</code> 偏置 <code>b</code> 就是神经单元的参数，加权输入即为<code>z1</code>，经过激活函数 <code>a</code> 的计算得到结果为 <code>a1</code> <a href="/static/uploads/2020/03/c615e69a65081650e171a2142b35cfad.png"><img src="/static/uploads/2020/03/c615e69a65081650e171a2142b35cfad.png"></a></p>
 <h4 id="命名规则（重点）"><a href="#命名规则（重点）" class="headerlink" title="命名规则（重点）"></a>命名规则（重点）</h4><p>上面简单看了下一个神经单元的输入输出表示，但是神经网络由多个层组成，每个层又有多个神经单元，所以需要科学的对这些神经单元编号</p>
-<h5 id="层编号"><a href="#层编号" class="headerlink" title="层编号"></a>层编号</h5><p>首先，对神经网络的每个层进行编号，从输入层开始数，输入层为<code>层1</code>，输出层为最后一层，也就是 <code>层l</code>，l表示 last <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/0d8441147155791a6aec4b7be8629996.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/0d8441147155791a6aec4b7be8629996.png"></a> 然后每个层对应的偏置和权重，有如下的规则定义 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/2642de1695617fe32fbf21a282f4eaf0.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/2642de1695617fe32fbf21a282f4eaf0.png"></a> 看表格可能有点难理解，可以参照下图的表现形式，需要着重理解权重(w)的下标有<strong>两个索引</strong>，前面的索引代表<strong>当前层</strong>的第几个神经单元，后边的索引代表<strong>前一层输出</strong>的第几个神经单元 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/0cd8898b000269d147f9d791667771d6.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/0cd8898b000269d147f9d791667771d6.png"></a> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/a2c104fccd1a42c316a286ace825382a.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/a2c104fccd1a42c316a286ace825382a.png"></a> 下面是截取的一个 3*4 的黑白图像识别神经网络，输入层隐藏层和输出层的命名表示 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/9c76900cb465b81df043a795976c8daa.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/9c76900cb465b81df043a795976c8daa.png"></a></p>
+<h5 id="层编号"><a href="#层编号" class="headerlink" title="层编号"></a>层编号</h5><p>首先，对神经网络的每个层进行编号，从输入层开始数，输入层为<code>层1</code>，输出层为最后一层，也就是 <code>层l</code>，l表示 last <a href="/static/uploads/2020/03/0d8441147155791a6aec4b7be8629996.png"><img src="/static/uploads/2020/03/0d8441147155791a6aec4b7be8629996.png"></a> 然后每个层对应的偏置和权重，有如下的规则定义 <a href="/static/uploads/2020/03/2642de1695617fe32fbf21a282f4eaf0.png"><img src="/static/uploads/2020/03/2642de1695617fe32fbf21a282f4eaf0.png"></a> 看表格可能有点难理解，可以参照下图的表现形式，需要着重理解权重(w)的下标有<strong>两个索引</strong>，前面的索引代表<strong>当前层</strong>的第几个神经单元，后边的索引代表<strong>前一层输出</strong>的第几个神经单元 <a href="/static/uploads/2020/03/0cd8898b000269d147f9d791667771d6.png"><img src="/static/uploads/2020/03/0cd8898b000269d147f9d791667771d6.png"></a> <a href="/static/uploads/2020/03/a2c104fccd1a42c316a286ace825382a.png"><img src="/static/uploads/2020/03/a2c104fccd1a42c316a286ace825382a.png"></a> 下面是截取的一个 3*4 的黑白图像识别神经网络，输入层隐藏层和输出层的命名表示 <a href="/static/uploads/2020/03/9c76900cb465b81df043a795976c8daa.png"><img src="/static/uploads/2020/03/9c76900cb465b81df043a795976c8daa.png"></a></p>
 <h4 id="小练习"><a href="#小练习" class="headerlink" title="小练习"></a>小练习</h4><p>这是博主自己编的几个小练习，可以对照下表格第一列理解其输出含义</p>
 <p>符号</p>
 <p>表示含义</p>
@@ -264,27 +264,27 @@
 <p>第3层第2个神经单元的偏置</p>
 <p>${a_{2}}^{3}$</p>
 <p>第3层第2个神经单元的输出变量 或 表示该神经单元的名称</p>
-<h4 id="多个学习实例的表示方法"><a href="#多个学习实例的表示方法" class="headerlink" title="多个学习实例的表示方法"></a>多个学习实例的表示方法</h4><p>可以加上中括号来表示第n个学习实例 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/c268881e2d96e33ca7014a2ea134caa8.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/c268881e2d96e33ca7014a2ea134caa8.png"></a> 下图表示第七个图像输入神经网络时，对应的变量表示方法 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/b5a41b4eb5c45f024e6b6d8e05a78983.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/b5a41b4eb5c45f024e6b6d8e05a78983.png"></a></p>
+<h4 id="多个学习实例的表示方法"><a href="#多个学习实例的表示方法" class="headerlink" title="多个学习实例的表示方法"></a>多个学习实例的表示方法</h4><p>可以加上中括号来表示第n个学习实例 <a href="/static/uploads/2020/03/c268881e2d96e33ca7014a2ea134caa8.png"><img src="/static/uploads/2020/03/c268881e2d96e33ca7014a2ea134caa8.png"></a> 下图表示第七个图像输入神经网络时，对应的变量表示方法 <a href="/static/uploads/2020/03/b5a41b4eb5c45f024e6b6d8e05a78983.png"><img src="/static/uploads/2020/03/b5a41b4eb5c45f024e6b6d8e05a78983.png"></a></p>
 <h3 id="关系式"><a href="#关系式" class="headerlink" title="关系式"></a>关系式</h3><p>关系式就是用一个式子表示各个变量之间的关系</p>
-<h4 id="输入层"><a href="#输入层" class="headerlink" title="输入层"></a>输入层</h4><p>输入层的输入即输出，所以有如下的关系式 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/2bbce8c6288840614bc321ceccde5ed9.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/2bbce8c6288840614bc321ceccde5ed9.png"></a></p>
-<h4 id="隐藏层（中间层）"><a href="#隐藏层（中间层）" class="headerlink" title="隐藏层（中间层）"></a>隐藏层（中间层）</h4><p>根据变量的定义，不难得出如下的关系式（z和a定义请见本博客上方表格） <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/f3fed5bc267fff83fbeba3a291df7d13.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/f3fed5bc267fff83fbeba3a291df7d13.png"></a> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/b0b7f58f7f93317e7d61211683e47d4a.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/b0b7f58f7f93317e7d61211683e47d4a.png"></a></p>
-<h4 id="输出层"><a href="#输出层" class="headerlink" title="输出层"></a>输出层</h4><p>输出层也同理可从隐藏层得到 z，经过激活函数后得到输出 a <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/e5b45f555765ec7131989ec9556e4c28.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/e5b45f555765ec7131989ec9556e4c28.png"></a> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/9ea8b4a2b870a8c472dedb08e9a0d6df.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/9ea8b4a2b870a8c472dedb08e9a0d6df.png"></a></p>
-<h4 id="矩阵表示法"><a href="#矩阵表示法" class="headerlink" title="矩阵表示法"></a>矩阵表示法</h4><p>之前理解过矩阵内积的相关知识，权重之和 z 可以用如下的向量形式表示，有利于编程的实现 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/420fdd98ad666c88f0cc1d3af370c3d9.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/420fdd98ad666c88f0cc1d3af370c3d9.png"></a></p>
-<h3 id="正解和代价函数"><a href="#正解和代价函数" class="headerlink" title="正解和代价函数"></a>正解和代价函数</h3><h4 id="正解的定义"><a href="#正解的定义" class="headerlink" title="正解的定义"></a>正解的定义</h4><p>正解顾名思义就是学习数据中正确的结果，预测值就是输入模型产生出来的结果值 用事先提供的学习数据确认权重和偏置，这个过程在神经网络中被称作<strong>学习</strong>，目标就是让预测值与正解的误差尽可能的小 如下图所示的识别 3*4 的黑白图像是0还是1，输出层 ${a_{1}}^{3}$ 敏感度越高，越偏向1，反之结果越偏向0 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/a306422d57f2cf704e36bcdbfcbcf130.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/a306422d57f2cf704e36bcdbfcbcf130.png"></a> 如果我们得到的学习数据是一张图片对应一个数字 1或0，那么还需要画出表格做出如下定义 实际的学习过程就如下图所示，根据正解和输出层的结果，就可以求误差了 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/3bf1bafe49f525a0af52e8fcc34487c4.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/3bf1bafe49f525a0af52e8fcc34487c4.png"></a> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/1ba601cc5124122a00f3b6b375daa5c0.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/1ba601cc5124122a00f3b6b375daa5c0.png"></a></p>
+<h4 id="输入层"><a href="#输入层" class="headerlink" title="输入层"></a>输入层</h4><p>输入层的输入即输出，所以有如下的关系式 <a href="/static/uploads/2020/03/2bbce8c6288840614bc321ceccde5ed9.png"><img src="/static/uploads/2020/03/2bbce8c6288840614bc321ceccde5ed9.png"></a></p>
+<h4 id="隐藏层（中间层）"><a href="#隐藏层（中间层）" class="headerlink" title="隐藏层（中间层）"></a>隐藏层（中间层）</h4><p>根据变量的定义，不难得出如下的关系式（z和a定义请见本博客上方表格） <a href="/static/uploads/2020/03/f3fed5bc267fff83fbeba3a291df7d13.png"><img src="/static/uploads/2020/03/f3fed5bc267fff83fbeba3a291df7d13.png"></a> <a href="/static/uploads/2020/03/b0b7f58f7f93317e7d61211683e47d4a.png"><img src="/static/uploads/2020/03/b0b7f58f7f93317e7d61211683e47d4a.png"></a></p>
+<h4 id="输出层"><a href="#输出层" class="headerlink" title="输出层"></a>输出层</h4><p>输出层也同理可从隐藏层得到 z，经过激活函数后得到输出 a <a href="/static/uploads/2020/03/e5b45f555765ec7131989ec9556e4c28.png"><img src="/static/uploads/2020/03/e5b45f555765ec7131989ec9556e4c28.png"></a> <a href="/static/uploads/2020/03/9ea8b4a2b870a8c472dedb08e9a0d6df.png"><img src="/static/uploads/2020/03/9ea8b4a2b870a8c472dedb08e9a0d6df.png"></a></p>
+<h4 id="矩阵表示法"><a href="#矩阵表示法" class="headerlink" title="矩阵表示法"></a>矩阵表示法</h4><p>之前理解过矩阵内积的相关知识，权重之和 z 可以用如下的向量形式表示，有利于编程的实现 <a href="/static/uploads/2020/03/420fdd98ad666c88f0cc1d3af370c3d9.png"><img src="/static/uploads/2020/03/420fdd98ad666c88f0cc1d3af370c3d9.png"></a></p>
+<h3 id="正解和代价函数"><a href="#正解和代价函数" class="headerlink" title="正解和代价函数"></a>正解和代价函数</h3><h4 id="正解的定义"><a href="#正解的定义" class="headerlink" title="正解的定义"></a>正解的定义</h4><p>正解顾名思义就是学习数据中正确的结果，预测值就是输入模型产生出来的结果值 用事先提供的学习数据确认权重和偏置，这个过程在神经网络中被称作<strong>学习</strong>，目标就是让预测值与正解的误差尽可能的小 如下图所示的识别 3*4 的黑白图像是0还是1，输出层 ${a_{1}}^{3}$ 敏感度越高，越偏向1，反之结果越偏向0 <a href="/static/uploads/2020/03/a306422d57f2cf704e36bcdbfcbcf130.png"><img src="/static/uploads/2020/03/a306422d57f2cf704e36bcdbfcbcf130.png"></a> 如果我们得到的学习数据是一张图片对应一个数字 1或0，那么还需要画出表格做出如下定义 实际的学习过程就如下图所示，根据正解和输出层的结果，就可以求误差了 <a href="/static/uploads/2020/03/3bf1bafe49f525a0af52e8fcc34487c4.png"><img src="/static/uploads/2020/03/3bf1bafe49f525a0af52e8fcc34487c4.png"></a> <a href="/static/uploads/2020/03/1ba601cc5124122a00f3b6b375daa5c0.png"><img src="/static/uploads/2020/03/1ba601cc5124122a00f3b6b375daa5c0.png"></a></p>
 <h4 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h4><p>这里引入书中的一段话来表示代价函数，大概意思就是衡量这个模型的误差大小的一个函数</p>
 <blockquote>
 <p>在数学中，用模型参数表示的总体误差的函数称为代价函数，此外也可以称为损失函数、目的函数、误差函数等。如前所述（2-12节），本书采用“代价函数”这个名称。</p>
 </blockquote>
-<h4 id="代价函数的计算"><a href="#代价函数的计算" class="headerlink" title="代价函数的计算"></a>代价函数的计算</h4><p>代价函数也分很多种，比如最容易理解的每一个学习数据的(正解 - 预测值) ^ 2 之和 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/5b2e60c35f1bcc58378909777da18064.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/5b2e60c35f1bcc58378909777da18064.png"></a></p>
+<h4 id="代价函数的计算"><a href="#代价函数的计算" class="headerlink" title="代价函数的计算"></a>代价函数的计算</h4><p>代价函数也分很多种，比如最容易理解的每一个学习数据的(正解 - 预测值) ^ 2 之和 <a href="/static/uploads/2020/03/5b2e60c35f1bcc58378909777da18064.png"><img src="/static/uploads/2020/03/5b2e60c35f1bcc58378909777da18064.png"></a></p>
 <blockquote>
-<p>书中说明了，1&#x2F;2 作为常数是为了方便计算</p>
+<p>书中说明了，1/2 作为常数是为了方便计算</p>
 </blockquote>
-<p>由于对差求平方的代价函数虽然很容易理解，但是存在着计算收敛时间长的问题，为解决这个难点，书中还提到了另外一种误差指标，称为<strong>交叉熵</strong>，提高梯度下降算法的速度 针对本博客上方的两个输出神经单元的例子，定义如下，其中 n 是数据的规模 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/fe6e5b6845c32d28541c211aafef72fd.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/fe6e5b6845c32d28541c211aafef72fd.png"></a></p>
-<h4 id="代价函数的最小化（重点）"><a href="#代价函数的最小化（重点）" class="headerlink" title="代价函数的最小化（重点）"></a>代价函数的最小化（重点）</h4><p>书中给到了如下一张比较容易理解的图，因为代价函数的式子直接体现模型的误差，所以只需要让代价函数尽量小，整个模型契合度就会越高 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/4bc0859ed218c6c93338bb68e24cee11.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/4bc0859ed218c6c93338bb68e24cee11.png"></a> 那么如何让代价函数最小呢，不知道有没有想到之前提到的 <strong>多变量函数求极值</strong> 的问题，多变量函数的极值有一个必要条件，就是 <strong>对每个变量求偏导数，其值均为0</strong> 具体可以见之前写过的一篇博客 <a href="https://blog.wj2015.com/2020/02/27/%e6%b7%b1%e5%ba%a6%e5%ad%a6%e4%b9%a0%e7%9a%84%e6%95%b0%e5%ad%a6-%e5%af%bc%e6%95%b0%e5%92%8c%e5%81%8f%e5%af%bc%e6%95%b0/#i-12">深度学习的数学-导数和偏导数</a> 但是在实际的训练过程中，求导数的计算量比较大，更多是采用<strong>梯度下降</strong>的方式去求极值 之前也写了相关博客可供参考 <a href="https://blog.wj2015.com/2020/03/01/%e6%b7%b1%e5%ba%a6%e5%ad%a6%e4%b9%a0%e7%9a%84%e6%95%b0%e5%ad%a6-%e6%a2%af%e5%ba%a6%e4%b8%8b%e9%99%8d/">深度学习的数学-梯度下降</a></p>
-<h4 id="神经网络的代价函数"><a href="#神经网络的代价函数" class="headerlink" title="神经网络的代价函数"></a>神经网络的代价函数</h4><p>还是以 3*4 图片识别0&#x2F;1的神经网络为例 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/ca995cc301765edff1cb2cfcfabda03b.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/ca995cc301765edff1cb2cfcfabda03b.png"></a> 假设有64张图片，则其误差可以表示如下 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/0b93b544e89a31cd091da369376289ea.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/0b93b544e89a31cd091da369376289ea.png"></a> 然后把每张图片（学习资料）的误差加起来，就得到了代价函数 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/8bc9549d9c7a672d88c2e30ba31bfb4f.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/8bc9549d9c7a672d88c2e30ba31bfb4f.png"></a></p>
-<h4 id="参数和数据规模的计算（重点）"><a href="#参数和数据规模的计算（重点）" class="headerlink" title="参数和数据规模的计算（重点）"></a>参数和数据规模的计算（重点）</h4><p>书中提到了参数规模的最小值估算方法，就是把所有的权重、偏置都数起来，因为这些都是需要通过学习资料去确定的参数 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/0de8e93a8656dd4985dc6607b059ccc6.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/0de8e93a8656dd4985dc6607b059ccc6.png"></a> 书中提到，数据的规模如果小于参数的规模，就无法确认模型，所以最小数据规模就是所有参数的个数，3*2图像的那个例子学习用的图像至少需要47张</p>
+<p>由于对差求平方的代价函数虽然很容易理解，但是存在着计算收敛时间长的问题，为解决这个难点，书中还提到了另外一种误差指标，称为<strong>交叉熵</strong>，提高梯度下降算法的速度 针对本博客上方的两个输出神经单元的例子，定义如下，其中 n 是数据的规模 <a href="/static/uploads/2020/03/fe6e5b6845c32d28541c211aafef72fd.png"><img src="/static/uploads/2020/03/fe6e5b6845c32d28541c211aafef72fd.png"></a></p>
+<h4 id="代价函数的最小化（重点）"><a href="#代价函数的最小化（重点）" class="headerlink" title="代价函数的最小化（重点）"></a>代价函数的最小化（重点）</h4><p>书中给到了如下一张比较容易理解的图，因为代价函数的式子直接体现模型的误差，所以只需要让代价函数尽量小，整个模型契合度就会越高 <a href="/static/uploads/2020/03/4bc0859ed218c6c93338bb68e24cee11.png"><img src="/static/uploads/2020/03/4bc0859ed218c6c93338bb68e24cee11.png"></a> 那么如何让代价函数最小呢，不知道有没有想到之前提到的 <strong>多变量函数求极值</strong> 的问题，多变量函数的极值有一个必要条件，就是 <strong>对每个变量求偏导数，其值均为0</strong> 具体可以见之前写过的一篇博客 <a href="https://blog.wj2015.com/2020/02/27/%e6%b7%b1%e5%ba%a6%e5%ad%a6%e4%b9%a0%e7%9a%84%e6%95%b0%e5%ad%a6-%e5%af%bc%e6%95%b0%e5%92%8c%e5%81%8f%e5%af%bc%e6%95%b0/#i-12">深度学习的数学-导数和偏导数</a> 但是在实际的训练过程中，求导数的计算量比较大，更多是采用<strong>梯度下降</strong>的方式去求极值 之前也写了相关博客可供参考 <a href="https://blog.wj2015.com/2020/03/01/%e6%b7%b1%e5%ba%a6%e5%ad%a6%e4%b9%a0%e7%9a%84%e6%95%b0%e5%ad%a6-%e6%a2%af%e5%ba%a6%e4%b8%8b%e9%99%8d/">深度学习的数学-梯度下降</a></p>
+<h4 id="神经网络的代价函数"><a href="#神经网络的代价函数" class="headerlink" title="神经网络的代价函数"></a>神经网络的代价函数</h4><p>还是以 3*4 图片识别0/1的神经网络为例 <a href="/static/uploads/2020/03/ca995cc301765edff1cb2cfcfabda03b.png"><img src="/static/uploads/2020/03/ca995cc301765edff1cb2cfcfabda03b.png"></a> 假设有64张图片，则其误差可以表示如下 <a href="/static/uploads/2020/03/0b93b544e89a31cd091da369376289ea.png"><img src="/static/uploads/2020/03/0b93b544e89a31cd091da369376289ea.png"></a> 然后把每张图片（学习资料）的误差加起来，就得到了代价函数 <a href="/static/uploads/2020/03/8bc9549d9c7a672d88c2e30ba31bfb4f.png"><img src="/static/uploads/2020/03/8bc9549d9c7a672d88c2e30ba31bfb4f.png"></a></p>
+<h4 id="参数和数据规模的计算（重点）"><a href="#参数和数据规模的计算（重点）" class="headerlink" title="参数和数据规模的计算（重点）"></a>参数和数据规模的计算（重点）</h4><p>书中提到了参数规模的最小值估算方法，就是把所有的权重、偏置都数起来，因为这些都是需要通过学习资料去确定的参数 <a href="/static/uploads/2020/03/0de8e93a8656dd4985dc6607b059ccc6.png"><img src="/static/uploads/2020/03/0de8e93a8656dd4985dc6607b059ccc6.png"></a> 书中提到，数据的规模如果小于参数的规模，就无法确认模型，所以最小数据规模就是所有参数的个数，3*2图像的那个例子学习用的图像至少需要47张</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本篇主要记录神经网络的参数表示法，每个层每个神经单元的关系式，正解和代价函数，以及代价函数最小化、参数和训练数据规模等</p>
-
+</body></html>
   </article>
 
   
@@ -373,10 +373,10 @@
 
  
 
-<script async src="/js/app.js?v=1651834533645"></script>
+<script async src="/js/app.js?v=1651860541687"></script>
 
 
-	<script async src="/js/search.js?v=1651834533645"></script>
+	<script async src="/js/search.js?v=1651860541687"></script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>

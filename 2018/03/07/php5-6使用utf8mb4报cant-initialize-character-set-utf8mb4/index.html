@@ -12,15 +12,15 @@
     
 
     <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
-    <meta name="description" content="背景今天部署环境的时候，使用了mysql数据库的utf8mb4;因为之前就知道mysql版本太低不能使用utf8mb4，所以早早就准备好了mysql5.6。 结果部署好之后发现报错：Can’t initialize character set utf8mb4 (path: &#x2F;usr&#x2F;share&#x2F;mysql&#x2F;charsets&#x2F;) in … 解决方法：">
+    <meta name="description" content="背景今天部署环境的时候，使用了mysql数据库的utf8mb4;因为之前就知道mysql版本太低不能使用utf8mb4，所以早早就准备好了mysql5.6。 结果部署好之后发现报错：Can’t initialize character set utf8mb4 (path: &#x2F;usr&#x2F;share&#x2F;mysql&#x2F;charsets&#x2F;) in … 解决方法：经过一番查找，终于在stackoverflow上找">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PHP5.6使用utf8mb4报Can&#39;t initialize character set utf8mb4">
 <meta property="og:url" content="https://blog.wj2015.com/2018/03/07/php5-6%E4%BD%BF%E7%94%A8utf8mb4%E6%8A%A5cant-initialize-character-set-utf8mb4/">
 <meta property="og:site_name" content="九层台">
-<meta property="og:description" content="背景今天部署环境的时候，使用了mysql数据库的utf8mb4;因为之前就知道mysql版本太低不能使用utf8mb4，所以早早就准备好了mysql5.6。 结果部署好之后发现报错：Can’t initialize character set utf8mb4 (path: &#x2F;usr&#x2F;share&#x2F;mysql&#x2F;charsets&#x2F;) in … 解决方法：">
+<meta property="og:description" content="背景今天部署环境的时候，使用了mysql数据库的utf8mb4;因为之前就知道mysql版本太低不能使用utf8mb4，所以早早就准备好了mysql5.6。 结果部署好之后发现报错：Can’t initialize character set utf8mb4 (path: &#x2F;usr&#x2F;share&#x2F;mysql&#x2F;charsets&#x2F;) in … 解决方法：经过一番查找，终于在stackoverflow上找">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-03-07T13:16:59.000Z">
-<meta property="article:modified_time" content="2022-05-06T10:55:20.161Z">
+<meta property="article:modified_time" content="2022-05-06T18:08:41.120Z">
 <meta property="article:author" content="Jeffrey Wang">
 <meta property="article:tag" content="nginx">
 <meta property="article:tag" content="php">
@@ -36,9 +36,9 @@
         href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"
     />
     
-    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651834533784">
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651834533784">
-    <link rel="stylesheet" href="/css/style.css?v=1651834533784">
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651860541863">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651860541863">
+    <link rel="stylesheet" href="/css/style.css?v=1651860541863">
      
     
 <meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
@@ -218,9 +218,9 @@
     <a><i class="nexmoefont icon-calendar-fill"></i>2018年03月07日</a>
 </div>
 
-      <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>今天部署环境的时候，使用了mysql数据库的utf8mb4;因为之前就知道mysql版本太低不能使用utf8mb4，所以早早就准备好了mysql5.6。 结果部署好之后发现报错：Can’t initialize character set utf8mb4 (path: &#x2F;usr&#x2F;share&#x2F;mysql&#x2F;charsets&#x2F;) in …</p>
+      <html><head></head><body><h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>今天部署环境的时候，使用了mysql数据库的utf8mb4;因为之前就知道mysql版本太低不能使用utf8mb4，所以早早就准备好了mysql5.6。 结果部署好之后发现报错：Can’t initialize character set utf8mb4 (path: /usr/share/mysql/charsets/) in …</p>
 <h1 id="解决方法："><a href="#解决方法：" class="headerlink" title="解决方法："></a>解决方法：</h1><p>经过一番查找，终于在stackoverflow上找到一篇帖子，解决了这个问题 原帖： <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/33834191/php-pdoexception-sqlstatehy000-2019-cant-initialize-character-set-utf8mb4">https://stackoverflow.com/questions/33834191/php-pdoexception-sqlstatehy000-2019-cant-initialize-character-set-utf8mb4</a></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum erase php56w-mysql</span><br><span class="line">yum install php56w-mysqlnd</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum erase php56w-mysql</span><br><span class="line">yum install php56w-mysqlnd</span><br></pre></td></tr></tbody></table></figure></body></html>
   </article>
 
   
@@ -309,10 +309,10 @@
 
  
 
-<script async src="/js/app.js?v=1651834533786"></script>
+<script async src="/js/app.js?v=1651860541868"></script>
 
 
-	<script async src="/js/search.js?v=1651834533786"></script>
+	<script async src="/js/search.js?v=1651860541868"></script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>

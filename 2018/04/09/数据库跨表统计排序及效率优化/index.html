@@ -19,18 +19,18 @@
 <meta property="og:site_name" content="九层台">
 <meta property="og:description" content="背景项目中遇到了这样一个需求：显示出在某一时间范围内，按照推荐客户人数降序排列的用户列表。用户表与推荐客户表属于1:n的关系。针对此类需求，特作此总结。 情景复现数据库搭建假设数据库结构如下： 用户表： 12345CREATE TABLE users(    &#96;id&#96;    INT(11) PRIMARY KEY AUTO_INCREMENT,    &#96;name&#96;  CHAR(20) NOT NU">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/04/4f34092c34f9bb7055daf4209588ee46.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/04/fc6a65c0a4728385d26aa6d051fc4013.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/04/8d7c09fc7fa216eb484e241f2cfd7314.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/04/418b9130986d1a7ab095ebb324ab1205.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2018/04/4f34092c34f9bb7055daf4209588ee46.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2018/04/fc6a65c0a4728385d26aa6d051fc4013.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2018/04/8d7c09fc7fa216eb484e241f2cfd7314.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2018/04/418b9130986d1a7ab095ebb324ab1205.png">
 <meta property="article:published_time" content="2018-04-09T10:46:20.000Z">
-<meta property="article:modified_time" content="2022-05-06T10:55:20.165Z">
+<meta property="article:modified_time" content="2022-05-06T18:08:41.124Z">
 <meta property="article:author" content="Jeffrey Wang">
 <meta property="article:tag" content="php">
 <meta property="article:tag" content="Mysql">
 <meta property="article:tag" content="跨表">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/04/4f34092c34f9bb7055daf4209588ee46.png">
+<meta name="twitter:image" content="https://blog.wj2015.com/static/uploads/2018/04/4f34092c34f9bb7055daf4209588ee46.png">
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"
@@ -40,9 +40,9 @@
         href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"
     />
     
-    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651834533756">
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651834533756">
-    <link rel="stylesheet" href="/css/style.css?v=1651834533756">
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651860541828">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651860541828">
+    <link rel="stylesheet" href="/css/style.css?v=1651860541828">
      
     
 <meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
@@ -222,23 +222,23 @@
     <a><i class="nexmoefont icon-calendar-fill"></i>2018年04月09日</a>
 </div>
 
-      <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>项目中遇到了这样一个需求：显示出在某一时间范围内，按照推荐客户人数降序排列的用户列表。用户表与推荐客户表属于1:n的关系。针对此类需求，特作此总结。</p>
+      <html><head></head><body><h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>项目中遇到了这样一个需求：显示出在某一时间范围内，按照推荐客户人数降序排列的用户列表。用户表与推荐客户表属于1:n的关系。针对此类需求，特作此总结。</p>
 <h1 id="情景复现"><a href="#情景复现" class="headerlink" title="情景复现"></a>情景复现</h1><h2 id="数据库搭建"><a href="#数据库搭建" class="headerlink" title="数据库搭建"></a>数据库搭建</h2><p>假设数据库结构如下： 用户表：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE users(</span><br><span class="line">    `id`    INT(11) PRIMARY KEY AUTO_INCREMENT,</span><br><span class="line">    `name`  CHAR(20) NOT NULL COMMENT &#x27;用户名&#x27;,</span><br><span class="line">    `mobile`    CHAR(15) NOT NULL COMMENT &#x27;电话&#x27;</span><br><span class="line">)ENGINE=INNODB;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE users(</span><br><span class="line">    `id`    INT(11) PRIMARY KEY AUTO_INCREMENT,</span><br><span class="line">    `name`  CHAR(20) NOT NULL COMMENT '用户名',</span><br><span class="line">    `mobile`    CHAR(15) NOT NULL COMMENT '电话'</span><br><span class="line">)ENGINE=INNODB;</span><br></pre></td></tr></tbody></table></figure>
 
 <p>推荐客户表：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE customer(</span><br><span class="line">    `id`    INT(11) PRIMARY KEY AUTO_INCREMENT,</span><br><span class="line">    `uid`   INT(11)  NOT NULL COMMENT &#x27;推荐人ID&#x27;,</span><br><span class="line">    `name`  CHAR(20) NOT NULL COMMENT &#x27;客户姓名&#x27;,</span><br><span class="line">    `mobile` CHAR(15) NOT NULL COMMENT &#x27;客户电话&#x27;,</span><br><span class="line">    `recommend_at`  DATETIME NOT NULL COMMENT &#x27;推荐时间&#x27;</span><br><span class="line">)ENGINE=INNODB;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE customer(</span><br><span class="line">    `id`    INT(11) PRIMARY KEY AUTO_INCREMENT,</span><br><span class="line">    `uid`   INT(11)  NOT NULL COMMENT '推荐人ID',</span><br><span class="line">    `name`  CHAR(20) NOT NULL COMMENT '客户姓名',</span><br><span class="line">    `mobile` CHAR(15) NOT NULL COMMENT '客户电话',</span><br><span class="line">    `recommend_at`  DATETIME NOT NULL COMMENT '推荐时间'</span><br><span class="line">)ENGINE=INNODB;</span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="需要解决的问题"><a href="#需要解决的问题" class="headerlink" title="需要解决的问题"></a>需要解决的问题</h2><p>首先，排序需要分页显示，而分页需要有两个参数：数据总量、每页数据数量 每页数据量可以自行设置，但是数据总量又怎么得出呢？这里的数据总量，不能是所有的用户，因为不一定所有用户推荐过客户，这里需要统计推荐过客户的用户即可。</p>
-<h3 id="获取数据总量"><a href="#获取数据总量" class="headerlink" title="获取数据总量"></a>获取数据总量</h3><p><code>SELECT COUNT(DISTINCT(uid)) FROM customer WHERE recommend_at &gt; &#39;开始时间&#39; and recommend_at &lt; &#39;结束时间&#39;;</code></p>
+<h3 id="获取数据总量"><a href="#获取数据总量" class="headerlink" title="获取数据总量"></a>获取数据总量</h3><p><code>SELECT COUNT(DISTINCT(uid)) FROM customer WHERE recommend_at &gt; '开始时间' and recommend_at &lt; '结束时间';</code></p>
 <blockquote>
 <p>语句解析： 我们仅需要显示在规定时间内推荐过的用户，那么只需要在customer表里边，将uid去重后统计即可。</p>
 </blockquote>
-<p><code>DESCRIBE SELECT COUNT(DISTINCT(uid)) FROM customer WHERE recommend_at &gt; &#39;开始时间&#39; and recommend_at &lt; &#39;结束时间&#39;;</code> <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/04/4f34092c34f9bb7055daf4209588ee46.png"></p>
+<p><code>DESCRIBE SELECT COUNT(DISTINCT(uid)) FROM customer WHERE recommend_at &gt; '开始时间' and recommend_at &lt; '结束时间';</code> <img src="/static/uploads/2018/04/4f34092c34f9bb7055daf4209588ee46.png"></p>
 <blockquote>
-<p>语句优化：使用 DESCRIBE 语句可以发现，此方法会扫描全表（type&#x3D;ALL），效率不高，如果这个功能使用比较勤，或者对效率要求比较高的话，可以考虑给customer建立相关索引，如：INDEX(`uid, recommend_at`)</p>
+<p>语句优化：使用 DESCRIBE 语句可以发现，此方法会扫描全表（type=ALL），效率不高，如果这个功能使用比较勤，或者对效率要求比较高的话，可以考虑给customer建立相关索引，如：INDEX(`uid, recommend_at`)</p>
 </blockquote>
-<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/04/fc6a65c0a4728385d26aa6d051fc4013.png"></p>
+<p><img src="/static/uploads/2018/04/fc6a65c0a4728385d26aa6d051fc4013.png"></p>
 <h3 id="获取数据"><a href="#获取数据" class="headerlink" title="获取数据"></a>获取数据</h3><p>这次的重头戏就是获取数据了，经过一番研究，发现有两种解决方案。 假设users表和customer表的内容如下： users:</p>
 <p>id</p>
 <p>name</p>
@@ -285,7 +285,7 @@
 <p>3</p>
 <p>2</p>
 <p>1</p>
-<h4 id="方案1-JOIN-GROUP（不推荐）"><a href="#方案1-JOIN-GROUP（不推荐）" class="headerlink" title="方案1 JOIN+GROUP（不推荐）"></a>方案1 JOIN+GROUP（不推荐）</h4><p>使用 JOIN 将users表和customer表串联起来，使用where子句筛选出符合条件的信息，最后使用GROUP BY 按照uid进行分组，然后逆序排列即可。 <code>SELECT users.id, COUNT(*) AS num FROM users LEFT JOIN customer ON customer.uid = users.id AND recommend_at &gt; &#39;开始时间&#39; AND recommend_at &lt; &#39;结束时间&#39; WHERE customer.uid IS NOT NULL GROUP BY users.id ORDER BY num LIMIT 0, 10;</code></p>
+<h4 id="方案1-JOIN-GROUP（不推荐）"><a href="#方案1-JOIN-GROUP（不推荐）" class="headerlink" title="方案1 JOIN+GROUP（不推荐）"></a>方案1 JOIN+GROUP（不推荐）</h4><p>使用 JOIN 将users表和customer表串联起来，使用where子句筛选出符合条件的信息，最后使用GROUP BY 按照uid进行分组，然后逆序排列即可。 <code>SELECT users.id, COUNT(*) AS num FROM users LEFT JOIN customer ON customer.uid = users.id AND recommend_at &gt; '开始时间' AND recommend_at &lt; '结束时间' WHERE customer.uid IS NOT NULL GROUP BY users.id ORDER BY num LIMIT 0, 10;</code></p>
 <blockquote>
 <p>语句分析： 首先，使用 LEFT JOIN 将customer与users内联起来，直接内联结果如下表。用WHERE子句过滤掉没有推荐客户的users后，使用GROUP BY 进行分组，将统计数量 num 逆序排序，输出结果。</p>
 </blockquote>
@@ -338,18 +338,18 @@
 <p>NULL</p>
 <p>NULL</p>
 <blockquote>
-<p>语句优化：同理，如果不建立索引，那么使用 DESCRIBE 语句可以发现，type&#x3D;ALL，可给customer增加INDEX(`uid, recommend_at`)。又由于用户表的id是主键id，所以不用考虑索引的问题了。</p>
+<p>语句优化：同理，如果不建立索引，那么使用 DESCRIBE 语句可以发现，type=ALL，可给customer增加INDEX(`uid, recommend_at`)。又由于用户表的id是主键id，所以不用考虑索引的问题了。</p>
 </blockquote>
-<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/04/8d7c09fc7fa216eb484e241f2cfd7314.png"></p>
+<p><img src="/static/uploads/2018/04/8d7c09fc7fa216eb484e241f2cfd7314.png"></p>
 <h5 id="不推荐理由"><a href="#不推荐理由" class="headerlink" title="不推荐理由"></a>不推荐理由</h5><p>通过DESCRIBE和JOIN的原理就可以看出来，这种方式是要跨两个表查询的，即先查询 users表中符合条件的数据，再按照关联查询出 customer中的数据，效率较低，最后再对统计数据中的 num建立临时表，倒序输出。</p>
-<h4 id="方案二-GROUP-BY（推荐）"><a href="#方案二-GROUP-BY（推荐）" class="headerlink" title="方案二 GROUP BY（推荐）"></a>方案二 GROUP BY（推荐）</h4><p>直接对customer先使用where筛选出符合条件的数据，再对其进行GROUP分组即可。至于我为什么没有一开始就想到这个方法，只是因为惯性思维，认为统计用户信息需要从用户表着手罢了。 <code>SELECT uid,COUNT(*) AS num FROM customer WHERE recommend_at &gt; &#39;开始时间&#39; AND recommend_at &lt; &#39;结束时间&#39; GROUP BY uid ORDER BY num LIMIT 0, 10;</code></p>
+<h4 id="方案二-GROUP-BY（推荐）"><a href="#方案二-GROUP-BY（推荐）" class="headerlink" title="方案二 GROUP BY（推荐）"></a>方案二 GROUP BY（推荐）</h4><p>直接对customer先使用where筛选出符合条件的数据，再对其进行GROUP分组即可。至于我为什么没有一开始就想到这个方法，只是因为惯性思维，认为统计用户信息需要从用户表着手罢了。 <code>SELECT uid,COUNT(*) AS num FROM customer WHERE recommend_at &gt; '开始时间' AND recommend_at &lt; '结束时间' GROUP BY uid ORDER BY num LIMIT 0, 10;</code></p>
 <blockquote>
 <p>语句分析：查询customer表中符合时间段的数据，查询完毕后进行GROUP BY uid，就可以把uid对应时间的数据统计出来了。 语句优化：普通查询语句，仅需加INDEX(`recommend_at`, `uid`);即可。</p>
 </blockquote>
-<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/04/418b9130986d1a7ab095ebb324ab1205.png"></p>
+<p><img src="/static/uploads/2018/04/418b9130986d1a7ab095ebb324ab1205.png"></p>
 <h4 id="两种方案差别"><a href="#两种方案差别" class="headerlink" title="两种方案差别"></a>两种方案差别</h4><p>方案一，由于是基于users表，所以查询出结果时，可以直接附带上用户表中的树形。 方案二，只针对customer表进行统计，速度会比较快，但是只能获取users表和customer表的关联属性uid，如若获取用户其他信息，则只能再次查询数据库。</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>主表(users),从表(customer)，跨表统计需要解决两个问题，一个是数据总量，一个是数据。 数据总量可以通过从表使用DISTINCT去重+COUNT(*)得出。 数据获取有两种方式，第一种方式：主表+JOIN+从表+GROUP，这样可以在获取数据的时候顺便获取主表的信息，效率相比较低；第二种方式：从表+GROUP，这种方式可以获取到从表与主表之间的关联ID和统计数据，效率较高。</p>
-
+</body></html>
   </article>
 
   
@@ -438,10 +438,10 @@
 
  
 
-<script async src="/js/app.js?v=1651834533759"></script>
+<script async src="/js/app.js?v=1651860541831"></script>
 
 
-	<script async src="/js/search.js?v=1651834533759"></script>
+	<script async src="/js/search.js?v=1651860541831"></script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>

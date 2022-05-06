@@ -12,23 +12,23 @@
     
 
     <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
-    <meta name="description" content="背景最近五一小长假，统一处理下之前开源的 Layui导出插件 lay-excel 反馈的部分问题，这个插件核心使用的是经过改造的 protobi&#x2F;js-xlsx，支持设置样式但是不支持诸如 导出文件压缩、边距设置等功能，还存在很多BUG，效率也不高。 为解决这些问题，博主开始着手改造最新 JS-XLSX 让其支持样式设置，断点调试再加上代码对比，最后改造成功。 改造完毕的 xlsx.js">
+    <meta name="description" content="背景最近五一小长假，统一处理下之前开源的 Layui导出插件 lay-excel 反馈的部分问题，这个插件核心使用的是经过改造的 protobi&#x2F;js-xlsx，支持设置样式但是不支持诸如 导出文件压缩、边距设置等功能，还存在很多BUG，效率也不高。 为解决这些问题，博主开始着手改造最新 JS-XLSX 让其支持样式设置，断点调试再加上代码对比，最后改造成功。 改造完毕的 xlsx.js 在此，可">
 <meta property="og:type" content="article">
 <meta property="og:title" content="令最新JS-XLSX支持样式的改造方法">
 <meta property="og:url" content="https://blog.wj2015.com/2019/05/01/js-xlsx%E6%94%AF%E6%8C%81%E6%A0%B7%E5%BC%8F/">
 <meta property="og:site_name" content="九层台">
-<meta property="og:description" content="背景最近五一小长假，统一处理下之前开源的 Layui导出插件 lay-excel 反馈的部分问题，这个插件核心使用的是经过改造的 protobi&#x2F;js-xlsx，支持设置样式但是不支持诸如 导出文件压缩、边距设置等功能，还存在很多BUG，效率也不高。 为解决这些问题，博主开始着手改造最新 JS-XLSX 让其支持样式设置，断点调试再加上代码对比，最后改造成功。 改造完毕的 xlsx.js">
+<meta property="og:description" content="背景最近五一小长假，统一处理下之前开源的 Layui导出插件 lay-excel 反馈的部分问题，这个插件核心使用的是经过改造的 protobi&#x2F;js-xlsx，支持设置样式但是不支持诸如 导出文件压缩、边距设置等功能，还存在很多BUG，效率也不高。 为解决这些问题，博主开始着手改造最新 JS-XLSX 让其支持样式设置，断点调试再加上代码对比，最后改造成功。 改造完毕的 xlsx.js 在此，可">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2019/05/59cb58df4b8239af744e7dedb4c202dd.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2019/05/0d060dd000f14d4248d9a0b690d158dc.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2019/05/ec1dbef1c7bb6294902479f9476f6dad.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2019/05/53ca8f3c054d618a5c642f00b64d2a70.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2019/05/9d9e1b38659099dbf158141ef8946282.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2019/05/a236429e076ed4b49cdaf83b0a9917eb.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2019/05/19a56922a11ed2b160636e0a739abb6e.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2019/05/31876adf7ddaf845e9a6be32dcb9cd4f.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2019/05/59cb58df4b8239af744e7dedb4c202dd.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2019/05/0d060dd000f14d4248d9a0b690d158dc.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2019/05/ec1dbef1c7bb6294902479f9476f6dad.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2019/05/53ca8f3c054d618a5c642f00b64d2a70.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2019/05/9d9e1b38659099dbf158141ef8946282.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2019/05/a236429e076ed4b49cdaf83b0a9917eb.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2019/05/19a56922a11ed2b160636e0a739abb6e.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2019/05/31876adf7ddaf845e9a6be32dcb9cd4f.png">
 <meta property="article:published_time" content="2019-05-01T07:19:24.000Z">
-<meta property="article:modified_time" content="2022-05-06T10:55:20.161Z">
+<meta property="article:modified_time" content="2022-05-06T18:08:41.120Z">
 <meta property="article:author" content="Jeffrey Wang">
 <meta property="article:tag" content="excel">
 <meta property="article:tag" content="js-xlsx">
@@ -36,7 +36,7 @@
 <meta property="article:tag" content="导出样式">
 <meta property="article:tag" content="改造">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2019/05/59cb58df4b8239af744e7dedb4c202dd.png">
+<meta name="twitter:image" content="https://blog.wj2015.com/static/uploads/2019/05/59cb58df4b8239af744e7dedb4c202dd.png">
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"
@@ -46,9 +46,9 @@
         href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"
     />
     
-    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651834533706">
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651834533706">
-    <link rel="stylesheet" href="/css/style.css?v=1651834533706">
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651860541768">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651860541768">
+    <link rel="stylesheet" href="/css/style.css?v=1651860541768">
      
     
 <meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
@@ -228,54 +228,54 @@
     <a><i class="nexmoefont icon-calendar-fill"></i>2019年05月01日</a>
 </div>
 
-      <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>最近五一小长假，统一处理下之前开源的 <a target="_blank" rel="noopener" href="https://github.com/wangerzi/layui-excel">Layui导出插件 lay-excel</a> 反馈的部分问题，这个插件核心使用的是经过改造的 protobi&#x2F;js-xlsx，支持设置样式但是不支持诸如 导出文件压缩、边距设置等功能，还存在很多BUG，效率也不高。 为解决这些问题，博主开始着手改造最新 JS-XLSX 让其支持样式设置，断点调试再加上代码对比，最后改造成功。 改造完毕的 xlsx.js 在此，可自行引入： <a target="_blank" rel="noopener" href="https://github.com/wangerzi/layui-excel/blob/master/src/xlsx.js">https://github.com/wangerzi/layui-excel/blob/master/src/xlsx.js</a> 记得配合 jszip.js 使用，否则报错： <a target="_blank" rel="noopener" href="https://github.com/wangerzi/layui-excel/blob/master/src/jszip.js">https://github.com/wangerzi/layui-excel/blob/master/src/jszip.js</a></p>
+      <html><head></head><body><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>最近五一小长假，统一处理下之前开源的 <a target="_blank" rel="noopener" href="https://github.com/wangerzi/layui-excel">Layui导出插件 lay-excel</a> 反馈的部分问题，这个插件核心使用的是经过改造的 protobi/js-xlsx，支持设置样式但是不支持诸如 导出文件压缩、边距设置等功能，还存在很多BUG，效率也不高。 为解决这些问题，博主开始着手改造最新 JS-XLSX 让其支持样式设置，断点调试再加上代码对比，最后改造成功。 改造完毕的 xlsx.js 在此，可自行引入： <a target="_blank" rel="noopener" href="https://github.com/wangerzi/layui-excel/blob/master/src/xlsx.js">https://github.com/wangerzi/layui-excel/blob/master/src/xlsx.js</a> 记得配合 jszip.js 使用，否则报错： <a target="_blank" rel="noopener" href="https://github.com/wangerzi/layui-excel/blob/master/src/jszip.js">https://github.com/wangerzi/layui-excel/blob/master/src/jszip.js</a></p>
 <h2 id="开始前的准备"><a href="#开始前的准备" class="headerlink" title="开始前的准备"></a>开始前的准备</h2><blockquote>
-<p>SheetJs&#x2F;js-xlsx是目前依旧维护的最新版本，protobi&#x2F;js-xlsx 是大约两年前的支持设置样式的版本，很多比较实用的功能都没有。</p>
+<p>SheetJs/js-xlsx是目前依旧维护的最新版本，protobi/js-xlsx 是大约两年前的支持设置样式的版本，很多比较实用的功能都没有。</p>
 </blockquote>
 <p>开源项目名称</p>
 <p>地址</p>
 <p>用于</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/SheetJS/js-xlsx">SheetJS &#x2F; js-xlsx</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/SheetJS/js-xlsx">SheetJS / js-xlsx</a></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/SheetJS/js-xlsx">https://github.com/SheetJS/js-xlsx</a></p>
 <p>导出的基础逻辑</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/protobi/js-xlsx">protobi &#x2F; js-xlsx</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/protobi/js-xlsx">protobi / js-xlsx</a></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/protobi/js-xlsx">https://github.com/protobi/js-xlsx</a></p>
 <p>可以设置样式，用于补全样式功能</p>
 <h2 id="改造思路"><a href="#改造思路" class="headerlink" title="改造思路"></a>改造思路</h2><p>博主做了个插件预览放在了服务器上，如果想了解具体的改造原理，可以跟着思路在 <a target="_blank" rel="noopener" href="http://excel.wj2015.com/">http://excel.wj2015.com</a> 上自行调试一下</p>
 <h3 id="断点调试，找有关样式设置的代码"><a href="#断点调试，找有关样式设置的代码" class="headerlink" title="断点调试，找有关样式设置的代码"></a>断点调试，找有关样式设置的代码</h3><ul>
 <li>点击批量设置样式按钮，在调用行处打断点</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> wbout = <span class="variable constant_">XLSX</span>.<span class="title function_">write</span>(wb, &#123;<span class="attr">bookType</span>: type, <span class="attr">type</span>: <span class="string">&#x27;binary&#x27;</span>, <span class="attr">cellStyles</span>: <span class="literal">true</span>&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> wbout = <span class="variable constant_">XLSX</span>.<span class="title function_">write</span>(wb, {<span class="attr">bookType</span>: type, <span class="attr">type</span>: <span class="string">'binary'</span>, <span class="attr">cellStyles</span>: <span class="literal">true</span>});</span><br></pre></td></tr></tbody></table></figure>
 
-<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2019/05/59cb58df4b8239af744e7dedb4c202dd.png"></p>
+<p><img src="/static/uploads/2019/05/59cb58df4b8239af744e7dedb4c202dd.png"></p>
 <ul>
 <li>发现xlsx导出进入了此函数</li>
 </ul>
-<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2019/05/0d060dd000f14d4248d9a0b690d158dc.png"></p>
+<p><img src="/static/uploads/2019/05/0d060dd000f14d4248d9a0b690d158dc.png"></p>
 <ul>
 <li>进一步调试，发现了差异</li>
 </ul>
-<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2019/05/ec1dbef1c7bb6294902479f9476f6dad.png"></p>
+<p><img src="/static/uploads/2019/05/ec1dbef1c7bb6294902479f9476f6dad.png"></p>
 <h4 id="根据支持样式的版本，补全缺失代码"><a href="#根据支持样式的版本，补全缺失代码" class="headerlink" title="根据支持样式的版本，补全缺失代码"></a>根据支持样式的版本，补全缺失代码</h4><ul>
 <li>补全样式代码</li>
 </ul>
 <blockquote>
 <p>进入最新版<a target="_blank" rel="noopener" href="https://github.com/SheetJS/js-xlsx/blob/master/dist/xlsx.js">https://github.com/SheetJS/js-xlsx/blob/master/dist/xlsx.js</a>，搜索 <code>StyleBuilder</code> 发现没有这个类，但是在 <a target="_blank" rel="noopener" href="https://github.com/protobi/js-xlsx/blob/master/dist/xlsx.js">https://github.com/protobi/js-xlsx/blob/master/dist/xlsx.js</a> 发现了这个类，与其依赖一起复制过来</p>
 </blockquote>
-<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2019/05/53ca8f3c054d618a5c642f00b64d2a70.png"></p>
+<p><img src="/static/uploads/2019/05/53ca8f3c054d618a5c642f00b64d2a70.png"></p>
 <ul>
 <li>复制到目标文件暴露全局变量之前</li>
 </ul>
-<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2019/05/9d9e1b38659099dbf158141ef8946282.png"></p>
+<p><img src="/static/uploads/2019/05/9d9e1b38659099dbf158141ef8946282.png"></p>
 <ul>
 <li>查找 <code>style_builder</code> 这个变量在 <code>protobi/js-xlsx</code> 中有哪些地方使用到了，依次复制到 <code>SheetJS/protobi</code> 中</li>
 </ul>
-<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2019/05/a236429e076ed4b49cdaf83b0a9917eb.png"> <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2019/05/19a56922a11ed2b160636e0a739abb6e.png"> PS:几年过去了，这里的逻辑基本没变，所以放心复制好了</p>
+<p><img src="/static/uploads/2019/05/a236429e076ed4b49cdaf83b0a9917eb.png"> <img src="/static/uploads/2019/05/19a56922a11ed2b160636e0a739abb6e.png"> PS:几年过去了，这里的逻辑基本没变，所以放心复制好了</p>
 <ul>
 <li>最后，测试一下导出，发现可以设置样式了</li>
 </ul>
-<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2019/05/31876adf7ddaf845e9a6be32dcb9cd4f.png"></p>
-
+<p><img src="/static/uploads/2019/05/31876adf7ddaf845e9a6be32dcb9cd4f.png"></p>
+</body></html>
   </article>
 
   
@@ -364,10 +364,10 @@
 
  
 
-<script async src="/js/app.js?v=1651834533709"></script>
+<script async src="/js/app.js?v=1651860541771"></script>
 
 
-	<script async src="/js/search.js?v=1651834533709"></script>
+	<script async src="/js/search.js?v=1651860541771"></script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>

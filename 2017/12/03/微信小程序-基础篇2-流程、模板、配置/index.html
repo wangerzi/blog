@@ -19,17 +19,17 @@
 <meta property="og:site_name" content="九层台">
 <meta property="og:description" content="写在前面这篇博客的内容比较浅显，主要是讲小程序的文件结构和执行流程，基础比较好的可以稍微看一遍了解一下就好，下一篇博文才开始讲述wxml语法的相关内容。 小程序组织结构以上篇博文中创建的微信官方DEMO中，我们可以清晰的看到一个简单小程序的目录结构。  其中一些文件在每个小程序中都会出现，并扮演着相似的角色，比如： 小程序全局配置文件 app.json这个配置文件是对小程序整体做一个配置，包括所有">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2017/12/%E5%9F%BA%E7%A1%80%E7%BB%93%E6%9E%84%E5%9B%BE.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2017/12/config.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2017/12/tabbar.jpg">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2017/12/%E5%8A%A0%E8%BD%BD%E9%A1%B5%E9%9D%A2%E6%96%87%E4%BB%B6.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2017/12/%E5%9F%BA%E7%A1%80%E7%BB%93%E6%9E%84%E5%9B%BE.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2017/12/config.jpg">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2017/12/tabbar.jpg">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2017/12/%E5%8A%A0%E8%BD%BD%E9%A1%B5%E9%9D%A2%E6%96%87%E4%BB%B6.png">
 <meta property="article:published_time" content="2017-12-03T13:13:10.000Z">
-<meta property="article:modified_time" content="2022-05-06T10:55:20.165Z">
+<meta property="article:modified_time" content="2022-05-06T18:08:41.124Z">
 <meta property="article:author" content="Jeffrey Wang">
 <meta property="article:tag" content="小程序">
 <meta property="article:tag" content="微信开发">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2017/12/%E5%9F%BA%E7%A1%80%E7%BB%93%E6%9E%84%E5%9B%BE.png">
+<meta name="twitter:image" content="https://blog.wj2015.com/static/uploads/2017/12/%E5%9F%BA%E7%A1%80%E7%BB%93%E6%9E%84%E5%9B%BE.png">
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"
@@ -39,9 +39,9 @@
         href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"
     />
     
-    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651834533797">
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651834533797">
-    <link rel="stylesheet" href="/css/style.css?v=1651834533797">
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651860541879">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651860541879">
+    <link rel="stylesheet" href="/css/style.css?v=1651860541879">
      
     
 <meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
@@ -221,20 +221,20 @@
     <a><i class="nexmoefont icon-calendar-fill"></i>2017年12月03日</a>
 </div>
 
-      <h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>这篇博客的内容比较浅显，主要是讲小程序的文件结构和执行流程，基础比较好的可以稍微看一遍了解一下就好，下一篇博文才开始讲述wxml语法的相关内容。</p>
-<h1 id="小程序组织结构"><a href="#小程序组织结构" class="headerlink" title="小程序组织结构"></a>小程序组织结构</h1><p>以上篇博文中创建的微信官方DEMO中，我们可以清晰的看到一个简单小程序的目录结构。 <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2017/12/%E5%9F%BA%E7%A1%80%E7%BB%93%E6%9E%84%E5%9B%BE.png"> 其中一些文件在每个小程序中都会出现，并扮演着相似的角色，比如：</p>
+      <html><head></head><body><h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>这篇博客的内容比较浅显，主要是讲小程序的文件结构和执行流程，基础比较好的可以稍微看一遍了解一下就好，下一篇博文才开始讲述wxml语法的相关内容。</p>
+<h1 id="小程序组织结构"><a href="#小程序组织结构" class="headerlink" title="小程序组织结构"></a>小程序组织结构</h1><p>以上篇博文中创建的微信官方DEMO中，我们可以清晰的看到一个简单小程序的目录结构。 <img src="/static/uploads/2017/12/%E5%9F%BA%E7%A1%80%E7%BB%93%E6%9E%84%E5%9B%BE.png"> 其中一些文件在每个小程序中都会出现，并扮演着相似的角色，比如：</p>
 <h3 id="小程序全局配置文件-app-json"><a href="#小程序全局配置文件-app-json" class="headerlink" title="小程序全局配置文件 app.json"></a>小程序全局配置文件 <em>app.json</em></h3><p>这个配置文件是对小程序整体做一个配置，包括所有页面路径的定义，界面，底部TAB、网络超时时间等。 官方配置样例</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;pages&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;pages/index/index&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;pages/logs/index&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;window&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;navigationBarTitleText&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Demo&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;tabBar&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;list&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;pagePath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;pages/index/index&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;text&quot;</span><span class="punctuation">:</span> <span class="string">&quot;首页&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;pagePath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;pages/logs/logs&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;text&quot;</span><span class="punctuation">:</span> <span class="string">&quot;日志&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;networkTimeout&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;request&quot;</span><span class="punctuation">:</span> <span class="number">10000</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;downloadFile&quot;</span><span class="punctuation">:</span> <span class="number">10000</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;debug&quot;</span><span class="punctuation">:</span> <span class="keyword">true</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">  <span class="attr">"pages"</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">"pages/index/index"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">"pages/logs/index"</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"window"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"navigationBarTitleText"</span><span class="punctuation">:</span> <span class="string">"Demo"</span></span><br><span class="line">  <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"tabBar"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"list"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">{</span></span><br><span class="line">      <span class="attr">"pagePath"</span><span class="punctuation">:</span> <span class="string">"pages/index/index"</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">"text"</span><span class="punctuation">:</span> <span class="string">"首页"</span></span><br><span class="line">    <span class="punctuation">}</span><span class="punctuation">,</span> <span class="punctuation">{</span></span><br><span class="line">      <span class="attr">"pagePath"</span><span class="punctuation">:</span> <span class="string">"pages/logs/logs"</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">"text"</span><span class="punctuation">:</span> <span class="string">"日志"</span></span><br><span class="line">    <span class="punctuation">}</span><span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"networkTimeout"</span><span class="punctuation">:</span> <span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"request"</span><span class="punctuation">:</span> <span class="number">10000</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"downloadFile"</span><span class="punctuation">:</span> <span class="number">10000</span></span><br><span class="line">  <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">"debug"</span><span class="punctuation">:</span> <span class="keyword">true</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
 
-<p>比较重要的配置如下： - 页面配置 参数：pages，类型：数组 数组内每一行都是【路径+文件名】代表一个页面，路径位置是相对app.json而言的相对路径，配置时省略.wxml 注意：第一行为入口页面，小程序首先加载第一行的页面。 - 界面配置 参数：window，类型：对象 作用：用于设置小程序的状态栏、导航条、标题、窗口背景色。 比较重要的几个配置项： navigationBarTitleText: ‘默认的标题名称’, navigationBarBackgroundColor: ‘#000’ 导航栏背景色 backgroundColor: ‘#fff’ 窗体背景色 <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2017/12/config.jpg"> - 底部TAB配置 参数：tabBar，类型：对象 作用：配置底部TAB的字体颜色，图片，边框等信息 比较重要的几个配置 color:’#000’ 说明：正常显示的时候，字体颜色 selectedColor: ‘#f00’ 说明：激活状态时字体颜色 position: ‘top’ 说明：top&#x2F;bottom表示TAB在顶部或底部 list:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&#123;<span class="attr">pagePath</span>: <span class="string">&#x27;/pages/index&#x27;</span>, <span class="attr">iconPath</span>: <span class="string">&#x27;/img/xx.jpg&#x27;</span>, <span class="attr">selectedIconPath</span>: <span class="string">&#x27;/img/xx_2.jpg&#x27;</span>, <span class="attr">text</span>: <span class="string">&#x27;首页&#x27;</span> &#125;,... ] </span><br></pre></td></tr></table></figure>
+<p>比较重要的配置如下： - 页面配置 参数：pages，类型：数组 数组内每一行都是【路径+文件名】代表一个页面，路径位置是相对app.json而言的相对路径，配置时省略.wxml 注意：第一行为入口页面，小程序首先加载第一行的页面。 - 界面配置 参数：window，类型：对象 作用：用于设置小程序的状态栏、导航条、标题、窗口背景色。 比较重要的几个配置项： navigationBarTitleText: ‘默认的标题名称’, navigationBarBackgroundColor: ‘#000’ 导航栏背景色 backgroundColor: ‘#fff’ 窗体背景色 <img src="/static/uploads/2017/12/config.jpg"> - 底部TAB配置 参数：tabBar，类型：对象 作用：配置底部TAB的字体颜色，图片，边框等信息 比较重要的几个配置 color:’#000’ 说明：正常显示的时候，字体颜色 selectedColor: ‘#f00’ 说明：激活状态时字体颜色 position: ‘top’ 说明：top/bottom表示TAB在顶部或底部 list:</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[{<span class="attr">pagePath</span>: <span class="string">'/pages/index'</span>, <span class="attr">iconPath</span>: <span class="string">'/img/xx.jpg'</span>, <span class="attr">selectedIconPath</span>: <span class="string">'/img/xx_2.jpg'</span>, <span class="attr">text</span>: <span class="string">'首页'</span> },... ] </span><br></pre></td></tr></tbody></table></figure>
 
-<p>说明：pagePath表示pages里的路径，iconPath表示正常情况下的图标，selectedIconPath表示激活状态下的图标,text表示显示的文字 <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2017/12/tabbar.jpg"></p>
+<p>说明：pagePath表示pages里的路径，iconPath表示正常情况下的图标，selectedIconPath表示激活状态下的图标,text表示显示的文字 <img src="/static/uploads/2017/12/tabbar.jpg"></p>
 <ul>
 <li>完全参数说明：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/debug/wxadoc/dev/framework/config.html">官方说明</a> 注：每个页面都有以【页面名字】为名的局部配置文件*.json，但里边的配置项只能配置<strong>app.json</strong>中window配置里边的内容。</li>
 </ul>
 <h2 id="程序主逻辑-app-js"><a href="#程序主逻辑-app-js" class="headerlink" title="程序主逻辑_app.js_"></a>程序主逻辑_app.js_</h2><p>这个.js文件主要是对小程序做一个全局的管理，主要任务就是实例化了一个App()对象，任何一个小程序都有且只能有一个APP()对象。 官方配置：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">App</span>(&#123;</span><br><span class="line">  <span class="attr">onLaunch</span>: <span class="keyword">function</span>(<span class="params">options</span>) &#123;</span><br><span class="line">    <span class="comment">// Do something initial when launch.</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">onShow</span>: <span class="keyword">function</span>(<span class="params">options</span>) &#123;</span><br><span class="line">      <span class="comment">// Do something when show.</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">onHide</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="comment">// Do something when hide.</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">onError</span>: <span class="keyword">function</span>(<span class="params">msg</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(msg)</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">globalData</span>: <span class="string">&#x27;I am global data&#x27;</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">App</span>({</span><br><span class="line">  <span class="attr">onLaunch</span>: <span class="keyword">function</span>(<span class="params">options</span>) {</span><br><span class="line">    <span class="comment">// Do something initial when launch.</span></span><br><span class="line">  },</span><br><span class="line">  <span class="attr">onShow</span>: <span class="keyword">function</span>(<span class="params">options</span>) {</span><br><span class="line">      <span class="comment">// Do something when show.</span></span><br><span class="line">  },</span><br><span class="line">  <span class="attr">onHide</span>: <span class="keyword">function</span>(<span class="params"></span>) {</span><br><span class="line">      <span class="comment">// Do something when hide.</span></span><br><span class="line">  },</span><br><span class="line">  <span class="attr">onError</span>: <span class="keyword">function</span>(<span class="params">msg</span>) {</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(msg)</span><br><span class="line">  },</span><br><span class="line">  <span class="attr">globalData</span>: <span class="string">'I am global data'</span></span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
 
 <p>参数</p>
 <p>类型</p>
@@ -255,28 +255,28 @@
 <p>function</p>
 <p>通常作为全局数据实用</p>
 <h2 id="程序公共样式-app-wxss"><a href="#程序公共样式-app-wxss" class="headerlink" title="程序公共样式_app.wxss_"></a>程序公共样式_app.wxss_</h2><p>.wxss文件相当于网页开发中的CSS样式文件，拥有CSS的大部分特性。 app.wxss文件是全局自动加载的样式文件，所有页面都会生效。 小程序还对CSS做了扩展，可以通过import 来引入其他样式文件。</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@import</span> <span class="string">&quot;./test.wxss&quot;</span>;</span><br><span class="line"><span class="selector-tag">p</span>&#123;text-alian:center;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@import</span> <span class="string">"./test.wxss"</span>;</span><br><span class="line"><span class="selector-tag">p</span>{text-alian:center;}</span><br></pre></td></tr></tbody></table></figure>
 
 <p>特殊优化：尺寸单位：rpx(responsive pixel)，不同手机屏幕会显示出不同的效果。</p>
 <p>设备</p>
 <p>rpx换算px</p>
 <p>px换算rpx</p>
 <p>iPhone5</p>
-<p>1rpx &#x3D; 0.42px</p>
-<p>1px &#x3D; 2.34rpx</p>
+<p>1rpx = 0.42px</p>
+<p>1px = 2.34rpx</p>
 <p>iPhone6</p>
-<p>1rpx &#x3D; 0.5px</p>
-<p>1px &#x3D; 2rpx</p>
+<p>1rpx = 0.5px</p>
+<p>1px = 2rpx</p>
 <p>iPhone5 Plus</p>
-<p>1rpx &#x3D; 0.552px</p>
-<p>1px &#x3D; 1.81rpx</p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>在&#x2F;目录下的app.json,app.js,app.wxss均为小程序初始化时用到的文件，分别代表全局配置文件，App()对象实例化文件，全局样式文件。 App()对象每个小程序只能有一个，实例化时可以指定回掉函数，小程序在对应状态下会自动执行。 wxss样式与CSS有区别，主要是：import “common.wxss”引入其他wxss文件，还有rpx尺寸单位，不同手机屏幕将显示出不同的效果。</p>
+<p>1rpx = 0.552px</p>
+<p>1px = 1.81rpx</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>在/目录下的app.json,app.js,app.wxss均为小程序初始化时用到的文件，分别代表全局配置文件，App()对象实例化文件，全局样式文件。 App()对象每个小程序只能有一个，实例化时可以指定回掉函数，小程序在对应状态下会自动执行。 wxss样式与CSS有区别，主要是：import “common.wxss”引入其他wxss文件，还有rpx尺寸单位，不同手机屏幕将显示出不同的效果。</p>
 <h1 id="执行流程"><a href="#执行流程" class="headerlink" title="执行流程"></a>执行流程</h1><p>小程序的执行与普通WEB-APP执行方式不一样，小程序执行时，可以理解为如下三个步骤：</p>
 <h2 id="下载软件包，载入配置文件"><a href="#下载软件包，载入配置文件" class="headerlink" title="下载软件包，载入配置文件"></a>下载软件包，载入配置文件</h2><p>小程序执行时会将软件包的所有内容下载到用户手机中，这也注定了软件包的体积不能过大，我记得微信上的限制是2M，所以像视频资源，大的图片资源最好就不要放进去了。 下载完成后，首先加载app.json配置，读取window,tab等界面配置，以及得到上文所讲的pages参数，为加载第一个页面做准备。</p>
 <h2 id="加载app-js，实例化APP"><a href="#加载app-js，实例化APP" class="headerlink" title="加载app.js，实例化APP()"></a>加载app.js，实例化APP()</h2><p>实例化每个小程序都会有的唯一一个App()对象，执行onLaunch()回调进行准备工作，回调执行完毕后开始渲染第一个页面。</p>
-<h2 id="渲染页面"><a href="#渲染页面" class="headerlink" title="渲染页面"></a>渲染页面</h2><p>假设，我们的<strong>app.json</strong>中的<strong>pages</strong>配置第一条是_&#x2F;pages&#x2F;index&#x2F;index_，那么小程序将加载页面文件_&#x2F;pages&#x2F;index&#x2F;index.wxml_，然后加载和这个页面相关的_&#x2F;pages&#x2F;index&#x2F;index.json_、_&#x2F;pages&#x2F;index&#x2F;index.wxss_，_&#x2F;pages&#x2F;index&#x2F;index.js_，分别代表页面配置文件，页面样式文件，页面js文件。 <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2017/12/%E5%8A%A0%E8%BD%BD%E9%A1%B5%E9%9D%A2%E6%96%87%E4%BB%B6.png"> 注：wxml语法和index.js中的Page()对象的使用将会在下一篇博客中讲解。</p>
+<h2 id="渲染页面"><a href="#渲染页面" class="headerlink" title="渲染页面"></a>渲染页面</h2><p>假设，我们的<strong>app.json</strong>中的<strong>pages</strong>配置第一条是_/pages/index/index_，那么小程序将加载页面文件_/pages/index/index.wxml_，然后加载和这个页面相关的_/pages/index/index.json_、_/pages/index/index.wxss_，_/pages/index/index.js_，分别代表页面配置文件，页面样式文件，页面js文件。 <img src="/static/uploads/2017/12/%E5%8A%A0%E8%BD%BD%E9%A1%B5%E9%9D%A2%E6%96%87%E4%BB%B6.png"> 注：wxml语法和index.js中的Page()对象的使用将会在下一篇博客中讲解。</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本篇博客简单介绍了各个文件的作用，以及简述了小程序的执行流程和页面渲染流程，由于wxml语法和Page()对象这部分的知识会比较多，所以拆分到下一篇博客中讲述。</p>
-
+</body></html>
   </article>
 
   
@@ -365,10 +365,10 @@
 
  
 
-<script async src="/js/app.js?v=1651834533799"></script>
+<script async src="/js/app.js?v=1651860541884"></script>
 
 
-	<script async src="/js/search.js?v=1651834533799"></script>
+	<script async src="/js/search.js?v=1651860541884"></script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>

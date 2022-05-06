@@ -20,7 +20,7 @@
 <meta property="og:description" content="背景在一个微信项目中，由于某些元素是动态添加的，所以使用了jquery的on(‘click’, ‘xx’, function(){});来进行动态绑定点击事件，但是在IOS下，此法失效，经过一番资料查找，终于找到了解决方案。 问题复现html代码： 1234567891011121314151617181920212223&lt;html&gt;    &lt;head&gt;        &amp;l">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-04-08T13:59:01.000Z">
-<meta property="article:modified_time" content="2022-05-06T10:55:20.161Z">
+<meta property="article:modified_time" content="2022-05-06T18:08:41.120Z">
 <meta property="article:author" content="Jeffrey Wang">
 <meta property="article:tag" content="ios">
 <meta property="article:tag" content="动态绑定">
@@ -35,9 +35,9 @@
         href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"
     />
     
-    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651834533759">
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651834533759">
-    <link rel="stylesheet" href="/css/style.css?v=1651834533759">
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651860541832">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651860541832">
+    <link rel="stylesheet" href="/css/style.css?v=1651860541832">
      
     
 <meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
@@ -217,15 +217,15 @@
     <a><i class="nexmoefont icon-calendar-fill"></i>2018年04月08日</a>
 </div>
 
-      <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在一个微信项目中，由于某些元素是动态添加的，所以使用了jquery的on(‘click’, ‘xx’, function(){});来进行动态绑定点击事件，但是在IOS下，此法失效，经过一番资料查找，终于找到了解决方案。</p>
+      <html><head></head><body><h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在一个微信项目中，由于某些元素是动态添加的，所以使用了jquery的on(‘click’, ‘xx’, function(){});来进行动态绑定点击事件，但是在IOS下，此法失效，经过一番资料查找，终于找到了解决方案。</p>
 <h1 id="问题复现"><a href="#问题复现" class="headerlink" title="问题复现"></a>问题复现</h1><p>html代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">    &lt;head&gt;</span><br><span class="line">        &lt;title&gt;测试&lt;/title&gt;</span><br><span class="line">    &lt;/head&gt;</span><br><span class="line">    &lt;body&gt;</span><br><span class="line">        &lt;ul&gt;</span><br><span class="line">            &lt;li class=&quot;elem&quot;&gt;操作1&lt;/li&gt;</span><br><span class="line">            &lt;li class=&quot;elem&quot;&gt;操作1&lt;/li&gt;</span><br><span class="line">            &lt;li class=&quot;elem&quot;&gt;操作1&lt;/li&gt;</span><br><span class="line">            &lt;li class=&quot;elem&quot;&gt;操作1&lt;/li&gt;</span><br><span class="line">            &lt;li class=&quot;elem&quot;&gt;操作1&lt;/li&gt;</span><br><span class="line">            &lt;li class=&quot;elem&quot;&gt;操作1&lt;/li&gt;</span><br><span class="line">        &lt;/ul&gt;</span><br><span class="line">    &lt;/body&gt;</span><br><span class="line">    &lt;!--引入jquery--&gt;</span><br><span class="line">    &lt;script src=&quot;js/jquery.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script&gt;</span><br><span class="line">        // 给.elem增加点击事件</span><br><span class="line">        $(&#x27;body&#x27;).on(&#x27;click&#x27;, &#x27;.elem&#x27;, function()&#123;</span><br><span class="line">            alert(&#x27;已点击&#x27;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &lt;/script&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">    &lt;head&gt;</span><br><span class="line">        &lt;title&gt;测试&lt;/title&gt;</span><br><span class="line">    &lt;/head&gt;</span><br><span class="line">    &lt;body&gt;</span><br><span class="line">        &lt;ul&gt;</span><br><span class="line">            &lt;li class="elem"&gt;操作1&lt;/li&gt;</span><br><span class="line">            &lt;li class="elem"&gt;操作1&lt;/li&gt;</span><br><span class="line">            &lt;li class="elem"&gt;操作1&lt;/li&gt;</span><br><span class="line">            &lt;li class="elem"&gt;操作1&lt;/li&gt;</span><br><span class="line">            &lt;li class="elem"&gt;操作1&lt;/li&gt;</span><br><span class="line">            &lt;li class="elem"&gt;操作1&lt;/li&gt;</span><br><span class="line">        &lt;/ul&gt;</span><br><span class="line">    &lt;/body&gt;</span><br><span class="line">    &lt;!--引入jquery--&gt;</span><br><span class="line">    &lt;script src="js/jquery.js"&gt;&lt;/script&gt;</span><br><span class="line">    &lt;script&gt;</span><br><span class="line">        // 给.elem增加点击事件</span><br><span class="line">        $('body').on('click', '.elem', function(){</span><br><span class="line">            alert('已点击');</span><br><span class="line">        });</span><br><span class="line">    &lt;/script&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></tbody></table></figure>
 
 <blockquote>
-<p>使用电脑调试工具以及android均没有问题，但是在IOS的微信浏览器&#x2F;safari浏览器均无法触发点击事件。</p>
+<p>使用电脑调试工具以及android均没有问题，但是在IOS的微信浏览器/safari浏览器均无法触发点击事件。</p>
 </blockquote>
 <h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>经查，在IOS中，点击对象需要拥有”cursor:pointer;”样式才能触发点击事件，具体原因据说是无法找到DOM。 所以，上边的代码，只需要加一个样式，即可生效。</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.elem</span> &#123;<span class="attribute">cursor</span>:pointer;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.elem</span> {<span class="attribute">cursor</span>:pointer;}</span><br></pre></td></tr></tbody></table></figure></body></html>
   </article>
 
   
@@ -314,10 +314,10 @@
 
  
 
-<script async src="/js/app.js?v=1651834533761"></script>
+<script async src="/js/app.js?v=1651860541834"></script>
 
 
-	<script async src="/js/search.js?v=1651834533761"></script>
+	<script async src="/js/search.js?v=1651860541834"></script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>

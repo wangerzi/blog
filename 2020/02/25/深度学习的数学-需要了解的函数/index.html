@@ -12,28 +12,28 @@
     
 
     <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
-    <meta name="description" content="前言本篇博客主要介绍深度学习中需要掌握的函数，包括一次函数、二次函数、单位阶跃函数、指数函数、sigmoid函数等概念 正文一次函数及多元一次函数首先时最基础的一次函数，中学数学告诉我们，一次函数满足表达式 y &#x3D; a*x + b，其中 a 是斜率表示直线的倾斜程度，b是截距表示x&#x3D;0时直线与y轴交点的y值  在之前的章节中，提到了神经单元会根据多个输入乘以权重，根据是否到达临界值 θ">
+    <meta name="description" content="前言本篇博客主要介绍深度学习中需要掌握的函数，包括一次函数、二次函数、单位阶跃函数、指数函数、sigmoid函数等概念 正文一次函数及多元一次函数首先时最基础的一次函数，中学数学告诉我们，一次函数满足表达式 y &#x3D; a*x + b，其中 a 是斜率表示直线的倾斜程度，b是截距表示x&#x3D;0时直线与y轴交点的y值  在之前的章节中，提到了神经单元会根据多个输入乘以权重，根据是否到达临界值 θ ，从而判断">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深度学习的数学-需要了解的函数">
 <meta property="og:url" content="https://blog.wj2015.com/2020/02/25/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%95%B0%E5%AD%A6-%E9%9C%80%E8%A6%81%E4%BA%86%E8%A7%A3%E7%9A%84%E5%87%BD%E6%95%B0/">
 <meta property="og:site_name" content="九层台">
-<meta property="og:description" content="前言本篇博客主要介绍深度学习中需要掌握的函数，包括一次函数、二次函数、单位阶跃函数、指数函数、sigmoid函数等概念 正文一次函数及多元一次函数首先时最基础的一次函数，中学数学告诉我们，一次函数满足表达式 y &#x3D; a*x + b，其中 a 是斜率表示直线的倾斜程度，b是截距表示x&#x3D;0时直线与y轴交点的y值  在之前的章节中，提到了神经单元会根据多个输入乘以权重，根据是否到达临界值 θ">
+<meta property="og:description" content="前言本篇博客主要介绍深度学习中需要掌握的函数，包括一次函数、二次函数、单位阶跃函数、指数函数、sigmoid函数等概念 正文一次函数及多元一次函数首先时最基础的一次函数，中学数学告诉我们，一次函数满足表达式 y &#x3D; a*x + b，其中 a 是斜率表示直线的倾斜程度，b是截距表示x&#x3D;0时直线与y轴交点的y值  在之前的章节中，提到了神经单元会根据多个输入乘以权重，根据是否到达临界值 θ ，从而判断">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/7f49ba2a404c907ce7c00cddad317c18.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/f1ba618a7bebde6e2145b65383151614.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/3b2ef328657f6b5ad0ec03381c8696ef.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/76f5c00cb373aa7d0c3eeb3fb261f692.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/6baeae453330638b118d8ef64e82cf8a.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/bcecede6338c8b3c0ecea1d14376d0f8.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/1e668337787d386e7cce8bfcc8179d56.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/42c0014f7f086e04f12fe54876b0f297.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/f2f8d6b959f170f8ee9ae8da6796ccba.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/7f49ba2a404c907ce7c00cddad317c18.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/f1ba618a7bebde6e2145b65383151614.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/3b2ef328657f6b5ad0ec03381c8696ef.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/76f5c00cb373aa7d0c3eeb3fb261f692.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/6baeae453330638b118d8ef64e82cf8a.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/bcecede6338c8b3c0ecea1d14376d0f8.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/1e668337787d386e7cce8bfcc8179d56.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/42c0014f7f086e04f12fe54876b0f297.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/02/f2f8d6b959f170f8ee9ae8da6796ccba.png">
 <meta property="article:published_time" content="2020-02-25T01:46:09.000Z">
-<meta property="article:modified_time" content="2022-05-06T10:55:20.165Z">
+<meta property="article:modified_time" content="2022-05-06T18:08:41.124Z">
 <meta property="article:author" content="Jeffrey Wang">
 <meta property="article:tag" content="机器学习">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/7f49ba2a404c907ce7c00cddad317c18.png">
+<meta name="twitter:image" content="https://blog.wj2015.com/static/uploads/2020/02/7f49ba2a404c907ce7c00cddad317c18.png">
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"
@@ -43,9 +43,9 @@
         href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"
     />
     
-    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651834533665">
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651834533665">
-    <link rel="stylesheet" href="/css/style.css?v=1651834533665">
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651860541714">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651860541714">
+    <link rel="stylesheet" href="/css/style.css?v=1651860541714">
      
     
 <meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
@@ -225,22 +225,22 @@
     <a><i class="nexmoefont icon-calendar-fill"></i>2020年02月25日</a>
 </div>
 
-      <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本篇博客主要介绍深度学习中需要掌握的函数，包括一次函数、二次函数、单位阶跃函数、指数函数、sigmoid函数等概念</p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="一次函数及多元一次函数"><a href="#一次函数及多元一次函数" class="headerlink" title="一次函数及多元一次函数"></a>一次函数及多元一次函数</h3><p>首先时最基础的一次函数，中学数学告诉我们，一次函数满足表达式 <code>y = a*x + b</code>，其中 <code>a</code> 是斜率表示直线的倾斜程度，<code>b</code>是截距表示x&#x3D;0时直线与y轴交点的y值 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/7f49ba2a404c907ce7c00cddad317c18.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/7f49ba2a404c907ce7c00cddad317c18.png"></a> 在之前的章节中，提到了神经单元会根据多个输入乘以权重，根据是否到达临界值 θ ，从而判断自身是否兴奋，其数学表达式可以表现为如下形式： <code>z = w1*x1+w2*x2+w3*x3 + ...wn*xn + b</code> 书中提到，由于一次函数的特性，x1,x2,x3…xn 为确认值的时候，输入z，w1,w2,w3…wn,b 是一次函数关系，使用 『误差反向传播法』推导时，会相对简单</p>
+      <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本篇博客主要介绍深度学习中需要掌握的函数，包括一次函数、二次函数、单位阶跃函数、指数函数、sigmoid函数等概念</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="一次函数及多元一次函数"><a href="#一次函数及多元一次函数" class="headerlink" title="一次函数及多元一次函数"></a>一次函数及多元一次函数</h3><p>首先时最基础的一次函数，中学数学告诉我们，一次函数满足表达式 <code>y = a*x + b</code>，其中 <code>a</code> 是斜率表示直线的倾斜程度，<code>b</code>是截距表示x=0时直线与y轴交点的y值 <a href="/static/uploads/2020/02/7f49ba2a404c907ce7c00cddad317c18.png"><img src="/static/uploads/2020/02/7f49ba2a404c907ce7c00cddad317c18.png"></a> 在之前的章节中，提到了神经单元会根据多个输入乘以权重，根据是否到达临界值 θ ，从而判断自身是否兴奋，其数学表达式可以表现为如下形式： <code>z = w1*x1+w2*x2+w3*x3 + ...wn*xn + b</code> 书中提到，由于一次函数的特性，x1,x2,x3…xn 为确认值的时候，输入z，w1,w2,w3…wn,b 是一次函数关系，使用 『误差反向传播法』推导时，会相对简单</p>
 <blockquote>
 <p>误差反向传播法 自从40年代赫布(D.O. Hebb)提出的学习规则以来，人们相继提出了各种各样的学习算法。其中以在1986年Rumelhart等提出的误差反向传播法，即BP(error BackPropagation)法影响最为广泛。 　BP算法的基本思想是，学习过程由信号的正向传播与误差的反向传播两个过程组成。 　　1）正向传播：输入样本－&gt;输入层－&gt;各隐层（处理）－&gt;输出层 　　注1：若输出层实际输出与期望输出（教师信号）不符，则转入2）（误差反向传播过程）。 　　2）误差反向传播：输出误差（某种形式）－&gt;隐层（逐层）－&gt;输入层 其主要目的是通过将输出误差反传，将误差分摊给各层所有单元，从而获得各层单元的误差信号，进而修正各单元的权值（其过程，是一个权值调整的过程）。 　　注2：权值调整的过程，也就是网络的学习训练过程（学习也就是这么的由来，权值调整）。</p>
 </blockquote>
-<h3 id="二次函数及多元二次函数"><a href="#二次函数及多元二次函数" class="headerlink" title="二次函数及多元二次函数"></a>二次函数及多元二次函数</h3><p>根据中学的数学知识可知，一元二次函数表达式为 <code>y = a*x^2 + b*x + c (a!=0)</code>，函数图像如下，特点是存在一个全局最小值(或最大值) <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/f1ba618a7bebde6e2145b65383151614.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/f1ba618a7bebde6e2145b65383151614.png"></a> 而拥有两个变量的二次函数，数学表达式就是这样 <code>y = a*x1^2 + b*x2^2 + c*x1*x2 + p*x1 + q*x2 + r</code> 画在三维坐标系上，就会是这样，依旧能找到y的全局最低点&#x2F;最高点 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/3b2ef328657f6b5ad0ec03381c8696ef.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/3b2ef328657f6b5ad0ec03381c8696ef.png"></a></p>
+<h3 id="二次函数及多元二次函数"><a href="#二次函数及多元二次函数" class="headerlink" title="二次函数及多元二次函数"></a>二次函数及多元二次函数</h3><p>根据中学的数学知识可知，一元二次函数表达式为 <code>y = a*x^2 + b*x + c (a!=0)</code>，函数图像如下，特点是存在一个全局最小值(或最大值) <a href="/static/uploads/2020/02/f1ba618a7bebde6e2145b65383151614.png"><img src="/static/uploads/2020/02/f1ba618a7bebde6e2145b65383151614.png"></a> 而拥有两个变量的二次函数，数学表达式就是这样 <code>y = a*x1^2 + b*x2^2 + c*x1*x2 + p*x1 + q*x2 + r</code> 画在三维坐标系上，就会是这样，依旧能找到y的全局最低点/最高点 <a href="/static/uploads/2020/02/3b2ef328657f6b5ad0ec03381c8696ef.png"><img src="/static/uploads/2020/02/3b2ef328657f6b5ad0ec03381c8696ef.png"></a></p>
 <h3 id="单位阶跃函数"><a href="#单位阶跃函数" class="headerlink" title="单位阶跃函数"></a>单位阶跃函数</h3><p>该函数定义十分简单，x小于0时，函数值为0，x大于等于0时，函数值为1，一般作为激活函数</p>
 <blockquote>
 <p>所谓激活函数（Activation Function），就是在人工神经网络的神经元上运行的函数，负责将神经元的输入映射到输出端。</p>
 </blockquote>
-<p>简单意思就是说，输入需要到达一定的阈值才能被激活，就像之前的神经单元激活函数可以表现为 <code>y = u(w1*x1 + w2*x2 + ... wn*xn - θ)</code>，其中θ就是阈值 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/76f5c00cb373aa7d0c3eeb3fb261f692.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/76f5c00cb373aa7d0c3eeb3fb261f692.png"></a></p>
-<h3 id="指数函数"><a href="#指数函数" class="headerlink" title="指数函数"></a>指数函数</h3><p>指数函数的数学表达式为 <code>y = a^x(a为正常数，且不为1)</code>，<code>a</code> 称为指数函数的底数，其中有一个特殊的底数 e&#x3D;2.71828，称之为自然对数的底，有很多神奇的性质； 更多关于e的前世今生可以观看这个视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av27013943">https://www.bilibili.com/video/av27013943</a> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/6baeae453330638b118d8ef64e82cf8a.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/6baeae453330638b118d8ef64e82cf8a.png"></a></p>
-<h3 id="sigmoid函数"><a href="#sigmoid函数" class="headerlink" title="sigmoid函数"></a>sigmoid函数</h3><p>sigmoid函数是及学习中非常著名的激活函数，与前方提到的单位阶跃函数不同，<strong>sigmoid函数是光滑的随处可导</strong>，单位阶跃函数在0处不可导 函数表达式如下所示，exp是指数函数的简略记法 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/bcecede6338c8b3c0ecea1d14376d0f8.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/bcecede6338c8b3c0ecea1d14376d0f8.png"></a> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/1e668337787d386e7cce8bfcc8179d56.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/1e668337787d386e7cce8bfcc8179d56.png"></a></p>
-<h3 id="正态分布"><a href="#正态分布" class="headerlink" title="正态分布"></a>正态分布</h3><p>在实际建模过程中，需要对神经单元的权重和偏置设置初始值，而初始值设置是随机的，使用满足动态分布的随机数，比较容易取得好结果 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/42c0014f7f086e04f12fe54876b0f297.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/42c0014f7f086e04f12fe54876b0f297.png"></a> 其中，μ是期望值，σ是标准差，其图形如下，横轴表示样本的值，纵轴表示出现的概率，预测变量时就可以根据概率曲线对其发生的概率进行预测 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/f2f8d6b959f170f8ee9ae8da6796ccba.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/02/f2f8d6b959f170f8ee9ae8da6796ccba.png"></a></p>
+<p>简单意思就是说，输入需要到达一定的阈值才能被激活，就像之前的神经单元激活函数可以表现为 <code>y = u(w1*x1 + w2*x2 + ... wn*xn - θ)</code>，其中θ就是阈值 <a href="/static/uploads/2020/02/76f5c00cb373aa7d0c3eeb3fb261f692.png"><img src="/static/uploads/2020/02/76f5c00cb373aa7d0c3eeb3fb261f692.png"></a></p>
+<h3 id="指数函数"><a href="#指数函数" class="headerlink" title="指数函数"></a>指数函数</h3><p>指数函数的数学表达式为 <code>y = a^x(a为正常数，且不为1)</code>，<code>a</code> 称为指数函数的底数，其中有一个特殊的底数 e=2.71828，称之为自然对数的底，有很多神奇的性质； 更多关于e的前世今生可以观看这个视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av27013943">https://www.bilibili.com/video/av27013943</a> <a href="/static/uploads/2020/02/6baeae453330638b118d8ef64e82cf8a.png"><img src="/static/uploads/2020/02/6baeae453330638b118d8ef64e82cf8a.png"></a></p>
+<h3 id="sigmoid函数"><a href="#sigmoid函数" class="headerlink" title="sigmoid函数"></a>sigmoid函数</h3><p>sigmoid函数是及学习中非常著名的激活函数，与前方提到的单位阶跃函数不同，<strong>sigmoid函数是光滑的随处可导</strong>，单位阶跃函数在0处不可导 函数表达式如下所示，exp是指数函数的简略记法 <a href="/static/uploads/2020/02/bcecede6338c8b3c0ecea1d14376d0f8.png"><img src="/static/uploads/2020/02/bcecede6338c8b3c0ecea1d14376d0f8.png"></a> <a href="/static/uploads/2020/02/1e668337787d386e7cce8bfcc8179d56.png"><img src="/static/uploads/2020/02/1e668337787d386e7cce8bfcc8179d56.png"></a></p>
+<h3 id="正态分布"><a href="#正态分布" class="headerlink" title="正态分布"></a>正态分布</h3><p>在实际建模过程中，需要对神经单元的权重和偏置设置初始值，而初始值设置是随机的，使用满足动态分布的随机数，比较容易取得好结果 <a href="/static/uploads/2020/02/42c0014f7f086e04f12fe54876b0f297.png"><img src="/static/uploads/2020/02/42c0014f7f086e04f12fe54876b0f297.png"></a> 其中，μ是期望值，σ是标准差，其图形如下，横轴表示样本的值，纵轴表示出现的概率，预测变量时就可以根据概率曲线对其发生的概率进行预测 <a href="/static/uploads/2020/02/f2f8d6b959f170f8ee9ae8da6796ccba.png"><img src="/static/uploads/2020/02/f2f8d6b959f170f8ee9ae8da6796ccba.png"></a></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本片博客中主要介绍一些函数相关的知识，比较重要的就是 单位阶跃函数和sigmoid函数以及正态分布，还引出了激活函数等概念。</p>
-
+</body></html>
   </article>
 
   
@@ -329,10 +329,10 @@
 
  
 
-<script async src="/js/app.js?v=1651834533667"></script>
+<script async src="/js/app.js?v=1651860541719"></script>
 
 
-	<script async src="/js/search.js?v=1651834533667"></script>
+	<script async src="/js/search.js?v=1651860541719"></script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
