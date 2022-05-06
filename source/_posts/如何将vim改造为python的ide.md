@@ -7,7 +7,7 @@ id: '432'
 categories:
   - - Linux
 date: 2019-11-29 10:34:50
-cover: /static/uploads/2019/11/%E6%B7%B1%E5%BA%A6%E6%88%AA%E5%9B%BE_%E9%80%89%E6%8B%A9%E5%8C%BA%E5%9F%9F_20191129103827-1124x661.png
+cover: ../static/uploads/2019/11/%E6%B7%B1%E5%BA%A6%E6%88%AA%E5%9B%BE_%E9%80%89%E6%8B%A9%E5%8C%BA%E5%9F%9F_20191129103827-1124x661.png
 ---
 
 
@@ -35,7 +35,7 @@ au BufNewFile,BufRead *.py
     \ set fileformat=unix 
 ```
 
-调整后效果如下： ![](/static/uploads/2019/11/d9bce684bb0d4959782201e5429410bb.png)
+调整后效果如下： ![](../static/uploads/2019/11/d9bce684bb0d4959782201e5429410bb.png)
 
 ### 粘贴代码混乱
 
@@ -52,7 +52,7 @@ else:
         print('< 1')
 ```
 
-如果不做任何设置，粘贴进去是这样的，发现代码错乱 ![](/static/uploads/2019/11/85af5371803f2efb88d33ecd920c783b.png) 解决方法： 使用 `:set paste` 进入粘贴模式， `:set nopaste` 退出粘贴模式 粘贴模式下，粘贴效果如下 ![](/static/uploads/2019/11/5a936a5e5f4982ac830c3b48f7dd7c49.png)
+如果不做任何设置，粘贴进去是这样的，发现代码错乱 ![](../static/uploads/2019/11/85af5371803f2efb88d33ecd920c783b.png) 解决方法： 使用 `:set paste` 进入粘贴模式， `:set nopaste` 退出粘贴模式 粘贴模式下，粘贴效果如下 ![](../static/uploads/2019/11/5a936a5e5f4982ac830c3b48f7dd7c49.png)
 
 ### 代码折叠
 
@@ -66,7 +66,7 @@ set foldlevel=99
 nnoremap <space> za
 ```
 
-配置完毕后，按空格即可折叠代码 ![](/static/uploads/2019/11/d8f2ed5fd27657a5d2d0ae5d3e988a24.png)
+配置完毕后，按空格即可折叠代码 ![](../static/uploads/2019/11/d8f2ed5fd27657a5d2d0ae5d3e988a24.png)
 
 ## 插件篇
 
@@ -148,7 +148,7 @@ Plugin 'git://github.com/Xuyuanp/nerdtree-git-plugin.git'
 map <F4> :NERDTreeToggle<CR>
 ```
 
-然后在 vim 中执行 `:PluginInstall`，进入如下界面，等待安装完毕即可 ![](/static/uploads/2019/11/046dc2169d2c9586b9fb5b2d297c068d.png) 所有操作完毕后，按 F4 即可在目录树和代码区切换 ![](/static/uploads/2019/11/78d44c97fa3cff17cc6d75871b61a73d.png)
+然后在 vim 中执行 `:PluginInstall`，进入如下界面，等待安装完毕即可 ![](../static/uploads/2019/11/046dc2169d2c9586b9fb5b2d297c068d.png) 所有操作完毕后，按 F4 即可在目录树和代码区切换 ![](../static/uploads/2019/11/78d44c97fa3cff17cc6d75871b61a73d.png)
 
 ### 编辑模式运行 python
 
@@ -164,7 +164,7 @@ exec "!time python3 %"
 endfunc
 ```
 
-按下 F7 之后，得到运行结果 ![](/static/uploads/2019/11/47a37cdf4747684a0364db607f49ccde.png)
+按下 F7 之后，得到运行结果 ![](../static/uploads/2019/11/47a37cdf4747684a0364db607f49ccde.png)
 
 ## 参考文献
 

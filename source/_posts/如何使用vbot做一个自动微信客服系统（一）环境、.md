@@ -9,7 +9,7 @@ categories:
   - - 后端开发
   - - 微信相关
 date: 2018-10-12 09:52:49
-cover: /static/uploads/2018/10/robot-customer-service-1024x661.jpg
+cover: ../static/uploads/2018/10/robot-customer-service-1024x661.jpg
 ---
 
 ## 目标

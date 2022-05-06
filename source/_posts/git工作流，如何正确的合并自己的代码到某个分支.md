@@ -8,7 +8,7 @@ categories:
   - - Linux
   - - 后端开发
 date: 2019-07-23 21:48:47
-cover: /static/uploads/2019/07/git%E5%B7%A5%E4%BD%9C%E6%B5%81.png
+cover: ../static/uploads/2019/07/git%E5%B7%A5%E4%BD%9C%E6%B5%81.png
 ---
 
 
@@ -93,7 +93,7 @@ git branch -u origin/task-任务1
 
 ### 简单 master 和多个任务分支
 
-博主所在公司前端项目就是这种形式，一个项目也许就一个人负责，master分支上维护线上最稳定的代码，并为每个任务建立各自的任务分支，同时只有一个分支的代码能够被测试，测试完毕即往master合并，下一次任务从最新的master上拉去代码。 比如这样： ![](/static/uploads/2019/07/8357c3f57badff18e9d0cb0c3302416d.png) 建立任务分支或bugfix分支命令描述如下： 需要注意：`checkout -b task-任务1 origin/master` 切出来的分支，默认对应远程分支为 master，需要手动更改为新建的任务分支
+博主所在公司前端项目就是这种形式，一个项目也许就一个人负责，master分支上维护线上最稳定的代码，并为每个任务建立各自的任务分支，同时只有一个分支的代码能够被测试，测试完毕即往master合并，下一次任务从最新的master上拉去代码。 比如这样： ![](../static/uploads/2019/07/8357c3f57badff18e9d0cb0c3302416d.png) 建立任务分支或bugfix分支命令描述如下： 需要注意：`checkout -b task-任务1 origin/master` 切出来的分支，默认对应远程分支为 master，需要手动更改为新建的任务分支
 
 ```shell
 # 从 master 拉去最新代码并将本地分支推向远程

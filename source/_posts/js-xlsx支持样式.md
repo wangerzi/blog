@@ -10,7 +10,7 @@ id: '360'
 categories:
   - - 前端开发
 date: 2019-05-01 15:19:24
-cover: /static/uploads/2019/05/flower.jpg
+cover: ../static/uploads/2019/05/flower.jpg
 ---
 
 ## 背景
@@ -51,15 +51,15 @@ cover: /static/uploads/2019/05/flower.jpg
 var wbout = XLSX.write(wb, {bookType: type, type: 'binary', cellStyles: true});
 ```
 
-![](/static/uploads/2019/05/59cb58df4b8239af744e7dedb4c202dd.png)
+![](../static/uploads/2019/05/59cb58df4b8239af744e7dedb4c202dd.png)
 
 *   发现xlsx导出进入了此函数
 
-![](/static/uploads/2019/05/0d060dd000f14d4248d9a0b690d158dc.png)
+![](../static/uploads/2019/05/0d060dd000f14d4248d9a0b690d158dc.png)
 
 *   进一步调试，发现了差异
 
-![](/static/uploads/2019/05/ec1dbef1c7bb6294902479f9476f6dad.png)
+![](../static/uploads/2019/05/ec1dbef1c7bb6294902479f9476f6dad.png)
 
 #### 根据支持样式的版本，补全缺失代码
 
@@ -67,16 +67,16 @@ var wbout = XLSX.write(wb, {bookType: type, type: 'binary', cellStyles: true});
 
 > 进入最新版[https://github.com/SheetJS/js-xlsx/blob/master/dist/xlsx.js](https://github.com/SheetJS/js-xlsx/blob/master/dist/xlsx.js)，搜索 `StyleBuilder` 发现没有这个类，但是在 [https://github.com/protobi/js-xlsx/blob/master/dist/xlsx.js](https://github.com/protobi/js-xlsx/blob/master/dist/xlsx.js) 发现了这个类，与其依赖一起复制过来
 
-![](/static/uploads/2019/05/53ca8f3c054d618a5c642f00b64d2a70.png)
+![](../static/uploads/2019/05/53ca8f3c054d618a5c642f00b64d2a70.png)
 
 *   复制到目标文件暴露全局变量之前
 
-![](/static/uploads/2019/05/9d9e1b38659099dbf158141ef8946282.png)
+![](../static/uploads/2019/05/9d9e1b38659099dbf158141ef8946282.png)
 
 *   查找 `style_builder` 这个变量在 `protobi/js-xlsx` 中有哪些地方使用到了，依次复制到 `SheetJS/protobi` 中
 
-![](/static/uploads/2019/05/a236429e076ed4b49cdaf83b0a9917eb.png) ![](/static/uploads/2019/05/19a56922a11ed2b160636e0a739abb6e.png) PS:几年过去了，这里的逻辑基本没变，所以放心复制好了
+![](../static/uploads/2019/05/a236429e076ed4b49cdaf83b0a9917eb.png) ![](../static/uploads/2019/05/19a56922a11ed2b160636e0a739abb6e.png) PS:几年过去了，这里的逻辑基本没变，所以放心复制好了
 
 *   最后，测试一下导出，发现可以设置样式了
 
-![](/static/uploads/2019/05/31876adf7ddaf845e9a6be32dcb9cd4f.png)
+![](../static/uploads/2019/05/31876adf7ddaf845e9a6be32dcb9cd4f.png)

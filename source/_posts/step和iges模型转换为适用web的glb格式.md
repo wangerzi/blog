@@ -16,7 +16,7 @@ id: '558'
 categories:
   - - 前端开发
 date: 2020-03-08 01:14:59
-cover: /static/uploads/2020/03/3d-maze-3-1208091-1200x661.jpg
+cover: ../static/uploads/2020/03/3d-maze-3-1208091-1200x661.jpg
 ---
 
 
@@ -38,7 +38,7 @@ convert.sh [stlstepigesobjfbx] inputpath.stl outputpath.gltf # not only bin file
 
 ### 了解STEP和IGES格式
 
-首先，需要大概了解下 STEP 格式和 IGES 格式到底是什么，哪些领域正在使用 英文基础比较不错的童鞋，可以参考下如下外文资料 STEP文件： [https://fileinfo.com/extension/step]("https://fileinfo.com/extension/step") IGES文件： [https://fileinfo.com/extension/iges]("https://fileinfo.com/extension/iges") 简单来说，这俩都是**CAD的一种文件标准**，STEP比IGES出现得更晚一些，由于IGES格式的最新版本是96年发布的，现在多由更高效的STEP等新格式替代，**不支持材质** IGES 可以安装 `iges viewer` 这一免费工具在电脑上查看 下载链接在此：https://igsviewer.com/download.aspx 比如网上随便下载的一个 IGS 文件，打开后展示效果如下 [![](/static/uploads/2020/03/d6ce6f52c39c343cd6fc1f8940429066.png)](/static/uploads/2020/03/d6ce6f52c39c343cd6fc1f8940429066.png) 但是，现行主流的web3d库，比如 three.js、Babylon **均不支持** STEP 和 IGES 模型，需要解决这个问题有两个思路
+首先，需要大概了解下 STEP 格式和 IGES 格式到底是什么，哪些领域正在使用 英文基础比较不错的童鞋，可以参考下如下外文资料 STEP文件： [https://fileinfo.com/extension/step]("https://fileinfo.com/extension/step") IGES文件： [https://fileinfo.com/extension/iges]("https://fileinfo.com/extension/iges") 简单来说，这俩都是**CAD的一种文件标准**，STEP比IGES出现得更晚一些，由于IGES格式的最新版本是96年发布的，现在多由更高效的STEP等新格式替代，**不支持材质** IGES 可以安装 `iges viewer` 这一免费工具在电脑上查看 下载链接在此：https://igsviewer.com/download.aspx 比如网上随便下载的一个 IGS 文件，打开后展示效果如下 [![](../static/uploads/2020/03/d6ce6f52c39c343cd6fc1f8940429066.png)](../static/uploads/2020/03/d6ce6f52c39c343cd6fc1f8940429066.png) 但是，现行主流的web3d库，比如 three.js、Babylon **均不支持** STEP 和 IGES 模型，需要解决这个问题有两个思路
 
 *   深入了解格式含义，编写代码给对应库提交对应的解析方案（想法很好，但是实践不易）
 *   将格式转换为适合web展示的格式，比如称为3d界JPG的 GLTF 格式（本文就是讲这个的）
@@ -47,7 +47,7 @@ convert.sh [stlstepigesobjfbx] inputpath.stl outputpath.gltf # not only bin file
 
 ### 了解STL格式
 
-STL格式更多出现在3D打印中，只能用来表示封闭的体或者面，且文件内部**都用三角形表示**，所以转换精度比较粗的话，看起来效果比较诡异，包括 Ascii 编码和二进制两种编码模式，一般采用二进制，因为体积**相对较小**，并且与STEP和IGES一样**不支持材质** 比如同一个模型（STEP大小：4.81M），转换精度不同可能就是如下两种效果 粗精度（Ascii编码：3.7M）： [![](/static/uploads/2020/03/92acb91ddcfe55122b4e7689659c8612.png)](/static/uploads/2020/03/92acb91ddcfe55122b4e7689659c8612.png) 细精度（Ascii编码：63.3M，二进制编码：12.1M）： [![](/static/uploads/2020/03/16b2c25d5a260b207fb9d0703b03ba0c.png)](/static/uploads/2020/03/16b2c25d5a260b207fb9d0703b03ba0c.png) 但是模型大小也会很有区别，甚至同一个图，精度调整很细的话，能达到**一百多兆** 模型的加载和解析都非常慢，精度调整粗一点，几兆就搞定了，但是页面展示的效果根本不能看
+STL格式更多出现在3D打印中，只能用来表示封闭的体或者面，且文件内部**都用三角形表示**，所以转换精度比较粗的话，看起来效果比较诡异，包括 Ascii 编码和二进制两种编码模式，一般采用二进制，因为体积**相对较小**，并且与STEP和IGES一样**不支持材质** 比如同一个模型（STEP大小：4.81M），转换精度不同可能就是如下两种效果 粗精度（Ascii编码：3.7M）： [![](../static/uploads/2020/03/92acb91ddcfe55122b4e7689659c8612.png)](../static/uploads/2020/03/92acb91ddcfe55122b4e7689659c8612.png) 细精度（Ascii编码：63.3M，二进制编码：12.1M）： [![](../static/uploads/2020/03/16b2c25d5a260b207fb9d0703b03ba0c.png)](../static/uploads/2020/03/16b2c25d5a260b207fb9d0703b03ba0c.png) 但是模型大小也会很有区别，甚至同一个图，精度调整很细的话，能达到**一百多兆** 模型的加载和解析都非常慢，精度调整粗一点，几兆就搞定了，但是页面展示的效果根本不能看
 
 #### 为何不统一转换为stl格式？
 
@@ -55,7 +55,7 @@ STL格式更多出现在3D打印中，只能用来表示封闭的体或者面，
 
 ### CTM格式
 
-这里简单提一下 CTM 格式，这是一个压缩能力很强的格式，就上面截图的小杯子，精度稍高的 STL 得有 60M 左右，但是CTM得到更好的效果，只需要 795kb CTM格式（795kb） [![](/static/uploads/2020/03/0d2345827c242f02c6f0b8ad66cc6d36.png)](/static/uploads/2020/03/0d2345827c242f02c6f0b8ad66cc6d36.png) 不过CTM格式已经**被 THREE.JS 抛弃了**，社区更希望用户使用 GLTF 格式，106版本后已经去掉了 CTMLoader，如果需要复原只能从老版本里边拷贝出来代码并且做一些小修改才能使用，关于CTM格式讨论如下： https://github.com/mrdoob/three.js/pull/14308
+这里简单提一下 CTM 格式，这是一个压缩能力很强的格式，就上面截图的小杯子，精度稍高的 STL 得有 60M 左右，但是CTM得到更好的效果，只需要 795kb CTM格式（795kb） [![](../static/uploads/2020/03/0d2345827c242f02c6f0b8ad66cc6d36.png)](../static/uploads/2020/03/0d2345827c242f02c6f0b8ad66cc6d36.png) 不过CTM格式已经**被 THREE.JS 抛弃了**，社区更希望用户使用 GLTF 格式，106版本后已经去掉了 CTMLoader，如果需要复原只能从老版本里边拷贝出来代码并且做一些小修改才能使用，关于CTM格式讨论如下： https://github.com/mrdoob/three.js/pull/14308
 
 ### GLTF格式
 
@@ -77,7 +77,7 @@ STL格式更多出现在3D打印中，只能用来表示封闭的体或者面，
 
 #### cqparts方案（环境难搞，未采用）
 
-前面提到的GLTF技术汇总：[https://github.com/KhronosGroup/glTF]("https://github.com/KhronosGroup/glTF") 其中提到了使用 cqparts 直接就能把 STEP 转换为 GLTF，不过博主尝试过后发现环境太难搞了，不止要装 cqparts 还需要装 FreeCAD，很难调，后来就没采用此方案 [![](/static/uploads/2020/03/cfd666fd15904986c15f50a731d86519.png)](/static/uploads/2020/03/cfd666fd15904986c15f50a731d86519.png) 项目地址：[https://github.com/cqparts/cqparts]("https://github.com/cqparts/cqparts")
+前面提到的GLTF技术汇总：[https://github.com/KhronosGroup/glTF]("https://github.com/KhronosGroup/glTF") 其中提到了使用 cqparts 直接就能把 STEP 转换为 GLTF，不过博主尝试过后发现环境太难搞了，不止要装 cqparts 还需要装 FreeCAD，很难调，后来就没采用此方案 [![](../static/uploads/2020/03/cfd666fd15904986c15f50a731d86519.png)](../static/uploads/2020/03/cfd666fd15904986c15f50a731d86519.png) 项目地址：[https://github.com/cqparts/cqparts]("https://github.com/cqparts/cqparts")
 
 #### pythonocc方案（读取或写入STP/IGS/STL）
 
@@ -159,7 +159,7 @@ Executing transaction: done
 Looking in indexes: http://pypi.douban.com/simple
 ```
 
-跑一下 [https://github.com/tpaviot/pythonocc-demos](https://github.com/tpaviot/pythonocc-demos) 中的 hello-world 显示如下界面就是成功了（GUI模式） [![](/static/uploads/2020/03/6eba449ab04b6b4b2ed8cf4a6885ea19.png)](/static/uploads/2020/03/6eba449ab04b6b4b2ed8cf4a6885ea19.png)
+跑一下 [https://github.com/tpaviot/pythonocc-demos](https://github.com/tpaviot/pythonocc-demos) 中的 hello-world 显示如下界面就是成功了（GUI模式） [![](../static/uploads/2020/03/6eba449ab04b6b4b2ed8cf4a6885ea19.png)](../static/uploads/2020/03/6eba449ab04b6b4b2ed8cf4a6885ea19.png)
 
 #### gltf-pipeline 的安装
 
@@ -183,7 +183,7 @@ internal/modules/cjs/loader.js:1174
 
 > NVM\_NODEJS\_ORG\_MIRROR=http://npm.taobao.org/mirrors/node NVM\_NPM\_ORG\_MIRROR=https://npm.taobao.org/mirrors/npm/
 
-[![](/static/uploads/2020/03/17dd7ebd3e8758b955dcdbda9171e054.png)](/static/uploads/2020/03/17dd7ebd3e8758b955dcdbda9171e054.png) 临时使用如下指令也可以：
+[![](../static/uploads/2020/03/17dd7ebd3e8758b955dcdbda9171e054.png)](../static/uploads/2020/03/17dd7ebd3e8758b955dcdbda9171e054.png) 临时使用如下指令也可以：
 
 ```shell
 nvm node_mirror https://npm.taobao.org/mirrors/node/

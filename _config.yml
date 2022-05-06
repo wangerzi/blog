@@ -113,6 +113,10 @@ feed:
   autodiscovery: true
   template:
 
+# 流量负担不起的时候，再用这个吧
+# imageRoot: https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/
+imageRoot: /
+
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:

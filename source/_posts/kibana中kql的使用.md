@@ -6,7 +6,7 @@ categories:
   - - Linux
     - ElasticSearch
 date: 2020-08-26 21:17:33
-cover: /static/uploads/2020/08/Monasterio_Khor_Virap_Armenia_2016-10-01_DD_25.jpg
+cover: ../static/uploads/2020/08/Monasterio_Khor_Virap_Armenia_2016-10-01_DD_25.jpg
 ---
 
 
@@ -52,7 +52,7 @@ cover: /static/uploads/2020/08/Monasterio_Khor_Virap_Armenia_2016-10-01_DD_25.jp
 }
 ```
 
-需要根据实际情况做尝试的时候进入 Kibana 的 Discover页面在输入框中填入筛选即可。 [![](/static/uploads/2020/08/bf38129fb9a6a1d593feb32d28b50582.png)](/static/uploads/2020/08/bf38129fb9a6a1d593feb32d28b50582.png)
+需要根据实际情况做尝试的时候进入 Kibana 的 Discover页面在输入框中填入筛选即可。 [![](../static/uploads/2020/08/bf38129fb9a6a1d593feb32d28b50582.png)](../static/uploads/2020/08/bf38129fb9a6a1d593feb32d28b50582.png)
 
 > 生产环境截图不便还请谅解 😁
 

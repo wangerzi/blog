@@ -7,7 +7,7 @@ id: '311'
 categories:
   - - 前端开发
 date: 2018-11-20 20:50:02
-cover: /static/uploads/2019/09/20161107111502_84-1200x661.jpg
+cover: ../static/uploads/2019/09/20161107111502_84-1200x661.jpg
 ---
 
 

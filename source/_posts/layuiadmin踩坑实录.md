@@ -8,7 +8,7 @@ id: '145'
 categories:
   - - 前端开发
 date: 2018-03-21 02:18:21
-cover: /static/uploads/2018/03/TIM%E6%88%AA%E5%9B%BE20180321022207.png
+cover: ../static/uploads/2018/03/TIM%E6%88%AA%E5%9B%BE20180321022207.png
 ---
 
  注：此页面所属问题均出现于layuiAdmin V1.0环境下，部分解决方案需修改源码，并非官方修复，请谨慎使用
@@ -105,7 +105,7 @@ if(matched2 == false && matched1){
 
 ### tab左右切换导致路由传递参数丢失问题
 
-**出现原因：** 这个问题无论是官方给的样例，还是自己的测试都会存在这个问题，目测是官方系统缺陷，审查TAB的元素可知，lay-attr内的数据是tab切换时应该跳转的真实路径，而非lay-id中去掉参数的路径。 ![](/static/uploads/2018/03/914ad3a67ee06b5b7e6aad5d72383f2d.png) **解决方法** 于_lib/admin.js_约568行的位置（检索setThisRoter即可），将此函数代码改为：
+**出现原因：** 这个问题无论是官方给的样例，还是自己的测试都会存在这个问题，目测是官方系统缺陷，审查TAB的元素可知，lay-attr内的数据是tab切换时应该跳转的真实路径，而非lay-id中去掉参数的路径。 ![](../static/uploads/2018/03/914ad3a67ee06b5b7e6aad5d72383f2d.png) **解决方法** 于_lib/admin.js_约568行的位置（检索setThisRoter即可），将此函数代码改为：
 
 ```JavaScript
 //同步路由

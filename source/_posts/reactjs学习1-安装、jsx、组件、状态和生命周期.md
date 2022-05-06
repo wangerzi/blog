@@ -6,7 +6,7 @@ id: '236'
 categories:
   - - 前端开发
 date: 2018-05-12 17:46:47
-cover: /static/uploads/2018/08/b21c8701a18b87d6232299000d0828381f30fd48-1024x661.jpg
+cover: ../static/uploads/2018/08/b21c8701a18b87d6232299000d0828381f30fd48-1024x661.jpg
 ---
 
 # ReactJS学习笔记
@@ -24,11 +24,11 @@ cover: /static/uploads/2018/08/b21c8701a18b87d6232299000d0828381f30fd48-1024x661
 
 1.  `create-react-app 项目名称`，然后进入目录，`cd 项目名称`，最后`npm start`，完成项目的启动。
     
-2.  浏览器中访问`localhost:3000`即可访问项目。 ![](/static/uploads/2018/05/b0c600e1ab6a8c9b5b7732c89350cc28.png) **访问效果：** ![](/static/uploads/2018/05/ab3acb1409f65f283534c06e033a5a1c.png)
+2.  浏览器中访问`localhost:3000`即可访问项目。 ![](../static/uploads/2018/05/b0c600e1ab6a8c9b5b7732c89350cc28.png) **访问效果：** ![](../static/uploads/2018/05/ab3acb1409f65f283534c06e033a5a1c.png)
     
     #### 学习建议
     
-    开始的时候，可以在**在线编辑器**上实时调试，会比较方便，使用`create-react-app`创建的文件全是用类构建，辅以nodeJS得以运行，效率较高。但是对于初学者来说，一层一层的类也容易绕晕，所以比较建议使用ReactDOM采用传统前端架构的形式来学习。 在线编辑器：[https://codepen.io](https://codepen.io) **注意**：React需要在ReactDOM之前引入。 ![](/static/uploads/2018/05/aa05370df46c47614772a1dcdd02c099.png) **配置编辑器支持React** 可以参考如下链接对sublime进行优化以适应react.js的JSX语法： [https://segmentfault.com/a/1190000003698071](https://segmentfault.com/a/1190000003698071)
+    开始的时候，可以在**在线编辑器**上实时调试，会比较方便，使用`create-react-app`创建的文件全是用类构建，辅以nodeJS得以运行，效率较高。但是对于初学者来说，一层一层的类也容易绕晕，所以比较建议使用ReactDOM采用传统前端架构的形式来学习。 在线编辑器：[https://codepen.io](https://codepen.io) **注意**：React需要在ReactDOM之前引入。 ![](../static/uploads/2018/05/aa05370df46c47614772a1dcdd02c099.png) **配置编辑器支持React** 可以参考如下链接对sublime进行优化以适应react.js的JSX语法： [https://segmentfault.com/a/1190000003698071](https://segmentfault.com/a/1190000003698071)
     
 
 ## 了解React JSX
