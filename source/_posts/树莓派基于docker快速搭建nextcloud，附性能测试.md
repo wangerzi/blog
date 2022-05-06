@@ -8,7 +8,7 @@ id: '540'
 categories:
   - - Linux
 date: 2020-07-02 09:39:37
-cover: ../../static/uploads/2020/07/20150428-cloud-computing.0.1489222360-1200x661.jpg
+cover: /static/uploads/2020/07/20150428-cloud-computing.0.1489222360-1200x661.jpg
 ---
 
 
@@ -25,7 +25,7 @@ cover: ../../static/uploads/2020/07/20150428-cloud-computing.0.1489222360-1200x6
 
 ### 环境准备
 
-首先，ssh进入树莓派，如果是 OSMC 系统的话，用户名和密码都是osmc [![](../static/uploads/2020/03/d2db55614f17f5a966cbdf47c7f359fd.png)](../static/uploads/2020/03/d2db55614f17f5a966cbdf47c7f359fd.png) 连接结果如下：
+首先，ssh进入树莓派，如果是 OSMC 系统的话，用户名和密码都是osmc [![](/static/uploads/2020/03/d2db55614f17f5a966cbdf47c7f359fd.png)](/static/uploads/2020/03/d2db55614f17f5a966cbdf47c7f359fd.png) 连接结果如下：
 
 ```shell
 Connecting to 192.168.3.7:22...
@@ -163,7 +163,7 @@ nextcloud_redis_1 is up-to-date
 nextcloud_web_1 is up-to-date
 ```
 
-进入 `http://ip地址:8089` 即可开始配置数据库等信息，如果出现 504 time out，需要调整Nginx中的超时时间 在刚才的 `docker-compose.yaml` 中指定了数据库主机是 `db`，用户名是 `nextcloud`，数据库是 `nextcloud`，密码是 `nyist123` [![](../static/uploads/2020/04/1c40b3052fc38dda5980a0888c94a133.png)](../static/uploads/2020/04/1c40b3052fc38dda5980a0888c94a133.png) [![](../static/uploads/2020/04/09e37a9efc26ef715406e710b501814e.png)](../static/uploads/2020/04/09e37a9efc26ef715406e710b501814e.png)
+进入 `http://ip地址:8089` 即可开始配置数据库等信息，如果出现 504 time out，需要调整Nginx中的超时时间 在刚才的 `docker-compose.yaml` 中指定了数据库主机是 `db`，用户名是 `nextcloud`，数据库是 `nextcloud`，密码是 `nyist123` [![](/static/uploads/2020/04/1c40b3052fc38dda5980a0888c94a133.png)](/static/uploads/2020/04/1c40b3052fc38dda5980a0888c94a133.png) [![](/static/uploads/2020/04/09e37a9efc26ef715406e710b501814e.png)](/static/uploads/2020/04/09e37a9efc26ef715406e710b501814e.png)
 
 ### 内网穿透
 
@@ -299,7 +299,7 @@ server {
 
 ```
 
-访问 `https://nextcloud.wj2015.com` 可能会看到下面的提示 [![](../static/uploads/2020/04/2f500313ada9cdc421f34109902ee7c3.png)](../static/uploads/2020/04/2f500313ada9cdc421f34109902ee7c3.png) 根据提示改一下可信域名即可，或者一开始安装的时候就在此域名下安装（更推荐） 改可信域名需要使用 `docker exec -it nextcloud_app_1 /bin/bash` 进入到 `docker` 容器中更改对应文件，改动之后重新启动容器就需要慎重了；或者映射对应配置文件到真实路径下 最后能看到这个页面就算成功了 [![](../static/uploads/2020/04/b64d24d3f221b7a8528de78af1ce4f22.png)](../static/uploads/2020/04/b64d24d3f221b7a8528de78af1ce4f22.png)
+访问 `https://nextcloud.wj2015.com` 可能会看到下面的提示 [![](/static/uploads/2020/04/2f500313ada9cdc421f34109902ee7c3.png)](/static/uploads/2020/04/2f500313ada9cdc421f34109902ee7c3.png) 根据提示改一下可信域名即可，或者一开始安装的时候就在此域名下安装（更推荐） 改可信域名需要使用 `docker exec -it nextcloud_app_1 /bin/bash` 进入到 `docker` 容器中更改对应文件，改动之后重新启动容器就需要慎重了；或者映射对应配置文件到真实路径下 最后能看到这个页面就算成功了 [![](/static/uploads/2020/04/b64d24d3f221b7a8528de78af1ce4f22.png)](/static/uploads/2020/04/b64d24d3f221b7a8528de78af1ce4f22.png)
 
 ### 速度测试
 

@@ -5,7 +5,7 @@ id: '104'
 categories:
   - - 后端开发
 date: 2018-02-22 23:40:08
-cover: ../../static/uploads/2020/07/20150428-cloud-computing.0.1489222360-1200x661.jpg
+cover: /static/uploads/2020/07/20150428-cloud-computing.0.1489222360-1200x661.jpg
 ---
 
 

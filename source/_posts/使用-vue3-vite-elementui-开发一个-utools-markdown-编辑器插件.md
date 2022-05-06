@@ -8,18 +8,18 @@ id: '689'
 categories:
   - - 前端开发
 date: 2021-08-12 11:19:06
-cover: ../../static/uploads/2021/08/QQ20210812-104143@2x-1200x661.png
+cover: /static/uploads/2021/08/QQ20210812-104143@2x-1200x661.png
 ---
 
-[![](../static/uploads/2021/08/wp_editor_md_2ac49382f138dd58872b7151056eca99.jpg)](../static/uploads/2021/08/wp_editor_md_2ac49382f138dd58872b7151056eca99.jpg) 
+[![](/static/uploads/2021/08/wp_editor_md_2ac49382f138dd58872b7151056eca99.jpg)](/static/uploads/2021/08/wp_editor_md_2ac49382f138dd58872b7151056eca99.jpg) 
 
 ## 目的
 
-博主个人已经用了很久的 Utools 了，会员也续到了 2024 年，它跟随博主从 Deepin 到 Manjaro，再到 Windows 再到 MacOS，在很多场景下都非常方便，比如选中文本中键翻译、复制 JSON 后自动格式化、正则表达式匹配小工具、计算稿纸等。已推荐给很多同事、朋友使用，无不夸其高效便捷。 [![](../static/uploads/2021/08/wp_editor_md_caa59a234ecad2dac37d0b52ee546460.jpg)](../static/uploads/2021/08/wp_editor_md_caa59a234ecad2dac37d0b52ee546460.jpg) 而在使用的同时，也想为社区出一份力，实现一些插件为自己为他人提供更多的便利，**Utools 为实现多端兼容，主要使用 JS 开发插件**，界面 UI 与组件交互与传统的 web 开发别无二致，只不过可以利用更多的系统能力去做传统 web 开发不能做到的事情。 [![](../static/uploads/2021/08/wp_editor_md_f5c05cf892a8820a62ed1b11398a8ec6.jpg)](../static/uploads/2021/08/wp_editor_md_f5c05cf892a8820a62ed1b11398a8ec6.jpg)
+博主个人已经用了很久的 Utools 了，会员也续到了 2024 年，它跟随博主从 Deepin 到 Manjaro，再到 Windows 再到 MacOS，在很多场景下都非常方便，比如选中文本中键翻译、复制 JSON 后自动格式化、正则表达式匹配小工具、计算稿纸等。已推荐给很多同事、朋友使用，无不夸其高效便捷。 [![](/static/uploads/2021/08/wp_editor_md_caa59a234ecad2dac37d0b52ee546460.jpg)](/static/uploads/2021/08/wp_editor_md_caa59a234ecad2dac37d0b52ee546460.jpg) 而在使用的同时，也想为社区出一份力，实现一些插件为自己为他人提供更多的便利，**Utools 为实现多端兼容，主要使用 JS 开发插件**，界面 UI 与组件交互与传统的 web 开发别无二致，只不过可以利用更多的系统能力去做传统 web 开发不能做到的事情。 [![](/static/uploads/2021/08/wp_editor_md_f5c05cf892a8820a62ed1b11398a8ec6.jpg)](/static/uploads/2021/08/wp_editor_md_f5c05cf892a8820a62ed1b11398a8ec6.jpg)
 
 ### 开发文档整理
 
-Utools 开发者文档：http://u.tools/docs/developer/welcome.html ElementUI开发文档：https://element-plus.org/#/zh-CN/component/installation Vue3 开发文档：https://v3.vuejs.org/guide/introduction.html Vite 开发文档：https://vitejs.dev/config/ 在开发者文档中，快速上手仅提供了原生 JS + utools 能力的调用结合，这篇文档的目标是**将 Vue3 与 Utools 开发结合，并将国内比较流行的 ElementUI 框架集成在一起**，最终会基于这些技术创造出一个简易的 Markdown 编辑器，Utools 上搜索 **『清爽 Markdown 编辑器』** 即可体验。 [![](../static/uploads/2021/08/wp_editor_md_79861a0615b3fba0215da77bdaafb508.jpg)](../static/uploads/2021/08/wp_editor_md_79861a0615b3fba0215da77bdaafb508.jpg) 具体代码见： Github：https://github.com/wangerzi/utools-vue3-markdown-editor Gitee：https://gitee.com/wangerzi/utools-vue3-markdown-editor 界面效果如下： [![](../static/uploads/2021/08/wp_editor_md_03fa153f98a6b7131bd78234b8fcfc9e.jpg)](../static/uploads/2021/08/wp_editor_md_03fa153f98a6b7131bd78234b8fcfc9e.jpg) 还有一些优秀的开源插件可参考： [https://github.com/xiaou66/utools-pictureBed](https://github.com/xiaou66/utools-pictureBed) [https://github.com/xkloveme/utools-calendar](https://github.com/xkloveme/utools-calendar) [https://github.com/in3102/upassword](https://github.com/in3102/upassword)
+Utools 开发者文档：http://u.tools/docs/developer/welcome.html ElementUI开发文档：https://element-plus.org/#/zh-CN/component/installation Vue3 开发文档：https://v3.vuejs.org/guide/introduction.html Vite 开发文档：https://vitejs.dev/config/ 在开发者文档中，快速上手仅提供了原生 JS + utools 能力的调用结合，这篇文档的目标是**将 Vue3 与 Utools 开发结合，并将国内比较流行的 ElementUI 框架集成在一起**，最终会基于这些技术创造出一个简易的 Markdown 编辑器，Utools 上搜索 **『清爽 Markdown 编辑器』** 即可体验。 [![](/static/uploads/2021/08/wp_editor_md_79861a0615b3fba0215da77bdaafb508.jpg)](/static/uploads/2021/08/wp_editor_md_79861a0615b3fba0215da77bdaafb508.jpg) 具体代码见： Github：https://github.com/wangerzi/utools-vue3-markdown-editor Gitee：https://gitee.com/wangerzi/utools-vue3-markdown-editor 界面效果如下： [![](/static/uploads/2021/08/wp_editor_md_03fa153f98a6b7131bd78234b8fcfc9e.jpg)](/static/uploads/2021/08/wp_editor_md_03fa153f98a6b7131bd78234b8fcfc9e.jpg) 还有一些优秀的开源插件可参考： [https://github.com/xiaou66/utools-pictureBed](https://github.com/xiaou66/utools-pictureBed) [https://github.com/xkloveme/utools-calendar](https://github.com/xkloveme/utools-calendar) [https://github.com/in3102/upassword](https://github.com/in3102/upassword)
 
 ## 基础工具的集成
 
@@ -89,7 +89,7 @@ Pre-bundling dependencies:
   ready in 1375ms.
 ```
 
-此时访问 http://localhost:3000/ 将会看到如下界面，表示项目初始化完成 [![](../static/uploads/2021/08/wp_editor_md_351fe3c5194528957a7dbbd354d05644.jpg)](../static/uploads/2021/08/wp_editor_md_351fe3c5194528957a7dbbd354d05644.jpg)
+此时访问 http://localhost:3000/ 将会看到如下界面，表示项目初始化完成 [![](/static/uploads/2021/08/wp_editor_md_351fe3c5194528957a7dbbd354d05644.jpg)](/static/uploads/2021/08/wp_editor_md_351fe3c5194528957a7dbbd354d05644.jpg)
 
 ### 框架引入
 
@@ -240,7 +240,7 @@ a {
 </style>
 ```
 
-执行 `npm run dev` 并访问 `http://localhost:3000/`，看到 ElementUI 风格的按钮展现在页面上即表示成功 [![](../static/uploads/2021/08/wp_editor_md_05005799edf5402c602ea2ab31421932.jpg)](../static/uploads/2021/08/wp_editor_md_05005799edf5402c602ea2ab31421932.jpg)
+执行 `npm run dev` 并访问 `http://localhost:3000/`，看到 ElementUI 风格的按钮展现在页面上即表示成功 [![](/static/uploads/2021/08/wp_editor_md_05005799edf5402c602ea2ab31421932.jpg)](/static/uploads/2021/08/wp_editor_md_05005799edf5402c602ea2ab31421932.jpg)
 
 ### utools 开发配置
 
@@ -311,7 +311,7 @@ dist/assets/vendor.27ac3d2d.js            211.72kb / brotli: 63.94kb
 
 #### 调试和打包插件
 
-首先去 utools 插件中搜索『开发者工具』，打开后点击新建项目，补齐相关信息 [![](../static/uploads/2021/08/wp_editor_md_6964053e6c5db9d7ac218d450fec68f4.jpg)](../static/uploads/2021/08/wp_editor_md_6964053e6c5db9d7ac218d450fec68f4.jpg) [![](../static/uploads/2021/08/wp_editor_md_b3dbf29945d410ba504e3370c39aaf3c.jpg)](../static/uploads/2021/08/wp_editor_md_b3dbf29945d410ba504e3370c39aaf3c.jpg) 上一步 `npm build` 后，会产生一个 `dist/` 目录，将其下的 `dist/plugin.json` 拖到开发者工具中，点击运行 [![](../static/uploads/2021/08/wp_editor_md_b314f853096dc1539c13ce06c547e3bf.jpg)](../static/uploads/2021/08/wp_editor_md_b314f853096dc1539c13ce06c547e3bf.jpg) [![](../static/uploads/2021/08/wp_editor_md_a7d3a7601deac820b902bbe66eb4948f.jpg)](../static/uploads/2021/08/wp_editor_md_a7d3a7601deac820b902bbe66eb4948f.jpg) 由于是调试模式，并且我们在 `plugin.json` 中制定了 `development.main` 为 `localhost:3000`，所以在调试期间需要 `npm run dev` 把 devserver 跑起来
+首先去 utools 插件中搜索『开发者工具』，打开后点击新建项目，补齐相关信息 [![](/static/uploads/2021/08/wp_editor_md_6964053e6c5db9d7ac218d450fec68f4.jpg)](/static/uploads/2021/08/wp_editor_md_6964053e6c5db9d7ac218d450fec68f4.jpg) [![](/static/uploads/2021/08/wp_editor_md_b3dbf29945d410ba504e3370c39aaf3c.jpg)](/static/uploads/2021/08/wp_editor_md_b3dbf29945d410ba504e3370c39aaf3c.jpg) 上一步 `npm build` 后，会产生一个 `dist/` 目录，将其下的 `dist/plugin.json` 拖到开发者工具中，点击运行 [![](/static/uploads/2021/08/wp_editor_md_b314f853096dc1539c13ce06c547e3bf.jpg)](/static/uploads/2021/08/wp_editor_md_b314f853096dc1539c13ce06c547e3bf.jpg) [![](/static/uploads/2021/08/wp_editor_md_a7d3a7601deac820b902bbe66eb4948f.jpg)](/static/uploads/2021/08/wp_editor_md_a7d3a7601deac820b902bbe66eb4948f.jpg) 由于是调试模式，并且我们在 `plugin.json` 中制定了 `development.main` 为 `localhost:3000`，所以在调试期间需要 `npm run dev` 把 devserver 跑起来
 
 ```shell
 $ npm run dev
@@ -336,13 +336,13 @@ it is recommended to pin your vue dependencies to exact versions to avoid breaka
 [@vue/compiler-sfc] `defineProps` is a compiler macro and no longer needs to be imported.
 ```
 
-然后 utools 中输入关键字 『markdown』即可看到处于 dev 状态下的插件 [![](../static/uploads/2021/08/wp_editor_md_d1426f0cf2d191d207f337b4a57d0351.jpg)](../static/uploads/2021/08/wp_editor_md_d1426f0cf2d191d207f337b4a57d0351.jpg) 进入插件后，点击右上角按钮或者 ctrl+sfhit+i 可进入开发者模式，开发者模式中可以看到 `preload.js` 正常运行，输出了 『preload js loaded』 [![](../static/uploads/2021/08/wp_editor_md_e3ad758990d218f4d845f19c5d284dc5.jpg)](../static/uploads/2021/08/wp_editor_md_e3ad758990d218f4d845f19c5d284dc5.jpg) [![](../static/uploads/2021/08/wp_editor_md_30e0b6bad7f7f5d9884428a3a8b773e7.jpg)](../static/uploads/2021/08/wp_editor_md_30e0b6bad7f7f5d9884428a3a8b773e7.jpg)
+然后 utools 中输入关键字 『markdown』即可看到处于 dev 状态下的插件 [![](/static/uploads/2021/08/wp_editor_md_d1426f0cf2d191d207f337b4a57d0351.jpg)](/static/uploads/2021/08/wp_editor_md_d1426f0cf2d191d207f337b4a57d0351.jpg) 进入插件后，点击右上角按钮或者 ctrl+sfhit+i 可进入开发者模式，开发者模式中可以看到 `preload.js` 正常运行，输出了 『preload js loaded』 [![](/static/uploads/2021/08/wp_editor_md_e3ad758990d218f4d845f19c5d284dc5.jpg)](/static/uploads/2021/08/wp_editor_md_e3ad758990d218f4d845f19c5d284dc5.jpg) [![](/static/uploads/2021/08/wp_editor_md_30e0b6bad7f7f5d9884428a3a8b773e7.jpg)](/static/uploads/2021/08/wp_editor_md_30e0b6bad7f7f5d9884428a3a8b773e7.jpg)
 
 > 注意：指定的 plugin.json 为 `dev/plugin.json`，所以 `public/plugin.json` 、 `public/preload.js` 有任何修改，需要手动复制或者 `npm run build` 重新打包，然后 utools 开发者工具点击按钮刷新 plugin.json 即可。
 
 ## 功能实现
 
-功能整体比较简单，左侧为编辑区，由 textarea 实现，右侧为预览区，实时渲染左侧编辑区域的 markdown 语法的结果，下方为两个控制按钮，分别是保存和另存。 [![](../static/uploads/2021/08/wp_editor_md_6440d39f4c109823505bb18de6dca1d3.jpg)](../static/uploads/2021/08/wp_editor_md_6440d39f4c109823505bb18de6dca1d3.jpg)
+功能整体比较简单，左侧为编辑区，由 textarea 实现，右侧为预览区，实时渲染左侧编辑区域的 markdown 语法的结果，下方为两个控制按钮，分别是保存和另存。 [![](/static/uploads/2021/08/wp_editor_md_6440d39f4c109823505bb18de6dca1d3.jpg)](/static/uploads/2021/08/wp_editor_md_6440d39f4c109823505bb18de6dca1d3.jpg)
 
 ### 依赖库的安装调用
 
@@ -363,7 +363,7 @@ added 1 package from 1 contributor in 33.831s
 
 ### 布局实现
 
-由于此应用单页即可完成，所以简单改造下 `src/App.vue` 和 `src/components/HelloWorld.vue` 即可，其中 `HelloWorld.vue` 在项目中被重命名为了 `Editor.vue`，目录结构如下图所示： [![](../static/uploads/2021/08/wp_editor_md_488df0b2674602bde37f94811ac9c965.jpg)](../static/uploads/2021/08/wp_editor_md_488df0b2674602bde37f94811ac9c965.jpg)
+由于此应用单页即可完成，所以简单改造下 `src/App.vue` 和 `src/components/HelloWorld.vue` 即可，其中 `HelloWorld.vue` 在项目中被重命名为了 `Editor.vue`，目录结构如下图所示： [![](/static/uploads/2021/08/wp_editor_md_488df0b2674602bde37f94811ac9c965.jpg)](/static/uploads/2021/08/wp_editor_md_488df0b2674602bde37f94811ac9c965.jpg)
 
 #### Editor.vue
 
@@ -600,7 +600,7 @@ utools.onPluginEnter(({code, type, payload}) => {
 
 ### 打包 upx 或发布到插件中心
 
-调试无误后，点击打包为 upx 即可自行安装测试或分发 [![](../static/uploads/2021/08/wp_editor_md_9c839b65f108be43c2316fba14d174db.jpg)](../static/uploads/2021/08/wp_editor_md_9c839b65f108be43c2316fba14d174db.jpg) 也可以在『插件发布中』点击发布插件，填写相关信息，审核后即可在插件市场看到发布的插件。 [![](../static/uploads/2021/08/wp_editor_md_e1cdddbccf8c285262e833d393a7d89e.jpg)](../static/uploads/2021/08/wp_editor_md_e1cdddbccf8c285262e833d393a7d89e.jpg)
+调试无误后，点击打包为 upx 即可自行安装测试或分发 [![](/static/uploads/2021/08/wp_editor_md_9c839b65f108be43c2316fba14d174db.jpg)](/static/uploads/2021/08/wp_editor_md_9c839b65f108be43c2316fba14d174db.jpg) 也可以在『插件发布中』点击发布插件，填写相关信息，审核后即可在插件市场看到发布的插件。 [![](/static/uploads/2021/08/wp_editor_md_e1cdddbccf8c285262e833d393a7d89e.jpg)](/static/uploads/2021/08/wp_editor_md_e1cdddbccf8c285262e833d393a7d89e.jpg)
 
 ## 常见问题和总结
 

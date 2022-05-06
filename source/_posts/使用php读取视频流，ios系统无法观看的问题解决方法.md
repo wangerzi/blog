@@ -10,7 +10,7 @@ categories:
   - - 后端开发
   - - 微信相关
 date: 2018-03-10 20:55:12
-cover: ../../static/uploads/2018/03/e908e64c4681a2ab6d0e9320a8a9bc2a-1.png
+cover: /static/uploads/2018/03/e908e64c4681a2ab6d0e9320a8a9bc2a-1.png
 ---
 
 
@@ -94,7 +94,7 @@ mysql_close($con);
 
 # 问题成因
 
-chrome对视频的兼容性比较好，有时候请求资源，header里边的"Range"是"0-"，意思是请求获取该视频全部文件，而我们恰好将文件全部返回了，所以Chrome中可以正常使用。 但是在IOS中，无论是自带的safari还是IOS的微信浏览器都是用的safari内核，请求视频资源时都会先发起一个头部包含"Range:0-1" 的请求，目的是为了获取视频文件大小，如果用户不点开视频可以节省流量。 **chorme的video请求：** ![](../static/uploads/2018/03/ea2f5e5355254fd2e7cab840a74d6c8a.png) **IOS的video请求日志记录** ![](../static/uploads/2018/03/e908e64c4681a2ab6d0e9320a8a9bc2a.png) 透过日志可以看到，IOS观看视频时，会先请求一个range:0-1， 此时我回一个length:2 ，bytes=0-1，IOS将会获取到视频大小等信息，以便进行分段请求。
+chrome对视频的兼容性比较好，有时候请求资源，header里边的"Range"是"0-"，意思是请求获取该视频全部文件，而我们恰好将文件全部返回了，所以Chrome中可以正常使用。 但是在IOS中，无论是自带的safari还是IOS的微信浏览器都是用的safari内核，请求视频资源时都会先发起一个头部包含"Range:0-1" 的请求，目的是为了获取视频文件大小，如果用户不点开视频可以节省流量。 **chorme的video请求：** ![](/static/uploads/2018/03/ea2f5e5355254fd2e7cab840a74d6c8a.png) **IOS的video请求日志记录** ![](/static/uploads/2018/03/e908e64c4681a2ab6d0e9320a8a9bc2a.png) 透过日志可以看到，IOS观看视频时，会先请求一个range:0-1， 此时我回一个length:2 ，bytes=0-1，IOS将会获取到视频大小等信息，以便进行分段请求。
 
 # 解决问题
 

@@ -7,7 +7,7 @@ id: '646'
 categories:
   - - 前端开发
 date: 2021-01-25 10:22:51
-cover: ../../static/uploads/2019/11/10-21-http-request.png
+cover: /static/uploads/2019/11/10-21-http-request.png
 ---
 
 > 本文也发布于 learnku社区，博主最近有部分时间在该社区活跃，翻译文章，讨论问题等，learnku文章链接：https://learnku.com/articles/53633
@@ -20,7 +20,7 @@ cover: ../../static/uploads/2019/11/10-21-http-request.png
 
 ### 起什么作用？
 
-在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。 我想各位都知道或了解 Vue 的渲染流程，Vue 在监听到数据变化后会重新渲染，配合 VDOM 更新真实的 DOM，而 nextTick 的触发时机就是在调用方法后的第一次重新渲染完毕后。 [![](../static/uploads/2021/01/wp_editor_md_1131d00b8d98f0283656b40d6755cf20.jpg)](../static/uploads/2021/01/wp_editor_md_1131d00b8d98f0283656b40d6755cf20.jpg)
+在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。 我想各位都知道或了解 Vue 的渲染流程，Vue 在监听到数据变化后会重新渲染，配合 VDOM 更新真实的 DOM，而 nextTick 的触发时机就是在调用方法后的第一次重新渲染完毕后。 [![](/static/uploads/2021/01/wp_editor_md_1131d00b8d98f0283656b40d6755cf20.jpg)](/static/uploads/2021/01/wp_editor_md_1131d00b8d98f0283656b40d6755cf20.jpg)
 
 ### 如何使用？
 

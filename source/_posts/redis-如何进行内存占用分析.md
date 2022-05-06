@@ -8,7 +8,7 @@ categories:
   - - Linux
   - - 后端开发
 date: 2020-07-01 16:26:47
-cover: ../../static/uploads/2020/02/u15834439403268442047fm26gp0.jpg
+cover: /static/uploads/2020/02/u15834439403268442047fm26gp0.jpg
 ---
 
 

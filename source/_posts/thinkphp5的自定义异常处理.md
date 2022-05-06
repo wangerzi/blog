@@ -7,7 +7,7 @@ id: '508'
 categories:
   - - 后端开发
 date: 2020-02-23 17:55:09
-cover: ../../static/uploads/2020/02/u15834439403268442047fm26gp0.jpg
+cover: /static/uploads/2020/02/u15834439403268442047fm26gp0.jpg
 ---
 
 
@@ -175,7 +175,7 @@ class Http extends Handle
     }
 ```
 
-看到这里并没有看到 `app.php` 中的 `exception.handler` 如何发挥作用的，那么继续往下看，由于 `self::$exceptionHandler` 由 `setExceptionHandler` 决定，透过编辑器可以找到其调用方如下图所示： [![](../static/uploads/2020/02/69a4786f0b48d4cc4439fd6bbf677380.png)](../static/uploads/2020/02/69a4786f0b48d4cc4439fd6bbf677380.png) 在 `thinkphp/library/think/App.php` 的 `initialize()` 中，可看到如下所示代码
+看到这里并没有看到 `app.php` 中的 `exception.handler` 如何发挥作用的，那么继续往下看，由于 `self::$exceptionHandler` 由 `setExceptionHandler` 决定，透过编辑器可以找到其调用方如下图所示： [![](/static/uploads/2020/02/69a4786f0b48d4cc4439fd6bbf677380.png)](/static/uploads/2020/02/69a4786f0b48d4cc4439fd6bbf677380.png) 在 `thinkphp/library/think/App.php` 的 `initialize()` 中，可看到如下所示代码
 
 ```php
 // 注册异常处理类

@@ -9,7 +9,7 @@ categories:
   - - 后端开发
     - Serverless
 date: 2020-11-22 13:21:01
-cover: ../../static/uploads/2020/11/timg.jpg
+cover: /static/uploads/2020/11/timg.jpg
 ---
 
 
@@ -102,11 +102,11 @@ true
 
 > 注：所有的 EC2 和 LB 都需要选择 HTTP\_CLOUDFRONT\_IP\_ONLY 和 HTTP\_CLOUDFRONT\_IP\_ONLY\_R 这两个安全组。
 
-[![](../static/uploads/2020/11/wp_editor_md_7092ef83875ab140cb81c7e1d9fed2d8.jpg)](../static/uploads/2020/11/wp_editor_md_7092ef83875ab140cb81c7e1d9fed2d8.jpg) 创建完大概就是这样： [![](../static/uploads/2020/11/wp_editor_md_55e62d5672bde84b42fba64c5b992b0c.jpg)](../static/uploads/2020/11/wp_editor_md_55e62d5672bde84b42fba64c5b992b0c.jpg)
+[![](/static/uploads/2020/11/wp_editor_md_7092ef83875ab140cb81c7e1d9fed2d8.jpg)](/static/uploads/2020/11/wp_editor_md_7092ef83875ab140cb81c7e1d9fed2d8.jpg) 创建完大概就是这样： [![](/static/uploads/2020/11/wp_editor_md_55e62d5672bde84b42fba64c5b992b0c.jpg)](/static/uploads/2020/11/wp_editor_md_55e62d5672bde84b42fba64c5b992b0c.jpg)
 
 ### 创建Lambda执行角色
 
-[IAM角色](https://console.aws.amazon.com/iam/home?region=us-west-1#/roles) 首先进入 IAM 角色控制台，点击『创建角色』，选择『Lambda』，点击『下一步』 [![](../static/uploads/2020/11/wp_editor_md_f1d3d67dca44e87a06e1e5311d580ccb.jpg)](../static/uploads/2020/11/wp_editor_md_f1d3d67dca44e87a06e1e5311d580ccb.jpg) 再选择『创建策略』，点击『JSON』标签，将如下内容粘贴进去
+[IAM角色](https://console.aws.amazon.com/iam/home?region=us-west-1#/roles) 首先进入 IAM 角色控制台，点击『创建角色』，选择『Lambda』，点击『下一步』 [![](/static/uploads/2020/11/wp_editor_md_f1d3d67dca44e87a06e1e5311d580ccb.jpg)](/static/uploads/2020/11/wp_editor_md_f1d3d67dca44e87a06e1e5311d580ccb.jpg) 再选择『创建策略』，点击『JSON』标签，将如下内容粘贴进去
 
 ```json
 {
@@ -134,11 +134,11 @@ true
 }
 ```
 
-[![](../static/uploads/2020/11/wp_editor_md_98594b8a74ef2f31faaf96482ea86672.jpg)](../static/uploads/2020/11/wp_editor_md_98594b8a74ef2f31faaf96482ea86672.jpg) 命好名字，创建策略即可。 [![](../static/uploads/2020/11/wp_editor_md_005357534d0d74fcb6e2386836423f97.jpg)](../static/uploads/2020/11/wp_editor_md_005357534d0d74fcb6e2386836423f97.jpg) 随后返回继续创建角色，搜索到对应的策略后勾选并点击『下一步：标签』 [![](../static/uploads/2020/11/wp_editor_md_3db02e43119ec89211db531ff29314c4.jpg)](../static/uploads/2020/11/wp_editor_md_3db02e43119ec89211db531ff29314c4.jpg) 直到最后，点击创建角色即可，**这个角色会用来执行 Lambda 函数**。 [![](../static/uploads/2020/11/wp_editor_md_3db02e43119ec89211db531ff29314c4.jpg)](../static/uploads/2020/11/wp_editor_md_3db02e43119ec89211db531ff29314c4.jpg)
+[![](/static/uploads/2020/11/wp_editor_md_98594b8a74ef2f31faaf96482ea86672.jpg)](/static/uploads/2020/11/wp_editor_md_98594b8a74ef2f31faaf96482ea86672.jpg) 命好名字，创建策略即可。 [![](/static/uploads/2020/11/wp_editor_md_005357534d0d74fcb6e2386836423f97.jpg)](/static/uploads/2020/11/wp_editor_md_005357534d0d74fcb6e2386836423f97.jpg) 随后返回继续创建角色，搜索到对应的策略后勾选并点击『下一步：标签』 [![](/static/uploads/2020/11/wp_editor_md_3db02e43119ec89211db531ff29314c4.jpg)](/static/uploads/2020/11/wp_editor_md_3db02e43119ec89211db531ff29314c4.jpg) 直到最后，点击创建角色即可，**这个角色会用来执行 Lambda 函数**。 [![](/static/uploads/2020/11/wp_editor_md_3db02e43119ec89211db531ff29314c4.jpg)](/static/uploads/2020/11/wp_editor_md_3db02e43119ec89211db531ff29314c4.jpg)
 
 ### 创建函数
 
-[Lambda函数控制台](https://us-west-2.console.aws.amazon.com/lambda/home?region=us-west-2#/functions) 点击『创建函数』，定义好名称选择好角色，点击『创建函数』 [![](../static/uploads/2020/11/wp_editor_md_043d0764d073f967d9a6b1244a3ef411.jpg)](../static/uploads/2020/11/wp_editor_md_043d0764d073f967d9a6b1244a3ef411.jpg) 将参考了 [官方代码](https://github.com/aws-samples/aws-cloudfront-samples/blob/master/update_security_groups_lambda/update_security_groups.py) 的改进版代码拷贝到『函数代码』区域，在右上角点击『保存』
+[Lambda函数控制台](https://us-west-2.console.aws.amazon.com/lambda/home?region=us-west-2#/functions) 点击『创建函数』，定义好名称选择好角色，点击『创建函数』 [![](/static/uploads/2020/11/wp_editor_md_043d0764d073f967d9a6b1244a3ef411.jpg)](/static/uploads/2020/11/wp_editor_md_043d0764d073f967d9a6b1244a3ef411.jpg) 将参考了 [官方代码](https://github.com/aws-samples/aws-cloudfront-samples/blob/master/update_security_groups_lambda/update_security_groups.py) 的改进版代码拷贝到『函数代码』区域，在右上角点击『保存』
 
 #### 代码改进
 
@@ -154,11 +154,11 @@ INGRESS_PORTS = { 'http' : 80, 'https': 443, 'example': 8080}
 INGRESS_PORTS = { 'http' : 80, 'https': 443}
 ```
 
-[![](../static/uploads/2020/11/wp_editor_md_b81cb7f4b41fda58c33c74aa7a1f8d2c.jpg)](../static/uploads/2020/11/wp_editor_md_b81cb7f4b41fda58c33c74aa7a1f8d2c.jpg) 修改函数的执行时间设置为1分钟，否则容易超时 [![](../static/uploads/2020/11/wp_editor_md_2b9bec1d31d33d7d265e7d560cf9670c.jpg)](../static/uploads/2020/11/wp_editor_md_2b9bec1d31d33d7d265e7d560cf9670c.jpg) 可以点击运行测试用例尝试下是否会更新安全组，如果出现 md5 错误，手动修改下测试数据即可
+[![](/static/uploads/2020/11/wp_editor_md_b81cb7f4b41fda58c33c74aa7a1f8d2c.jpg)](/static/uploads/2020/11/wp_editor_md_b81cb7f4b41fda58c33c74aa7a1f8d2c.jpg) 修改函数的执行时间设置为1分钟，否则容易超时 [![](/static/uploads/2020/11/wp_editor_md_2b9bec1d31d33d7d265e7d560cf9670c.jpg)](/static/uploads/2020/11/wp_editor_md_2b9bec1d31d33d7d265e7d560cf9670c.jpg) 可以点击运行测试用例尝试下是否会更新安全组，如果出现 md5 错误，手动修改下测试数据即可
 
 ### 自动更新
 
-点击『添加触发器』，选择SNS，主题输入框输入 `arn:aws:sns:us-east-1:806199016981:AmazonIpSpaceChanged`，点击『添加』 [![](../static/uploads/2020/11/wp_editor_md_d3e3ab1240d6a3bf5e5ff0d8634402c0.jpg)](../static/uploads/2020/11/wp_editor_md_d3e3ab1240d6a3bf5e5ff0d8634402c0.jpg)
+点击『添加触发器』，选择SNS，主题输入框输入 `arn:aws:sns:us-east-1:806199016981:AmazonIpSpaceChanged`，点击『添加』 [![](/static/uploads/2020/11/wp_editor_md_d3e3ab1240d6a3bf5e5ff0d8634402c0.jpg)](/static/uploads/2020/11/wp_editor_md_d3e3ab1240d6a3bf5e5ff0d8634402c0.jpg)
 
 ### 更新 EC2 或 ELB 的安全组策略
 

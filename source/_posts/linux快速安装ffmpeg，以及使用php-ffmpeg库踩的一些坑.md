@@ -11,7 +11,7 @@ categories:
   - - Linux
   - - 后端开发
 date: 2018-03-20 00:37:08
-cover: ../../static/uploads/2018/03/a91f301dceecf2d53e081b10db62a3c1-1.png
+cover: /static/uploads/2018/03/a91f301dceecf2d53e081b10db62a3c1-1.png
 ---
 
 
@@ -46,7 +46,7 @@ $video->frame(\FFMpeg\Coordinate\TimeCode::fromSeconds(3))->save('temp.jpg');
 
 ## 如何解决Unable to load FFMpeg
 
-在Linux环境中，直接使用create()会爆出如下错误： ![](../static/uploads/2018/03/a91f301dceecf2d53e081b10db62a3c1.png) **出现原因：** create()时未指定ffmpeg的完成路径，所以报错 Unable to load FFMpeg(译：不能加载FFMPEG) **解决方案：** 指定ffmpeg和ffprobe的完整路径即可
+在Linux环境中，直接使用create()会爆出如下错误： ![](/static/uploads/2018/03/a91f301dceecf2d53e081b10db62a3c1.png) **出现原因：** create()时未指定ffmpeg的完成路径，所以报错 Unable to load FFMpeg(译：不能加载FFMPEG) **解决方案：** 指定ffmpeg和ffprobe的完整路径即可
 
 ```php
 <?php
@@ -61,4 +61,4 @@ $fpg = \FFMpeg\FFMpeg::create([
 
 ## 如何解决Unable to save frame
 
-解决完Unable to load 问题之后，又出现了Unable to save frame的问题。 ![](../static/uploads/2018/03/cc2e4dc9f7198855b380b292c19fa134.png) Unable to save frame ffmpeg failed to execute command '/usr/bin/ffmpeg' '-y' '-ss' '00:00:03.00' '-i' './test.mov' '-vframes' '1' '-f' 'image2' './temp.jpg' PS：failed to execute command ...的详细信息是更改Frame.php中的源代码查看到的。 ![](../static/uploads/2018/03/ab5d2667570329426176e8dab57fc21c.png) **发生原因** 笔者看到这种情况，第一想到的就是可能保存文件权限不足，所以更改了下 保存路径的权限为 777，但是并没有这么简单，手动在命令行下执行了这个脚本，发现在命令行下可以执行。 **解决办法** 经过一番资料搜索与摸索，终于确定了问题所在，既然 手动执行脚本没有问题，为何通过web调用php就不能执行呢？于是将目标转移到了/usr/bin/ffmpeg和/usr/bin/ffprobe上，ls -a 查看权限所属，果然全是root:root，将其改为apache:apache后使用web调用php程序正常执行。 `chown apache:apache /usr/bin/ffmpeg /usr/bin/ffprobe` **执行完毕后最终结果：** `ls -a /usr/bin/ff*` ![](../static/uploads/2018/03/ce19ebe38061627bff4dc498fdc29d23.png)
+解决完Unable to load 问题之后，又出现了Unable to save frame的问题。 ![](/static/uploads/2018/03/cc2e4dc9f7198855b380b292c19fa134.png) Unable to save frame ffmpeg failed to execute command '/usr/bin/ffmpeg' '-y' '-ss' '00:00:03.00' '-i' './test.mov' '-vframes' '1' '-f' 'image2' './temp.jpg' PS：failed to execute command ...的详细信息是更改Frame.php中的源代码查看到的。 ![](/static/uploads/2018/03/ab5d2667570329426176e8dab57fc21c.png) **发生原因** 笔者看到这种情况，第一想到的就是可能保存文件权限不足，所以更改了下 保存路径的权限为 777，但是并没有这么简单，手动在命令行下执行了这个脚本，发现在命令行下可以执行。 **解决办法** 经过一番资料搜索与摸索，终于确定了问题所在，既然 手动执行脚本没有问题，为何通过web调用php就不能执行呢？于是将目标转移到了/usr/bin/ffmpeg和/usr/bin/ffprobe上，ls -a 查看权限所属，果然全是root:root，将其改为apache:apache后使用web调用php程序正常执行。 `chown apache:apache /usr/bin/ffmpeg /usr/bin/ffprobe` **执行完毕后最终结果：** `ls -a /usr/bin/ff*` ![](/static/uploads/2018/03/ce19ebe38061627bff4dc498fdc29d23.png)

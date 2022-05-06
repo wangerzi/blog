@@ -7,7 +7,7 @@ id: '305'
 categories:
   - - Linux
 date: 2018-11-09 12:05:09
-cover: ../../static/uploads/2018/12/pic1.jpeg
+cover: /static/uploads/2018/12/pic1.jpeg
 ---
 
 

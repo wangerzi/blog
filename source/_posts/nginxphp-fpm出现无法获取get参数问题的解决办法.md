@@ -8,7 +8,7 @@ id: '121'
 categories:
   - - Linux
 date: 2018-03-07 10:28:58
-cover: ../../static/uploads/2018/03/TIM%E6%88%AA%E5%9B%BE20180307102409.png
+cover: /static/uploads/2018/03/TIM%E6%88%AA%E5%9B%BE20180307102409.png
 ---
 
 # 背景
