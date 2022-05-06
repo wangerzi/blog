@@ -1,6 +1,6 @@
-avatar: https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/avatar.png # 网站 Logo
+avatar: https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/avatar.jpg # 网站 Logo
 background: # 既是博客的背景，又是文章默认头图
-  path: https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg
+  path: https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/post-default.jpg
   width: 1440
   height: 960
 favicon:
@@ -14,7 +14,7 @@ function: # 功能开关，可选值（true,false）
 imageCDN: # 图片 CDN 功能
   enable: true # 开启该功能  
   origin: '/../static/' # 图片原始目录
-  to: https://cdn.jsdelivr.net/gh/wangerzi/blog.github.io@latest/source/static/ # 图片 CDN 域名
+  to: https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/ # 图片 CDN 域名
   
 # 附加图标库 使用说明：https://docs.nexmoe.com/config/icon
 iconlib: # //at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css
@@ -79,10 +79,15 @@ maxTagcloud: 20  # 标签云组件显示的标签数量，0 表示不限制
 
 social:
   GitHub:
-    - https://github.com/nexmoe/
+    - https://github.com/wangerzi/
     - icon-github
     - rgb(25, 23, 23)
     - rgba(25, 23, 23, .15)
+  RSS:
+    - /atom.xml
+    - icon-rss
+    - rgb(247, 132, 34)
+    - rgba(247, 132, 34, .1)
 
 # 自定义样式，启用后可在站点的source文件夹下新建custom.css自定义站点样式
 customstyle: false  
