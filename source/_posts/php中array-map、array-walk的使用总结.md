@@ -8,6 +8,7 @@ id: '321'
 categories:
   - - 后端开发
 date: 2018-12-07 10:10:19
+cover: ../../static/uploads/2018/12/pic1.jpeg
 ---
 
 

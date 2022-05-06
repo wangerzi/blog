@@ -7,6 +7,7 @@ id: '504'
 categories:
   - - 机器学习
 date: 2020-02-23 16:36:27
+cover: ../../static/uploads/2020/02/zWPNti_1543055279031.jpeg
 ---
 
 

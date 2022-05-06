@@ -7,6 +7,7 @@ id: '432'
 categories:
   - - Linux
 date: 2019-11-29 10:34:50
+cover: ../../static/uploads/2019/11/%E6%B7%B1%E5%BA%A6%E6%88%AA%E5%9B%BE_%E9%80%89%E6%8B%A9%E5%8C%BA%E5%9F%9F_20191129103827-1124x661.png
 ---
 
 

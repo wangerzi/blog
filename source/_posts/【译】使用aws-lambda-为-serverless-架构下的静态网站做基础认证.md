@@ -7,10 +7,10 @@ tags:
   - Serverless
 id: '608'
 categories:
-  - - web-background
-    - Serverless
   - - 后端开发
+    - Serverless
 date: 2020-07-21 10:05:50
+cover: ../../static/uploads/2020/07/hello-website.png
 ---
 
 ## 译者前言

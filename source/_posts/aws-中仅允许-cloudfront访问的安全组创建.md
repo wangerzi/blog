@@ -6,10 +6,10 @@ tags:
   - lambda
 id: '636'
 categories:
-  - - Linux
-  - - web-background
+  - - 后端开发
     - Serverless
 date: 2020-11-22 13:21:01
+cover: ../../static/uploads/2020/11/timg.jpg
 ---
 
 

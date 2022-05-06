@@ -5,6 +5,10 @@ layout: py
 permalink: friends.html
 ---
 
+![](./static/friends.jpg)
+
+## 友情链接
+
 - [![三叔的SEO博客](./static/images/sanshu.png)](http://www.sanshu.cn/ "三叔的SEO博客")
 - [![MelodyHub](./static/images/melodyhub.jpg)](https://melodyhub.ltd/ "MelodyHub")
 - [![Geek 三斤](./static/images/geek.png)](https://geek.lc/ "Geek 三斤")

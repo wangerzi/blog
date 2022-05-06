@@ -6,6 +6,7 @@ id: '255'
 categories:
   - - Linux
 date: 2018-07-20 10:23:53
+cover: ../../static/uploads/git.jpg
 ---
 
 # 目标

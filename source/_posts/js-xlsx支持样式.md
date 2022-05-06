@@ -10,6 +10,7 @@ id: '360'
 categories:
   - - 前端开发
 date: 2019-05-01 15:19:24
+cover: ../../static/uploads/2019/05/flower.jpg
 ---
 
 ## 背景

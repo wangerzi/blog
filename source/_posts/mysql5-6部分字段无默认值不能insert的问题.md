@@ -2,13 +2,13 @@
 title: mysql5.6部分字段无默认值不能insert的问题
 tags:
   - Linux
-  - mysql
+  - Mysql
 id: '127'
 categories:
   - - Linux
-  - - linux
-    - mysql
+    - Mysql
 date: 2018-03-07 21:41:35
+cover: ../../static/uploads/2018/04/bg-1200x661.jpg
 ---
 
 # 背景

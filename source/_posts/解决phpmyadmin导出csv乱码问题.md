@@ -7,6 +7,7 @@ id: '136'
 categories:
   - - 后端开发
 date: 2018-03-10 17:13:34
+cover: ../../static/uploads/2018/03/f349197440ceed70b72a1276b3afa024-1.png
 ---
 
 # 背景

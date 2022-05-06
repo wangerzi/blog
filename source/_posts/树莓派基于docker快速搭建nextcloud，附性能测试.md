@@ -8,6 +8,7 @@ id: '540'
 categories:
   - - Linux
 date: 2020-07-02 09:39:37
+cover: ../../static/uploads/2020/07/20150428-cloud-computing.0.1489222360-1200x661.jpg
 ---
 
 

@@ -8,6 +8,7 @@ id: '93'
 categories:
   - - Linux
 date: 2017-12-24 14:55:52
+cover: ../../static/uploads/linux.jpg
 ---
 
 

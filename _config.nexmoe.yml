@@ -1,6 +1,6 @@
 avatar: https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/avatar.jpg # 网站 Logo
 background: # 既是博客的背景，又是文章默认头图
-  path: https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/post-default.jpg
+  path: https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/background.jpg
   width: 1440
   height: 960
 favicon:
@@ -70,8 +70,8 @@ widgets:
 - search
 # - category
 - tagcloud
-- archive #settings: widgetAchive
 - recent_posts
+- archive #settings: widgetAchive
 - social
 # - link #settings: widgetLink
 

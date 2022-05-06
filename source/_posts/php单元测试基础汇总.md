@@ -8,6 +8,7 @@ id: '379'
 categories:
   - - 后端开发
 date: 2019-07-31 15:17:03
+cover: ../../static/uploads/2019/07/dycs.jpg
 ---
 
 

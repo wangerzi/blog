@@ -8,6 +8,7 @@ id: '250'
 categories:
   - - 后端开发
 date: 2018-05-26 15:38:44
+cover: ../../static/uploads/2018/05/temp-1200x661.jpg
 ---
 
 # 背景
