@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>我的2020年记-大浪潮下的小小打工人 - 九层台</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="前端开发,后端开发,LINUX,机器学习,软考">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="大纲2020在疫情中启程，也在疫情中结束；首先是工作上先体验了一波 停工+自由职业 的感觉，2月到4月也是我博客输出最多的时间，随后在4月找到了新工作，开始在新的业务场景中探索，技术大方向上了解并研究了 机器学习、NodeJs、ElasticSearch、Serverless、CI&#x2F;CD、容器化 等等一系列的东西； 与之前做内部系统的公司不同，进入到做 App的公司让我 对生产环境更为谨慎和敬畏，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我的2020年记-大浪潮下的小小打工人">
+<meta property="og:url" content="https://blog.wj2015.com/2021/02/06/%E6%88%91%E7%9A%842020%E5%B9%B4%E8%AE%B0-%E5%A4%A7%E6%B5%AA%E6%BD%AE%E4%B8%8B%E7%9A%84%E5%B0%8F%E5%B0%8F%E6%89%93%E5%B7%A5%E4%BA%BA/">
+<meta property="og:site_name" content="九层台">
+<meta property="og:description" content="大纲2020在疫情中启程，也在疫情中结束；首先是工作上先体验了一波 停工+自由职业 的感觉，2月到4月也是我博客输出最多的时间，随后在4月找到了新工作，开始在新的业务场景中探索，技术大方向上了解并研究了 机器学习、NodeJs、ElasticSearch、Serverless、CI&#x2F;CD、容器化 等等一系列的东西； 与之前做内部系统的公司不同，进入到做 App的公司让我 对生产环境更为谨慎和敬畏，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_151bafec821834074a668f6a7c8c9d70.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_35ad07e6fad9b10b2702c917b6115cd6.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_cd5de3784ad86556ee5e47c1accc7beb.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_dba17a8f019ca5c8071133dd46579e35.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_62383e4fc6596f7a2d7a4bdcd06a0a74.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_d746d83c63549fb77a454b9ce7af2f19.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_ef02fcf2dd3186a3a25e81999215b97a.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_c87c25f7d23409792cfe9ec22740f142.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_5506b6b6b7bdd590aa2541b51e00e653.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_3a7553f9d9a7fc266a543a8ad1a9e7d9.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_730568dc32b989db86425a3908aceda9.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_c56df5c7066357f4f233ca5c48082664.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_980846a95915e8c326c4eb90ea8dfeec.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_c13b2f268c3aefbc74e32e49e120b4c3.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_00e8ad70ee4285c6f0f305ecfbbd09bc.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_72dc99b003e7b354b5d877f1d412672d.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_050f0b9e4019976901ea0310f0a75732.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_35085ef1f3264c853de324437183cbf2.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_690d44ad4ef62c4299eba240953ca77e.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_0fafc399515674d90881a7ff7dde2232.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_3f6618165e396c554a6099979adefebf.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_0fdb59be14a2317b35a000bc754a1c77.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_b31dc89635b240a2ad0fd7bad2b95253.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_ae5e652fa9385b8d6f8d0d5a33c7a9c7.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_7e34fd55d711ef39377351e1c71615ca.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_961df3653beec75e19ff64becdb20776.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_4c8f9013a2d24e2db9fa9ebcbcad5bd9.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_0a13149821b1227ea738459e13f5783b.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_3769a3dab5b80b91224d1a311823eda2.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_df7c9bd95db30ba5a384261519148e5d.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_30f59df4d9aef7d367fec8dbf3b43143.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_74a1b5afd8da9f25e299b74d28e48b4a.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_1c265c55852fd9d23a45fbf14f341188.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_dffc413e7966df31512392bbf5ef2a47.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_4634ddf3801f8917cb714320b18811c1.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_4c85c1d5f1241daf382ee7541007228a.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_d2c5e4011aa345c204368bea839564ce.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_3dd3495319f045a6c309b41c0984dd1a.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_88fa6633d61577e6b74ad1c9e0f064a6.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_30c98d7257622bfb08fe69e148030667.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_604499a42f0bd815224b5c3552f17e61.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_4dc36e57bf48059fdc5e6edb9f9a1151.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_e4b2a264fae8b6c7071b0564fea992a1.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_70a37b55602d24ea21c674d2914c429a.jpg">
+<meta property="article:published_time" content="2021-02-06T16:26:36.000Z">
+<meta property="article:modified_time" content="2022-05-06T09:44:42.675Z">
+<meta property="article:author" content="Jeffrey Wang">
+<meta property="article:tag" content="2020">
+<meta property="article:tag" content="总结">
+<meta property="article:tag" content="旅行">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_151bafec821834074a668f6a7c8c9d70.jpg">
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"
+    />
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"
+    />
+    
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651830304521">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651830304521">
+    <link rel="stylesheet" href="/css/style.css?v=1651830304521">
+     
+    
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
+</head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/background.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="Jeffrey Wang" class="mdui-btn mdui-btn-icon"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/avatar.jpg" alt="Jeffrey Wang"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="Jeffrey Wang">
+            <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/avatar.jpg" alt="Jeffrey Wang" alt="Jeffrey Wang">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>60</div>
+        <div><span>标签</span>114</div>
+        <div><span>分类</span>14</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/friends.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        
+            <form id="search_form">
+                <label><input class="st-default-search-input" id="search_value" name="q" type="search" placeholder="搜索" style="
+                    font-size: 15px !important;
+                    height: 56px !important;
+                    background-image: none;
+                "></label>
+            </form>
+         
+    </div>
+</div>
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/2020/" style="font-size: 10px;">2020</a> <a href="/tags/B-tree/" style="font-size: 10px;">B+ tree</a> <a href="/tags/BP/" style="font-size: 10px;">BP</a> <a href="/tags/BP%E7%AE%97%E6%B3%95/" style="font-size: 10px;">BP算法</a> <a href="/tags/Hash/" style="font-size: 10px;">Hash</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Mysql/" style="font-size: 16.67px;">Mysql</a> <a href="/tags/POW/" style="font-size: 10px;">POW</a> <a href="/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/tags/SVN/" style="font-size: 10px;">SVN</a> <a href="/tags/Serverless/" style="font-size: 10px;">Serverless</a> <a href="/tags/Vmware/" style="font-size: 10px;">Vmware</a> <a href="/tags/apply/" style="font-size: 10px;">apply</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/authorization/" style="font-size: 10px;">authorization</a> <a href="/tags/aws/" style="font-size: 11.67px;">aws</a> <a href="/tags/cloudfront/" style="font-size: 11.67px;">cloudfront</a> <a href="/tags/ctm/" style="font-size: 10px;">ctm</a> <a href="/tags/eth0/" style="font-size: 10px;">eth0</a> <a href="/tags/excel/" style="font-size: 10px;">excel</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/gasPrice/" style="font-size: 10px;">gasPrice</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gltf/" style="font-size: 10px;">gltf</a> <a href="/tags/iges/" style="font-size: 10px;">iges</a> <a href="/tags/ios/" style="font-size: 11.67px;">ios</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/js-xlsx/" style="font-size: 10px;">js-xlsx</a> <a href="/tags/kali/" style="font-size: 10px;">kali</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/layui/" style="font-size: 10px;">layui</a> <a href="/tags/layuiAdmin/" style="font-size: 10px;">layuiAdmin</a> <a href="/tags/nextTick/" style="font-size: 10px;">nextTick</a> <a href="/tags/nextcloud/" style="font-size: 10px;">nextcloud</a> <a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/php-fpm/" style="font-size: 11.67px;">php-fpm</a> <a href="/tags/php7/" style="font-size: 10px;">php7</a> <a href="/tags/phpMyAdmin/" style="font-size: 10px;">phpMyAdmin</a> <a href="/tags/phpunit/" style="font-size: 10px;">phpunit</a> <a href="/tags/python/" style="font-size: 13.33px;">python</a> <a href="/tags/pythonocc/" style="font-size: 10px;">pythonocc</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/stl/" style="font-size: 10px;">stl</a> <a href="/tags/stp/" style="font-size: 10px;">stp</a> <a href="/tags/style/" style="font-size: 10px;">style</a> <a href="/tags/syncting/" style="font-size: 10px;">syncting</a> <a href="/tags/three-js/" style="font-size: 10px;">three.js</a> <a href="/tags/utools/" style="font-size: 10px;">utools</a> <a href="/tags/vbot/" style="font-size: 10px;">vbot</a> <a href="/tags/video/" style="font-size: 11.67px;">video</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/web3/" style="font-size: 10px;">web3</a> <a href="/tags/web3d/" style="font-size: 10px;">web3d</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0/" style="font-size: 10px;">代价函数</a> <a href="/tags/%E5%81%8F%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">偏导数</a> <a href="/tags/%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">关系式</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8/" style="font-size: 10px;">内存占用</a> <a href="/tags/%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A/" style="font-size: 10px;">动态绑定</a> <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" style="font-size: 11.67px;">区块链</a> <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" style="font-size: 10px;">单元测试</a> <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 11.67px;">卷积神经网络</a> <a href="/tags/%E5%8F%82%E6%95%B0%E8%8E%B7%E5%8F%96/" style="font-size: 10px;">参数获取</a> <a href="/tags/%E5%8F%8D%E5%90%91%E9%80%92%E6%8E%A8%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">反向递推关系式</a> <a href="/tags/%E5%90%8C%E6%AD%A5/" style="font-size: 10px;">同步</a> <a href="/tags/%E5%90%91%E9%87%8F/" style="font-size: 10px;">向量</a> <a href="/tags/%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/" style="font-size: 10px;">命名规则</a> <a href="/tags/%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0%E6%B1%82%E5%AF%BC/" style="font-size: 10px;">复合函数求导</a> <a href="/tags/%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C/" style="font-size: 10px;">多人协作</a> <a href="/tags/%E5%A4%9A%E5%8F%98%E9%87%8F%E5%87%BD%E6%95%B0/" style="font-size: 10px;">多变量函数</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%AF%BC%E5%87%BA%E6%A0%B7%E5%BC%8F/" style="font-size: 10px;">导出样式</a> <a href="/tags/%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">导数</a> <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 11.67px;">小程序</a> <a href="/tags/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" style="font-size: 10px;">异常处理</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%9C%8D/" style="font-size: 10px;">微信客服</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91/" style="font-size: 11.67px;">微信开发</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5/" style="font-size: 10px;">拉格朗日</a> <a href="/tags/%E6%8F%92%E4%BB%B6/" style="font-size: 10px;">插件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%94%B9%E9%80%A0/" style="font-size: 10px;">改造</a> <a href="/tags/%E6%95%A3%E5%88%97%E8%A1%A8/" style="font-size: 10px;">散列表</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" style="font-size: 10px;">数据类型</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a> <a href="/tags/%E6%97%85%E8%A1%8C/" style="font-size: 10px;">旅行</a> <a href="/tags/%E6%97%A0%E9%99%90%E7%BA%A7%E5%88%86%E7%B1%BB/" style="font-size: 10px;">无限级分类</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 18.33px;">机器学习</a> <a href="/tags/%E6%9E%81%E5%80%BC/" style="font-size: 10px;">极值</a> <a href="/tags/%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/" style="font-size: 10px;">格式转换</a> <a href="/tags/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" style="font-size: 13.33px;">梯度下降</a> <a href="/tags/%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9/" style="font-size: 10px;">模型压缩</a> <a href="/tags/%E6%B1%A0%E5%8C%96/" style="font-size: 10px;">池化</a> <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 16.67px;">深度学习</a> <a href="/tags/%E7%89%B9%E5%BE%81%E6%98%A0%E5%B0%84/" style="font-size: 10px;">特征映射</a> <a href="/tags/%E7%9F%A9%E9%98%B5/" style="font-size: 10px;">矩阵</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E5%8D%95%E5%85%83%E8%AF%AF%E5%B7%AE/" style="font-size: 10px;">神经单元误差</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" style="font-size: 10px;">索引原理</a> <a href="/tags/%E7%BD%91%E5%8D%A1/" style="font-size: 10px;">网卡</a> <a href="/tags/%E8%A7%86%E9%A2%91%E6%B5%81/" style="font-size: 11.67px;">视频流</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/" style="font-size: 10px;">计算机组成结构</a> <a href="/tags/%E8%AF%AF%E5%B7%AE%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E6%B3%95/" style="font-size: 10px;">误差反向传播法</a> <a href="/tags/%E8%B7%A8%E8%A1%A8/" style="font-size: 10px;">跨表</a> <a href="/tags/%E8%B8%A9%E5%9D%91/" style="font-size: 13.33px;">踩坑</a> <a href="/tags/%E8%BD%AF%E8%80%83/" style="font-size: 15px;">软考</a> <a href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" style="font-size: 10px;">过滤器</a> <a href="/tags/%E8%BF%91%E4%BC%BC%E5%85%AC%E5%BC%8F/" style="font-size: 10px;">近似公式</a> <a href="/tags/%E8%BF%AD%E4%BB%A3%E5%99%A8/" style="font-size: 10px;">迭代器</a>
+    </div>
+    
+      <script>
+        var maxTagcloud = parseInt(20);
+        var tags_length = parseInt(114);
+        var tags_arr = [];
+        for(var i = 0; i < tags_length; i++){
+          tags_arr.push(i);
+        }
+        tags_arr.sort(function (l, r) {
+          return Math.random() > 0.5 ? -1 : 1;
+        });
+        tags_arr = tags_arr.slice(0, maxTagcloud < tags_length ? tags_length - maxTagcloud : 0);
+        for(var tag_i = 0; tag_i < tags_arr.length; tag_i++){
+          document.getElementById("randomtagcloud").children[tags_arr[tag_i]].style.display = 'none';
+        }
+      </script>
+    
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/04/10/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%95%B0%E6%8D%AE%E5%BA%93/">【软考知识总结】数据库</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/10/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">【软考知识总结】操作系统</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/27/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/">【软考知识总结】计算机组成结构</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/27/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%A6%82%E8%A7%88/">【软考知识总结】概览</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/22/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%98%AF%E6%80%8E%E6%A0%B7%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E4%B8%8D%E8%A2%AB%E7%AF%A1%E6%94%B9%E7%9A%84%EF%BC%9F/">区块链是怎样保证数据不被篡改的？</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://github.com/wangerzi/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a><a class="mdui-ripple" href="/atom.xml" target="_blank" mdui-tooltip="{content: 'RSS'}" style="color: rgb(247, 132, 34);background-color: rgba(247, 132, 34, .1);">
+            <i class="nexmoefont icon-rss"></i>
+        </a>
+    </div>
+</div>
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 Jeffrey Wang
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: NaN%;"> 
+              <img src="/static/uploads/2021/02/wp_editor_md_4c85c1d5f1241daf382ee7541007228a-1-1200x661.jpg" alt="我的2020年记-大浪潮下的小小打工人" loading="lazy">
+              <h1>我的2020年记-大浪潮下的小小打工人</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2021年02月07日</a>
+</div>
+
+      <h2 id="大纲"><a href="#大纲" class="headerlink" title="大纲"></a>大纲</h2><p>2020在疫情中启程，也在疫情中结束；首先是工作上先体验了一波 <code>停工+自由职业</code> 的感觉，2月到4月也是我博客输出最多的时间，随后在4月找到了新工作，开始在新的业务场景中探索，技术大方向上了解并研究了 <code>机器学习、NodeJs、ElasticSearch、Serverless、CI/CD、容器化</code> 等等一系列的东西； 与之前做内部系统的公司不同，进入到做 App的公司让我 <strong>对生产环境更为谨慎和敬畏，更多的考虑到细节和退路</strong> 。再持续为公司招聘大半年终于把后端运维团队凑齐，基于 <code>nodejs 和 AWS Lambda 的 Serverless 架构</code> 也在探索过程中逐步成型。</p>
+<h2 id="工作"><a href="#工作" class="headerlink" title="工作"></a>工作</h2><h3 id="海外旅游公司的衰落"><a href="#海外旅游公司的衰落" class="headerlink" title="海外旅游公司的衰落"></a>海外旅游公司的衰落</h3><p>由于疫情的影响，公司的春节旺季直接变成了亏本求生存的状态，特别是公司主要做海外轻奢定制游，收入变 0，供应商还有款项拖欠。旅游行业从渠道到供应商全体变老赖，公司全体进入 <strong>停工状态</strong> ，领上海最低公司。 当时刚过年，看着海外疫情和国内感染人数蹭蹭往上涨，觉着旅游公司至少大半年没有起色（实际上是一整年了，还是没有一点起色），工作属于挂着简历，没多少面试的状态。但还好与公司 PM 比较熟悉，接了两个外包的活儿，靠着公司低保和外包结款，再加上疫情期间支出也缩减了，一月花呗 1400多，收支平衡还是做到了。 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_151bafec821834074a668f6a7c8c9d70.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_151bafec821834074a668f6a7c8c9d70.jpg"></a> 随后在公司进一步缩减规模前，我找到了新工作，是一家做海外APP发行的小公司，吸引我的是深度学习的实践场景、技术氛围的承诺和创业公司依旧 965 的作风，<strong>至少意味着技术方向上能有不少的补全以及充足的时间自我提升。</strong></p>
+<blockquote>
+<p>PS：老板还是非常义气的，在几乎没有收入的情境下，六七月还把 19年的年终奖发了</p>
+</blockquote>
+<h3 id="我的征程也是公司的征程"><a href="#我的征程也是公司的征程" class="headerlink" title="我的征程也是公司的征程"></a>我的征程也是公司的征程</h3><p>入职后发现公司正好处于分家、搬家、老员工离职的过渡期，给了两天时间交接工作，了解后端状况，然后就搬到了通勤 1h 的中科路（之前面百度去过的地方，真没想到日后会经常走这条路） 随后就接手了越来越多的工作，核心产品请求加密算法改造、AWS <code>Serverless</code>、<code>AWS</code> 的容器化方案 <code>Fargate</code> 和阿里云的 <code>Serverless</code> <code>K8S</code>、过亿 ES 数据清理和迁移、<code>logstash</code> 日志手机方案、<code>CodeReview</code>、性能优化、<code>CI/CD</code> 及持续了大半年的针对运维和开发的招聘。 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_35ad07e6fad9b10b2702c917b6115cd6.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_35ad07e6fad9b10b2702c917b6115cd6.jpg"></a> 不断招聘的这大半年，经过 HR 初筛 + 题目初筛到我手上的后端开发简历 33份，运维简历 32份，听说 HR 这半年把符合的都聊了个遍，到最后还是靠着缘分，<strong>在12月到元旦这个时间找到了满足需求的人。</strong> 持久面试也是一种锻炼，最多的一天排了四个面试，每次都需要从拟好的角度配合对方的经历进行交流， <strong>从一开始控制不住面试时间，到后来渐渐把控好交流节奏，一点点的对这个过程变得熟悉。面试中遇到过从业二十年但知识也随着两侧的斑白慢慢过期的老兵，也遇到过半瓶水但莽撞桀骜的面试者，还有满足技术需求但经历作假被 HR 淘汰的各式各样的人。</strong> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_cd5de3784ad86556ee5e47c1accc7beb.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_cd5de3784ad86556ee5e47c1accc7beb.jpg"></a> 到2020年底，团队各角色也已齐整，大部分架构已经搭建完毕趋于稳定，各个组件也都已经调整到符合当前业务的状态，<strong>回头一望，一切过往皆为序章；身为后端或身为全栈或为更好的将来做打算，技术生涯不能只放眼于现在，路在脚下，慢慢走。</strong></p>
+<h2 id="社区"><a href="#社区" class="headerlink" title="社区"></a>社区</h2><h3 id="个人开源"><a href="#个人开源" class="headerlink" title="个人开源"></a>个人开源</h3><p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_dba17a8f019ca5c8071133dd46579e35.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_dba17a8f019ca5c8071133dd46579e35.jpg"></a> 今年的开源贡献算是稳定吧，连续一段时间都能持续输出，新增了 <code>Web3d</code> 模型转换和展示相关的项目和为招聘而写的 <code>hire-tools</code>，还有数据库迁移、API签名计算等零散的小项目。 得知我的 BUG 被深藏北极冰封上千年，心情一阵激动，甚至还为此发了朋友圈。 <strong>也许是觉得自己也许并不能在漫漫历史上有所笔墨，但我的 BUG 会比我存在的更久，在岁月中留下痕迹，也许以后它还会被送进历史博物馆也说不准呢。</strong> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_62383e4fc6596f7a2d7a4bdcd06a0a74.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_62383e4fc6596f7a2d7a4bdcd06a0a74.jpg"></a> <code>lay-excel</code> 项目继续修修补补，中间用了 <code>webpack</code> 重新做了打包，在11月发布了 <code>1.7.2</code>，能帮助到更多的人，让我的代码跑在世界各地的机器上，非常开心且荣幸。 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_d746d83c63549fb77a454b9ce7af2f19.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_d746d83c63549fb77a454b9ce7af2f19.jpg"></a></p>
+<h3 id="Learnku"><a href="#Learnku" class="headerlink" title="Learnku"></a>Learnku</h3><p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_ef02fcf2dd3186a3a25e81999215b97a.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_ef02fcf2dd3186a3a25e81999215b97a.jpg"></a> 自 <code>2020.12</code> 发现这个平台以来，贡献了一百多个翻译分段，<code>VueJS</code> 见习版主已经到第 10周了，还有两周达到版主的要求。几乎每周都会译者排行截图留恋，霸榜的感觉真好😁。 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_c87c25f7d23409792cfe9ec22740f142.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_c87c25f7d23409792cfe9ec22740f142.jpg"></a> 社区的新帖子每个都点开看，基本每个帖子都点赞，基本每个问题都尝试答，但是社区本身就不太活跃的样子，所以大多数声望都来自翻译；其实想在见习版主结束后转到 go 社区，因为目前个人大的学习方向就是 golang，多在社区交流发帖有利提升。 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_5506b6b6b7bdd590aa2541b51e00e653.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_5506b6b6b7bdd590aa2541b51e00e653.jpg"></a> 在这个平台的一两个月，也建立起了对英文技术翻译的一些兴趣和自信，虽然遇到长句翻译也很容易蒙圈，但看到那些英文文档和文章都没这么怕了。</p>
+<h3 id="开发者大会"><a href="#开发者大会" class="headerlink" title="开发者大会"></a>开发者大会</h3><p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_3a7553f9d9a7fc266a543a8ad1a9e7d9.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_3a7553f9d9a7fc266a543a8ad1a9e7d9.jpg"></a> 参加了今年的 PHP 开发者大会，了解了一些相对前沿一些的应用和架构开阔眼界，积极互动还得了一堆小奖品 <code>Golang</code> 学差不多考虑去听听 <code>Gopher China</code>，听说 20 年分享的干货还是有不少的。</p>
+<h2 id="个人技术提升"><a href="#个人技术提升" class="headerlink" title="个人技术提升"></a>个人技术提升</h2><h4 id="深度学习"><a href="#深度学习" class="headerlink" title="深度学习"></a>深度学习</h4><p>这门子技术在去年就一直很感兴趣，停工期间公司有技术分享的计划，在自己看了基础入门书籍后，做了两堂关于深度学习的分享。 那本书现在还记忆犹新，名字叫做 <strong>《深度学习的数学》</strong> ，主要涉及到的都是数学基础以及卷积、向量机的原理，基于此写了一系列博客，两三星期的样子，写了11篇，有两篇阅读量还出乎意料的不错。 <a href="https://blog.wj2015.com/category/%e6%9c%ba%e5%99%a8%e5%ad%a6%e4%b9%a0/">机器学习</a> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_730568dc32b989db86425a3908aceda9.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_730568dc32b989db86425a3908aceda9.jpg"></a> 随后进入了现在这家公司，规模不是太大，里边也有部分深度学习的技术场景，基于 <code>VGG19</code> 做的图像风格迁移，当时招聘还专门考察了这部分的基础能力； 进公司后第二天老板就送了我两本书，一本 <strong>《深度学习之美》</strong>，一本 <strong>《DEEP LEARNING》</strong> ，第一本看了个多月刷完了，对基本的卷积、时序、OSTM、胶囊网络有了个概念，但是没上手写多少代码，实操还停留在手写数字识别上，也没有整理相关的博客。 体验到了炼丹师的快乐，hhhhh <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_c56df5c7066357f4f233ca5c48082664.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_c56df5c7066357f4f233ca5c48082664.jpg"></a> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_980846a95915e8c326c4eb90ea8dfeec.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_980846a95915e8c326c4eb90ea8dfeec.jpg"></a> 现在这两本书还在我的案头（并没有垫显示器） <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_c13b2f268c3aefbc74e32e49e120b4c3.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_c13b2f268c3aefbc74e32e49e120b4c3.jpg"></a> 随后公司让调研了很多深度学习相关的产品方向，包括 <code>黑白图转彩色，动漫画风迁移，AI抠图</code> 等等，给一些项目提过一些简单的 PR，能上生产的方向特别少，最后对比多家采用了百度的抠图 API 并针对海外场景做了中转，随后由于产品停滞，进入维护阶段后就没有相关工作了，有点遗憾。 个人对这个方向还是很感兴趣的，就是积累和实践所需成本暂时无法给到，因为其他的 <strong>后端、前端方向还需要加精，不能走成了四不像。</strong></p>
+<h4 id="MySQL底层"><a href="#MySQL底层" class="headerlink" title="MySQL底层"></a>MySQL底层</h4><p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_00e8ad70ee4285c6f0f305ecfbbd09bc.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_00e8ad70ee4285c6f0f305ecfbbd09bc.jpg"></a> 今年把 <strong>《从根上理解MySQL》</strong> 这本书读了两遍，电子版一遍，纸质版一遍，对 MySQL 的理解个人觉得得到了不少的增强，从底层行结构到页再到表空间，再从索引原理到 JOIN 再到查询优化器，以及 页Buffer 和锁，都是之前业务代码中不曾想到的东西，理解底层之后对 SQL 优化的理解更深，遇到问题的时候更加有方向。</p>
+<h4 id="Redis-底层"><a href="#Redis-底层" class="headerlink" title="Redis 底层"></a>Redis 底层</h4><p><strong>《Redis 设计与实现》</strong> 这本书去年看了一遍底层数据结构，今年重新刷了一遍，看到哨兵和集群还有槽分配的时候，身边的场景不足，了解但不够理解，还需要继续加深。</p>
+<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_72dc99b003e7b354b5d877f1d412672d.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_72dc99b003e7b354b5d877f1d412672d.jpg"></a> 年初买了本 <strong>《小灰的算法之旅》</strong> 很快就看完了，对算法思想有了初步的认识，但是 <strong>动手太少了</strong> 的问题依旧存在，导致很快就会忘掉。 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_050f0b9e4019976901ea0310f0a75732.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_050f0b9e4019976901ea0310f0a75732.jpg"></a> 后来刷了半个月的 <code>LeetCode</code> 每日一题，有思路的都尝试实现掉，但是很多题都找不到思路，于是乎买了一本 <strong>《labuladong 的算法小抄》</strong> ，公众号写的很不错的就买了实体书，但问题又出现了，本来我是去食堂吃饭 12:30 回来就可以刷刷算法，但是新的运维和后端小伙伴来了之后，经常外边吃，本就不充裕的时间通常就来不及看算法了。这本书看了 <code>DFS/BFS/动态规划</code> 后就被放到了桌角，有所斩获，但是跟预想的收获有点差别。 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_35085ef1f3264c853de324437183cbf2.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_35085ef1f3264c853de324437183cbf2.jpg"></a></p>
+<h4 id="Web3D"><a href="#Web3D" class="headerlink" title="Web3D"></a>Web3D</h4><p><code>Web3d</code> 这个方向是疫情期间研究的，正好女朋友公司也在做这个调研，我顺着 <code>threejs</code> 折腾出来了一个效果还行的渲染，还对模型格式有了一定的理解； 还参与了部分 <a target="_blank" rel="noopener" href="https://github.com/hujiulong/vue-3d-model">vue-3d-model</a> 的开发，后来找到新工作后，就没继续往里边提 PR 了。 配合之前的 python 基础以及 node 基础，结合 Docker 整了一个转换模型格式的工具出来，这就是新开源的 <a target="_blank" rel="noopener" href="https://github.com/wangerzi/3d-model-convert-to-gltf">3d-model-convert-to-gltf</a> 可以 <strong>将 STL&#x2F;IGES&#x2F;STEP&#x2F;OBJ&#x2F;FBX 格式的模型转换为 GLTF 格式</strong> ，并自动压缩，有利于 web3d 的模型展示和渲染。</p>
+<p>文件类型</p>
+<p>文件名</p>
+<p>转换时间</p>
+<p>原大小</p>
+<p>转换后大小</p>
+<p>stl</p>
+<p>assets&#x2F;test.stl</p>
+<p>2368.890ms</p>
+<p>7.6 MB</p>
+<p>86 KB</p>
+<p>iges</p>
+<p>assets&#x2F;test.iges</p>
+<p>1641.226ms</p>
+<p>1 M</p>
+<p>111 KB</p>
+<p>stp</p>
+<p>assets&#x2F;test.stp</p>
+<p>2969.200ms</p>
+<p>5.1 MB</p>
+<p>217 KB</p>
+<p>fbx</p>
+<p>assets&#x2F;Samba Dancing.fbx</p>
+<p>&lt;1000ms</p>
+<p>3.7 MB</p>
+<p>614 KB</p>
+<p><a href="https://blog.wj2015.com/2020/03/08/step%e5%92%8ciges%e6%a8%a1%e5%9e%8b%e8%bd%ac%e6%8d%a2%e4%b8%ba%e9%80%82%e7%94%a8web%e7%9a%84glb%e6%a0%bc%e5%bc%8f/">STEP和IGES模型转换为适用Web的glb格式</a> 还有折腾出的一些 demo 级别的东西 比如 threejs 官方 <a target="_blank" rel="noopener" href="http://3d-works.wj2015.com/#/work-helmet">头盔渲染</a> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_690d44ad4ef62c4299eba240953ca77e.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_690d44ad4ef62c4299eba240953ca77e.jpg"></a> 比如一个带监控报表的 <a target="_blank" rel="noopener" href="http://3d-works.wj2015.com/#/work-factory-robot">高达工厂</a> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_0fafc399515674d90881a7ff7dde2232.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_0fafc399515674d90881a7ff7dde2232.jpg"></a> 还有带简单交互，体积计算的小模型 <a target="_blank" rel="noopener" href="http://3d-works.wj2015.com/#/work-eye-bone">眼骨</a> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_3f6618165e396c554a6099979adefebf.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_3f6618165e396c554a6099979adefebf.jpg"></a> 模型场景 <a target="_blank" rel="noopener" href="https://preview.mobox3d.com/index.html#/Manage/editor/EAAYIrBA">编辑器</a> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_0fdb59be14a2317b35a000bc754a1c77.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_0fdb59be14a2317b35a000bc754a1c77.jpg"></a> 还有 <a target="_blank" rel="noopener" href="https://github.com/wangerzi/modelbox-sdk">modelbox-sdk</a> 项目，可以动态的 <a target="_blank" rel="noopener" href="https://wangerzi.gitee.io/modelbox-sdk/examples/index.html">上传模型</a> ，转换模型，然后直接生成 <a target="_blank" rel="noopener" href="http://preview.mobox3d.com/index.html#/PreviewModel/EAAYIrBA">预览链接</a> 嵌入到项目中 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_b31dc89635b240a2ad0fd7bad2b95253.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_b31dc89635b240a2ad0fd7bad2b95253.jpg"></a> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_ae5e652fa9385b8d6f8d0d5a33c7a9c7.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_ae5e652fa9385b8d6f8d0d5a33c7a9c7.jpg"></a></p>
+<h4 id="CSS及泛前端"><a href="#CSS及泛前端" class="headerlink" title="CSS及泛前端"></a>CSS及泛前端</h4><p>日常工作和方向都偏向后端、运维方面，但前端来说还是很感兴趣，抽空看了 <strong>《CSS权威指南·上卷》</strong> 以了解 CSS 属性的全局和部分实现机制，介绍还是很清楚，如果工作需要的话当速查书也是很不错的选择。 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_7e34fd55d711ef39377351e1c71615ca.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_7e34fd55d711ef39377351e1c71615ca.jpg"></a> 还在拉钩教育上一分钱薅羊毛买了不少课，写得还是很好的，比如当时追更看的 <strong>《前端高手进阶》</strong>、<strong>《Webpack原理与实践》</strong> 高手进阶里边对 DOM树、 AST 语法树和浏览器渲染的部分让我印象挺深刻的 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_961df3653beec75e19ff64becdb20776.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_961df3653beec75e19ff64becdb20776.jpg"></a> Webpack 那本小册对执行机制和插件机制讲的很浅显易懂，看完我就 <strong>反手把之前用 <code>glup</code> 打包的 <code>lay-excel</code> 开源项目改为 <code>webpack</code> 了。</strong></p>
+<blockquote>
+<p>并不是只看了 8m，追更到第8讲把 plugin 之类的都讲过了</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_4c8f9013a2d24e2db9fa9ebcbcad5bd9.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_4c8f9013a2d24e2db9fa9ebcbcad5bd9.jpg"></a></p>
+<h4 id="ElasticSearch"><a href="#ElasticSearch" class="headerlink" title="ElasticSearch"></a>ElasticSearch</h4><p>ES 方面之前接触比较少，主要是在换公司之后，有大量业务数据存在了 ES 集群中，而集群的配置又很不合理，于是乎开始了整理老数据和集群优化之旅。 其中最为惊心动魄的就是数据迁移，来之前 ES 的 <code>rollover</code> 都是由特定机器上的定时脚本跑的，不知道何时这个脚本突然不跑了，间接导致了一个超大索引，具体细节记不太清了，大概是 60G，数据量妥妥过亿；有些索引迁移到一半还给误操作删掉了，大概一千万条，还好不是特别重要的数据，至此除了那些立马要执行的删除，我 <strong>再也不敢把 DELETE 语句放到 Console 里边了</strong> 。</p>
+<blockquote>
+<p>其实这一千万条还能通过备份找回来，但当时问过了没关系就算了</p>
+</blockquote>
+<p>随后对 ES 的存储部分做了比较详细的调研，最后选择用 <code>AWS ElasticSearch</code> 的 IAM 来做索引的自动过期删除，原有老逻辑的 <code>rollover</code> 还是走自动脚本。 还针对索引的分片策略进行过优化，配合无用数据清理，成功在合理的数据范围内把分片数量从 <strong>1000个降到 100个</strong> ，配置也从 <strong>三主六数据降到了一主两数据</strong> ，速度还比之前快。</p>
+<h4 id="Golang"><a href="#Golang" class="headerlink" title="Golang"></a>Golang</h4><p>想写 golang 不是一天两天了，中间尝试过两次但都由于各种各样的原因没有持续下来，直到后来耐住性子抽出俩星期把基础语法和 <code>net/http</code> <code>gin</code> <code>gorm</code> 的常用库弄懂了，才算正式入门，目前做出的东西暂时还没有值得一提的，就是编译产物直接能在 <code>alphine</code> 的基础 Docker 镜像上跑还是很吸引我的，对容器大小压缩和部署很有帮助。 这两天发现了 <a target="_blank" rel="noopener" href="https://github.com/tal-tech/go-zero">go-zero</a> 这个开源项目，非常强大，作者微信直连，很赞。</p>
+<h4 id="Nodejs-Serverless"><a href="#Nodejs-Serverless" class="headerlink" title="Nodejs - Serverless"></a>Nodejs - Serverless</h4><p>来到新公司的另一个收获是对无服务化的理解，<code>AWS Lambda</code> 只是 <code>FAAS</code> 的一种实现方式，目前支持 <code>python/nodejs</code> 两种语言；在 <code>Lambda</code> 中，时间就是金钱，最近修改计费维度为 1ms，省钱的作用就更明显了，代码写越好执行时间越短越省。 两种语言我都写过，都是弱类型的脚本语言，在包管理和逻辑编写上还是 JS 相对更舒服一点，而且 <code>Nodejs</code> 前端也能很快上手，维护成本相对低一些。 曾写过一个 <code>dynamo</code> 数据流同步 <code>ES</code> 的需求，官方代码是 <code>Python</code> 的，部署上去的包特别大，还老是莫名其妙执行超时导致后继所有流推送失败，跑得还特别慢（记得是 1s 上下）；随后用 <code>NodeJs</code> 重写了一份相同的逻辑，运行非常稳定，一次推送平均 40ms（算上启动时间）。 写这么久 <code>Lambda</code>，要想真正发挥其作用还是需要与生态相结合，比如 <code>AWS</code> 中的 <code>CDN</code>、<code>API GATEWAY</code> 以及整合 <code>Lambda</code> 的神器 <code>step function</code> 工作流，可惜现在还不支持 <code>RESTFUL</code> 风格的 <code>API GATEWAY</code>，不然就作为公司无服务架构的核心了。 <code>Serverless</code> 也不全是好的方面，首当其冲 <strong>冷启动问题</strong> ，比如长时间没有请求进来，lambda 的运行池中没有你部署的代码，第一次启动就会非常慢，甚至能有几百个毫秒；亦或者请求比较零散，没有做预启动实例的情况下，长时间都只有一个实例在运行，突然请求多起来了，出现了两个实例并行运行的情况，冷启动问题又出现了，这种问题目前的云厂商都还没有好的解决方案。 还有偶现的全局变量连接复用时，连接超时、连接被关闭等问题持续存在，需要经常分析日志和报表才能从中发现和解决。</p>
+<h4 id="Docker-容器化及-CI-x2F-CD"><a href="#Docker-容器化及-CI-x2F-CD" class="headerlink" title="Docker 容器化及 CI&#x2F;CD"></a>Docker 容器化及 CI&#x2F;CD</h4><p>这一年运维任务上接触最多的就是 <code>Docker</code> 了，从我进入新公司开始，就开始了环境容器化之旅，先是基于 <code>docker-compose</code> 做了一个可复用的测试环境，随后开始为项目编写 <code>Dockerfile</code>，搭建镜像仓库，做项目基础镜像等等工作。 随后新项目要部署，调研了 <code>AWS Fargate</code> 容器化方案以及 <code>Aliyun Serverless K8S</code> 容器化方案对项目做了流程化的部署，弹性伸缩和自动滚动发布是真好用，偶尔看着高峰期自动加上的机器就有种莫名成就感hhhh。 毕竟要容器化部署，打包之类的自然得自动化，公司仓库用的 <code>Github</code>，于是顺理成章用来 <code>GithubActions</code>，跟 <code>Gitlab-CI</code> 用起来差不太多，大多数场景用封装好的 <code>action</code> 就能实现，挺简洁的。 测试分支推送后会自动更新到测试环境，生产环境需要打 <code>tag</code> 生成对应镜像后半手工上线，已经比之前人肉运维逐个机器进行灰度发布好太多了。</p>
+<h2 id="个人"><a href="#个人" class="headerlink" title="个人"></a>个人</h2><h3 id="旅行"><a href="#旅行" class="headerlink" title="旅行"></a>旅行</h3><p>去年和女朋友定下的主题是 <strong>“陪你一起看世界”</strong>，所以 2020 年农历春节本来打算一起桂林深圳游玩一下，请假、旅行计划和机票都准备好了，但是疫情突如其来，全盘打乱，哪儿也去不成，返沪后疫情未曾好转，还有外包和找工作悬着，所以直到下半年才开始慢慢出游。 单论去过的地方，今年还是有不少的，八月去了黄山，十一回了趟重庆，元旦前去了南阳，再去了杭州，然后去了绍兴。 元旦之行还借了单反，学会了单反的基础操作，也拍出来了一些看起来不错的照片。</p>
+<h3 id="黄山之行"><a href="#黄山之行" class="headerlink" title="黄山之行"></a>黄山之行</h3><p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_0a13149821b1227ea738459e13f5783b.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_0a13149821b1227ea738459e13f5783b.jpg"></a> 黄山真的超美，烟雾朦胧，时不时露出人造小亭和嶙峋奇石，恍若仙境。 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_3769a3dab5b80b91224d1a311823eda2.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_3769a3dab5b80b91224d1a311823eda2.jpg"></a> 黄山给我印象最深的除了日出，还有凌晨四点为了看日出出门后看到的第一眼星空， <strong>它不像城市内看到的星星那么暗淡无光，也不像虚拟星空软件里边每颗星都那么刺眼，但就是那么清晰，buling buling 的闪，抬头看到的那一刹那我感觉眼泪都快涌出来了</strong>，无际的星光以及皎洁的月光洒在额头上，自己就像变身成了光，置身于空旷无际的宇宙。 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_df7c9bd95db30ba5a384261519148e5d.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_df7c9bd95db30ba5a384261519148e5d.jpg"></a> 当时拍照全靠手机，无法照下这震撼的一幕，网上找了拍摄图，但跟身临其境的体验差别还是很大的。</p>
+<h3 id="国庆之行"><a href="#国庆之行" class="headerlink" title="国庆之行"></a>国庆之行</h3><p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_30f59df4d9aef7d367fec8dbf3b43143.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_30f59df4d9aef7d367fec8dbf3b43143.jpg"></a> 十一国庆去了绍兴见了家长，天气不冷不热，温度刚好，风儿喧嚣，充满了生活的气息。 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_74a1b5afd8da9f25e299b74d28e48b4a.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_74a1b5afd8da9f25e299b74d28e48b4a.jpg"></a> 还跟大学室友、女朋友一起在重庆齐聚一堂，虽然我是土生土长的重庆人，但有些地方也是第一次去，有些店也是第一次吃。 洪崖洞不管去几次都会有一种华灯初上，千与千寻的感觉~ <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_1c265c55852fd9d23a45fbf14f341188.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_1c265c55852fd9d23a45fbf14f341188.jpg"></a> 到了重庆自然是少不了的火锅，较场口佩姐火锅（伙伴们搜出来的，本地人只听过没去吃过） <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_dffc413e7966df31512392bbf5ef2a47.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_dffc413e7966df31512392bbf5ef2a47.jpg"></a> 国庆生活还是很丰富多彩的，连续十一天，从东到西又从西到东。 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_4634ddf3801f8917cb714320b18811c1.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_4634ddf3801f8917cb714320b18811c1.jpg"></a></p>
+<h3 id="元旦之行"><a href="#元旦之行" class="headerlink" title="元旦之行"></a>元旦之行</h3><p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_4c85c1d5f1241daf382ee7541007228a.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_4c85c1d5f1241daf382ee7541007228a.jpg"></a> 元旦九天的安排更为松散，学了两晚上的单反，然后就带着一路游一路拍，从上海到南阳与记忆中的人和物团聚，再从南阳到杭州领略西湖风光，最后再拜访了女方家长，收官！</p>
+<h4 id="记忆和现实交触的校园"><a href="#记忆和现实交触的校园" class="headerlink" title="记忆和现实交触的校园"></a>记忆和现实交触的校园</h4><p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_d2c5e4011aa345c204368bea839564ce.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_d2c5e4011aa345c204368bea839564ce.jpg"></a> 总是能回想起踏上技术之路的点点滴滴，熟悉的学生社团、熟悉的教室，位置没变场景没变，但是人变了，变得都不认识了，教室也没有我们的位置了。 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_3dd3495319f045a6c309b41c0984dd1a.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_3dd3495319f045a6c309b41c0984dd1a.jpg"></a></p>
+<h4 id="蒙出来的精选作品分享"><a href="#蒙出来的精选作品分享" class="headerlink" title="蒙出来的精选作品分享"></a>蒙出来的精选作品分享</h4><p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_88fa6633d61577e6b74ad1c9e0f064a6.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_88fa6633d61577e6b74ad1c9e0f064a6.jpg"></a> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_30c98d7257622bfb08fe69e148030667.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_30c98d7257622bfb08fe69e148030667.jpg"></a> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_604499a42f0bd815224b5c3552f17e61.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_604499a42f0bd815224b5c3552f17e61.jpg"></a> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_4dc36e57bf48059fdc5e6edb9f9a1151.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_4dc36e57bf48059fdc5e6edb9f9a1151.jpg"></a> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_e4b2a264fae8b6c7071b0564fea992a1.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_e4b2a264fae8b6c7071b0564fea992a1.jpg"></a> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_70a37b55602d24ea21c674d2914c429a.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2021/02/wp_editor_md_70a37b55602d24ea21c674d2914c429a.jpg"></a></p>
+<h2 id="关于未来"><a href="#关于未来" class="headerlink" title="关于未来"></a>关于未来</h2><p><strong>时间不会停下来等待任何人，变化总在时时刻刻的发生着</strong> ，从实习进入互联网工作的这两年中，经历过数次业务缩减裁员，公司由盛转衰再到疫情打击下的举步维艰。再经历了停工+自由职业，再慢慢稳定找到了一个适合当前阶段的公司开始新征程。 之前看 <strong>《谁偷了我的奶酪》</strong>，就喜欢像 匆匆、嗅嗅 那样，不放松警惕，<strong>发现周围的变化，脚踏实地去做，用以应对突然可能发生的变动，尽量把主动权握到自己手里！</strong> <strong>在平时也都会有一种危机感和焦虑感，一是来自技术，二是来自生活。</strong> 互联网行业现在相对传统行业确实有着相对高的薪资，有点机器逐步淘汰和剥削传统手工业的感觉。举个可能不很恰当的例子，当年煤矿业也是令人羡慕的赚钱行当，资深矿工也能拿到相对不错的高薪资，但是随着产业和大工业的发展，矿工的工资也变得与普通工种一样。<strong>像程序猿这个行当，在智能化和滚滚后浪推前浪的趋势下，在未来也可能变成普通工种，唯像前文说的 “匆匆”、“嗅嗅” 那样关注及适应变化，方可在时代的大潮起伏中向前游去。</strong></p>
+
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>Jeffrey Wang<br>
+        <strong>本文链接：</strong><a href="https://blog.wj2015.com/2021/02/06/%E6%88%91%E7%9A%842020%E5%B9%B4%E8%AE%B0-%E5%A4%A7%E6%B5%AA%E6%BD%AE%E4%B8%8B%E7%9A%84%E5%B0%8F%E5%B0%8F%E6%89%93%E5%B7%A5%E4%BA%BA/" title="https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2021&#x2F;02&#x2F;06&#x2F;%E6%88%91%E7%9A%842020%E5%B9%B4%E8%AE%B0-%E5%A4%A7%E6%B5%AA%E6%BD%AE%E4%B8%8B%E7%9A%84%E5%B0%8F%E5%B0%8F%E6%89%93%E5%B7%A5%E4%BA%BA&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2021&#x2F;02&#x2F;06&#x2F;%E6%88%91%E7%9A%842020%E5%B9%B4%E8%AE%B0-%E5%A4%A7%E6%B5%AA%E6%BD%AE%E4%B8%8B%E7%9A%84%E5%B0%8F%E5%B0%8F%E6%89%93%E5%B7%A5%E4%BA%BA&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/2020/" rel="tag">2020</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E6%80%BB%E7%BB%93/" rel="tag">总结</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E6%97%85%E8%A1%8C/" rel="tag">旅行</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: 'd7b7061e43e1334a5aa9',
+        clientSecret: '5af2efcfc06b854bc5ccc23babfa3a06a7508c1e',
+        id: window.location.pathname,
+        repo: 'blog',
+        owner: 'wangerzi',
+        admin: 'wangerzi'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E7%BA%B2"><span class="toc-number">1.</span> <span class="toc-text">大纲</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%B7%E5%A4%96%E6%97%85%E6%B8%B8%E5%85%AC%E5%8F%B8%E7%9A%84%E8%A1%B0%E8%90%BD"><span class="toc-number">2.1.</span> <span class="toc-text">海外旅游公司的衰落</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%91%E7%9A%84%E5%BE%81%E7%A8%8B%E4%B9%9F%E6%98%AF%E5%85%AC%E5%8F%B8%E7%9A%84%E5%BE%81%E7%A8%8B"><span class="toc-number">2.2.</span> <span class="toc-text">我的征程也是公司的征程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BE%E5%8C%BA"><span class="toc-number">3.</span> <span class="toc-text">社区</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AA%E4%BA%BA%E5%BC%80%E6%BA%90"><span class="toc-number">3.1.</span> <span class="toc-text">个人开源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Learnku"><span class="toc-number">3.2.</span> <span class="toc-text">Learnku</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E8%80%85%E5%A4%A7%E4%BC%9A"><span class="toc-number">3.3.</span> <span class="toc-text">开发者大会</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AA%E4%BA%BA%E6%8A%80%E6%9C%AF%E6%8F%90%E5%8D%87"><span class="toc-number">4.</span> <span class="toc-text">个人技术提升</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0"><span class="toc-number">4.0.1.</span> <span class="toc-text">深度学习</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MySQL%E5%BA%95%E5%B1%82"><span class="toc-number">4.0.2.</span> <span class="toc-text">MySQL底层</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Redis-%E5%BA%95%E5%B1%82"><span class="toc-number">4.0.3.</span> <span class="toc-text">Redis 底层</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%97%E6%B3%95"><span class="toc-number">4.0.4.</span> <span class="toc-text">算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Web3D"><span class="toc-number">4.0.5.</span> <span class="toc-text">Web3D</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CSS%E5%8F%8A%E6%B3%9B%E5%89%8D%E7%AB%AF"><span class="toc-number">4.0.6.</span> <span class="toc-text">CSS及泛前端</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ElasticSearch"><span class="toc-number">4.0.7.</span> <span class="toc-text">ElasticSearch</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Golang"><span class="toc-number">4.0.8.</span> <span class="toc-text">Golang</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Nodejs-Serverless"><span class="toc-number">4.0.9.</span> <span class="toc-text">Nodejs - Serverless</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Docker-%E5%AE%B9%E5%99%A8%E5%8C%96%E5%8F%8A-CI-x2F-CD"><span class="toc-number">4.0.10.</span> <span class="toc-text">Docker 容器化及 CI&#x2F;CD</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AA%E4%BA%BA"><span class="toc-number">5.</span> <span class="toc-text">个人</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%85%E8%A1%8C"><span class="toc-number">5.1.</span> <span class="toc-text">旅行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%84%E5%B1%B1%E4%B9%8B%E8%A1%8C"><span class="toc-number">5.2.</span> <span class="toc-text">黄山之行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BD%E5%BA%86%E4%B9%8B%E8%A1%8C"><span class="toc-number">5.3.</span> <span class="toc-text">国庆之行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%83%E6%97%A6%E4%B9%8B%E8%A1%8C"><span class="toc-number">5.4.</span> <span class="toc-text">元旦之行</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%B0%E5%BF%86%E5%92%8C%E7%8E%B0%E5%AE%9E%E4%BA%A4%E8%A7%A6%E7%9A%84%E6%A0%A1%E5%9B%AD"><span class="toc-number">5.4.1.</span> <span class="toc-text">记忆和现实交触的校园</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%92%99%E5%87%BA%E6%9D%A5%E7%9A%84%E7%B2%BE%E9%80%89%E4%BD%9C%E5%93%81%E5%88%86%E4%BA%AB"><span class="toc-number">5.4.2.</span> <span class="toc-text">蒙出来的精选作品分享</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E6%9C%AA%E6%9D%A5"><span class="toc-number">6.</span> <span class="toc-text">关于未来</span></a></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+ 
+
+<script async src="/js/app.js?v=1651830304538"></script>
+
+
+	<script async src="/js/search.js?v=1651830304538"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHH2NFM6CG"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZHH2NFM6CG');
+</script>
+
+
+
+
+
+</body>
+
+</html>

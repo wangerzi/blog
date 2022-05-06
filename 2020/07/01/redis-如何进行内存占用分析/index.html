@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>Redis-如何进行内存占用分析? - 九层台</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="前端开发,后端开发,LINUX,机器学习,软考">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="目的博主最近在工作上需要清理一个数年项目的 Redis，内存告警 90%，但是不能单靠看代码和直觉来清理，需要有个直观的参考指标。 并且线上的数据删除需要谨慎，删除的 key 众多，如果删出了问题势必需要快速回滚保证业务正常运行，所以还编写了一个安全删除的脚本，方便线上操作。 导出在做全量的分析之前，首先需要拿到全量的 .rdb 文件。 如果是运行在 Linux 服务器中的 redis-serve">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis-如何进行内存占用分析?">
+<meta property="og:url" content="https://blog.wj2015.com/2020/07/01/redis-%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8%E5%88%86%E6%9E%90/">
+<meta property="og:site_name" content="九层台">
+<meta property="og:description" content="目的博主最近在工作上需要清理一个数年项目的 Redis，内存告警 90%，但是不能单靠看代码和直觉来清理，需要有个直观的参考指标。 并且线上的数据删除需要谨慎，删除的 key 众多，如果删出了问题势必需要快速回滚保证业务正常运行，所以还编写了一个安全删除的脚本，方便线上操作。 导出在做全量的分析之前，首先需要拿到全量的 .rdb 文件。 如果是运行在 Linux 服务器中的 redis-serve">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-01T08:26:47.000Z">
+<meta property="article:modified_time" content="2022-05-06T09:44:42.675Z">
+<meta property="article:author" content="Jeffrey Wang">
+<meta property="article:tag" content="redis">
+<meta property="article:tag" content="内存占用">
+<meta name="twitter:card" content="summary">
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"
+    />
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"
+    />
+    
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651830304581">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651830304581">
+    <link rel="stylesheet" href="/css/style.css?v=1651830304581">
+     
+    
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
+</head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/background.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="Jeffrey Wang" class="mdui-btn mdui-btn-icon"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/avatar.jpg" alt="Jeffrey Wang"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="Jeffrey Wang">
+            <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/avatar.jpg" alt="Jeffrey Wang" alt="Jeffrey Wang">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>60</div>
+        <div><span>标签</span>114</div>
+        <div><span>分类</span>14</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/friends.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        
+            <form id="search_form">
+                <label><input class="st-default-search-input" id="search_value" name="q" type="search" placeholder="搜索" style="
+                    font-size: 15px !important;
+                    height: 56px !important;
+                    background-image: none;
+                "></label>
+            </form>
+         
+    </div>
+</div>
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/2020/" style="font-size: 10px;">2020</a> <a href="/tags/B-tree/" style="font-size: 10px;">B+ tree</a> <a href="/tags/BP/" style="font-size: 10px;">BP</a> <a href="/tags/BP%E7%AE%97%E6%B3%95/" style="font-size: 10px;">BP算法</a> <a href="/tags/Hash/" style="font-size: 10px;">Hash</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Mysql/" style="font-size: 16.67px;">Mysql</a> <a href="/tags/POW/" style="font-size: 10px;">POW</a> <a href="/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/tags/SVN/" style="font-size: 10px;">SVN</a> <a href="/tags/Serverless/" style="font-size: 10px;">Serverless</a> <a href="/tags/Vmware/" style="font-size: 10px;">Vmware</a> <a href="/tags/apply/" style="font-size: 10px;">apply</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/authorization/" style="font-size: 10px;">authorization</a> <a href="/tags/aws/" style="font-size: 11.67px;">aws</a> <a href="/tags/cloudfront/" style="font-size: 11.67px;">cloudfront</a> <a href="/tags/ctm/" style="font-size: 10px;">ctm</a> <a href="/tags/eth0/" style="font-size: 10px;">eth0</a> <a href="/tags/excel/" style="font-size: 10px;">excel</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/gasPrice/" style="font-size: 10px;">gasPrice</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gltf/" style="font-size: 10px;">gltf</a> <a href="/tags/iges/" style="font-size: 10px;">iges</a> <a href="/tags/ios/" style="font-size: 11.67px;">ios</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/js-xlsx/" style="font-size: 10px;">js-xlsx</a> <a href="/tags/kali/" style="font-size: 10px;">kali</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/layui/" style="font-size: 10px;">layui</a> <a href="/tags/layuiAdmin/" style="font-size: 10px;">layuiAdmin</a> <a href="/tags/nextTick/" style="font-size: 10px;">nextTick</a> <a href="/tags/nextcloud/" style="font-size: 10px;">nextcloud</a> <a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/php-fpm/" style="font-size: 11.67px;">php-fpm</a> <a href="/tags/php7/" style="font-size: 10px;">php7</a> <a href="/tags/phpMyAdmin/" style="font-size: 10px;">phpMyAdmin</a> <a href="/tags/phpunit/" style="font-size: 10px;">phpunit</a> <a href="/tags/python/" style="font-size: 13.33px;">python</a> <a href="/tags/pythonocc/" style="font-size: 10px;">pythonocc</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/stl/" style="font-size: 10px;">stl</a> <a href="/tags/stp/" style="font-size: 10px;">stp</a> <a href="/tags/style/" style="font-size: 10px;">style</a> <a href="/tags/syncting/" style="font-size: 10px;">syncting</a> <a href="/tags/three-js/" style="font-size: 10px;">three.js</a> <a href="/tags/utools/" style="font-size: 10px;">utools</a> <a href="/tags/vbot/" style="font-size: 10px;">vbot</a> <a href="/tags/video/" style="font-size: 11.67px;">video</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/web3/" style="font-size: 10px;">web3</a> <a href="/tags/web3d/" style="font-size: 10px;">web3d</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0/" style="font-size: 10px;">代价函数</a> <a href="/tags/%E5%81%8F%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">偏导数</a> <a href="/tags/%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">关系式</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8/" style="font-size: 10px;">内存占用</a> <a href="/tags/%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A/" style="font-size: 10px;">动态绑定</a> <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" style="font-size: 11.67px;">区块链</a> <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" style="font-size: 10px;">单元测试</a> <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 11.67px;">卷积神经网络</a> <a href="/tags/%E5%8F%82%E6%95%B0%E8%8E%B7%E5%8F%96/" style="font-size: 10px;">参数获取</a> <a href="/tags/%E5%8F%8D%E5%90%91%E9%80%92%E6%8E%A8%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">反向递推关系式</a> <a href="/tags/%E5%90%8C%E6%AD%A5/" style="font-size: 10px;">同步</a> <a href="/tags/%E5%90%91%E9%87%8F/" style="font-size: 10px;">向量</a> <a href="/tags/%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/" style="font-size: 10px;">命名规则</a> <a href="/tags/%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0%E6%B1%82%E5%AF%BC/" style="font-size: 10px;">复合函数求导</a> <a href="/tags/%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C/" style="font-size: 10px;">多人协作</a> <a href="/tags/%E5%A4%9A%E5%8F%98%E9%87%8F%E5%87%BD%E6%95%B0/" style="font-size: 10px;">多变量函数</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%AF%BC%E5%87%BA%E6%A0%B7%E5%BC%8F/" style="font-size: 10px;">导出样式</a> <a href="/tags/%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">导数</a> <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 11.67px;">小程序</a> <a href="/tags/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" style="font-size: 10px;">异常处理</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%9C%8D/" style="font-size: 10px;">微信客服</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91/" style="font-size: 11.67px;">微信开发</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5/" style="font-size: 10px;">拉格朗日</a> <a href="/tags/%E6%8F%92%E4%BB%B6/" style="font-size: 10px;">插件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%94%B9%E9%80%A0/" style="font-size: 10px;">改造</a> <a href="/tags/%E6%95%A3%E5%88%97%E8%A1%A8/" style="font-size: 10px;">散列表</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" style="font-size: 10px;">数据类型</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a> <a href="/tags/%E6%97%85%E8%A1%8C/" style="font-size: 10px;">旅行</a> <a href="/tags/%E6%97%A0%E9%99%90%E7%BA%A7%E5%88%86%E7%B1%BB/" style="font-size: 10px;">无限级分类</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 18.33px;">机器学习</a> <a href="/tags/%E6%9E%81%E5%80%BC/" style="font-size: 10px;">极值</a> <a href="/tags/%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/" style="font-size: 10px;">格式转换</a> <a href="/tags/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" style="font-size: 13.33px;">梯度下降</a> <a href="/tags/%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9/" style="font-size: 10px;">模型压缩</a> <a href="/tags/%E6%B1%A0%E5%8C%96/" style="font-size: 10px;">池化</a> <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 16.67px;">深度学习</a> <a href="/tags/%E7%89%B9%E5%BE%81%E6%98%A0%E5%B0%84/" style="font-size: 10px;">特征映射</a> <a href="/tags/%E7%9F%A9%E9%98%B5/" style="font-size: 10px;">矩阵</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E5%8D%95%E5%85%83%E8%AF%AF%E5%B7%AE/" style="font-size: 10px;">神经单元误差</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" style="font-size: 10px;">索引原理</a> <a href="/tags/%E7%BD%91%E5%8D%A1/" style="font-size: 10px;">网卡</a> <a href="/tags/%E8%A7%86%E9%A2%91%E6%B5%81/" style="font-size: 11.67px;">视频流</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/" style="font-size: 10px;">计算机组成结构</a> <a href="/tags/%E8%AF%AF%E5%B7%AE%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E6%B3%95/" style="font-size: 10px;">误差反向传播法</a> <a href="/tags/%E8%B7%A8%E8%A1%A8/" style="font-size: 10px;">跨表</a> <a href="/tags/%E8%B8%A9%E5%9D%91/" style="font-size: 13.33px;">踩坑</a> <a href="/tags/%E8%BD%AF%E8%80%83/" style="font-size: 15px;">软考</a> <a href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" style="font-size: 10px;">过滤器</a> <a href="/tags/%E8%BF%91%E4%BC%BC%E5%85%AC%E5%BC%8F/" style="font-size: 10px;">近似公式</a> <a href="/tags/%E8%BF%AD%E4%BB%A3%E5%99%A8/" style="font-size: 10px;">迭代器</a>
+    </div>
+    
+      <script>
+        var maxTagcloud = parseInt(20);
+        var tags_length = parseInt(114);
+        var tags_arr = [];
+        for(var i = 0; i < tags_length; i++){
+          tags_arr.push(i);
+        }
+        tags_arr.sort(function (l, r) {
+          return Math.random() > 0.5 ? -1 : 1;
+        });
+        tags_arr = tags_arr.slice(0, maxTagcloud < tags_length ? tags_length - maxTagcloud : 0);
+        for(var tag_i = 0; tag_i < tags_arr.length; tag_i++){
+          document.getElementById("randomtagcloud").children[tags_arr[tag_i]].style.display = 'none';
+        }
+      </script>
+    
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/04/10/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%95%B0%E6%8D%AE%E5%BA%93/">【软考知识总结】数据库</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/10/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">【软考知识总结】操作系统</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/27/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/">【软考知识总结】计算机组成结构</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/27/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%A6%82%E8%A7%88/">【软考知识总结】概览</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/22/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%98%AF%E6%80%8E%E6%A0%B7%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E4%B8%8D%E8%A2%AB%E7%AF%A1%E6%94%B9%E7%9A%84%EF%BC%9F/">区块链是怎样保证数据不被篡改的？</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://github.com/wangerzi/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a><a class="mdui-ripple" href="/atom.xml" target="_blank" mdui-tooltip="{content: 'RSS'}" style="color: rgb(247, 132, 34);background-color: rgba(247, 132, 34, .1);">
+            <i class="nexmoefont icon-rss"></i>
+        </a>
+    </div>
+</div>
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 Jeffrey Wang
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: NaN%;"> 
+              <img src="/static/uploads/2020/02/u15834439403268442047fm26gp0.jpg" alt="Redis-如何进行内存占用分析?" loading="lazy">
+              <h1>Redis-如何进行内存占用分析?</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2020年07月01日</a>
+</div>
+
+      <h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><p>博主最近在工作上需要清理一个数年项目的 Redis，内存告警 90%，但是不能单靠看代码和直觉来清理，需要有个直观的参考指标。 并且线上的数据删除需要谨慎，删除的 key 众多，如果删出了问题势必需要快速回滚保证业务正常运行，所以还编写了一个安全删除的脚本，方便线上操作。</p>
+<h2 id="导出"><a href="#导出" class="headerlink" title="导出"></a>导出</h2><p>在做全量的分析之前，首先需要拿到全量的 <code>.rdb</code> 文件。 如果是运行在 Linux 服务器中的 <code>redis-server</code>，可以直接使用 <code>dump.rdb</code>，存的东西太大的话就直接在从库主机上做分析即可，不用全量下载到本地。 如果是云服务商的话，就需要按照其官方文档的引导，获取到 <code>.rdb</code>，博主目前所在公司使用了 aws 的全套服务，针对 redis 实例导出 rdb 文件搜集了如下资料。 已经获取到 <code>.rdb</code> 文件的可以跳过这一段了，由于里边操作较为复杂为节省同样使用 aws 同学的时间，大概整理一下操作过程</p>
+<ul>
+<li>首先，创建一个与 redis实例 <strong>同区</strong>的存储桶</li>
+<li>然后给存储桶配置权限，进入桶的访问控制列表 &gt; 其他AWS账户的访问权限，添加账户输入 <code>540804c33a284a299d2547575ce1010f2312ef3da9b3a053c8bc45bf233e4353</code>，权限勾选<ul>
+<li><strong>列出对象</strong></li>
+<li><strong>写入对象</strong></li>
+<li><strong>读取存储桶权限</strong></li>
+</ul>
+</li>
+<li>然后，在 <code>ElastiCache控制面板</code> &gt; <code>备份</code> &gt; 选中备份 &gt; 复制</li>
+<li>写一个标志符，目标s3的位置选刚才建好的桶，点击复制，直到导出完成</li>
+<li>s3中发现对应的 rdb 文件：memory-clear-1-0001.rdb，下载即可</li>
+</ul>
+<blockquote>
+<p>手动备份的官方文档：<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh/_cn/AmazonElastiCache/latest/red-ug/backups-manual.html">https://docs.aws.amazon.com/zh\_cn/AmazonElastiCache/latest/red-ug/backups-manual.html</a> 导出备份的官方文档：<a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/zh/_cn/AmazonElastiCache/latest/red-ug/backups-exporting.html">https://docs.aws.amazon.com/zh\_cn/AmazonElastiCache/latest/red-ug/backups-exporting.html</a></p>
+</blockquote>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>拿到 <code>.rdb</code> 文件后，下一步就是分析这个 rdb 文件中各个 key 占用的内存了，网络上也提供到了相关的工具。</p>
+<h3 id="安装工具并分析"><a href="#安装工具并分析" class="headerlink" title="安装工具并分析"></a>安装工具并分析</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install rdbtools</span><br><span class="line">pip install python-lzf # 加快转储速度</span><br></pre></td></tr></table></figure>
+
+<p>进入到 rdb 所在目录，生产内存报告</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rdb -c memory  dump.rdb &gt; dump.csv</span><br></pre></td></tr></table></figure>
+
+<p>下一步的分析，可以借助 excel 也可以借助 Mysql 等数据库工具导入 csv 后进行 CSV的内部结构大概是这样的：</p>
+<p>database</p>
+<p>type</p>
+<p>key</p>
+<p>size_in_bytes</p>
+<p>encoding</p>
+<p>num_elements</p>
+<p>len_largest_element</p>
+<p>expiry</p>
+<p>0</p>
+<p>hash</p>
+<p>Funcoloring_update_picture_formal:com.cm.fun.color:Android:2.1.1:v3:large_preview</p>
+<p>459060</p>
+<p>hashtable</p>
+<p>1</p>
+<p>432708</p>
+<p>0</p>
+<p>hash</p>
+<p>ad_stats:20200624:apps:com.ios.qyb.incolour</p>
+<p>201</p>
+<p>ziplist</p>
+<p>4</p>
+<p>19</p>
+<p>2020-07-09T00:00:04.621000</p>
+<p>0</p>
+<p>hash</p>
+<p>ad_stats:20200617:com.cm.fun.color:upltv:inter_open</p>
+<p>206</p>
+<p>ziplist</p>
+<p>4</p>
+<p>19</p>
+<p>2020-07-02T00:00:33.171000</p>
+<p>0</p>
+<p>hash</p>
+<p>ad_stats:20200620:com.ios.qyb.incolour:MAX:reward_hint</p>
+<p>206</p>
+<p>ziplist</p>
+<p>3</p>
+<p>19</p>
+<p>2020-07-05T00:01:31.333000</p>
+<h3 id="关键列"><a href="#关键列" class="headerlink" title="关键列"></a>关键列</h3><p>第一列 <code>database</code> 表示数据库id，在excel中可以借助筛选功能，得到每个数据库中占用的具体key数量和内存大小。 第二列 <code>type</code> 顾名思义，数据类型 第三列 <code>key</code> 不多讲 第四列 <code>size_in_bytes</code> 就是占用字节数 其他…</p>
+<h3 id="如何定位问题-key"><a href="#如何定位问题-key" class="headerlink" title="如何定位问题 key"></a>如何定位问题 key</h3><p>我一般的操作是，借助 excel 把 <code>size_in_bytes</code> &#x2F; 1024 &#x2F; 1024，得到 <code>Mb</code> 单位的内存占用量，再使用排序功能得到占用最多的列 我这边遇到的情况是大约 20% 的 key 占用了超过 80% 的空间，所以一般不用看太多就可以定位到问题。 除了找那些占用巨大的key，还需要重点查看 <strong>没有过期时间的key</strong>，讲道理一般场景下的 redis 不适合单独持久化数据，容易导致数据来源混乱不好维护。 找到 key 之后，根据 key 的规则去找相关的代码，根据逻辑将需要删除的 key 找出来，没有设置过期时间的改代码设置下过期时间。</p>
+<h3 id="恢复数据"><a href="#恢复数据" class="headerlink" title="恢复数据"></a>恢复数据</h3><p>如果你下载到了本地想要恢复线上的数据做测试或方便的查看内容，那么你可能需要通过 <code>.rdb</code> 文件恢复数据 如果安装了 docker，可以把下载的 rdb 重命名为 <code>dump.rdb</code>，映射到 <code>/data</code> 中，在 rdb 文件目录下可以使用如下指令，运行成功后</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker run --name test-redis -it -v `<span class="built_in">pwd</span>`/dump.rdb:/data/dump.rdb --<span class="built_in">rm</span> redis</span></span><br><span class="line">1:C 01 Jul 2020 07:44:21.073 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo</span><br><span class="line">1:C 01 Jul 2020 07:44:21.073 # Redis version=6.0.1, bits=64, commit=00000000, modified=0, pid=1, just started</span><br><span class="line">1:C 01 Jul 2020 07:44:21.073 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>然后进入容器使用 <code>redis-cli</code> 即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker <span class="built_in">exec</span> -it test-redis /bin/bash</span></span><br><span class="line">root@0910da87ae73:/data#</span><br><span class="line">root@0910da87ae73:/data# redis-cli</span><br><span class="line">127.0.0.1:6379&gt;</span><br><span class="line">127.0.0.1:6379&gt; select 2</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379[2]&gt; KEYS *</span><br><span class="line">1) &quot;***:****:***&quot;</span><br></pre></td></tr></table></figure>
+
+<p>如果本地搭好了环境，替换下 <code>dump.rdb</code> 即可，注意修改配置，否则可能加载失败</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">appendonly no</span><br><span class="line">dbfilename dump.rdb <span class="comment"># your rdb file name</span></span><br><span class="line">dir /var/lib/redis <span class="comment"># your rdb path</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="安全删除脚本"><a href="#安全删除脚本" class="headerlink" title="安全删除脚本"></a>安全删除脚本</h2><p>为方便回滚，编写了一个小脚本用于安全删除生产环境上的多个 key，执行删除的时候先把 key 按行放到 <code>keys.txt</code> 中，执行如下指令可以在删除的同时备份到 <code>delete-backup.json</code>，如果出了问题直接回滚就好。 脚本仅支持五大基本类型，<code>hyperloglog</code> 类型的数据占用不会太大，也没想法子去兼容，<code>list</code> 类型出于可重复性回滚数据的考虑，每次都会先删除记录再回滚，如果线上在 push 列表，有一定的丢数据风险，考虑停机再次导出并合并有关的 list 数据。</p>
+<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python convert.py delete keys.txt  # safe delte and generate delete-backup.json</span><br><span class="line">python convert.py revert delete-backup.json  # rollback by delete-backup.json</span><br></pre></td></tr></table></figure>
+
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> redis</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check_backup_file</span>(<span class="params">backup_path</span>):</span><br><span class="line">    <span class="keyword">if</span> os.path.exists(backup_path):</span><br><span class="line">        <span class="keyword">raise</span> BaseException(<span class="string">&#x27;you are already have a backup file &#x27;</span> + backup_path + <span class="string">&#x27;, please remove it first&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">op_backup</span>(<span class="params">r, keys, output</span>):</span><br><span class="line">    check_backup_file(output)</span><br><span class="line">    result = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> keys:</span><br><span class="line">        t = r.<span class="built_in">type</span>(key)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> t == <span class="string">&#x27;string&#x27;</span>:</span><br><span class="line">            val = r.get(key)</span><br><span class="line">        <span class="keyword">elif</span> t == <span class="string">&#x27;list&#x27;</span>:</span><br><span class="line">            val = r.lrange(key, <span class="number">0</span>, -<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">elif</span> t == <span class="string">&#x27;set&#x27;</span>:</span><br><span class="line">            val = <span class="built_in">list</span>(r.smembers(key))</span><br><span class="line">        <span class="keyword">elif</span> t == <span class="string">&#x27;zset&#x27;</span>:</span><br><span class="line">            data = r.zrange(key, <span class="number">0</span>, -<span class="number">1</span>, withscores=<span class="literal">True</span>)</span><br><span class="line">            val = &#123;&#125;</span><br><span class="line">            <span class="keyword">for</span> v <span class="keyword">in</span> data:</span><br><span class="line">                val[v[<span class="number">0</span>]] = v[<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">elif</span> t == <span class="string">&quot;hash&quot;</span>:</span><br><span class="line">            val = r.hgetall(key)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;warning: &#x27;</span>, key, <span class="string">&#x27;, type:&#x27;</span>, t, <span class="string">&#x27; is not support&#x27;</span>)</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        result[key] = &#123;</span><br><span class="line">            <span class="string">&quot;type&quot;</span>: t,</span><br><span class="line">            <span class="string">&quot;val&quot;</span>: val,</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(output, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        json.dump(result, f)</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">op_revert</span>(<span class="params">r, result</span>):</span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> result:</span><br><span class="line">        item = result[key]</span><br><span class="line">        <span class="keyword">if</span> item[<span class="string">&#x27;type&#x27;</span>] == <span class="string">&#x27;string&#x27;</span>:</span><br><span class="line">            r.<span class="built_in">set</span>(key, item[<span class="string">&#x27;val&#x27;</span>])</span><br><span class="line">        <span class="keyword">elif</span> item[<span class="string">&#x27;type&#x27;</span>] == <span class="string">&#x27;list&#x27;</span>:</span><br><span class="line">            r.delete(key)</span><br><span class="line">            r.rpush(key, *item[<span class="string">&#x27;val&#x27;</span>])</span><br><span class="line">        <span class="keyword">elif</span> item[<span class="string">&#x27;type&#x27;</span>] == <span class="string">&#x27;set&#x27;</span>:</span><br><span class="line">            r.sadd(key, *item[<span class="string">&#x27;val&#x27;</span>])</span><br><span class="line">        <span class="keyword">elif</span> item[<span class="string">&#x27;type&#x27;</span>] == <span class="string">&#x27;zset&#x27;</span>:</span><br><span class="line">            r.zadd(key, item[<span class="string">&#x27;val&#x27;</span>])</span><br><span class="line">        <span class="keyword">elif</span> item[<span class="string">&#x27;type&#x27;</span>] == <span class="string">&quot;hash&quot;</span>:</span><br><span class="line">            r.hset(key, mapping=item[<span class="string">&quot;val&quot;</span>])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;revert warning: &#x27;</span>, key, <span class="string">&#x27;, type:&#x27;</span>, item.<span class="built_in">type</span>, <span class="string">&#x27; is not support&#x27;</span>)</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">op_delete</span>(<span class="params">r, keys, backup_path</span>):</span><br><span class="line">    op_backup(r, keys, backup_path)</span><br><span class="line">    r.delete(*keys)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read_keys</span>(<span class="params">filename</span>):</span><br><span class="line">    keys = []</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename) <span class="keyword">as</span> f:</span><br><span class="line">        line = f.readline()</span><br><span class="line">        <span class="keyword">while</span> line:</span><br><span class="line">            line = line.strip()  <span class="comment"># remove \n</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> line == <span class="string">&#x27;&#x27;</span>:</span><br><span class="line">                keys.append(line)</span><br><span class="line">            line = f.readline()</span><br><span class="line">    <span class="keyword">return</span> keys</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read_json</span>(<span class="params">filename</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">return</span> json.load(f)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">init_test_data</span>():</span><br><span class="line">    result = &#123;</span><br><span class="line">        <span class="string">&#x27;test-str&#x27;</span>: &#123;<span class="string">&#x27;type&#x27;</span>: <span class="string">&#x27;string&#x27;</span>, <span class="string">&#x27;val&#x27;</span>: <span class="string">&#x27;this is a long long string&#x27;</span>&#125;,</span><br><span class="line">        <span class="string">&#x27;test-list&#x27;</span>: &#123;<span class="string">&#x27;type&#x27;</span>: <span class="string">&#x27;list&#x27;</span>, <span class="string">&#x27;val&#x27;</span>: [<span class="string">&#x27;str1&#x27;</span>, <span class="string">&#x27;str2&#x27;</span>, <span class="string">&#x27;str3&#x27;</span>]&#125;,</span><br><span class="line">        <span class="string">&#x27;test-set&#x27;</span>: &#123;<span class="string">&#x27;type&#x27;</span>: <span class="string">&#x27;set&#x27;</span>, <span class="string">&#x27;val&#x27;</span>: [<span class="string">&#x27;str1&#x27;</span>, <span class="string">&#x27;str2&#x27;</span>, <span class="string">&#x27;str3&#x27;</span>]&#125;,</span><br><span class="line">        <span class="string">&#x27;test-zset&#x27;</span>: &#123;<span class="string">&#x27;type&#x27;</span>: <span class="string">&#x27;zset&#x27;</span>, <span class="string">&#x27;val&#x27;</span>: &#123;<span class="string">&quot;key1&quot;</span>: <span class="number">6.0</span>, <span class="string">&quot;key2&quot;</span>: <span class="number">8.0</span>, <span class="string">&quot;key3&quot;</span>: <span class="number">10.0</span>&#125;&#125;,</span><br><span class="line">        <span class="string">&#x27;test-hash&#x27;</span>: &#123;<span class="string">&#x27;type&#x27;</span>: <span class="string">&#x27;hash&#x27;</span>, <span class="string">&#x27;val&#x27;</span>: &#123;<span class="string">&quot;key1&quot;</span>: <span class="string">&quot;123&quot;</span>, <span class="string">&quot;key2&quot;</span>: <span class="string">&quot;456&quot;</span>, <span class="string">&quot;key3&quot;</span>: <span class="string">&quot;789&quot;</span>&#125;&#125;,</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;test-backup.json&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        json.dump(result, f)</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;test-keys.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> key <span class="keyword">in</span> result.keys():</span><br><span class="line">            f.writelines(key + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    r = redis.Redis(host=<span class="string">&quot;localhost&quot;</span>, port=<span class="number">6379</span>, db=<span class="number">0</span>, decode_responses=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(sys.argv) &lt; <span class="number">3</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;python convert.py backupdeleterevert keys.txtkeys.txtbackup.json&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    op = sys.argv[<span class="number">1</span>]</span><br><span class="line">    file = sys.argv[<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> op == <span class="string">&#x27;backup&#x27;</span>:</span><br><span class="line">        keys = read_keys(file)</span><br><span class="line">        backup_path = <span class="string">&#x27;backup.json&#x27;</span></span><br><span class="line">        op_backup(r, keys, backup_path)</span><br><span class="line">    <span class="keyword">elif</span> op == <span class="string">&#x27;delete&#x27;</span>:</span><br><span class="line">        keys = read_keys(file)</span><br><span class="line">        backup_path = <span class="string">&#x27;delete-backup.json&#x27;</span></span><br><span class="line">        check_backup_file(backup_path)</span><br><span class="line">        op_delete(r, keys, backup_path)</span><br><span class="line">    <span class="keyword">elif</span> op == <span class="string">&#x27;revert&#x27;</span>:</span><br><span class="line">        result = read_json(file)</span><br><span class="line">        op_revert(r, result)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;not support&quot;</span>, op)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br><span class="line">    <span class="comment"># init_test_data()</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文主要介绍了 redis 内存分析的方法和工具，以及如何恢复数据，如何进行分析，以及如何安全的删除，希望能有所帮助。</p>
+
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>Jeffrey Wang<br>
+        <strong>本文链接：</strong><a href="https://blog.wj2015.com/2020/07/01/redis-%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8%E5%88%86%E6%9E%90/" title="https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2020&#x2F;07&#x2F;01&#x2F;redis-%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8%E5%88%86%E6%9E%90&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2020&#x2F;07&#x2F;01&#x2F;redis-%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8%E5%88%86%E6%9E%90&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/Linux/">Linux</a><a class="nexmoefont icon-appstore-fill -link" href="/categories/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/">后端开发</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/redis/" rel="tag">redis</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8/" rel="tag">内存占用</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: 'd7b7061e43e1334a5aa9',
+        clientSecret: '5af2efcfc06b854bc5ccc23babfa3a06a7508c1e',
+        id: window.location.pathname,
+        repo: 'blog',
+        owner: 'wangerzi',
+        admin: 'wangerzi'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E7%9A%84"><span class="toc-number">1.</span> <span class="toc-text">目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BC%E5%87%BA"><span class="toc-number">2.</span> <span class="toc-text">导出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-number">3.</span> <span class="toc-text">分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E5%B7%A5%E5%85%B7%E5%B9%B6%E5%88%86%E6%9E%90"><span class="toc-number">3.1.</span> <span class="toc-text">安装工具并分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E5%88%97"><span class="toc-number">3.2.</span> <span class="toc-text">关键列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9A%E4%BD%8D%E9%97%AE%E9%A2%98-key"><span class="toc-number">3.3.</span> <span class="toc-text">如何定位问题 key</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%81%A2%E5%A4%8D%E6%95%B0%E6%8D%AE"><span class="toc-number">3.4.</span> <span class="toc-text">恢复数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E5%88%A0%E9%99%A4%E8%84%9A%E6%9C%AC"><span class="toc-number">4.</span> <span class="toc-text">安全删除脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95"><span class="toc-number">4.1.</span> <span class="toc-text">用法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">4.2.</span> <span class="toc-text">代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+ 
+
+<script async src="/js/app.js?v=1651830304585"></script>
+
+
+	<script async src="/js/search.js?v=1651830304585"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHH2NFM6CG"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZHH2NFM6CG');
+</script>
+
+
+
+
+
+</body>
+
+</html>

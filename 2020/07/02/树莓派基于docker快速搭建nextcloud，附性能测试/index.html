@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>树莓派基于Docker快速搭建nextcloud，附性能测试 - 九层台</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="前端开发,后端开发,LINUX,机器学习,软考">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="前言一年前兴起买的树莓派3B+，一番折腾最后成为了家里的电视投屏盒子（OSMC系统），我的自建云盘放在云服务器上，50G的空间快被塞满了，于是就想起来把尘封数月的树莓派复活过来，搭建一个 nextcloud，并且把之前的数据迁移过去。 正文树莓派刷系统如果与我一样有把树莓派作为电视盒子的需求的话，这里怒推一波 OSMC，使用了一年多稳定性还挺好的 链接在此：https:&#x2F;&#x2F;osmc.tv&#x2F;down">
+<meta property="og:type" content="article">
+<meta property="og:title" content="树莓派基于Docker快速搭建nextcloud，附性能测试">
+<meta property="og:url" content="https://blog.wj2015.com/2020/07/02/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%9F%BA%E4%BA%8Edocker%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAnextcloud%EF%BC%8C%E9%99%84%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/">
+<meta property="og:site_name" content="九层台">
+<meta property="og:description" content="前言一年前兴起买的树莓派3B+，一番折腾最后成为了家里的电视投屏盒子（OSMC系统），我的自建云盘放在云服务器上，50G的空间快被塞满了，于是就想起来把尘封数月的树莓派复活过来，搭建一个 nextcloud，并且把之前的数据迁移过去。 正文树莓派刷系统如果与我一样有把树莓派作为电视盒子的需求的话，这里怒推一波 OSMC，使用了一年多稳定性还挺好的 链接在此：https:&#x2F;&#x2F;osmc.tv&#x2F;down">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/d2db55614f17f5a966cbdf47c7f359fd.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/04/1c40b3052fc38dda5980a0888c94a133.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/04/09e37a9efc26ef715406e710b501814e.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/04/2f500313ada9cdc421f34109902ee7c3.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/04/b64d24d3f221b7a8528de78af1ce4f22.png">
+<meta property="article:published_time" content="2020-07-02T01:39:37.000Z">
+<meta property="article:modified_time" content="2022-05-06T09:44:42.675Z">
+<meta property="article:author" content="Jeffrey Wang">
+<meta property="article:tag" content="nextcloud">
+<meta property="article:tag" content="syncting">
+<meta property="article:tag" content="同步">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/d2db55614f17f5a966cbdf47c7f359fd.png">
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"
+    />
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"
+    />
+    
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651830304573">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651830304573">
+    <link rel="stylesheet" href="/css/style.css?v=1651830304573">
+     
+    
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
+</head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/background.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="Jeffrey Wang" class="mdui-btn mdui-btn-icon"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/avatar.jpg" alt="Jeffrey Wang"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="Jeffrey Wang">
+            <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/avatar.jpg" alt="Jeffrey Wang" alt="Jeffrey Wang">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>60</div>
+        <div><span>标签</span>114</div>
+        <div><span>分类</span>14</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/friends.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        
+            <form id="search_form">
+                <label><input class="st-default-search-input" id="search_value" name="q" type="search" placeholder="搜索" style="
+                    font-size: 15px !important;
+                    height: 56px !important;
+                    background-image: none;
+                "></label>
+            </form>
+         
+    </div>
+</div>
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/2020/" style="font-size: 10px;">2020</a> <a href="/tags/B-tree/" style="font-size: 10px;">B+ tree</a> <a href="/tags/BP/" style="font-size: 10px;">BP</a> <a href="/tags/BP%E7%AE%97%E6%B3%95/" style="font-size: 10px;">BP算法</a> <a href="/tags/Hash/" style="font-size: 10px;">Hash</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Mysql/" style="font-size: 16.67px;">Mysql</a> <a href="/tags/POW/" style="font-size: 10px;">POW</a> <a href="/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/tags/SVN/" style="font-size: 10px;">SVN</a> <a href="/tags/Serverless/" style="font-size: 10px;">Serverless</a> <a href="/tags/Vmware/" style="font-size: 10px;">Vmware</a> <a href="/tags/apply/" style="font-size: 10px;">apply</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/authorization/" style="font-size: 10px;">authorization</a> <a href="/tags/aws/" style="font-size: 11.67px;">aws</a> <a href="/tags/cloudfront/" style="font-size: 11.67px;">cloudfront</a> <a href="/tags/ctm/" style="font-size: 10px;">ctm</a> <a href="/tags/eth0/" style="font-size: 10px;">eth0</a> <a href="/tags/excel/" style="font-size: 10px;">excel</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/gasPrice/" style="font-size: 10px;">gasPrice</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gltf/" style="font-size: 10px;">gltf</a> <a href="/tags/iges/" style="font-size: 10px;">iges</a> <a href="/tags/ios/" style="font-size: 11.67px;">ios</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/js-xlsx/" style="font-size: 10px;">js-xlsx</a> <a href="/tags/kali/" style="font-size: 10px;">kali</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/layui/" style="font-size: 10px;">layui</a> <a href="/tags/layuiAdmin/" style="font-size: 10px;">layuiAdmin</a> <a href="/tags/nextTick/" style="font-size: 10px;">nextTick</a> <a href="/tags/nextcloud/" style="font-size: 10px;">nextcloud</a> <a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/php-fpm/" style="font-size: 11.67px;">php-fpm</a> <a href="/tags/php7/" style="font-size: 10px;">php7</a> <a href="/tags/phpMyAdmin/" style="font-size: 10px;">phpMyAdmin</a> <a href="/tags/phpunit/" style="font-size: 10px;">phpunit</a> <a href="/tags/python/" style="font-size: 13.33px;">python</a> <a href="/tags/pythonocc/" style="font-size: 10px;">pythonocc</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/stl/" style="font-size: 10px;">stl</a> <a href="/tags/stp/" style="font-size: 10px;">stp</a> <a href="/tags/style/" style="font-size: 10px;">style</a> <a href="/tags/syncting/" style="font-size: 10px;">syncting</a> <a href="/tags/three-js/" style="font-size: 10px;">three.js</a> <a href="/tags/utools/" style="font-size: 10px;">utools</a> <a href="/tags/vbot/" style="font-size: 10px;">vbot</a> <a href="/tags/video/" style="font-size: 11.67px;">video</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/web3/" style="font-size: 10px;">web3</a> <a href="/tags/web3d/" style="font-size: 10px;">web3d</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0/" style="font-size: 10px;">代价函数</a> <a href="/tags/%E5%81%8F%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">偏导数</a> <a href="/tags/%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">关系式</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8/" style="font-size: 10px;">内存占用</a> <a href="/tags/%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A/" style="font-size: 10px;">动态绑定</a> <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" style="font-size: 11.67px;">区块链</a> <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" style="font-size: 10px;">单元测试</a> <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 11.67px;">卷积神经网络</a> <a href="/tags/%E5%8F%82%E6%95%B0%E8%8E%B7%E5%8F%96/" style="font-size: 10px;">参数获取</a> <a href="/tags/%E5%8F%8D%E5%90%91%E9%80%92%E6%8E%A8%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">反向递推关系式</a> <a href="/tags/%E5%90%8C%E6%AD%A5/" style="font-size: 10px;">同步</a> <a href="/tags/%E5%90%91%E9%87%8F/" style="font-size: 10px;">向量</a> <a href="/tags/%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/" style="font-size: 10px;">命名规则</a> <a href="/tags/%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0%E6%B1%82%E5%AF%BC/" style="font-size: 10px;">复合函数求导</a> <a href="/tags/%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C/" style="font-size: 10px;">多人协作</a> <a href="/tags/%E5%A4%9A%E5%8F%98%E9%87%8F%E5%87%BD%E6%95%B0/" style="font-size: 10px;">多变量函数</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%AF%BC%E5%87%BA%E6%A0%B7%E5%BC%8F/" style="font-size: 10px;">导出样式</a> <a href="/tags/%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">导数</a> <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 11.67px;">小程序</a> <a href="/tags/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" style="font-size: 10px;">异常处理</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%9C%8D/" style="font-size: 10px;">微信客服</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91/" style="font-size: 11.67px;">微信开发</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5/" style="font-size: 10px;">拉格朗日</a> <a href="/tags/%E6%8F%92%E4%BB%B6/" style="font-size: 10px;">插件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%94%B9%E9%80%A0/" style="font-size: 10px;">改造</a> <a href="/tags/%E6%95%A3%E5%88%97%E8%A1%A8/" style="font-size: 10px;">散列表</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" style="font-size: 10px;">数据类型</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a> <a href="/tags/%E6%97%85%E8%A1%8C/" style="font-size: 10px;">旅行</a> <a href="/tags/%E6%97%A0%E9%99%90%E7%BA%A7%E5%88%86%E7%B1%BB/" style="font-size: 10px;">无限级分类</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 18.33px;">机器学习</a> <a href="/tags/%E6%9E%81%E5%80%BC/" style="font-size: 10px;">极值</a> <a href="/tags/%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/" style="font-size: 10px;">格式转换</a> <a href="/tags/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" style="font-size: 13.33px;">梯度下降</a> <a href="/tags/%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9/" style="font-size: 10px;">模型压缩</a> <a href="/tags/%E6%B1%A0%E5%8C%96/" style="font-size: 10px;">池化</a> <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 16.67px;">深度学习</a> <a href="/tags/%E7%89%B9%E5%BE%81%E6%98%A0%E5%B0%84/" style="font-size: 10px;">特征映射</a> <a href="/tags/%E7%9F%A9%E9%98%B5/" style="font-size: 10px;">矩阵</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E5%8D%95%E5%85%83%E8%AF%AF%E5%B7%AE/" style="font-size: 10px;">神经单元误差</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" style="font-size: 10px;">索引原理</a> <a href="/tags/%E7%BD%91%E5%8D%A1/" style="font-size: 10px;">网卡</a> <a href="/tags/%E8%A7%86%E9%A2%91%E6%B5%81/" style="font-size: 11.67px;">视频流</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/" style="font-size: 10px;">计算机组成结构</a> <a href="/tags/%E8%AF%AF%E5%B7%AE%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E6%B3%95/" style="font-size: 10px;">误差反向传播法</a> <a href="/tags/%E8%B7%A8%E8%A1%A8/" style="font-size: 10px;">跨表</a> <a href="/tags/%E8%B8%A9%E5%9D%91/" style="font-size: 13.33px;">踩坑</a> <a href="/tags/%E8%BD%AF%E8%80%83/" style="font-size: 15px;">软考</a> <a href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" style="font-size: 10px;">过滤器</a> <a href="/tags/%E8%BF%91%E4%BC%BC%E5%85%AC%E5%BC%8F/" style="font-size: 10px;">近似公式</a> <a href="/tags/%E8%BF%AD%E4%BB%A3%E5%99%A8/" style="font-size: 10px;">迭代器</a>
+    </div>
+    
+      <script>
+        var maxTagcloud = parseInt(20);
+        var tags_length = parseInt(114);
+        var tags_arr = [];
+        for(var i = 0; i < tags_length; i++){
+          tags_arr.push(i);
+        }
+        tags_arr.sort(function (l, r) {
+          return Math.random() > 0.5 ? -1 : 1;
+        });
+        tags_arr = tags_arr.slice(0, maxTagcloud < tags_length ? tags_length - maxTagcloud : 0);
+        for(var tag_i = 0; tag_i < tags_arr.length; tag_i++){
+          document.getElementById("randomtagcloud").children[tags_arr[tag_i]].style.display = 'none';
+        }
+      </script>
+    
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/04/10/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%95%B0%E6%8D%AE%E5%BA%93/">【软考知识总结】数据库</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/10/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">【软考知识总结】操作系统</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/27/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/">【软考知识总结】计算机组成结构</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/27/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%A6%82%E8%A7%88/">【软考知识总结】概览</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/22/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%98%AF%E6%80%8E%E6%A0%B7%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E4%B8%8D%E8%A2%AB%E7%AF%A1%E6%94%B9%E7%9A%84%EF%BC%9F/">区块链是怎样保证数据不被篡改的？</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://github.com/wangerzi/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a><a class="mdui-ripple" href="/atom.xml" target="_blank" mdui-tooltip="{content: 'RSS'}" style="color: rgb(247, 132, 34);background-color: rgba(247, 132, 34, .1);">
+            <i class="nexmoefont icon-rss"></i>
+        </a>
+    </div>
+</div>
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 Jeffrey Wang
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: NaN%;"> 
+              <img src="/static/uploads/2020/07/20150428-cloud-computing.0.1489222360-1200x661.jpg" alt="树莓派基于Docker快速搭建nextcloud，附性能测试" loading="lazy">
+              <h1>树莓派基于Docker快速搭建nextcloud，附性能测试</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2020年07月02日</a>
+</div>
+
+      <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>一年前兴起买的树莓派3B+，一番折腾最后成为了家里的电视投屏盒子（OSMC系统），我的自建云盘放在云服务器上，50G的空间快被塞满了，于是就想起来把尘封数月的树莓派复活过来，搭建一个 nextcloud，并且把之前的数据迁移过去。</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="树莓派刷系统"><a href="#树莓派刷系统" class="headerlink" title="树莓派刷系统"></a>树莓派刷系统</h3><p>如果与我一样有把树莓派作为电视盒子的需求的话，这里怒推一波 OSMC，使用了一年多稳定性还挺好的 链接在此：<a target="_blank" rel="noopener" href="https://osmc.tv/download/">https://osmc.tv/download/</a> 或者使用官方的 Raspbian ，属于比较纯粹的环境 链接在此：<a target="_blank" rel="noopener" href="https://www.raspberrypi.org/downloads/">https://www.raspberrypi.org/downloads/</a> 下载好的系统使用 win32diskimager 刷入内存卡即可，十分简单，这里贴一个安装链接供参考 <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a337ccae5d2b">https://www.jianshu.com/p/a337ccae5d2b</a></p>
+<h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><p>首先，ssh进入树莓派，如果是 OSMC 系统的话，用户名和密码都是osmc <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/d2db55614f17f5a966cbdf47c7f359fd.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/03/d2db55614f17f5a966cbdf47c7f359fd.png"></a> 连接结果如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Connecting to 192.168.3.7:22...</span><br><span class="line">Connection established.</span><br><span class="line">To escape to local shell, press &#x27;Ctrl+Alt+]&#x27;.</span><br><span class="line"></span><br><span class="line">WARNING! The remote SSH server rejected X11 forwarding request.</span><br><span class="line">Linux jeffrey 4.19.55-6-osmc #1 SMP PREEMPT Sun Nov 3 22:15:28 UTC 2019 armv7l</span><br><span class="line"></span><br><span class="line">The programs included with the Debian GNU/Linux system are free software;</span><br><span class="line">the exact distribution terms for each program are described in the</span><br><span class="line">individual files in /usr/share/doc/*/copyright.</span><br><span class="line"></span><br><span class="line">Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent</span><br><span class="line">permitted by applicable law.</span><br><span class="line">Last login: Mon Mar  2 11:00:03 2020 from 192.168.3.10</span><br><span class="line">osmc@jeffrey:~$</span><br></pre></td></tr></table></figure>
+
+<h4 id="调整时区"><a href="#调整时区" class="headerlink" title="调整时区"></a>调整时区</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@osmc:/home/osmc/rasp-tools/frp_client# timedatectl set-timezone Asia/Shanghai</span><br><span class="line">root@osmc:/home/osmc/rasp-tools/frp_client# date -R</span><br><span class="line">Fri, 03 Apr 2020 12:38:43 +0800</span><br><span class="line">root@osmc:/home/osmc/rasp-tools/frp_client# date</span><br><span class="line">Fri Apr  3 12:38:47 CST 2020</span><br></pre></td></tr></table></figure>
+
+<h4 id="Docker安装"><a href="#Docker安装" class="headerlink" title="Docker安装"></a>Docker安装</h4><p>这里参考了这篇博客：<a target="_blank" rel="noopener" href="https://docker/_practice.gitee.io/install/raspberry-pi.html">https://docker\_practice.gitee.io/install/raspberry-pi.html</a> 整理下来，直接执行如下两行命令即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">curl -fsSL get.docker.com -o get-docker.sh</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">sudo sh get-docker.sh --mirror Aliyun</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果是用的 osmc 系统，执行脚本会报如下错误：</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">osmc@jeffrey:~/rasp-tools$ sudo sh get-docker.sh --mirror Aliyun</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Executing docker install script, commit: f45d7c11389849ff46a6b4d94e0dd1ffebca32c1</span></span><br><span class="line"></span><br><span class="line">ERROR: Unsupported distribution &#x27;osmc&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>需要修改下 <code>get-docker.sh</code> 中第280行改为，因为 osmc 没有在里边有脚本配置，假装是 <code>debian</code> 就行了</p>
+<blockquote>
+<p>lsb_dist&#x3D;”raspbian”</p>
+</blockquote>
+<p>安装完毕后输出大概是这样</p>
+<blockquote>
+<p>Server: Docker Engine - Community Engine: Version: 19.03.6 API version: 1.40 (minimum version 1.12) Go version: go1.12.16 Git commit: 369ce74 Built: Thu Feb 13 01:31:39 2020 OS&#x2F;Arch: linux&#x2F;arm Experimental: false containerd: Version: 1.2.10 GitCommit: b34a5c8af56e510852c35414db4c1f4fa6172339 runc: Version: 1.0.0-rc8+dev GitCommit: 3e425f80a8c931f88e6d94a8c831b9d5aa481657 docker-init: Version: 0.18.0 GitCommit: fec3683 If you would like to use Docker as a non-root user, you should now consider adding your user to the “docker” group with something like: sudo usermod -aG docker your-user Remember that you will have to log out and back in for this to take effect! WARNING: Adding a user to the “docker” group will grant the ability to run containers which can be used to obtain root privileges on the docker host. Refer to <a target="_blank" rel="noopener" href="https://docs.docker.com/engine/security/security/#docker-daemon-attack-surface">https://docs.docker.com/engine/security/security/#docker-daemon-attack-surface</a> for more information.</p>
+</blockquote>
+<p>根据提示，可以把当前用户加入到 docker 组，以便这个用户能方便的使用 docker 命令（需要重启）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -aG docker osmc</span><br></pre></td></tr></table></figure>
+
+<p>出于效率考虑，可以创建 <code>/etc/docker/daemon.json</code>，并写入如下内容：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;registry-mirrors&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;http://hub-mirror.c.163.com&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>systemctl start docker</code> 启动服务即可</p>
+<h4 id="docker-compose的安装"><a href="#docker-compose的安装" class="headerlink" title="docker-compose的安装"></a>docker-compose的安装</h4><p>docker-compose 是基于 python 的一个 docker 编排工具，能方便的聚合现有docker镜像，使用起来十分方便 可以使用 <code>apt-get install docker-compose</code> 的形式安装</p>
+<h4 id="nextcloud"><a href="#nextcloud" class="headerlink" title="nextcloud"></a>nextcloud</h4><p>nextcloud 是一个开源网盘项目，基于 php7，功能非常的强悍，包括手机端、PC端、服务端的程序，在树莓派上只需要安装服务端就可以了，手机端和PC端都只是客户端，找到相关项目下载即可 服务端项目地址：<a target="_blank" rel="noopener" href="https://github.com/nextcloud/server">https://github.com/nextcloud/server</a> 桌面端项目地址：<a target="_blank" rel="noopener" href="https://github.com/nextcloud/desktop">https://github.com/nextcloud/desktop</a> 安卓项目地址：<a target="_blank" rel="noopener" href="https://github.com/nextcloud/android">https://github.com/nextcloud/android</a> IOS项目地址：<a target="_blank" rel="noopener" href="https://github.com/nextcloud/ios">https://github.com/nextcloud/ios</a></p>
+<h3 id="运行nextcloud"><a href="#运行nextcloud" class="headerlink" title="运行nextcloud"></a>运行nextcloud</h3><p>基于官方关于树莓派运行nextcloud的文档，找到了其中的 docker-compose.yaml，并针对树莓派的特性稍微做了些修改</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;2&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">nextcloud:</span></span><br><span class="line">  <span class="attr">db:</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">db:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">jsurf/rpi-mariadb</span></span><br><span class="line">    <span class="attr">command:</span> <span class="string">--transaction-isolation=READ-COMMITTED</span> <span class="string">--binlog-format=ROW</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./db:/var/lib/mysql</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MYSQL_ROOT_PASSWORD=nyist123</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MYSQL_PASSWORD=nyist123</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MYSQL_DATABASE=nextcloud</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MYSQL_USER=nextcloud</span></span><br><span class="line">  <span class="attr">app:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">arm32v7/nextcloud:fpm</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./data:/var/www/html/data</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">arm32v7/nginx</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">8089</span><span class="string">:80</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./nginx.conf:/etc/nginx/nginx.conf</span></span><br><span class="line">    <span class="attr">volumes_from:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">app</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">redis</span></span><br><span class="line">    <span class="attr">volumes_from:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">app</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">  <span class="attr">nextcloud:</span></span><br></pre></td></tr></table></figure>
+
+<p>在 <code>docker-compose.yaml</code> 目录下使用 <code>docker-compose up -d</code> 开始拉取镜像然后后台运行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@osmc:/home/osmc/rasp-tools/nextcloud# docker-compose up -d</span><br><span class="line">WARNING: Some networks were defined but are not used by any service: nextcloud</span><br><span class="line">nextcloud_db_1 is up-to-date</span><br><span class="line">nextcloud_app_1 is up-to-date</span><br><span class="line">nextcloud_redis_1 is up-to-date</span><br><span class="line">nextcloud_web_1 is up-to-date</span><br></pre></td></tr></table></figure>
+
+<p>进入 <code>http://ip地址:8089</code> 即可开始配置数据库等信息，如果出现 504 time out，需要调整Nginx中的超时时间 在刚才的 <code>docker-compose.yaml</code> 中指定了数据库主机是 <code>db</code>，用户名是 <code>nextcloud</code>，数据库是 <code>nextcloud</code>，密码是 <code>nyist123</code> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/04/1c40b3052fc38dda5980a0888c94a133.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/04/1c40b3052fc38dda5980a0888c94a133.png"></a> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/04/09e37a9efc26ef715406e710b501814e.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/04/09e37a9efc26ef715406e710b501814e.png"></a></p>
+<h3 id="内网穿透"><a href="#内网穿透" class="headerlink" title="内网穿透"></a>内网穿透</h3><p>内网穿透使用的 <code>frp</code>，服务端和客户端的配置可以参考下方的这篇博客，也可以用免费的 frp 服务，就是速度和稳定性就没法保证了，或者使用 <code>ngrok</code>，本人尝试下来 <code>ngrok</code> 有不稳定的情况，偶尔会断掉 <a href="%22https://www.jianshu.com/p/00c79df1aaf0%22">https://www.jianshu.com/p/00c79df1aaf0</a> 出于效率和体验的考虑，如果是自建 frp 服务器的话，可以用 <code>nginx</code> 反向代理到 <code>frp</code> 的 <code>http</code> 代理端口上，<code>https</code> 也在服务端的 <code>nginx</code> 上做</p>
+<h4 id="配置-frp"><a href="#配置-frp" class="headerlink" title="配置 frp"></a>配置 frp</h4><p>个人的 <code>frpc.ini</code> 如下：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[common]</span></span><br><span class="line"><span class="attr">server_addr</span> = 服务器ip</span><br><span class="line"><span class="attr">server_port</span> = 服务器服务端口</span><br><span class="line"><span class="attr">privilege_token</span> = 密码</span><br><span class="line"><span class="section">[ssh]</span></span><br><span class="line"><span class="attr">type</span> = tcp</span><br><span class="line"><span class="attr">local_ip</span> = <span class="number">127.0</span>.<span class="number">0.1</span></span><br><span class="line"><span class="attr">local_port</span> = <span class="number">22</span></span><br><span class="line"><span class="attr">remote_port</span> = <span class="number">32656</span> <span class="comment"># 远程服务器的此端口映射到 22 端口</span></span><br><span class="line"><span class="section">[nextcloud]</span></span><br><span class="line"><span class="attr">type</span> = http</span><br><span class="line"><span class="attr">local_port</span> = <span class="number">8089</span> <span class="comment"># 转发到树莓派的 8089</span></span><br><span class="line"><span class="attr">custom_domains</span> = 自定义网盘域名</span><br></pre></td></tr></table></figure>
+
+<p>服务端的 <code>frps.ini</code> 如下：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[common]</span></span><br><span class="line"><span class="comment"># binde_addr是指定frp内网穿透服务器端监听的IP地址,默认为127.0.0.1，</span></span><br><span class="line"><span class="comment">#如果使用IPv6地址的话，必须用方括号包括起来，比如 “[::1]:80”, “[ipv6-host]:http” or “[ipv6-host%zone]:80”</span></span><br><span class="line"><span class="attr">bind_addr</span> = <span class="number">0.0</span>.<span class="number">0.0</span></span><br><span class="line"><span class="comment"># bind_port 是frp内网穿透服务器端监听的端口，默认是7000</span></span><br><span class="line"><span class="attr">bind_port</span> = <span class="number">7000</span></span><br><span class="line"><span class="comment">#auto_token = 验证token</span></span><br><span class="line"><span class="attr">privilege_token</span> = 密码</span><br><span class="line"><span class="comment">#token = 密码</span></span><br><span class="line"><span class="comment">#frp内网穿透服务器可以支持虚拟主机的http和https协议，一般我们都用80，可以直接用域名而不用增加端口号，如果使用其它端口，那么客户端也需要配置相同的其他端口。</span></span><br><span class="line"><span class="attr">vhost_http_port</span> = <span class="number">8189</span> <span class="comment"># http 的统一转发端口</span></span><br><span class="line"><span class="attr">vhost_https_port</span> = <span class="number">7179</span> <span class="comment"># https 的统一转发端口</span></span><br><span class="line"></span><br><span class="line"><span class="attr">dashboard_user</span> = 管理后台用户 </span><br><span class="line"><span class="attr">dashboard_pwd</span> = 管理后台密码</span><br><span class="line"><span class="comment"># 这个是frp内网穿透服务器的web界面的端口，可以通过http://你的ip:7500查看frp内网穿透服务器端的连接情况，和各个frp内网穿透客户端的连接情况。</span></span><br><span class="line"><span class="attr">dashboard_port</span> = 端口</span><br><span class="line"><span class="attr">auth_token</span> = 密码</span><br></pre></td></tr></table></figure>
+
+<h4 id="自动重新运行"><a href="#自动重新运行" class="headerlink" title="自动重新运行"></a>自动重新运行</h4><p>还写了一个每分钟检测 frpc 是否正常运行的小脚本 <code>start.sh</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">pid=`ps -fe  grep frpc  grep -v grep  awk &#x27;&#123;print $2&#125;&#x27;`</span><br><span class="line">if [ -z &quot;$pid&quot; ]; then</span><br><span class="line">    path=/home/osmc/rasp_tools/frp_client</span><br><span class="line">    nohup $path/frpc -c $path/frpc.ini &gt; $path/nohup.out &amp;</span><br><span class="line">    echo &quot;自动重启&quot;</span><br><span class="line">else</span><br><span class="line">    echo &quot;已经启动PID:$pid&quot;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+<p>然后安装 <code>apt-get install cron</code>，每分钟运行该脚本 在<code>crontab -e</code>的最后加了一行，博主用的 <code>root</code> 加的这一任务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*  *    * * *   root    bash /home/osmc/rasp-tools/frp_client/start.sh</span><br></pre></td></tr></table></figure>
+
+<p>填加完之后做一个小测试，手动运行 <code>starts.sh</code>，发现没问题后，停掉 <code>frpc</code>，等待时间到达整分钟之后，观察 <code>fprc</code> 有没有自动重启</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">root@osmc:/home/osmc/rasp-tools/frp_client<span class="comment"># bash start.sh </span></span><br><span class="line">自动重启</span><br><span class="line">root@osmc:/home/osmc/rasp-tools/frp_client<span class="comment"># nohup: redirecting stderr to stdout</span></span><br><span class="line">root@osmc:/home/osmc/rasp-tools/frp_client<span class="comment"># ps -fe  grep frpc</span></span><br><span class="line">root      1864     1  0 04:27 pts/0    00:00:00 /home/osmc/rasp-tools/frp_client/frpc -c /home/osmc/rasp-tools/frp_client/frpc.ini</span><br><span class="line">root      1875  1343  0 04:27 pts/0    00:00:00 grep frpc</span><br><span class="line">root@osmc:/home/osmc/rasp-tools/frp_client<span class="comment"># kill -9 1864</span></span><br><span class="line">root@osmc:/home/osmc/rasp-tools/frp_client<span class="comment"># ps -fe  grep frpc</span></span><br><span class="line">root      1883  1343  0 04:27 pts/0    00:00:00 grep frpc</span><br><span class="line"><span class="comment"># .... 等待一会儿</span></span><br><span class="line">root@osmc:/home/osmc/rasp-tools/frp_client<span class="comment"># ps -fe  grep frpc</span></span><br><span class="line">root      1984     1  0 04:29 ?        00:00:00 /home/osmc/rasp-tools/frp_client/frpc -c /home/osmc/rasp-tools/frp_client/frpc.ini</span><br><span class="line">root      1985     1  0 04:29 ?        00:00:00 /home/osmc/rasp-tools/frp_client/frpc -c /home/osmc/rasp-tools/frp_client/frpc.ini</span><br><span class="line">root      2010  1343  0 04:29 pts/0    00:00:00 grep frpc</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置反向代理"><a href="#配置反向代理" class="headerlink" title="配置反向代理"></a>配置反向代理</h4><p>这个时候就可以根据反向代理的域名，比如我的样例里边用的 <a href="%22http://nextcloud.wj2015.com:8189/%22">http://nextcloud.wj2015.com:8189/</a> 访问项目，但是这样并不友好，包括</p>
+<ul>
+<li>没有HTTPS</li>
+<li>端口是8189，不好看</li>
+</ul>
+<p>为解决上述两个问题，我在 fprs服务器配置了nginx反向代理，将域名 <code>nextcloud.wj2015.com</code> 配好https，再代理到 <code>raspi.nextcloud.wj2015.com:8189</code>，具体的 vhost 配置文件如下</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">upstream nextcloud-dashboard&#123;</span><br><span class="line">    server 127.0.0.1:8189<span class="comment">;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 80<span class="comment">;</span></span><br><span class="line">    <span class="comment">#listen [::]:80;</span></span><br><span class="line">    server_name nextcloud.wj2015.com<span class="comment">;</span></span><br><span class="line">    <span class="comment"># enforce https</span></span><br><span class="line">    return 301 https://$server_name$request_uri<span class="comment">;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen 443 ssl http2<span class="comment">;</span></span><br><span class="line">    <span class="comment">#listen [::]:443 ssl http2;</span></span><br><span class="line">    server_name nextcloud.wj2015.com<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">    ssl_certificate ssl/2018-11-09-SSL/1_nextcloud.wj2015.com_bundle.crt<span class="comment">;</span></span><br><span class="line">    ssl_certificate_key ssl/2018-11-09-SSL/2_nextcloud.wj2015.com.key<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Add headers to serve security related headers</span></span><br><span class="line">    <span class="comment"># Before enabling Strict-Transport-Security headers please read into this</span></span><br><span class="line">    <span class="comment"># topic first.</span></span><br><span class="line">    add_header Strict-Transport-Security &quot;<span class="attr">max-age</span>=<span class="number">15768000</span><span class="comment">; includeSubDomains; preload;&quot;;</span></span><br><span class="line">    large_client_header_buffers 4 16k<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_set_header   Host         $host:$server_port<span class="comment">;</span></span><br><span class="line">        proxy_set_header   X-Real-IP        $remote_addr<span class="comment">;</span></span><br><span class="line">        proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for<span class="comment">;</span></span><br><span class="line"></span><br><span class="line">        proxy_pass  http://nextcloud-dashboard<span class="comment">;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>访问 <code>https://nextcloud.wj2015.com</code> 可能会看到下面的提示 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/04/2f500313ada9cdc421f34109902ee7c3.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/04/2f500313ada9cdc421f34109902ee7c3.png"></a> 根据提示改一下可信域名即可，或者一开始安装的时候就在此域名下安装（更推荐） 改可信域名需要使用 <code>docker exec -it nextcloud_app_1 /bin/bash</code> 进入到 <code>docker</code> 容器中更改对应文件，改动之后重新启动容器就需要慎重了；或者映射对应配置文件到真实路径下 最后能看到这个页面就算成功了 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/04/b64d24d3f221b7a8528de78af1ce4f22.png"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2020/04/b64d24d3f221b7a8528de78af1ce4f22.png"></a></p>
+<h3 id="速度测试"><a href="#速度测试" class="headerlink" title="速度测试"></a>速度测试</h3><p>由于树莓派3b孱弱的性能，OSMC系统持久输出HDMI信号以及 nectcloud 带来的 php-fpm + nginx 结构上的损失，加之内网穿透后速度很慢的网络，又卡容易丢包，不推荐使用。 除非使用更好的树莓派，或者单独只装一个 nextcloud，就像 nextcloud 官方给到的内置 nextcloud 的系统。</p>
+<h3 id="其他推荐"><a href="#其他推荐" class="headerlink" title="其他推荐"></a>其他推荐</h3><p>nextcloud的功能和插件非常之丰富，但是如果只有同步文件的需求的话，可以使用去中心化的 syncting 方便的在不同电脑上同步文件，炒鸡方便，如果有在线下载的需求，可以内网穿透 + nginx 配合HTTP鉴权简单跑一个文件管理页面。 并且 syncting 可以自己搭建中继服务器，速度+++ 参考的其他博主链接：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/69267020?from_voters_page=true">https://zhuanlan.zhihu.com/p/69267020?from_voters_page&#x3D;true</a> 官方网站：<a target="_blank" rel="noopener" href="https://syncthing.net/">https://syncthing.net/</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>树莓派在运行有其他耗性能的服务时，就不适合再用 nextcloud 做网盘了，如果像我一样有运行其他服务诸如 KODI 的同时，还希望能在不同电脑上同步文件，那么就可以考虑同步神器 syncting 了。</p>
+
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>Jeffrey Wang<br>
+        <strong>本文链接：</strong><a href="https://blog.wj2015.com/2020/07/02/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%9F%BA%E4%BA%8Edocker%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAnextcloud%EF%BC%8C%E9%99%84%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/" title="https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2020&#x2F;07&#x2F;02&#x2F;%E6%A0%91%E8%8E%93%E6%B4%BE%E5%9F%BA%E4%BA%8Edocker%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAnextcloud%EF%BC%8C%E9%99%84%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2020&#x2F;07&#x2F;02&#x2F;%E6%A0%91%E8%8E%93%E6%B4%BE%E5%9F%BA%E4%BA%8Edocker%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BAnextcloud%EF%BC%8C%E9%99%84%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/Linux/">Linux</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/nextcloud/" rel="tag">nextcloud</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/syncting/" rel="tag">syncting</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E5%90%8C%E6%AD%A5/" rel="tag">同步</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: 'd7b7061e43e1334a5aa9',
+        clientSecret: '5af2efcfc06b854bc5ccc23babfa3a06a7508c1e',
+        id: window.location.pathname,
+        repo: 'blog',
+        owner: 'wangerzi',
+        admin: 'wangerzi'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E6%96%87"><span class="toc-number">2.</span> <span class="toc-text">正文</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%91%E8%8E%93%E6%B4%BE%E5%88%B7%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.1.</span> <span class="toc-text">树莓派刷系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-number">2.2.</span> <span class="toc-text">环境准备</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B0%83%E6%95%B4%E6%97%B6%E5%8C%BA"><span class="toc-number">2.2.1.</span> <span class="toc-text">调整时区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Docker%E5%AE%89%E8%A3%85"><span class="toc-number">2.2.2.</span> <span class="toc-text">Docker安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#docker-compose%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">2.2.3.</span> <span class="toc-text">docker-compose的安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nextcloud"><span class="toc-number">2.2.4.</span> <span class="toc-text">nextcloud</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8Cnextcloud"><span class="toc-number">2.3.</span> <span class="toc-text">运行nextcloud</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F"><span class="toc-number">2.4.</span> <span class="toc-text">内网穿透</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-frp"><span class="toc-number">2.4.1.</span> <span class="toc-text">配置 frp</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E9%87%8D%E6%96%B0%E8%BF%90%E8%A1%8C"><span class="toc-number">2.4.2.</span> <span class="toc-text">自动重新运行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86"><span class="toc-number">2.4.3.</span> <span class="toc-text">配置反向代理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9F%E5%BA%A6%E6%B5%8B%E8%AF%95"><span class="toc-number">2.5.</span> <span class="toc-text">速度测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%8E%A8%E8%8D%90"><span class="toc-number">2.6.</span> <span class="toc-text">其他推荐</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+ 
+
+<script async src="/js/app.js?v=1651830304579"></script>
+
+
+	<script async src="/js/search.js?v=1651830304580"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHH2NFM6CG"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZHH2NFM6CG');
+</script>
+
+
+
+
+
+</body>
+
+</html>

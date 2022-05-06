@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>如何搭建自己的SVN服务器，附踩坑实录 - 九层台</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="前端开发,后端开发,LINUX,机器学习,软考">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="目标 在Linux服务器上搭建SVN，实现服务器本地使用SVN自动同步最新代码 新建N个账号，给产品、程序员在公网环境下使用  准备工作首先，，你得有一台服务器，如果这个SVN仓库需要能在公网访问，服务器得需要有一个公网IP。 如果没有公网环境，虚拟机来做测试也是可以的，甚至家里边用不上的电脑加花生壳软件，再做一个映射都行。  SVN简介SVN是subversion的简称，是一个操作简单的中心化的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何搭建自己的SVN服务器，附踩坑实录">
+<meta property="og:url" content="https://blog.wj2015.com/2018/07/20/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84svn%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8C%E9%99%84%E8%B8%A9%E5%9D%91%E5%AE%9E%E5%BD%95/">
+<meta property="og:site_name" content="九层台">
+<meta property="og:description" content="目标 在Linux服务器上搭建SVN，实现服务器本地使用SVN自动同步最新代码 新建N个账号，给产品、程序员在公网环境下使用  准备工作首先，，你得有一台服务器，如果这个SVN仓库需要能在公网访问，服务器得需要有一个公网IP。 如果没有公网环境，虚拟机来做测试也是可以的，甚至家里边用不上的电脑加花生壳软件，再做一个映射都行。  SVN简介SVN是subversion的简称，是一个操作简单的中心化的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/timg-5-300x231.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/9e18b6f2f0fbb72f8c8c374218f3436c.gif">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/790909ad2936bd191a9ead8940c0d568.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/278260c66dc742a58eefce599cf4d745.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/0bab54e406d396fb4bba6e41f8e6eb8a.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/cc9a499649ac9674e9fe1d5572df2e6b.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/c848cc30a22f99fc77c591341cfca9ad.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/e47e510b09981bc35dbe67eb8f43de4d.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/97bba3045f1c898642cd6ae5411199d6.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/5c5f5d4251b858965373d5e80d834773.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/timg-6-300x219.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/db0c19e75a1a6ce3e9af4255ab2c2bce.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/55053a8c06ae360634e4f70d61d5841a.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/9e6460e9196b5bb28d71f29a2cbfa27e.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/timg-2-300x187.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/timg-1-1-300x258.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/e8c51965110239a6757f2859bd1c01dc.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/7aeb6d29649bb8ce25193c7a6be2a10b.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/07f78c01b1b7264547f26f9ce083b779.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/103ef20c68667829ebf2d29f1c9ca981.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/timg-300x138.jpg">
+<meta property="article:published_time" content="2018-07-20T02:23:53.000Z">
+<meta property="article:modified_time" content="2022-05-06T09:44:42.675Z">
+<meta property="article:author" content="Jeffrey Wang">
+<meta property="article:tag" content="SVN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/timg-5-300x231.jpg">
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"
+    />
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"
+    />
+    
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651830304715">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651830304715">
+    <link rel="stylesheet" href="/css/style.css?v=1651830304715">
+     
+    
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
+</head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/background.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="Jeffrey Wang" class="mdui-btn mdui-btn-icon"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/avatar.jpg" alt="Jeffrey Wang"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="Jeffrey Wang">
+            <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/avatar.jpg" alt="Jeffrey Wang" alt="Jeffrey Wang">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>60</div>
+        <div><span>标签</span>114</div>
+        <div><span>分类</span>14</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/friends.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        
+            <form id="search_form">
+                <label><input class="st-default-search-input" id="search_value" name="q" type="search" placeholder="搜索" style="
+                    font-size: 15px !important;
+                    height: 56px !important;
+                    background-image: none;
+                "></label>
+            </form>
+         
+    </div>
+</div>
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/2020/" style="font-size: 10px;">2020</a> <a href="/tags/B-tree/" style="font-size: 10px;">B+ tree</a> <a href="/tags/BP/" style="font-size: 10px;">BP</a> <a href="/tags/BP%E7%AE%97%E6%B3%95/" style="font-size: 10px;">BP算法</a> <a href="/tags/Hash/" style="font-size: 10px;">Hash</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Mysql/" style="font-size: 16.67px;">Mysql</a> <a href="/tags/POW/" style="font-size: 10px;">POW</a> <a href="/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/tags/SVN/" style="font-size: 10px;">SVN</a> <a href="/tags/Serverless/" style="font-size: 10px;">Serverless</a> <a href="/tags/Vmware/" style="font-size: 10px;">Vmware</a> <a href="/tags/apply/" style="font-size: 10px;">apply</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/authorization/" style="font-size: 10px;">authorization</a> <a href="/tags/aws/" style="font-size: 11.67px;">aws</a> <a href="/tags/cloudfront/" style="font-size: 11.67px;">cloudfront</a> <a href="/tags/ctm/" style="font-size: 10px;">ctm</a> <a href="/tags/eth0/" style="font-size: 10px;">eth0</a> <a href="/tags/excel/" style="font-size: 10px;">excel</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/gasPrice/" style="font-size: 10px;">gasPrice</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gltf/" style="font-size: 10px;">gltf</a> <a href="/tags/iges/" style="font-size: 10px;">iges</a> <a href="/tags/ios/" style="font-size: 11.67px;">ios</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/js-xlsx/" style="font-size: 10px;">js-xlsx</a> <a href="/tags/kali/" style="font-size: 10px;">kali</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/layui/" style="font-size: 10px;">layui</a> <a href="/tags/layuiAdmin/" style="font-size: 10px;">layuiAdmin</a> <a href="/tags/nextTick/" style="font-size: 10px;">nextTick</a> <a href="/tags/nextcloud/" style="font-size: 10px;">nextcloud</a> <a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/php-fpm/" style="font-size: 11.67px;">php-fpm</a> <a href="/tags/php7/" style="font-size: 10px;">php7</a> <a href="/tags/phpMyAdmin/" style="font-size: 10px;">phpMyAdmin</a> <a href="/tags/phpunit/" style="font-size: 10px;">phpunit</a> <a href="/tags/python/" style="font-size: 13.33px;">python</a> <a href="/tags/pythonocc/" style="font-size: 10px;">pythonocc</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/stl/" style="font-size: 10px;">stl</a> <a href="/tags/stp/" style="font-size: 10px;">stp</a> <a href="/tags/style/" style="font-size: 10px;">style</a> <a href="/tags/syncting/" style="font-size: 10px;">syncting</a> <a href="/tags/three-js/" style="font-size: 10px;">three.js</a> <a href="/tags/utools/" style="font-size: 10px;">utools</a> <a href="/tags/vbot/" style="font-size: 10px;">vbot</a> <a href="/tags/video/" style="font-size: 11.67px;">video</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/web3/" style="font-size: 10px;">web3</a> <a href="/tags/web3d/" style="font-size: 10px;">web3d</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0/" style="font-size: 10px;">代价函数</a> <a href="/tags/%E5%81%8F%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">偏导数</a> <a href="/tags/%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">关系式</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8/" style="font-size: 10px;">内存占用</a> <a href="/tags/%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A/" style="font-size: 10px;">动态绑定</a> <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" style="font-size: 11.67px;">区块链</a> <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" style="font-size: 10px;">单元测试</a> <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 11.67px;">卷积神经网络</a> <a href="/tags/%E5%8F%82%E6%95%B0%E8%8E%B7%E5%8F%96/" style="font-size: 10px;">参数获取</a> <a href="/tags/%E5%8F%8D%E5%90%91%E9%80%92%E6%8E%A8%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">反向递推关系式</a> <a href="/tags/%E5%90%8C%E6%AD%A5/" style="font-size: 10px;">同步</a> <a href="/tags/%E5%90%91%E9%87%8F/" style="font-size: 10px;">向量</a> <a href="/tags/%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/" style="font-size: 10px;">命名规则</a> <a href="/tags/%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0%E6%B1%82%E5%AF%BC/" style="font-size: 10px;">复合函数求导</a> <a href="/tags/%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C/" style="font-size: 10px;">多人协作</a> <a href="/tags/%E5%A4%9A%E5%8F%98%E9%87%8F%E5%87%BD%E6%95%B0/" style="font-size: 10px;">多变量函数</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%AF%BC%E5%87%BA%E6%A0%B7%E5%BC%8F/" style="font-size: 10px;">导出样式</a> <a href="/tags/%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">导数</a> <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 11.67px;">小程序</a> <a href="/tags/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" style="font-size: 10px;">异常处理</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%9C%8D/" style="font-size: 10px;">微信客服</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91/" style="font-size: 11.67px;">微信开发</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5/" style="font-size: 10px;">拉格朗日</a> <a href="/tags/%E6%8F%92%E4%BB%B6/" style="font-size: 10px;">插件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%94%B9%E9%80%A0/" style="font-size: 10px;">改造</a> <a href="/tags/%E6%95%A3%E5%88%97%E8%A1%A8/" style="font-size: 10px;">散列表</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" style="font-size: 10px;">数据类型</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a> <a href="/tags/%E6%97%85%E8%A1%8C/" style="font-size: 10px;">旅行</a> <a href="/tags/%E6%97%A0%E9%99%90%E7%BA%A7%E5%88%86%E7%B1%BB/" style="font-size: 10px;">无限级分类</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 18.33px;">机器学习</a> <a href="/tags/%E6%9E%81%E5%80%BC/" style="font-size: 10px;">极值</a> <a href="/tags/%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/" style="font-size: 10px;">格式转换</a> <a href="/tags/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" style="font-size: 13.33px;">梯度下降</a> <a href="/tags/%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9/" style="font-size: 10px;">模型压缩</a> <a href="/tags/%E6%B1%A0%E5%8C%96/" style="font-size: 10px;">池化</a> <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 16.67px;">深度学习</a> <a href="/tags/%E7%89%B9%E5%BE%81%E6%98%A0%E5%B0%84/" style="font-size: 10px;">特征映射</a> <a href="/tags/%E7%9F%A9%E9%98%B5/" style="font-size: 10px;">矩阵</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E5%8D%95%E5%85%83%E8%AF%AF%E5%B7%AE/" style="font-size: 10px;">神经单元误差</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" style="font-size: 10px;">索引原理</a> <a href="/tags/%E7%BD%91%E5%8D%A1/" style="font-size: 10px;">网卡</a> <a href="/tags/%E8%A7%86%E9%A2%91%E6%B5%81/" style="font-size: 11.67px;">视频流</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/" style="font-size: 10px;">计算机组成结构</a> <a href="/tags/%E8%AF%AF%E5%B7%AE%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E6%B3%95/" style="font-size: 10px;">误差反向传播法</a> <a href="/tags/%E8%B7%A8%E8%A1%A8/" style="font-size: 10px;">跨表</a> <a href="/tags/%E8%B8%A9%E5%9D%91/" style="font-size: 13.33px;">踩坑</a> <a href="/tags/%E8%BD%AF%E8%80%83/" style="font-size: 15px;">软考</a> <a href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" style="font-size: 10px;">过滤器</a> <a href="/tags/%E8%BF%91%E4%BC%BC%E5%85%AC%E5%BC%8F/" style="font-size: 10px;">近似公式</a> <a href="/tags/%E8%BF%AD%E4%BB%A3%E5%99%A8/" style="font-size: 10px;">迭代器</a>
+    </div>
+    
+      <script>
+        var maxTagcloud = parseInt(20);
+        var tags_length = parseInt(114);
+        var tags_arr = [];
+        for(var i = 0; i < tags_length; i++){
+          tags_arr.push(i);
+        }
+        tags_arr.sort(function (l, r) {
+          return Math.random() > 0.5 ? -1 : 1;
+        });
+        tags_arr = tags_arr.slice(0, maxTagcloud < tags_length ? tags_length - maxTagcloud : 0);
+        for(var tag_i = 0; tag_i < tags_arr.length; tag_i++){
+          document.getElementById("randomtagcloud").children[tags_arr[tag_i]].style.display = 'none';
+        }
+      </script>
+    
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/04/10/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%95%B0%E6%8D%AE%E5%BA%93/">【软考知识总结】数据库</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/10/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">【软考知识总结】操作系统</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/27/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/">【软考知识总结】计算机组成结构</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/27/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%A6%82%E8%A7%88/">【软考知识总结】概览</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/22/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%98%AF%E6%80%8E%E6%A0%B7%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E4%B8%8D%E8%A2%AB%E7%AF%A1%E6%94%B9%E7%9A%84%EF%BC%9F/">区块链是怎样保证数据不被篡改的？</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://github.com/wangerzi/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a><a class="mdui-ripple" href="/atom.xml" target="_blank" mdui-tooltip="{content: 'RSS'}" style="color: rgb(247, 132, 34);background-color: rgba(247, 132, 34, .1);">
+            <i class="nexmoefont icon-rss"></i>
+        </a>
+    </div>
+</div>
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 Jeffrey Wang
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: NaN%;"> 
+              <img src="/static/uploads/git.jpg" alt="如何搭建自己的SVN服务器，附踩坑实录" loading="lazy">
+              <h1>如何搭建自己的SVN服务器，附踩坑实录</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2018年07月20日</a>
+</div>
+
+      <h1 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h1><ol>
+<li>在Linux服务器上搭建SVN，实现服务器本地使用SVN自动同步最新代码</li>
+<li>新建N个账号，给产品、程序员在公网环境下使用</li>
+</ol>
+<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><p>首先，，你得有一台服务器，如果这个SVN仓库需要能在公网访问，服务器得需要有一个公网IP。 如果没有公网环境，虚拟机来做测试也是可以的，甚至家里边用不上的电脑加花生壳软件，再做一个映射都行。 <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/timg-5-300x231.jpg"></p>
+<h1 id="SVN简介"><a href="#SVN简介" class="headerlink" title="SVN简介"></a>SVN简介</h1><p>SVN是subversion的简称，是一个操作简单的中心化的版本控制器，Windows上使用TortoiseSVN软件或者Linux上使用subversion工具，就可以方便的在各个客户端同步代码、资料等。<a target="_blank" rel="noopener" href="https://tortoisesvn.net/downloads.html" title="TortoiseSVN下载">TortoiseSVN下载</a> <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/9e18b6f2f0fbb72f8c8c374218f3436c.gif"> <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/790909ad2936bd191a9ead8940c0d568.png"></p>
+<h1 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h1><h2 id="安装subversion"><a href="#安装subversion" class="headerlink" title="安装subversion"></a>安装subversion</h2><p>先确定服务器是否有安装subversion</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="symbol">@localhost</span> ~]<span class="meta"># svnversion --version</span></span><br></pre></td></tr></table></figure>
+
+<p>如下图所示，是未安装的情况 <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/278260c66dc742a58eefce599cf4d745.png"> 如果未安装，使用yum install安装一下即可</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="symbol">@localhost</span> ~]<span class="meta"># yum install subversion</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/0bab54e406d396fb4bba6e41f8e6eb8a.png"> 安装成功后，subversion -v确定下，如下图所示就是安装成功</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="symbol">@localhost</span> ~]<span class="meta"># svnversion --version</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/cc9a499649ac9674e9fe1d5572df2e6b.png"></p>
+<h2 id="新建SVN仓库"><a href="#新建SVN仓库" class="headerlink" title="新建SVN仓库"></a>新建SVN仓库</h2><p>创建SVN仓库的命令是svnadmin create 仓库路径 比如，我想让我的<code>/var/svn/</code>作为我SVN仓库的根目录，那么可以分为三个步骤进行仓库创建操作</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">创建文件夹 <span class="operator">=</span>&gt; 进入文件夹 <span class="operator">=</span>&gt; 创建仓库</span><br></pre></td></tr></table></figure>
+
+<p>示例如下：</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="symbol">@localhost</span> ~]<span class="meta"># mkdir /var/svn</span></span><br><span class="line">[root<span class="symbol">@localhost</span> ~]<span class="meta"># cd /var/svn/</span></span><br><span class="line">[root<span class="symbol">@localhost</span> svn]<span class="meta"># svnadmin create test</span></span><br></pre></td></tr></table></figure>
+
+<p>执行结果如下，在<code>/var/svn/test</code>下创建了一个仓库 <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/c848cc30a22f99fc77c591341cfca9ad.png"></p>
+<h2 id="配置SVN"><a href="#配置SVN" class="headerlink" title="配置SVN"></a>配置SVN</h2><p>创建完毕后，<code>/var/svn/test</code>目录下出现conf、db、hooks等目录 其中，conf文件夹下包含三个重要的文件<code>conf/passwd</code>、<code>conf/authz</code>、<code>conf/svnserve</code></p>
+<p>文件名</p>
+<p>描述</p>
+<p>conf&#x2F;passwd</p>
+<p>用户文件，配置用户名和密码</p>
+<p>conf&#x2F;authz</p>
+<p>用户权限文件，用于配置用户权限</p>
+<p>conf&#x2F;svnserve.conf</p>
+<p>配置启动参数</p>
+<h3 id="用户文件passwd"><a href="#用户文件passwd" class="headerlink" title="用户文件passwd"></a>用户文件passwd</h3><p>首先，编辑passwd文件，里边只有一个[users]模块，含义是 用户名 &#x3D; 密码 比如，我们有Jeffrey、Sally、Jack、Pony四个人，密码是名字+123，就可以这样写</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="symbol">@localhost</span> conf]<span class="meta"># vim passwd</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/e47e510b09981bc35dbe67eb8f43de4d.png"></p>
+<h3 id="权限文件authz"><a href="#权限文件authz" class="headerlink" title="权限文件authz"></a>权限文件authz</h3><p>权限文件用于指定访问权限，可指定分组权限或个人权限 比如： Jeffrey和Sally是程序员，属于programers分组，只读<code>/doc/</code>目录，读写<code>/src/</code>目录。 Jack是产品经理，属于PM分组，能读写<code>/doc/</code>，不能访问<code>/src/</code>。 Pony是老板，属于Mangager分组，能读写<code>/doc</code>、<code>/src/</code>。 <strong>样例如下</strong>： [groups]模块里边配置分组信息 [&#x2F;dir]模块里边配置分组权限&#x2F;个人权限信息，r代表读，w代表写</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">配置说明：</span><br><span class="line">分组名 = rw   <span class="meta"># 分组权限配置</span></span><br><span class="line"><span class="meta">&amp;用户名 = rw  # 单个用户权限配置</span></span><br><span class="line">* = rw        <span class="meta"># 所有用户权限配置</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/97bba3045f1c898642cd6ae5411199d6.png"></p>
+<h3 id="启动文件svnserve-conf"><a href="#启动文件svnserve-conf" class="headerlink" title="启动文件svnserve.conf"></a>启动文件svnserve.conf</h3><p>用于配置启动参数，具体说明如下图所示 <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/5c5f5d4251b858965373d5e80d834773.png"></p>
+<h2 id="运行SVNSERVE"><a href="#运行SVNSERVE" class="headerlink" title="运行SVNSERVE"></a>运行SVNSERVE</h2><p>配置完毕之后就可以启动SVN服务了，svnserve是一个服务端程序，启动后就能向其他人提供SVN服务。 <strong>参数说明：</strong> svnserve -d -r &#x2F;路径 –listen-port 端口号 -d 表示守护进程 -r 表示SVN服务根路径 –listen-port 可指定端口号</p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 运行服务端程序</span></span><br><span class="line">[root@localhost conf]<span class="comment"># svnserve -d -r /var/svn/</span></span><br><span class="line"><span class="comment"># 检查是否运行成功</span></span><br><span class="line">[root@localhost conf]<span class="comment"># ps -fe  grep svnserve</span></span><br><span class="line">root     <span class="number"> 1586 </span>   <span class="number"> 1 </span><span class="number"> 0 </span>02:25 ?        00:00:00 svnserve -d -r /var/svn/</span><br><span class="line">root     <span class="number"> 1588 </span><span class="number"> 1448 </span><span class="number"> 0 </span>02:25 pts/0    00:00:00 grep svnserve</span><br></pre></td></tr></table></figure>
+
+<h3 id="本地仓库测试"><a href="#本地仓库测试" class="headerlink" title="本地仓库测试"></a>本地仓库测试</h3><p>假设现在这个服务器上搭建有一个网站，路径是<code>/var/www/html/</code>，需要使用svn更新代码。 <strong>【注】</strong>首次使用，需要输入root密码和配置的用户名+密码，root密码直接输入空就行了。</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost html]# svn checkout svn://127.0.0.1/test/</span><br><span class="line">认证领域: &lt;svn://127.0.0.1:3690&gt; My First Repository</span><br><span class="line">“root”的密码: </span><br><span class="line">认证领域: &lt;svn://127.0.0.1:3690&gt; My First Repository</span><br><span class="line">用户名: Jeffrey</span><br><span class="line">“Jeffrey”的密码: </span><br><span class="line"></span><br><span class="line"><span class="code">-----------------------------------------------------------------------</span></span><br><span class="line"><span class="code">注意!  你的密码，对于认证域:</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="code">   &lt;svn://127.0.0.1:3690&gt; My First Repository</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="code">只能明文保存在磁盘上!  如果可能的话，请考虑配置你的系统，让 Subversion</span></span><br><span class="line"><span class="code">可以保存加密后的密码。请参阅文档以获得详细信息。</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="code">你可以通过在“/root/.subversion/servers”中设置选项“store-plaintext-passwords”为“yes”或“no”，</span></span><br><span class="line"><span class="code">来避免再次出现此警告。</span></span><br><span class="line"><span class="code">-----------------------------------------------------------------------</span></span><br><span class="line">保存未加密的密码(yes/no)?yes</span><br><span class="line">[root@localhost html]# svn checkout svn://127.0.0.1/test/</span><br><span class="line">取出版本 0。</span><br></pre></td></tr></table></figure>
+
+<h4 id="添加文件"><a href="#添加文件" class="headerlink" title="添加文件"></a>添加文件</h4><p>【注】先切换到<code>/var/www/html/test/</code>，再进行SVN操作，还有<strong>使用的用户是Jeffrey用户，只有src目录的写权限，所以只能提交src目录，否则报权限错误。</strong>。 【注】测试是，我给<code>src/index.html</code>里边写入了”Hello World!”</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="symbol">@localhost</span> html]<span class="meta"># cd test/</span></span><br><span class="line">[root<span class="symbol">@localhost</span> test]<span class="meta"># mkdir doc/ src</span></span><br><span class="line">[root<span class="symbol">@localhost</span> test]<span class="meta"># vim src/index.html</span></span><br><span class="line">[root<span class="symbol">@localhost</span> test]<span class="meta"># svn status</span></span><br><span class="line">?       doc</span><br><span class="line">?       src</span><br></pre></td></tr></table></figure>
+
+<h4 id="提交"><a href="#提交" class="headerlink" title="提交"></a>提交</h4><p>commit的时候，-m 后写上理由即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># svn add src/</span></span><br><span class="line">A         src</span><br><span class="line">A         src/index.html</span><br><span class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># svn commit -m &#x27;初始化提交&#x27;</span></span><br><span class="line">增加           src</span><br><span class="line">增加           src/index.html</span><br><span class="line">传输文件数据.</span><br><span class="line">提交后的版本为 1。</span><br></pre></td></tr></table></figure>
+
+<h4 id="实现脚本自动同步最新代码"><a href="#实现脚本自动同步最新代码" class="headerlink" title="实现脚本自动同步最新代码"></a>实现脚本自动同步最新代码</h4><p>Linux中可以使用shell+contab定时拉取SVN中的最新代码，也不麻烦。 <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/timg-6-300x219.jpg"> 如果没有安装crontab，需要<code>yum install crontabs</code>，再<code>service crond start</code> <code>~/svnupdate.sh</code>内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/sh</span></span><br><span class="line"><span class="comment"># 进入目标目录</span></span><br><span class="line"><span class="built_in">cd</span> /var/www/html/test</span><br><span class="line"><span class="comment"># 调用svn update即可同步</span></span><br><span class="line">svn update</span><br></pre></td></tr></table></figure>
+
+<p><code>crontab -e</code>内容：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*<span class="regexp">/60 * * * * /</span>bin<span class="regexp">/shell /</span>root/autogitpull.sh</span><br></pre></td></tr></table></figure>
+
+<p>命令概览</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="symbol">@localhost</span> test]<span class="meta"># vim ~/svnupdate.sh</span></span><br><span class="line">[root<span class="symbol">@localhost</span> test]<span class="meta"># chmod u+x ~/svnupdate.sh</span></span><br><span class="line"><span class="meta"># 测试脚本是否正确</span></span><br><span class="line">[root<span class="symbol">@localhost</span> test]<span class="meta"># ~/svnupdate.sh </span></span><br><span class="line">版本 <span class="number">1</span>。</span><br></pre></td></tr></table></figure>
+
+<h3 id="远程仓库测试"><a href="#远程仓库测试" class="headerlink" title="远程仓库测试"></a>远程仓库测试</h3><p>首先，SVN服务器的IP为<code>192.168.220.128</code>，所以Linux或Windows需要在指定地址是<code>svn://192.168.220.128/test</code>（创建的test项目） <strong>【注】</strong>如果出现如下错误，请按照采坑实录调整双方防火墙</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost html]<span class="meta"># svn checkout svn:<span class="comment">//192.168.220.128/test/</span></span></span><br><span class="line"><span class="symbol">svn:</span> 无法连接主机“<span class="number">192.168</span><span class="number">.220</span><span class="number">.128</span>”: 没有到主机的路由</span><br></pre></td></tr></table></figure>
+
+<h4 id="Linux同步SVN测试"><a href="#Linux同步SVN测试" class="headerlink" title="Linux同步SVN测试"></a>Linux同步SVN测试</h4><p>首先，按照相同的方法安装subversion</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># /usr/bin/yum install subversion</span></span><br><span class="line">已加载插件：fastestmirror</span><br><span class="line">设置安装进程</span><br><span class="line">Loading mirror speeds <span class="keyword">from</span> cached hostfile</span><br></pre></td></tr></table></figure>
+
+<p>特别需要注意，如果Linux本机没有开启8690的INPUT和OUTPUT，也会出现问题。 不用开启subserve，直接<code>svn checkout svn://192.168.220.128/test/src/</code>即可。</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost html]# svn checkout svn://192.168.220.128/test/src</span><br><span class="line">认证领域: &lt;svn://192.168.220.128:3690&gt; My First Repository</span><br><span class="line">“root”的密码: </span><br><span class="line">认证领域: &lt;svn://192.168.220.128:3690&gt; My First Repository</span><br><span class="line">用户名: Sally</span><br><span class="line">“Sally”的密码: </span><br><span class="line"></span><br><span class="line"><span class="code">-----------------------------------------------------------------------</span></span><br><span class="line"><span class="code">注意!  你的密码，对于认证域:</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="code">   &lt;svn://192.168.220.128:3690&gt; My First Repository</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="code">只能明文保存在磁盘上!  如果可能的话，请考虑配置你的系统，让 Subversion</span></span><br><span class="line"><span class="code">可以保存加密后的密码。请参阅文档以获得详细信息。</span></span><br><span class="line"><span class="code"></span></span><br><span class="line"><span class="code">你可以通过在“/root/.subversion/servers”中设置选项“store-plaintext-passwords”为“yes”或“no”，</span></span><br><span class="line"><span class="code">来避免再次出现此警告。</span></span><br><span class="line"><span class="code">-----------------------------------------------------------------------</span></span><br><span class="line">保存未加密的密码(yes/no)?yes</span><br><span class="line">A    src/index.html</span><br><span class="line">取出版本 1。</span><br><span class="line">[root@localhost html]# tail src/index.html </span><br><span class="line">Hello World!</span><br></pre></td></tr></table></figure>
+
+<h4 id="Windows同步SVN测试"><a href="#Windows同步SVN测试" class="headerlink" title="Windows同步SVN测试"></a>Windows同步SVN测试</h4><p>安装完TortoiseSVN之后，在一个空文件夹里 右键 》 SVN Checkout <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/db0c19e75a1a6ce3e9af4255ab2c2bce.png"> 填写SVN地址，点OK再输入密码，即可同步 <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/55053a8c06ae360634e4f70d61d5841a.png"> <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/9e6460e9196b5bb28d71f29a2cbfa27e.png"></p>
+<h2 id="踩坑实录"><a href="#踩坑实录" class="headerlink" title="踩坑实录"></a>踩坑实录</h2><p>各位请留步，博主还针对容易出现各种”Connect timed out”、”Connect refused”等问题，进行了一下总结。 <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/timg-2-300x187.jpg"></p>
+<h3 id="认证失败"><a href="#认证失败" class="headerlink" title="认证失败"></a>认证失败</h3><p>如果出现“认证失败”或“Authorization Faild!”，首先考虑<code>conf/authz</code>的权限配置问题，特别是[&#x2F;]分组的权限配置问题，先改为* &#x3D; rw试一试。</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[/]</span><br><span class="line">* <span class="operator">=</span> rw</span><br></pre></td></tr></table></figure>
+
+<p>如果是输入密码错误导致的”Authorization Faild!”可以删除<code>~/.subversion/auth/</code>，删除后即可重新输入密码。</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="symbol">@localhost</span> test]<span class="meta"># rm -rf ~/.subversion/auth</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="iptables配置"><a href="#iptables配置" class="headerlink" title="iptables配置"></a>iptables配置</h3><p>svnserve的默认端口是3690，所以需要开启INPUT链 dport 3690和OUTPUT链 sport 3690。 <code>vim /etc/sysconfig/iptables</code> 在末尾加入下边三行代码</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># SVN</span></span><br><span class="line">-A INPUT -m <span class="keyword">state</span> --state NEW -m tcp -p tcp --dport <span class="number">3690</span> -j ACCEPT</span><br><span class="line">-A OUTPUT -p tcp -m tcp --sport <span class="number">3690</span> -m <span class="keyword">state</span> --state ESTABLISHED -j ACCEPT</span><br></pre></td></tr></table></figure>
+
+<p>然后重启防火墙，Centos6：<code>service iptables restart</code>，Centos7，如果使用fireware则另行配置。 如果SVN客户端也是Linux的话，需要给客户端Linux加上防火墙配置</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># SVN</span></span><br><span class="line">-A INPUT -m <span class="keyword">state</span> --state NEW -m tcp -p tcp --sport <span class="number">3690</span> -j ACCEPT</span><br><span class="line">-A OUTPUT -p tcp -m tcp --dport <span class="number">3690</span> -m <span class="keyword">state</span> --state ESTABLISHED -j ACCEPT</span><br></pre></td></tr></table></figure>
+
+<h3 id="深坑-云主机的安全组"><a href="#深坑-云主机的安全组" class="headerlink" title="深坑-云主机的安全组"></a>深坑-云主机的安全组</h3><p><strong>深坑警告！！！</strong> <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/timg-1-1-300x258.jpg"> 腾讯云、阿里云均设有 安全组功能，类似于在服务器最外层加上了一个iptables，很多时候也能起到一定的防护作用。但是当我们启动了一个服务，但是没有在安全组内放开端口权限的话，，肯定报超时！！！</p>
+<h4 id="创建安全组"><a href="#创建安全组" class="headerlink" title="创建安全组"></a>创建安全组</h4><p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/e8c51965110239a6757f2859bd1c01dc.png"> 选择<strong>自定义</strong> <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/7aeb6d29649bb8ce25193c7a6be2a10b.png"></p>
+<h4 id="配置8690开放"><a href="#配置8690开放" class="headerlink" title="配置8690开放"></a>配置8690开放</h4><p>入站规则 》 新建规则中，允许所有的8609访问 <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/07f78c01b1b7264547f26f9ce083b779.png"> 出站规则 》 新建规则中，允许所有流量流出即可 <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/103ef20c68667829ebf2d29f1c9ca981.png"> 顺手来个表情包 <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/07/timg-300x138.jpg"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>配置不坑，防火墙和安全组挺坑的</p>
+
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>Jeffrey Wang<br>
+        <strong>本文链接：</strong><a href="https://blog.wj2015.com/2018/07/20/%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84svn%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8C%E9%99%84%E8%B8%A9%E5%9D%91%E5%AE%9E%E5%BD%95/" title="https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2018&#x2F;07&#x2F;20&#x2F;%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84svn%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8C%E9%99%84%E8%B8%A9%E5%9D%91%E5%AE%9E%E5%BD%95&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2018&#x2F;07&#x2F;20&#x2F;%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84svn%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8C%E9%99%84%E8%B8%A9%E5%9D%91%E5%AE%9E%E5%BD%95&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/Linux/">Linux</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/SVN/" rel="tag">SVN</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: 'd7b7061e43e1334a5aa9',
+        clientSecret: '5af2efcfc06b854bc5ccc23babfa3a06a7508c1e',
+        id: window.location.pathname,
+        repo: 'blog',
+        owner: 'wangerzi',
+        admin: 'wangerzi'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%AE%E6%A0%87"><span class="toc-number">1.</span> <span class="toc-text">目标</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SVN%E7%AE%80%E4%BB%8B"><span class="toc-number">3.</span> <span class="toc-text">SVN简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4"><span class="toc-number">4.</span> <span class="toc-text">操作步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85subversion"><span class="toc-number">4.1.</span> <span class="toc-text">安装subversion</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B0%E5%BB%BASVN%E4%BB%93%E5%BA%93"><span class="toc-number">4.2.</span> <span class="toc-text">新建SVN仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AESVN"><span class="toc-number">4.3.</span> <span class="toc-text">配置SVN</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E6%96%87%E4%BB%B6passwd"><span class="toc-number">4.3.1.</span> <span class="toc-text">用户文件passwd</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%83%E9%99%90%E6%96%87%E4%BB%B6authz"><span class="toc-number">4.3.2.</span> <span class="toc-text">权限文件authz</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E6%96%87%E4%BB%B6svnserve-conf"><span class="toc-number">4.3.3.</span> <span class="toc-text">启动文件svnserve.conf</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8CSVNSERVE"><span class="toc-number">4.4.</span> <span class="toc-text">运行SVNSERVE</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93%E6%B5%8B%E8%AF%95"><span class="toc-number">4.4.1.</span> <span class="toc-text">本地仓库测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%96%87%E4%BB%B6"><span class="toc-number">4.4.1.1.</span> <span class="toc-text">添加文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%90%E4%BA%A4"><span class="toc-number">4.4.1.2.</span> <span class="toc-text">提交</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E8%84%9A%E6%9C%AC%E8%87%AA%E5%8A%A8%E5%90%8C%E6%AD%A5%E6%9C%80%E6%96%B0%E4%BB%A3%E7%A0%81"><span class="toc-number">4.4.1.3.</span> <span class="toc-text">实现脚本自动同步最新代码</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E6%B5%8B%E8%AF%95"><span class="toc-number">4.4.2.</span> <span class="toc-text">远程仓库测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Linux%E5%90%8C%E6%AD%A5SVN%E6%B5%8B%E8%AF%95"><span class="toc-number">4.4.2.1.</span> <span class="toc-text">Linux同步SVN测试</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Windows%E5%90%8C%E6%AD%A5SVN%E6%B5%8B%E8%AF%95"><span class="toc-number">4.4.2.2.</span> <span class="toc-text">Windows同步SVN测试</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B8%A9%E5%9D%91%E5%AE%9E%E5%BD%95"><span class="toc-number">4.5.</span> <span class="toc-text">踩坑实录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A4%E8%AF%81%E5%A4%B1%E8%B4%A5"><span class="toc-number">4.5.1.</span> <span class="toc-text">认证失败</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#iptables%E9%85%8D%E7%BD%AE"><span class="toc-number">4.5.2.</span> <span class="toc-text">iptables配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B1%E5%9D%91-%E4%BA%91%E4%B8%BB%E6%9C%BA%E7%9A%84%E5%AE%89%E5%85%A8%E7%BB%84"><span class="toc-number">4.5.3.</span> <span class="toc-text">深坑-云主机的安全组</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%AE%89%E5%85%A8%E7%BB%84"><span class="toc-number">4.5.3.1.</span> <span class="toc-text">创建安全组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE8690%E5%BC%80%E6%94%BE"><span class="toc-number">4.5.3.2.</span> <span class="toc-text">配置8690开放</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">4.6.</span> <span class="toc-text">总结</span></a></li></ol></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+ 
+
+<script async src="/js/app.js?v=1651830304718"></script>
+
+
+	<script async src="/js/search.js?v=1651830304718"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHH2NFM6CG"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZHH2NFM6CG');
+</script>
+
+
+
+
+
+</body>
+
+</html>

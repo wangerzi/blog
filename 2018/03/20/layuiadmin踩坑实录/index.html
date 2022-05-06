@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>layuiAdmin踩坑实录 - 九层台</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="前端开发,后端开发,LINUX,机器学习,软考">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="注：此页面所属问题均出现于layuiAdmin V1.0环境下，部分解决方案需修改源码，并非官方修复，请谨慎使用  背景现在项目采用layuiAdmin作为后台框架，虽然在此之前已经有了layui的基础，但是在使用的过程中依旧磕磕绊绊踩了很多坑，故写此博客作为记录以方便来人。 网页内部刷新导致问题 一般来讲，内部刷新导致的问题，主要分为两类： 1. script标签带lay-url，异步获取数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="layuiAdmin踩坑实录">
+<meta property="og:url" content="https://blog.wj2015.com/2018/03/20/layuiadmin%E8%B8%A9%E5%9D%91%E5%AE%9E%E5%BD%95/">
+<meta property="og:site_name" content="九层台">
+<meta property="og:description" content="注：此页面所属问题均出现于layuiAdmin V1.0环境下，部分解决方案需修改源码，并非官方修复，请谨慎使用  背景现在项目采用layuiAdmin作为后台框架，虽然在此之前已经有了layui的基础，但是在使用的过程中依旧磕磕绊绊踩了很多坑，故写此博客作为记录以方便来人。 网页内部刷新导致问题 一般来讲，内部刷新导致的问题，主要分为两类： 1. script标签带lay-url，异步获取数据">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/914ad3a67ee06b5b7e6aad5d72383f2d.png">
+<meta property="article:published_time" content="2018-03-20T18:18:21.000Z">
+<meta property="article:modified_time" content="2022-05-06T09:44:42.675Z">
+<meta property="article:author" content="Jeffrey Wang">
+<meta property="article:tag" content="踩坑">
+<meta property="article:tag" content="layui">
+<meta property="article:tag" content="layuiAdmin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/914ad3a67ee06b5b7e6aad5d72383f2d.png">
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"
+    />
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"
+    />
+    
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651830304746">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651830304746">
+    <link rel="stylesheet" href="/css/style.css?v=1651830304746">
+     
+    
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
+</head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/background.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="Jeffrey Wang" class="mdui-btn mdui-btn-icon"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/avatar.jpg" alt="Jeffrey Wang"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="Jeffrey Wang">
+            <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/avatar.jpg" alt="Jeffrey Wang" alt="Jeffrey Wang">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>60</div>
+        <div><span>标签</span>114</div>
+        <div><span>分类</span>14</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/friends.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        
+            <form id="search_form">
+                <label><input class="st-default-search-input" id="search_value" name="q" type="search" placeholder="搜索" style="
+                    font-size: 15px !important;
+                    height: 56px !important;
+                    background-image: none;
+                "></label>
+            </form>
+         
+    </div>
+</div>
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/2020/" style="font-size: 10px;">2020</a> <a href="/tags/B-tree/" style="font-size: 10px;">B+ tree</a> <a href="/tags/BP/" style="font-size: 10px;">BP</a> <a href="/tags/BP%E7%AE%97%E6%B3%95/" style="font-size: 10px;">BP算法</a> <a href="/tags/Hash/" style="font-size: 10px;">Hash</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Mysql/" style="font-size: 16.67px;">Mysql</a> <a href="/tags/POW/" style="font-size: 10px;">POW</a> <a href="/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/tags/SVN/" style="font-size: 10px;">SVN</a> <a href="/tags/Serverless/" style="font-size: 10px;">Serverless</a> <a href="/tags/Vmware/" style="font-size: 10px;">Vmware</a> <a href="/tags/apply/" style="font-size: 10px;">apply</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/authorization/" style="font-size: 10px;">authorization</a> <a href="/tags/aws/" style="font-size: 11.67px;">aws</a> <a href="/tags/cloudfront/" style="font-size: 11.67px;">cloudfront</a> <a href="/tags/ctm/" style="font-size: 10px;">ctm</a> <a href="/tags/eth0/" style="font-size: 10px;">eth0</a> <a href="/tags/excel/" style="font-size: 10px;">excel</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/gasPrice/" style="font-size: 10px;">gasPrice</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gltf/" style="font-size: 10px;">gltf</a> <a href="/tags/iges/" style="font-size: 10px;">iges</a> <a href="/tags/ios/" style="font-size: 11.67px;">ios</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/js-xlsx/" style="font-size: 10px;">js-xlsx</a> <a href="/tags/kali/" style="font-size: 10px;">kali</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/layui/" style="font-size: 10px;">layui</a> <a href="/tags/layuiAdmin/" style="font-size: 10px;">layuiAdmin</a> <a href="/tags/nextTick/" style="font-size: 10px;">nextTick</a> <a href="/tags/nextcloud/" style="font-size: 10px;">nextcloud</a> <a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/php-fpm/" style="font-size: 11.67px;">php-fpm</a> <a href="/tags/php7/" style="font-size: 10px;">php7</a> <a href="/tags/phpMyAdmin/" style="font-size: 10px;">phpMyAdmin</a> <a href="/tags/phpunit/" style="font-size: 10px;">phpunit</a> <a href="/tags/python/" style="font-size: 13.33px;">python</a> <a href="/tags/pythonocc/" style="font-size: 10px;">pythonocc</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/stl/" style="font-size: 10px;">stl</a> <a href="/tags/stp/" style="font-size: 10px;">stp</a> <a href="/tags/style/" style="font-size: 10px;">style</a> <a href="/tags/syncting/" style="font-size: 10px;">syncting</a> <a href="/tags/three-js/" style="font-size: 10px;">three.js</a> <a href="/tags/utools/" style="font-size: 10px;">utools</a> <a href="/tags/vbot/" style="font-size: 10px;">vbot</a> <a href="/tags/video/" style="font-size: 11.67px;">video</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/web3/" style="font-size: 10px;">web3</a> <a href="/tags/web3d/" style="font-size: 10px;">web3d</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0/" style="font-size: 10px;">代价函数</a> <a href="/tags/%E5%81%8F%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">偏导数</a> <a href="/tags/%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">关系式</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8/" style="font-size: 10px;">内存占用</a> <a href="/tags/%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A/" style="font-size: 10px;">动态绑定</a> <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" style="font-size: 11.67px;">区块链</a> <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" style="font-size: 10px;">单元测试</a> <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 11.67px;">卷积神经网络</a> <a href="/tags/%E5%8F%82%E6%95%B0%E8%8E%B7%E5%8F%96/" style="font-size: 10px;">参数获取</a> <a href="/tags/%E5%8F%8D%E5%90%91%E9%80%92%E6%8E%A8%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">反向递推关系式</a> <a href="/tags/%E5%90%8C%E6%AD%A5/" style="font-size: 10px;">同步</a> <a href="/tags/%E5%90%91%E9%87%8F/" style="font-size: 10px;">向量</a> <a href="/tags/%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/" style="font-size: 10px;">命名规则</a> <a href="/tags/%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0%E6%B1%82%E5%AF%BC/" style="font-size: 10px;">复合函数求导</a> <a href="/tags/%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C/" style="font-size: 10px;">多人协作</a> <a href="/tags/%E5%A4%9A%E5%8F%98%E9%87%8F%E5%87%BD%E6%95%B0/" style="font-size: 10px;">多变量函数</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%AF%BC%E5%87%BA%E6%A0%B7%E5%BC%8F/" style="font-size: 10px;">导出样式</a> <a href="/tags/%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">导数</a> <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 11.67px;">小程序</a> <a href="/tags/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" style="font-size: 10px;">异常处理</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%9C%8D/" style="font-size: 10px;">微信客服</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91/" style="font-size: 11.67px;">微信开发</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5/" style="font-size: 10px;">拉格朗日</a> <a href="/tags/%E6%8F%92%E4%BB%B6/" style="font-size: 10px;">插件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%94%B9%E9%80%A0/" style="font-size: 10px;">改造</a> <a href="/tags/%E6%95%A3%E5%88%97%E8%A1%A8/" style="font-size: 10px;">散列表</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" style="font-size: 10px;">数据类型</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a> <a href="/tags/%E6%97%85%E8%A1%8C/" style="font-size: 10px;">旅行</a> <a href="/tags/%E6%97%A0%E9%99%90%E7%BA%A7%E5%88%86%E7%B1%BB/" style="font-size: 10px;">无限级分类</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 18.33px;">机器学习</a> <a href="/tags/%E6%9E%81%E5%80%BC/" style="font-size: 10px;">极值</a> <a href="/tags/%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/" style="font-size: 10px;">格式转换</a> <a href="/tags/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" style="font-size: 13.33px;">梯度下降</a> <a href="/tags/%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9/" style="font-size: 10px;">模型压缩</a> <a href="/tags/%E6%B1%A0%E5%8C%96/" style="font-size: 10px;">池化</a> <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 16.67px;">深度学习</a> <a href="/tags/%E7%89%B9%E5%BE%81%E6%98%A0%E5%B0%84/" style="font-size: 10px;">特征映射</a> <a href="/tags/%E7%9F%A9%E9%98%B5/" style="font-size: 10px;">矩阵</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E5%8D%95%E5%85%83%E8%AF%AF%E5%B7%AE/" style="font-size: 10px;">神经单元误差</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" style="font-size: 10px;">索引原理</a> <a href="/tags/%E7%BD%91%E5%8D%A1/" style="font-size: 10px;">网卡</a> <a href="/tags/%E8%A7%86%E9%A2%91%E6%B5%81/" style="font-size: 11.67px;">视频流</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/" style="font-size: 10px;">计算机组成结构</a> <a href="/tags/%E8%AF%AF%E5%B7%AE%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E6%B3%95/" style="font-size: 10px;">误差反向传播法</a> <a href="/tags/%E8%B7%A8%E8%A1%A8/" style="font-size: 10px;">跨表</a> <a href="/tags/%E8%B8%A9%E5%9D%91/" style="font-size: 13.33px;">踩坑</a> <a href="/tags/%E8%BD%AF%E8%80%83/" style="font-size: 15px;">软考</a> <a href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" style="font-size: 10px;">过滤器</a> <a href="/tags/%E8%BF%91%E4%BC%BC%E5%85%AC%E5%BC%8F/" style="font-size: 10px;">近似公式</a> <a href="/tags/%E8%BF%AD%E4%BB%A3%E5%99%A8/" style="font-size: 10px;">迭代器</a>
+    </div>
+    
+      <script>
+        var maxTagcloud = parseInt(20);
+        var tags_length = parseInt(114);
+        var tags_arr = [];
+        for(var i = 0; i < tags_length; i++){
+          tags_arr.push(i);
+        }
+        tags_arr.sort(function (l, r) {
+          return Math.random() > 0.5 ? -1 : 1;
+        });
+        tags_arr = tags_arr.slice(0, maxTagcloud < tags_length ? tags_length - maxTagcloud : 0);
+        for(var tag_i = 0; tag_i < tags_arr.length; tag_i++){
+          document.getElementById("randomtagcloud").children[tags_arr[tag_i]].style.display = 'none';
+        }
+      </script>
+    
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/04/10/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%95%B0%E6%8D%AE%E5%BA%93/">【软考知识总结】数据库</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/10/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">【软考知识总结】操作系统</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/27/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/">【软考知识总结】计算机组成结构</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/27/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%A6%82%E8%A7%88/">【软考知识总结】概览</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/22/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%98%AF%E6%80%8E%E6%A0%B7%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E4%B8%8D%E8%A2%AB%E7%AF%A1%E6%94%B9%E7%9A%84%EF%BC%9F/">区块链是怎样保证数据不被篡改的？</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://github.com/wangerzi/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a><a class="mdui-ripple" href="/atom.xml" target="_blank" mdui-tooltip="{content: 'RSS'}" style="color: rgb(247, 132, 34);background-color: rgba(247, 132, 34, .1);">
+            <i class="nexmoefont icon-rss"></i>
+        </a>
+    </div>
+</div>
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 Jeffrey Wang
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: NaN%;"> 
+              <img src="/static/uploads/2018/03/TIM%E6%88%AA%E5%9B%BE20180321022207.png" alt="layuiAdmin踩坑实录" loading="lazy">
+              <h1>layuiAdmin踩坑实录</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2018年03月21日</a>
+</div>
+
+      <p> 注：此页面所属问题均出现于layuiAdmin V1.0环境下，部分解决方案需修改源码，并非官方修复，请谨慎使用</p>
+<hr>
+<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>现在项目采用layuiAdmin作为后台框架，虽然在此之前已经有了layui的基础，但是在使用的过程中依旧磕磕绊绊踩了很多坑，故写此博客作为记录以方便来人。</p>
+<h2 id="网页内部刷新导致问题"><a href="#网页内部刷新导致问题" class="headerlink" title="网页内部刷新导致问题"></a>网页内部刷新导致问题</h2><blockquote>
+<p>一般来讲，内部刷新导致的问题，主要分为两类： 1. script标签带lay-url，异步获取数据延迟导致渲染失效 2. ID重复&#x2F;重复绑定jquery事件导致的BUG</p>
+</blockquote>
+<h3 id="数据表格自动渲染无法使用"><a href="#数据表格自动渲染无法使用" class="headerlink" title="数据表格自动渲染无法使用"></a>数据表格自动渲染无法使用</h3><p>数据表格的自动渲染一直无法使用，使用layui.table.render();使用javascipt渲染即可，样例如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">table.<span class="title function_">render</span>(&#123;</span><br><span class="line">        <span class="attr">elem</span>: <span class="string">&#x27;#LAY-xma-users-default-table&#x27;</span></span><br><span class="line">        ,<span class="attr">url</span>: <span class="string">&#x27;./json/xma/roles/users.js&#x27;</span> <span class="comment">//模拟接口</span></span><br><span class="line">        ,<span class="attr">height</span>: <span class="string">&#x27;full-235&#x27;</span></span><br><span class="line">        ,<span class="attr">page</span>: <span class="literal">true</span></span><br><span class="line">        ,<span class="attr">cellMinWidth</span>: <span class="number">120</span></span><br><span class="line">        ,<span class="attr">cols</span>: [[</span><br><span class="line">            <span class="comment">// &#123;type: &#x27;checkbox&#x27;&#125;,</span></span><br><span class="line">            &#123;<span class="attr">field</span>:<span class="string">&#x27;id&#x27;</span>, <span class="attr">width</span>:<span class="number">80</span>, <span class="attr">sort</span>:<span class="literal">true</span>, <span class="attr">title</span>: <span class="string">&#x27;编号&#x27;</span>&#125;,</span><br><span class="line">            &#123;<span class="attr">field</span>:<span class="string">&#x27;name&#x27;</span>, <span class="attr">width</span>:<span class="number">160</span>, <span class="attr">title</span>: <span class="string">&#x27;用户名&#x27;</span>&#125;,</span><br><span class="line">            &#123;<span class="attr">field</span>:<span class="string">&#x27;role&#x27;</span>, <span class="attr">width</span>:<span class="number">120</span>, <span class="attr">sort</span>:<span class="literal">true</span>, <span class="attr">title</span>: <span class="string">&#x27;所属角色&#x27;</span>&#125;,</span><br><span class="line">            &#123;<span class="attr">field</span>:<span class="string">&#x27;grade&#x27;</span>, <span class="attr">title</span>: <span class="string">&#x27;管理年级&#x27;</span>&#125;,</span><br><span class="line">            &#123;<span class="attr">field</span>:<span class="string">&#x27;classes&#x27;</span>, <span class="attr">title</span>: <span class="string">&#x27;管理班级&#x27;</span>&#125;,</span><br><span class="line">            <span class="comment">// &#123;toolbar: &#x27;#statusSwitch&#x27;, title: &#x27;状态&#x27;, width:120&#125;,</span></span><br><span class="line">            &#123;<span class="attr">field</span>:<span class="string">&#x27;expire&#x27;</span>, <span class="attr">title</span>: <span class="string">&#x27;到期时间&#x27;</span>, <span class="attr">width</span>:<span class="number">160</span>&#125;,</span><br><span class="line">            &#123;<span class="attr">field</span>:<span class="string">&#x27;update&#x27;</span>, <span class="attr">title</span>: <span class="string">&#x27;更新时间&#x27;</span>, <span class="attr">width</span>:<span class="number">160</span>&#125;,</span><br><span class="line">            &#123;<span class="attr">field</span>:<span class="string">&#x27;create&#x27;</span>, <span class="attr">title</span>: <span class="string">&#x27;创建时间&#x27;</span>, <span class="attr">width</span>:<span class="number">160</span>&#125;,</span><br><span class="line">            &#123;<span class="attr">width</span>:<span class="number">150</span>, <span class="attr">title</span>: <span class="string">&#x27;操作&#x27;</span>, <span class="attr">align</span>:<span class="string">&#x27;center&#x27;</span>, <span class="attr">fixed</span>: <span class="string">&#x27;right&#x27;</span>, <span class="attr">toolbar</span>: <span class="string">&#x27;#LAY-xma-users-default-table-operate&#x27;</span>&#125;,</span><br><span class="line">        ]]</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据表格、动态表单内部刷新后消失"><a href="#数据表格、动态表单内部刷新后消失" class="headerlink" title="数据表格、动态表单内部刷新后消失"></a>数据表格、动态表单内部刷新后消失</h3><p>数据表格的渲染，表单的自动渲染一般都是在layui.use([‘table’, ‘form’])的时候处理的。 </p>
+<p>刷新不出来一般有两种情况：</p>
+<ol>
+<li>如果我们使用 <code>&lt;script type=&quot;text/html&quot; template lay-url=&quot;xxx.js&quot;&gt;&lt;/script&gt;</code> ，layui将会自动使用ajax获取lay-url所在地址，导致加载延迟，在执行layui.use([])时，script中的内容并没有被渲染完成。<br>  <strong>解决方法：</strong> 故将layui.use([]);放在 <code>&lt;script templete&gt;</code> 中即可在异步获取后再渲染 table&#x2F;form。</li>
+<li>form在使用内部刷新后经常会出现没有渲染的情况，这是因为form的自动渲染仅在第一次使用layui.use([‘form’])时，内部刷新并不会重新加载form.js，导致表单没有自动渲染。<br>  <strong>解决方法：</strong> 在非1 情况时，在layui.use([‘form’], function(){layui.form.render();});手动渲染兼容下就好。</li>
+</ol>
+<h3 id="动态渲染相同ID元素导致某个页面元素失效"><a href="#动态渲染相同ID元素导致某个页面元素失效" class="headerlink" title="动态渲染相同ID元素导致某个页面元素失效"></a>动态渲染相同ID元素导致某个页面元素失效</h3><p>layuiadmin是单页面应用，并非通常的iframe架构，相同ID的元素在同一页面下会导致获取ID选择器获取元素达不到想要的效果。最后的结果可能是：单独刷新此页面 - 一切正常。 打开其他页面，发现同ID的元素渲染不正常（不渲染或信息错误-table的toolbars）。 <strong>解决方法：</strong> 对于此类问题，layuiadmin文档中给出的解决方案是：所有ID&#x2F;lay-filter都使用_LAY-_开头，并将路由信息以-分割，最后才是自定义的ID字符串，比如路由信息user&#x2F;login,ID可为：<strong>LAY-user-login-tempid</strong>。</p>
+<h3 id="内部渲染事件重复绑定问题"><a href="#内部渲染事件重复绑定问题" class="headerlink" title="内部渲染事件重复绑定问题"></a>内部渲染事件重复绑定问题</h3><p>通常，我们使用$(…).click();来绑定点击事件，并且习惯将此代码直接放到views&#x2F;下的视图文件中，不过由于layuiadmin采用单页面技术，每次使用layuiadmin提供的刷新按钮刷新时，内部代码绑定事件的代码会被重新执行，导致多次绑定click事件。 <strong>解决方法：</strong> 目前我使用的方法是，使用xx.on(‘click’);前执行unbind(‘click’)，解除点击事件的绑定，亲测有效，如：。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 普通绑定</span></span><br><span class="line">$(<span class="string">&#x27;.test&#x27;</span>).<span class="title function_">unbind</span>(<span class="string">&#x27;click&#x27;</span>).<span class="title function_">on</span>(<span class="string">&#x27;click&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>)&#123;...&#125;);</span><br><span class="line"><span class="comment">// 动态绑定</span></span><br><span class="line">$(<span class="string">&#x27;#main-content&#x27;</span>).<span class="title function_">unbind</span>(<span class="string">&#x27;click&#x27;</span>).<span class="title function_">on</span>(<span class="string">&#x27;click&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>)&#123;...&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="框架其他问题"><a href="#框架其他问题" class="headerlink" title="框架其他问题"></a>框架其他问题</h2><blockquote>
+<p>此类问题中部分是官方写代码时的疏忽，部分是使用者使用时不注意导致的。</p>
+</blockquote>
+<h3 id="layui-use-与script-templete同时使用，内部解析失效问题"><a href="#layui-use-与script-templete同时使用，内部解析失效问题" class="headerlink" title="layui.use()与script templete同时使用，内部解析失效问题"></a>layui.use()与script templete同时使用，内部解析失效问题</h3><p><strong>出现原因：</strong> layui.use()当模块未加载时，会异步加载模块代码，<code>&lt;script templete&gt;</code> 使用if判断时为同步解析，导致layui.use的回调执行时模板解析早已结束，所以无法同时使用templete和layui.use(); <strong>解决方法：</strong> 目前的解决方法是把需要使用的模块在使用前静态加载好（手动赋值layui.xxx &#x3D; obj;等形式），如有更好的办法请告知。</p>
+<h3 id="多重script嵌套使用单行注释导致报错"><a href="#多重script嵌套使用单行注释导致报错" class="headerlink" title="多重script嵌套使用单行注释导致报错"></a>多重script嵌套使用单行注释导致报错</h3><p><strong>出现原因：</strong> layui的模板解析会压缩代码，从而导致&#x2F;&#x2F;注释将其后的所有代码注释掉。 <strong>解决方法：</strong> 换为块级注释即可&#x2F;*测试注释*&#x2F;。</p>
+<h3 id="菜单无法自动定位"><a href="#菜单无法自动定位" class="headerlink" title="菜单无法自动定位"></a>菜单无法自动定位</h3><p><strong>出现原因：</strong> 出现此类问题的原因很多，目前我遇到的原因是，仅使用菜单返回的jump属性强制跳转，导致_lib&#x2F;admin.js_中on(‘hash(_)’)监听hash变化时无法正确找到对应菜单从而导致切换tab菜单自动定位失效。 <strong>解决方法：</strong> 于_lib&#x2F;admin.js*500行左右，添加如下代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 上边是match2的判断</span></span><br><span class="line"><span class="keyword">if</span>(matched2 == <span class="literal">false</span> &amp;&amp; matched1)&#123;</span><br><span class="line">            <span class="comment">// 避免二级分类无法渲染匹配（主要是使用jump的时候）</span></span><br><span class="line">            matched1 = <span class="literal">false</span>;</span><br><span class="line">          &#125;</span><br></pre></td></tr></table></figure>
+
+<p>注：临时解决方法，并不具有解决一切问题的能力。</p>
+<h3 id="tab左右切换导致路由传递参数丢失问题"><a href="#tab左右切换导致路由传递参数丢失问题" class="headerlink" title="tab左右切换导致路由传递参数丢失问题"></a>tab左右切换导致路由传递参数丢失问题</h3><p><strong>出现原因：</strong> 这个问题无论是官方给的样例，还是自己的测试都会存在这个问题，目测是官方系统缺陷，审查TAB的元素可知，lay-attr内的数据是tab切换时应该跳转的真实路径，而非lay-id中去掉参数的路径。 <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/914ad3a67ee06b5b7e6aad5d72383f2d.png"> <strong>解决方法</strong> 于_lib&#x2F;admin.js_约568行的位置（检索setThisRoter即可），将此函数代码改为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//同步路由</span></span><br><span class="line">  <span class="keyword">var</span> setThisRouter = <span class="keyword">function</span>(<span class="params">othis</span>)&#123;</span><br><span class="line">    <span class="keyword">var</span> layid = othis.<span class="title function_">attr</span>(<span class="string">&#x27;lay-attr&#x27;</span>)</span><br><span class="line">    ,index = othis.<span class="title function_">index</span>();</span><br><span class="line">    <span class="comment">// 兼容主页</span></span><br><span class="line">    layid = layid ? layid : othis.<span class="title function_">attr</span>(<span class="string">&#x27;lay-id&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    admin.<span class="title function_">tabsBodyChange</span>(index);</span><br><span class="line">    location.<span class="property">hash</span> = layid === setter.<span class="property">entry</span> ? <span class="string">&#x27;/&#x27;</span> : layid;</span><br><span class="line">  &#125;</span><br><span class="line">  ,<span class="variable constant_">TABS_HEADER</span> = <span class="string">&#x27;#LAY_app_tabsheader&gt;li&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="admin-req-无法POST传递问题"><a href="#admin-req-无法POST传递问题" class="headerlink" title="admin.req()无法POST传递问题"></a>admin.req()无法POST传递问题</h3><p><strong>出现原因：</strong> 在_lib&#x2F;view.js_的req()函数中将$.ajax中的type写死为get，所以无法使用POST（注：admin.req其实是回调的view.req()，在admin.js中可以看到）。 <strong>解决方法：</strong> 在_lib&#x2F;view.js_第89行（搜索：$.ajax 即可），将type: ‘get’改为<code>type: options.type ? options.type : &#39;GET&#39;</code></p>
+
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>Jeffrey Wang<br>
+        <strong>本文链接：</strong><a href="https://blog.wj2015.com/2018/03/20/layuiadmin%E8%B8%A9%E5%9D%91%E5%AE%9E%E5%BD%95/" title="https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2018&#x2F;03&#x2F;20&#x2F;layuiadmin%E8%B8%A9%E5%9D%91%E5%AE%9E%E5%BD%95&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2018&#x2F;03&#x2F;20&#x2F;layuiadmin%E8%B8%A9%E5%9D%91%E5%AE%9E%E5%BD%95&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/">前端开发</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/layui/" rel="tag">layui</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/layuiAdmin/" rel="tag">layuiAdmin</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E8%B8%A9%E5%9D%91/" rel="tag">踩坑</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: 'd7b7061e43e1334a5aa9',
+        clientSecret: '5af2efcfc06b854bc5ccc23babfa3a06a7508c1e',
+        id: window.location.pathname,
+        repo: 'blog',
+        owner: 'wangerzi',
+        admin: 'wangerzi'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E9%A1%B5%E5%86%85%E9%83%A8%E5%88%B7%E6%96%B0%E5%AF%BC%E8%87%B4%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.</span> <span class="toc-text">网页内部刷新导致问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%A0%BC%E8%87%AA%E5%8A%A8%E6%B8%B2%E6%9F%93%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8"><span class="toc-number">1.1.1.</span> <span class="toc-text">数据表格自动渲染无法使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%A0%BC%E3%80%81%E5%8A%A8%E6%80%81%E8%A1%A8%E5%8D%95%E5%86%85%E9%83%A8%E5%88%B7%E6%96%B0%E5%90%8E%E6%B6%88%E5%A4%B1"><span class="toc-number">1.1.2.</span> <span class="toc-text">数据表格、动态表单内部刷新后消失</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E6%B8%B2%E6%9F%93%E7%9B%B8%E5%90%8CID%E5%85%83%E7%B4%A0%E5%AF%BC%E8%87%B4%E6%9F%90%E4%B8%AA%E9%A1%B5%E9%9D%A2%E5%85%83%E7%B4%A0%E5%A4%B1%E6%95%88"><span class="toc-number">1.1.3.</span> <span class="toc-text">动态渲染相同ID元素导致某个页面元素失效</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E9%83%A8%E6%B8%B2%E6%9F%93%E4%BA%8B%E4%BB%B6%E9%87%8D%E5%A4%8D%E7%BB%91%E5%AE%9A%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.4.</span> <span class="toc-text">内部渲染事件重复绑定问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A1%86%E6%9E%B6%E5%85%B6%E4%BB%96%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.</span> <span class="toc-text">框架其他问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#layui-use-%E4%B8%8Escript-templete%E5%90%8C%E6%97%B6%E4%BD%BF%E7%94%A8%EF%BC%8C%E5%86%85%E9%83%A8%E8%A7%A3%E6%9E%90%E5%A4%B1%E6%95%88%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.1.</span> <span class="toc-text">layui.use()与script templete同时使用，内部解析失效问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E9%87%8Dscript%E5%B5%8C%E5%A5%97%E4%BD%BF%E7%94%A8%E5%8D%95%E8%A1%8C%E6%B3%A8%E9%87%8A%E5%AF%BC%E8%87%B4%E6%8A%A5%E9%94%99"><span class="toc-number">1.2.2.</span> <span class="toc-text">多重script嵌套使用单行注释导致报错</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8F%9C%E5%8D%95%E6%97%A0%E6%B3%95%E8%87%AA%E5%8A%A8%E5%AE%9A%E4%BD%8D"><span class="toc-number">1.2.3.</span> <span class="toc-text">菜单无法自动定位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tab%E5%B7%A6%E5%8F%B3%E5%88%87%E6%8D%A2%E5%AF%BC%E8%87%B4%E8%B7%AF%E7%94%B1%E4%BC%A0%E9%80%92%E5%8F%82%E6%95%B0%E4%B8%A2%E5%A4%B1%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.4.</span> <span class="toc-text">tab左右切换导致路由传递参数丢失问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#admin-req-%E6%97%A0%E6%B3%95POST%E4%BC%A0%E9%80%92%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.5.</span> <span class="toc-text">admin.req()无法POST传递问题</span></a></li></ol></li></ol></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+ 
+
+<script async src="/js/app.js?v=1651830304749"></script>
+
+
+	<script async src="/js/search.js?v=1651830304749"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHH2NFM6CG"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZHH2NFM6CG');
+</script>
+
+
+
+
+
+</body>
+
+</html>

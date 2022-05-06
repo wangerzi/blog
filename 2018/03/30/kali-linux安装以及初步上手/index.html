@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>Kali Linux安装以及初步上手 - 九层台</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="前端开发,后端开发,LINUX,机器学习,软考">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="背景学校开了一门“网络安全”相关的课程，要求自己安装一个kali Linux 玩玩，之前对kali的大名早有耳闻，于是正好乘此机会好好倒腾倒腾。 如何安装kali下载kali首先，于kali的官网选择“Downloads”，下载最新版种子文件，种子链接，使用迅雷等工具进行下载。  使用VMware新建虚拟机进行安装新增一台虚拟机（内存2G，硬盘20G即可，网络选桥接&#x2F;NAT）  开启虚拟">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kali Linux安装以及初步上手">
+<meta property="og:url" content="https://blog.wj2015.com/2018/03/30/kali-linux%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8A%E5%88%9D%E6%AD%A5%E4%B8%8A%E6%89%8B/">
+<meta property="og:site_name" content="九层台">
+<meta property="og:description" content="背景学校开了一门“网络安全”相关的课程，要求自己安装一个kali Linux 玩玩，之前对kali的大名早有耳闻，于是正好乘此机会好好倒腾倒腾。 如何安装kali下载kali首先，于kali的官网选择“Downloads”，下载最新版种子文件，种子链接，使用迅雷等工具进行下载。  使用VMware新建虚拟机进行安装新增一台虚拟机（内存2G，硬盘20G即可，网络选桥接&#x2F;NAT）  开启虚拟">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/2dfecd6a97e8e9b83617a064392ad8d6.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/cbc3557a490d6210aa4ba7c404bcc751.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/42b24374ca31a10a8b047c276961654f.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/79bdcc517a338b87e4ae58f24edecdee.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/07aa27526f3a693404ae82de1293fb96.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/7bbe6c0fc4f6e8a83c4f53f6accfec0d.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/db5225befff678981c14f8e657569f65.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/d4e6de4b35d328b98669aba2a8ce5dc4.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/70aa5f1bf94df1da1280178035a9de7b.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/da0880278d7e22cbb2768717e66b7498.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/700dd869ed264d7ec511a97072ac90f3.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/37f97727d7a78625dce4beef7960e90b.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/fc0c334aeac7263b6acc08e238938773.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/0a8df91a91209fa28376f17beeadd13a.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/970e1f1ab000025a6300afa00cf67236.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/27db9d42dd7e4b21ea7852a3647768f6.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/db5225befff678981c14f8e657569f65.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/f8574392cc69b1c8943b797176354e6e.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/0a4e4fd3e53094a6e23fc951d678e460.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/ca85e7826ed74d82c4aef2181b736aa0.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/275135f7468574c7532cffb00f5e53cb.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/d5b6b3ef9931505f9b13df069937a667.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/fcb900704c04d08cc47d8701989de610.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/cbe8ebce5d4df7d13a802191873bf86e.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/e0dab00fb190fd57cd6ee197c9dbb947.png">
+<meta property="article:published_time" content="2018-03-30T15:59:08.000Z">
+<meta property="article:modified_time" content="2022-05-06T09:44:42.675Z">
+<meta property="article:author" content="Jeffrey Wang">
+<meta property="article:tag" content="kali">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="安全">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/2dfecd6a97e8e9b83617a064392ad8d6.png">
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"
+    />
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"
+    />
+    
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651830304742">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651830304742">
+    <link rel="stylesheet" href="/css/style.css?v=1651830304742">
+     
+    
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
+</head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/background.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="Jeffrey Wang" class="mdui-btn mdui-btn-icon"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/avatar.jpg" alt="Jeffrey Wang"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="Jeffrey Wang">
+            <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/avatar.jpg" alt="Jeffrey Wang" alt="Jeffrey Wang">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>60</div>
+        <div><span>标签</span>114</div>
+        <div><span>分类</span>14</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/friends.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        
+            <form id="search_form">
+                <label><input class="st-default-search-input" id="search_value" name="q" type="search" placeholder="搜索" style="
+                    font-size: 15px !important;
+                    height: 56px !important;
+                    background-image: none;
+                "></label>
+            </form>
+         
+    </div>
+</div>
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/2020/" style="font-size: 10px;">2020</a> <a href="/tags/B-tree/" style="font-size: 10px;">B+ tree</a> <a href="/tags/BP/" style="font-size: 10px;">BP</a> <a href="/tags/BP%E7%AE%97%E6%B3%95/" style="font-size: 10px;">BP算法</a> <a href="/tags/Hash/" style="font-size: 10px;">Hash</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Mysql/" style="font-size: 16.67px;">Mysql</a> <a href="/tags/POW/" style="font-size: 10px;">POW</a> <a href="/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/tags/SVN/" style="font-size: 10px;">SVN</a> <a href="/tags/Serverless/" style="font-size: 10px;">Serverless</a> <a href="/tags/Vmware/" style="font-size: 10px;">Vmware</a> <a href="/tags/apply/" style="font-size: 10px;">apply</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/authorization/" style="font-size: 10px;">authorization</a> <a href="/tags/aws/" style="font-size: 11.67px;">aws</a> <a href="/tags/cloudfront/" style="font-size: 11.67px;">cloudfront</a> <a href="/tags/ctm/" style="font-size: 10px;">ctm</a> <a href="/tags/eth0/" style="font-size: 10px;">eth0</a> <a href="/tags/excel/" style="font-size: 10px;">excel</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/gasPrice/" style="font-size: 10px;">gasPrice</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gltf/" style="font-size: 10px;">gltf</a> <a href="/tags/iges/" style="font-size: 10px;">iges</a> <a href="/tags/ios/" style="font-size: 11.67px;">ios</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/js-xlsx/" style="font-size: 10px;">js-xlsx</a> <a href="/tags/kali/" style="font-size: 10px;">kali</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/layui/" style="font-size: 10px;">layui</a> <a href="/tags/layuiAdmin/" style="font-size: 10px;">layuiAdmin</a> <a href="/tags/nextTick/" style="font-size: 10px;">nextTick</a> <a href="/tags/nextcloud/" style="font-size: 10px;">nextcloud</a> <a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/php-fpm/" style="font-size: 11.67px;">php-fpm</a> <a href="/tags/php7/" style="font-size: 10px;">php7</a> <a href="/tags/phpMyAdmin/" style="font-size: 10px;">phpMyAdmin</a> <a href="/tags/phpunit/" style="font-size: 10px;">phpunit</a> <a href="/tags/python/" style="font-size: 13.33px;">python</a> <a href="/tags/pythonocc/" style="font-size: 10px;">pythonocc</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/stl/" style="font-size: 10px;">stl</a> <a href="/tags/stp/" style="font-size: 10px;">stp</a> <a href="/tags/style/" style="font-size: 10px;">style</a> <a href="/tags/syncting/" style="font-size: 10px;">syncting</a> <a href="/tags/three-js/" style="font-size: 10px;">three.js</a> <a href="/tags/utools/" style="font-size: 10px;">utools</a> <a href="/tags/vbot/" style="font-size: 10px;">vbot</a> <a href="/tags/video/" style="font-size: 11.67px;">video</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/web3/" style="font-size: 10px;">web3</a> <a href="/tags/web3d/" style="font-size: 10px;">web3d</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0/" style="font-size: 10px;">代价函数</a> <a href="/tags/%E5%81%8F%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">偏导数</a> <a href="/tags/%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">关系式</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8/" style="font-size: 10px;">内存占用</a> <a href="/tags/%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A/" style="font-size: 10px;">动态绑定</a> <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" style="font-size: 11.67px;">区块链</a> <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" style="font-size: 10px;">单元测试</a> <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 11.67px;">卷积神经网络</a> <a href="/tags/%E5%8F%82%E6%95%B0%E8%8E%B7%E5%8F%96/" style="font-size: 10px;">参数获取</a> <a href="/tags/%E5%8F%8D%E5%90%91%E9%80%92%E6%8E%A8%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">反向递推关系式</a> <a href="/tags/%E5%90%8C%E6%AD%A5/" style="font-size: 10px;">同步</a> <a href="/tags/%E5%90%91%E9%87%8F/" style="font-size: 10px;">向量</a> <a href="/tags/%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/" style="font-size: 10px;">命名规则</a> <a href="/tags/%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0%E6%B1%82%E5%AF%BC/" style="font-size: 10px;">复合函数求导</a> <a href="/tags/%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C/" style="font-size: 10px;">多人协作</a> <a href="/tags/%E5%A4%9A%E5%8F%98%E9%87%8F%E5%87%BD%E6%95%B0/" style="font-size: 10px;">多变量函数</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%AF%BC%E5%87%BA%E6%A0%B7%E5%BC%8F/" style="font-size: 10px;">导出样式</a> <a href="/tags/%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">导数</a> <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 11.67px;">小程序</a> <a href="/tags/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" style="font-size: 10px;">异常处理</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%9C%8D/" style="font-size: 10px;">微信客服</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91/" style="font-size: 11.67px;">微信开发</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5/" style="font-size: 10px;">拉格朗日</a> <a href="/tags/%E6%8F%92%E4%BB%B6/" style="font-size: 10px;">插件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%94%B9%E9%80%A0/" style="font-size: 10px;">改造</a> <a href="/tags/%E6%95%A3%E5%88%97%E8%A1%A8/" style="font-size: 10px;">散列表</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" style="font-size: 10px;">数据类型</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a> <a href="/tags/%E6%97%85%E8%A1%8C/" style="font-size: 10px;">旅行</a> <a href="/tags/%E6%97%A0%E9%99%90%E7%BA%A7%E5%88%86%E7%B1%BB/" style="font-size: 10px;">无限级分类</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 18.33px;">机器学习</a> <a href="/tags/%E6%9E%81%E5%80%BC/" style="font-size: 10px;">极值</a> <a href="/tags/%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/" style="font-size: 10px;">格式转换</a> <a href="/tags/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" style="font-size: 13.33px;">梯度下降</a> <a href="/tags/%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9/" style="font-size: 10px;">模型压缩</a> <a href="/tags/%E6%B1%A0%E5%8C%96/" style="font-size: 10px;">池化</a> <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 16.67px;">深度学习</a> <a href="/tags/%E7%89%B9%E5%BE%81%E6%98%A0%E5%B0%84/" style="font-size: 10px;">特征映射</a> <a href="/tags/%E7%9F%A9%E9%98%B5/" style="font-size: 10px;">矩阵</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E5%8D%95%E5%85%83%E8%AF%AF%E5%B7%AE/" style="font-size: 10px;">神经单元误差</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" style="font-size: 10px;">索引原理</a> <a href="/tags/%E7%BD%91%E5%8D%A1/" style="font-size: 10px;">网卡</a> <a href="/tags/%E8%A7%86%E9%A2%91%E6%B5%81/" style="font-size: 11.67px;">视频流</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/" style="font-size: 10px;">计算机组成结构</a> <a href="/tags/%E8%AF%AF%E5%B7%AE%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E6%B3%95/" style="font-size: 10px;">误差反向传播法</a> <a href="/tags/%E8%B7%A8%E8%A1%A8/" style="font-size: 10px;">跨表</a> <a href="/tags/%E8%B8%A9%E5%9D%91/" style="font-size: 13.33px;">踩坑</a> <a href="/tags/%E8%BD%AF%E8%80%83/" style="font-size: 15px;">软考</a> <a href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" style="font-size: 10px;">过滤器</a> <a href="/tags/%E8%BF%91%E4%BC%BC%E5%85%AC%E5%BC%8F/" style="font-size: 10px;">近似公式</a> <a href="/tags/%E8%BF%AD%E4%BB%A3%E5%99%A8/" style="font-size: 10px;">迭代器</a>
+    </div>
+    
+      <script>
+        var maxTagcloud = parseInt(20);
+        var tags_length = parseInt(114);
+        var tags_arr = [];
+        for(var i = 0; i < tags_length; i++){
+          tags_arr.push(i);
+        }
+        tags_arr.sort(function (l, r) {
+          return Math.random() > 0.5 ? -1 : 1;
+        });
+        tags_arr = tags_arr.slice(0, maxTagcloud < tags_length ? tags_length - maxTagcloud : 0);
+        for(var tag_i = 0; tag_i < tags_arr.length; tag_i++){
+          document.getElementById("randomtagcloud").children[tags_arr[tag_i]].style.display = 'none';
+        }
+      </script>
+    
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/04/10/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%95%B0%E6%8D%AE%E5%BA%93/">【软考知识总结】数据库</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/10/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">【软考知识总结】操作系统</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/27/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/">【软考知识总结】计算机组成结构</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/27/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%A6%82%E8%A7%88/">【软考知识总结】概览</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/22/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%98%AF%E6%80%8E%E6%A0%B7%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E4%B8%8D%E8%A2%AB%E7%AF%A1%E6%94%B9%E7%9A%84%EF%BC%9F/">区块链是怎样保证数据不被篡改的？</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://github.com/wangerzi/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a><a class="mdui-ripple" href="/atom.xml" target="_blank" mdui-tooltip="{content: 'RSS'}" style="color: rgb(247, 132, 34);background-color: rgba(247, 132, 34, .1);">
+            <i class="nexmoefont icon-rss"></i>
+        </a>
+    </div>
+</div>
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 Jeffrey Wang
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: NaN%;"> 
+              <img src="/static/uploads/2018/03/%E5%B0%81%E9%9D%A2.png" alt="Kali Linux安装以及初步上手" loading="lazy">
+              <h1>Kali Linux安装以及初步上手</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2018年03月30日</a>
+</div>
+
+      <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>学校开了一门“网络安全”相关的课程，要求自己安装一个kali Linux 玩玩，之前对kali的大名早有耳闻，于是正好乘此机会好好倒腾倒腾。</p>
+<h2 id="如何安装kali"><a href="#如何安装kali" class="headerlink" title="如何安装kali"></a>如何安装kali</h2><h3 id="下载kali"><a href="#下载kali" class="headerlink" title="下载kali"></a>下载kali</h3><p>首先，于<a target="_blank" rel="noopener" href="https://www.kali.org/">kali的官网</a>选择“Downloads”，下载最新版种子文件，<a target="_blank" rel="noopener" href="https://images.offensive-security.com/kali-linux-2018.1-amd64.torrent">种子链接</a>，使用迅雷等工具进行下载。 <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/2dfecd6a97e8e9b83617a064392ad8d6.png"></p>
+<h3 id="使用VMware新建虚拟机进行安装"><a href="#使用VMware新建虚拟机进行安装" class="headerlink" title="使用VMware新建虚拟机进行安装"></a>使用VMware新建虚拟机进行安装</h3><p>新增一台虚拟机（内存2G，硬盘20G即可，网络选桥接&#x2F;NAT）</p>
+<blockquote>
+<p>开启虚拟机 》 图形安装</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/cbc3557a490d6210aa4ba7c404bcc751.png"></p>
+<blockquote>
+<p>选择语言（简体中文）</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/42b24374ca31a10a8b047c276961654f.png"></p>
+<blockquote>
+<p>选择键盘配置之后将会自动配置</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/79bdcc517a338b87e4ae58f24edecdee.png"></p>
+<blockquote>
+<p>可能会存在DHCP获取不到的问题，不进行网络配置即可</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/07aa27526f3a693404ae82de1293fb96.png"></p>
+<blockquote>
+<p>设置主机名和密码</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/7bbe6c0fc4f6e8a83c4f53f6accfec0d.png"></p>
+<blockquote>
+<p>磁盘分区，有安装经验的可以选择自行分区，然后继续选择“继续”、“是”即可开始安装系统</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/db5225befff678981c14f8e657569f65.png"> <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/d4e6de4b35d328b98669aba2a8ce5dc4.png"> <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/70aa5f1bf94df1da1280178035a9de7b.png"> <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/da0880278d7e22cbb2768717e66b7498.png"></p>
+<blockquote>
+<p>等待安装完成</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/700dd869ed264d7ec511a97072ac90f3.png"></p>
+<blockquote>
+<p>这里选择是</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/37f97727d7a78625dce4beef7960e90b.png"></p>
+<blockquote>
+<p>选择安装GRUB，如果自定义&#x2F;boot分区，则选择&#x2F;boot分区所在磁盘</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/fc0c334aeac7263b6acc08e238938773.png"> <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/0a8df91a91209fa28376f17beeadd13a.png"></p>
+<blockquote>
+<p>点击“继续”，虚拟机将会重启，后完成 <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/970e1f1ab000025a6300afa00cf67236.png"> 注意：如果在安装时报错“系统安装错误”，请在磁盘分区步骤中选择“将所有文件放在一个分区中”</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/27db9d42dd7e4b21ea7852a3647768f6.png"> <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/db5225befff678981c14f8e657569f65.png"></p>
+<h2 id="ARP欺骗-tcpdump抓取并盗用用户信息"><a href="#ARP欺骗-tcpdump抓取并盗用用户信息" class="headerlink" title="ARP欺骗+tcpdump抓取并盗用用户信息"></a>ARP欺骗+tcpdump抓取并盗用用户信息</h2><p>使用arpsproof、tcpdump抓取HTTP信息并使用session盗取用户登录信息</p>
+<h3 id="环境假设："><a href="#环境假设：" class="headerlink" title="环境假设："></a>环境假设：</h3><p>主机</p>
+<p>IP</p>
+<p>MAC</p>
+<p>网关</p>
+<p>192.168.10.250</p>
+<p>50:DA:00:42:82:5E</p>
+<p>被攻击者PC1</p>
+<p>192.168.10.18</p>
+<p>3C:52:82:E0:74:CB</p>
+<p>攻击者PC2</p>
+<p>192.168.10.3</p>
+<p>00:0C:29:7B:33:6E</p>
+<h3 id="ARP双向欺骗网关、PC1"><a href="#ARP双向欺骗网关、PC1" class="headerlink" title="ARP双向欺骗网关、PC1"></a>ARP双向欺骗网关、PC1</h3><blockquote>
+<p>本次测试网址：<a target="_blank" rel="noopener" href="http://shop.wj2015.com/">http://shop.wj2015.com</a></p>
+</blockquote>
+<h5 id="arpsroof参数说明"><a href="#arpsroof参数说明" class="headerlink" title="arpsroof参数说明"></a>arpsroof参数说明</h5><p>arpsroof -i [指定网卡] -t [被欺骗IP] [申明IP] 原理：一直</p>
+<h4 id="打开转发"><a href="#打开转发" class="headerlink" title="打开转发"></a>打开转发</h4><p>打开转发功能，令数据流 PC1 &gt; 我 &gt; 网关 或者 网关 &gt; 我 &gt; PC1 正常沟通。</p>
+<blockquote>
+<p>echo 1 &gt; &#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;ip_forward 内容为 1 表示开启 <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/f8574392cc69b1c8943b797176354e6e.png"> 注意：如果不开启自动转发，被攻击者将在开始攻击后断网</p>
+</blockquote>
+<h4 id="欺骗被攻击者"><a href="#欺骗被攻击者" class="headerlink" title="欺骗被攻击者"></a>欺骗被攻击者</h4><p>欺骗被攻击PC1(192.168.10.18)，我是网关(192.168.10.250)，让PC1的MAC地址表添加一条我的MAC和网关IP的记录。</p>
+<blockquote>
+<p>arpsroof -i eth0 -t 192.168.10.18 192.168.10.250 <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/0a4e4fd3e53094a6e23fc951d678e460.png"></p>
+</blockquote>
+<h5 id="欺骗前"><a href="#欺骗前" class="headerlink" title="欺骗前"></a>欺骗前</h5><p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/ca85e7826ed74d82c4aef2181b736aa0.png"></p>
+<h5 id="欺骗后"><a href="#欺骗后" class="headerlink" title="欺骗后"></a>欺骗后</h5><p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/275135f7468574c7532cffb00f5e53cb.png"></p>
+<h4 id="欺骗网关"><a href="#欺骗网关" class="headerlink" title="欺骗网关"></a>欺骗网关</h4><p>欺骗网关（192.168.10.250），我是PC1（192.168.10.18），使网关的MAC地址表添加一条我的MAC和PC1IP的记录。</p>
+<blockquote>
+<p>arpsroof -i eth0 -t 192.168.10.250 192.168.10.18 <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/d5b6b3ef9931505f9b13df069937a667.png"></p>
+</blockquote>
+<h4 id="抓取被攻击者的报文"><a href="#抓取被攻击者的报文" class="headerlink" title="抓取被攻击者的报文"></a>抓取被攻击者的报文</h4><p>能使用tcpdump工具将PC1出网的所有数据包拦截下来（这里只监听发包-抓密码）注：123.206.67.59为测试地址的IP</p>
+<blockquote>
+<p>tcpdump -i eth0 -Av -c 1000 src 192.168.10.18 and dst 123.206.67.59 <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/fcb900704c04d08cc47d8701989de610.png"></p>
+</blockquote>
+<h5 id="tcpdump参数简介"><a href="#tcpdump参数简介" class="headerlink" title="tcpdump参数简介"></a>tcpdump参数简介</h5><p>-i 指定网卡 -A ascii形式打印 -v 显示更多信息 -c 限制条数 src 指定包来源 dst 指定包目标</p>
+<h5 id="被攻击者访问网站并登陆"><a href="#被攻击者访问网站并登陆" class="headerlink" title="被攻击者访问网站并登陆"></a>被攻击者访问网站并登陆</h5><p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/cbe8ebce5d4df7d13a802191873bf86e.png"></p>
+<h5 id="检查监听的文件"><a href="#检查监听的文件" class="headerlink" title="检查监听的文件"></a>检查监听的文件</h5><p><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2018/03/e0dab00fb190fd57cd6ee197c9dbb947.png"> 成功找到用户名+密码，找到cookie信息放置于firefox中，即可盗用被攻击者的账号进行操作，因为大部分网站的SESSIONID都是存放在COOKIE中的，得到了COOKIE，对于服务器来说你与被攻击者没有区别。</p>
+<h2 id="从攻击中发现的问题及防范"><a href="#从攻击中发现的问题及防范" class="headerlink" title="从攻击中发现的问题及防范"></a>从攻击中发现的问题及防范</h2><p>ARP协议是数据链路层协议，用于转换内网的IP &gt; MAC，由于网络协议上层依赖下层，所以如果在此层受到攻击，轻则无法上网，重则账号密码被盗，账号被盗用。 那么，如何避免此情况呢？首先，这是一个用于局域网内的协议，所以应该避免连接不确定安全性的WIFI，特别是免费WIFI。其次，ARP攻击的特征还是比较明显的，一台机器不停的发送ARP回应报文，一般的局域网安全检测软件都能检测到，如：手机的腾讯管家、手机自带的wifi检测等均会发起安全提示。</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>Kali Linux中集成了大量的安全测试工具，ARP欺骗+中间人攻击只是其中很小一部分的应用，重要的是理解其中原理，增加防范意识。</p>
+
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>Jeffrey Wang<br>
+        <strong>本文链接：</strong><a href="https://blog.wj2015.com/2018/03/30/kali-linux%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8A%E5%88%9D%E6%AD%A5%E4%B8%8A%E6%89%8B/" title="https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2018&#x2F;03&#x2F;30&#x2F;kali-linux%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8A%E5%88%9D%E6%AD%A5%E4%B8%8A%E6%89%8B&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2018&#x2F;03&#x2F;30&#x2F;kali-linux%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8A%E5%88%9D%E6%AD%A5%E4%B8%8A%E6%89%8B&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/Linux/">Linux</a><a class="nexmoefont icon-appstore-fill -link" href="/categories/%E5%AE%89%E5%85%A8%E7%9B%B8%E5%85%B3/">安全相关</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/Linux/" rel="tag">Linux</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/kali/" rel="tag">kali</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: 'd7b7061e43e1334a5aa9',
+        clientSecret: '5af2efcfc06b854bc5ccc23babfa3a06a7508c1e',
+        id: window.location.pathname,
+        repo: 'blog',
+        owner: 'wangerzi',
+        admin: 'wangerzi'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85kali"><span class="toc-number">1.1.</span> <span class="toc-text">如何安装kali</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BDkali"><span class="toc-number">1.1.1.</span> <span class="toc-text">下载kali</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8VMware%E6%96%B0%E5%BB%BA%E8%99%9A%E6%8B%9F%E6%9C%BA%E8%BF%9B%E8%A1%8C%E5%AE%89%E8%A3%85"><span class="toc-number">1.1.2.</span> <span class="toc-text">使用VMware新建虚拟机进行安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ARP%E6%AC%BA%E9%AA%97-tcpdump%E6%8A%93%E5%8F%96%E5%B9%B6%E7%9B%97%E7%94%A8%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF"><span class="toc-number">1.2.</span> <span class="toc-text">ARP欺骗+tcpdump抓取并盗用用户信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%81%87%E8%AE%BE%EF%BC%9A"><span class="toc-number">1.2.1.</span> <span class="toc-text">环境假设：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ARP%E5%8F%8C%E5%90%91%E6%AC%BA%E9%AA%97%E7%BD%91%E5%85%B3%E3%80%81PC1"><span class="toc-number">1.2.2.</span> <span class="toc-text">ARP双向欺骗网关、PC1</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#arpsroof%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E"><span class="toc-number">1.2.2.0.1.</span> <span class="toc-text">arpsroof参数说明</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%93%E5%BC%80%E8%BD%AC%E5%8F%91"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">打开转发</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AC%BA%E9%AA%97%E8%A2%AB%E6%94%BB%E5%87%BB%E8%80%85"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">欺骗被攻击者</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%AC%BA%E9%AA%97%E5%89%8D"><span class="toc-number">1.2.2.2.1.</span> <span class="toc-text">欺骗前</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%AC%BA%E9%AA%97%E5%90%8E"><span class="toc-number">1.2.2.2.2.</span> <span class="toc-text">欺骗后</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AC%BA%E9%AA%97%E7%BD%91%E5%85%B3"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">欺骗网关</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8A%93%E5%8F%96%E8%A2%AB%E6%94%BB%E5%87%BB%E8%80%85%E7%9A%84%E6%8A%A5%E6%96%87"><span class="toc-number">1.2.2.4.</span> <span class="toc-text">抓取被攻击者的报文</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#tcpdump%E5%8F%82%E6%95%B0%E7%AE%80%E4%BB%8B"><span class="toc-number">1.2.2.4.1.</span> <span class="toc-text">tcpdump参数简介</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A2%AB%E6%94%BB%E5%87%BB%E8%80%85%E8%AE%BF%E9%97%AE%E7%BD%91%E7%AB%99%E5%B9%B6%E7%99%BB%E9%99%86"><span class="toc-number">1.2.2.4.2.</span> <span class="toc-text">被攻击者访问网站并登陆</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%A3%80%E6%9F%A5%E7%9B%91%E5%90%AC%E7%9A%84%E6%96%87%E4%BB%B6"><span class="toc-number">1.2.2.4.3.</span> <span class="toc-text">检查监听的文件</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E6%94%BB%E5%87%BB%E4%B8%AD%E5%8F%91%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%8F%8A%E9%98%B2%E8%8C%83"><span class="toc-number">1.3.</span> <span class="toc-text">从攻击中发现的问题及防范</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">2.</span> <span class="toc-text">结语</span></a></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+ 
+
+<script async src="/js/app.js?v=1651830304745"></script>
+
+
+	<script async src="/js/search.js?v=1651830304745"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHH2NFM6CG"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZHH2NFM6CG');
+</script>
+
+
+
+
+
+</body>
+
+</html>

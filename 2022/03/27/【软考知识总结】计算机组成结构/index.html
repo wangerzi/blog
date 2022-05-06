@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>【软考知识总结】计算机组成结构 - 九层台</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="前端开发,后端开发,LINUX,机器学习,软考">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="前言本章主要包含计算机硬件组成，CPU 、计算机各个组件，部分信息加密，安全等等 章节大纲计算机系统  硬件组成 CPU 数据表示 校验码  体系结构  指令 存储 输入输出 总线  安全性可靠性  可靠性分析 安全 加密和认证  其中 数据表示、校验码、加密是重点 计算机系统硬件组成硬件五大部分，运算器，控制器，存储器，输入设备和输出设备 CPUCPU 由运算器，控制器，寄存器和内部总线组成 运">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【软考知识总结】计算机组成结构">
+<meta property="og:url" content="https://blog.wj2015.com/2022/03/27/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/">
+<meta property="og:site_name" content="九层台">
+<meta property="og:description" content="前言本章主要包含计算机硬件组成，CPU 、计算机各个组件，部分信息加密，安全等等 章节大纲计算机系统  硬件组成 CPU 数据表示 校验码  体系结构  指令 存储 输入输出 总线  安全性可靠性  可靠性分析 安全 加密和认证  其中 数据表示、校验码、加密是重点 计算机系统硬件组成硬件五大部分，运算器，控制器，存储器，输入设备和输出设备 CPUCPU 由运算器，控制器，寄存器和内部总线组成 运">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_a6f983f8bee6e20646fe2a1f09afe9f1.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_84dbaf55fafed13ce4f4aa5fa27e92f3.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_2d817c91509a4f094a5c4a84b5070826.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_b945e950bea9af4769b7eec7a54d6c99.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_8c16b555640c3af36ba8412610ec6600.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_bbb5846df264a1901c7304ed0c0a9da1.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_e3b42870efdfe091c7ab3f2b59cad144.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_7ba587b9bd8ea27d8f35bab270ded191.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_16cfe339b8013e72cdc52b643360a3b8.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_5ffa2c30408396365382bba6b21826d6.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_55b130ee0d8498c57aec83e722f2c04c.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_b22cc0090d422d64a5ad28256094e045.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_a2c50d6b4cc87a749797bb3ec965de01.jpg">
+<meta property="article:published_time" content="2022-03-27T12:11:43.000Z">
+<meta property="article:modified_time" content="2022-05-06T09:44:42.675Z">
+<meta property="article:author" content="Jeffrey Wang">
+<meta property="article:tag" content="软考">
+<meta property="article:tag" content="计算机组成结构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_a6f983f8bee6e20646fe2a1f09afe9f1.jpg">
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"
+    />
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"
+    />
+    
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651830304463">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651830304463">
+    <link rel="stylesheet" href="/css/style.css?v=1651830304463">
+     
+    
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
+</head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/background.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="Jeffrey Wang" class="mdui-btn mdui-btn-icon"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/avatar.jpg" alt="Jeffrey Wang"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="Jeffrey Wang">
+            <img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/avatar.jpg" alt="Jeffrey Wang" alt="Jeffrey Wang">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>60</div>
+        <div><span>标签</span>114</div>
+        <div><span>分类</span>14</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/friends.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        
+            <form id="search_form">
+                <label><input class="st-default-search-input" id="search_value" name="q" type="search" placeholder="搜索" style="
+                    font-size: 15px !important;
+                    height: 56px !important;
+                    background-image: none;
+                "></label>
+            </form>
+         
+    </div>
+</div>
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/2020/" style="font-size: 10px;">2020</a> <a href="/tags/B-tree/" style="font-size: 10px;">B+ tree</a> <a href="/tags/BP/" style="font-size: 10px;">BP</a> <a href="/tags/BP%E7%AE%97%E6%B3%95/" style="font-size: 10px;">BP算法</a> <a href="/tags/Hash/" style="font-size: 10px;">Hash</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Mysql/" style="font-size: 16.67px;">Mysql</a> <a href="/tags/POW/" style="font-size: 10px;">POW</a> <a href="/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/tags/SVN/" style="font-size: 10px;">SVN</a> <a href="/tags/Serverless/" style="font-size: 10px;">Serverless</a> <a href="/tags/Vmware/" style="font-size: 10px;">Vmware</a> <a href="/tags/apply/" style="font-size: 10px;">apply</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/authorization/" style="font-size: 10px;">authorization</a> <a href="/tags/aws/" style="font-size: 11.67px;">aws</a> <a href="/tags/cloudfront/" style="font-size: 11.67px;">cloudfront</a> <a href="/tags/ctm/" style="font-size: 10px;">ctm</a> <a href="/tags/eth0/" style="font-size: 10px;">eth0</a> <a href="/tags/excel/" style="font-size: 10px;">excel</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/gasPrice/" style="font-size: 10px;">gasPrice</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gltf/" style="font-size: 10px;">gltf</a> <a href="/tags/iges/" style="font-size: 10px;">iges</a> <a href="/tags/ios/" style="font-size: 11.67px;">ios</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/js-xlsx/" style="font-size: 10px;">js-xlsx</a> <a href="/tags/kali/" style="font-size: 10px;">kali</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/layui/" style="font-size: 10px;">layui</a> <a href="/tags/layuiAdmin/" style="font-size: 10px;">layuiAdmin</a> <a href="/tags/nextTick/" style="font-size: 10px;">nextTick</a> <a href="/tags/nextcloud/" style="font-size: 10px;">nextcloud</a> <a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/php-fpm/" style="font-size: 11.67px;">php-fpm</a> <a href="/tags/php7/" style="font-size: 10px;">php7</a> <a href="/tags/phpMyAdmin/" style="font-size: 10px;">phpMyAdmin</a> <a href="/tags/phpunit/" style="font-size: 10px;">phpunit</a> <a href="/tags/python/" style="font-size: 13.33px;">python</a> <a href="/tags/pythonocc/" style="font-size: 10px;">pythonocc</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/stl/" style="font-size: 10px;">stl</a> <a href="/tags/stp/" style="font-size: 10px;">stp</a> <a href="/tags/style/" style="font-size: 10px;">style</a> <a href="/tags/syncting/" style="font-size: 10px;">syncting</a> <a href="/tags/three-js/" style="font-size: 10px;">three.js</a> <a href="/tags/utools/" style="font-size: 10px;">utools</a> <a href="/tags/vbot/" style="font-size: 10px;">vbot</a> <a href="/tags/video/" style="font-size: 11.67px;">video</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/web3/" style="font-size: 10px;">web3</a> <a href="/tags/web3d/" style="font-size: 10px;">web3d</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0/" style="font-size: 10px;">代价函数</a> <a href="/tags/%E5%81%8F%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">偏导数</a> <a href="/tags/%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">关系式</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8/" style="font-size: 10px;">内存占用</a> <a href="/tags/%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A/" style="font-size: 10px;">动态绑定</a> <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" style="font-size: 11.67px;">区块链</a> <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" style="font-size: 10px;">单元测试</a> <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 11.67px;">卷积神经网络</a> <a href="/tags/%E5%8F%82%E6%95%B0%E8%8E%B7%E5%8F%96/" style="font-size: 10px;">参数获取</a> <a href="/tags/%E5%8F%8D%E5%90%91%E9%80%92%E6%8E%A8%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">反向递推关系式</a> <a href="/tags/%E5%90%8C%E6%AD%A5/" style="font-size: 10px;">同步</a> <a href="/tags/%E5%90%91%E9%87%8F/" style="font-size: 10px;">向量</a> <a href="/tags/%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/" style="font-size: 10px;">命名规则</a> <a href="/tags/%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0%E6%B1%82%E5%AF%BC/" style="font-size: 10px;">复合函数求导</a> <a href="/tags/%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C/" style="font-size: 10px;">多人协作</a> <a href="/tags/%E5%A4%9A%E5%8F%98%E9%87%8F%E5%87%BD%E6%95%B0/" style="font-size: 10px;">多变量函数</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%AF%BC%E5%87%BA%E6%A0%B7%E5%BC%8F/" style="font-size: 10px;">导出样式</a> <a href="/tags/%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">导数</a> <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 11.67px;">小程序</a> <a href="/tags/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" style="font-size: 10px;">异常处理</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%9C%8D/" style="font-size: 10px;">微信客服</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91/" style="font-size: 11.67px;">微信开发</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5/" style="font-size: 10px;">拉格朗日</a> <a href="/tags/%E6%8F%92%E4%BB%B6/" style="font-size: 10px;">插件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%94%B9%E9%80%A0/" style="font-size: 10px;">改造</a> <a href="/tags/%E6%95%A3%E5%88%97%E8%A1%A8/" style="font-size: 10px;">散列表</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" style="font-size: 10px;">数据类型</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a> <a href="/tags/%E6%97%85%E8%A1%8C/" style="font-size: 10px;">旅行</a> <a href="/tags/%E6%97%A0%E9%99%90%E7%BA%A7%E5%88%86%E7%B1%BB/" style="font-size: 10px;">无限级分类</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 18.33px;">机器学习</a> <a href="/tags/%E6%9E%81%E5%80%BC/" style="font-size: 10px;">极值</a> <a href="/tags/%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/" style="font-size: 10px;">格式转换</a> <a href="/tags/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" style="font-size: 13.33px;">梯度下降</a> <a href="/tags/%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9/" style="font-size: 10px;">模型压缩</a> <a href="/tags/%E6%B1%A0%E5%8C%96/" style="font-size: 10px;">池化</a> <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 16.67px;">深度学习</a> <a href="/tags/%E7%89%B9%E5%BE%81%E6%98%A0%E5%B0%84/" style="font-size: 10px;">特征映射</a> <a href="/tags/%E7%9F%A9%E9%98%B5/" style="font-size: 10px;">矩阵</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E5%8D%95%E5%85%83%E8%AF%AF%E5%B7%AE/" style="font-size: 10px;">神经单元误差</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" style="font-size: 10px;">索引原理</a> <a href="/tags/%E7%BD%91%E5%8D%A1/" style="font-size: 10px;">网卡</a> <a href="/tags/%E8%A7%86%E9%A2%91%E6%B5%81/" style="font-size: 11.67px;">视频流</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/" style="font-size: 10px;">计算机组成结构</a> <a href="/tags/%E8%AF%AF%E5%B7%AE%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E6%B3%95/" style="font-size: 10px;">误差反向传播法</a> <a href="/tags/%E8%B7%A8%E8%A1%A8/" style="font-size: 10px;">跨表</a> <a href="/tags/%E8%B8%A9%E5%9D%91/" style="font-size: 13.33px;">踩坑</a> <a href="/tags/%E8%BD%AF%E8%80%83/" style="font-size: 15px;">软考</a> <a href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" style="font-size: 10px;">过滤器</a> <a href="/tags/%E8%BF%91%E4%BC%BC%E5%85%AC%E5%BC%8F/" style="font-size: 10px;">近似公式</a> <a href="/tags/%E8%BF%AD%E4%BB%A3%E5%99%A8/" style="font-size: 10px;">迭代器</a>
+    </div>
+    
+      <script>
+        var maxTagcloud = parseInt(20);
+        var tags_length = parseInt(114);
+        var tags_arr = [];
+        for(var i = 0; i < tags_length; i++){
+          tags_arr.push(i);
+        }
+        tags_arr.sort(function (l, r) {
+          return Math.random() > 0.5 ? -1 : 1;
+        });
+        tags_arr = tags_arr.slice(0, maxTagcloud < tags_length ? tags_length - maxTagcloud : 0);
+        for(var tag_i = 0; tag_i < tags_arr.length; tag_i++){
+          document.getElementById("randomtagcloud").children[tags_arr[tag_i]].style.display = 'none';
+        }
+      </script>
+    
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/04/10/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%95%B0%E6%8D%AE%E5%BA%93/">【软考知识总结】数据库</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/10/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">【软考知识总结】操作系统</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/27/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/">【软考知识总结】计算机组成结构</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/27/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%A6%82%E8%A7%88/">【软考知识总结】概览</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/22/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%98%AF%E6%80%8E%E6%A0%B7%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E4%B8%8D%E8%A2%AB%E7%AF%A1%E6%94%B9%E7%9A%84%EF%BC%9F/">区块链是怎样保证数据不被篡改的？</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://github.com/wangerzi/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a><a class="mdui-ripple" href="/atom.xml" target="_blank" mdui-tooltip="{content: 'RSS'}" style="color: rgb(247, 132, 34);background-color: rgba(247, 132, 34, .1);">
+            <i class="nexmoefont icon-rss"></i>
+        </a>
+    </div>
+</div>
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 Jeffrey Wang
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: NaN%;"> 
+              <img src="/static/uploads/2022/04/nick-morrison-FHnnjk1Yj7Y-unsplash-1200x661.jpg" alt="【软考知识总结】计算机组成结构" loading="lazy">
+              <h1>【软考知识总结】计算机组成结构</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2022年03月27日</a>
+</div>
+
+      <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本章主要包含计算机硬件组成，CPU 、计算机各个组件，部分信息加密，安全等等</p>
+<h3 id="章节大纲"><a href="#章节大纲" class="headerlink" title="章节大纲"></a>章节大纲</h3><p>计算机系统</p>
+<ul>
+<li>硬件组成</li>
+<li>CPU</li>
+<li>数据表示</li>
+<li>校验码</li>
+</ul>
+<p>体系结构</p>
+<ul>
+<li>指令</li>
+<li>存储</li>
+<li>输入输出</li>
+<li>总线</li>
+</ul>
+<p>安全性可靠性</p>
+<ul>
+<li>可靠性分析</li>
+<li>安全</li>
+<li>加密和认证</li>
+</ul>
+<p>其中 <strong>数据表示、校验码、加密是重点</strong></p>
+<h2 id="计算机系统"><a href="#计算机系统" class="headerlink" title="计算机系统"></a>计算机系统</h2><h3 id="硬件组成"><a href="#硬件组成" class="headerlink" title="硬件组成"></a>硬件组成</h3><p>硬件五大部分，<strong>运算器，控制器，存储器，输入设备和输出设备</strong></p>
+<h3 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h3><p>CPU 由运算器，控制器，寄存器和内部总线组成 运算器由 算术逻辑单元 ALU，累加寄存器 AC（临时存储逻辑运算数据），数据缓冲寄存器 DR，状态条件寄存器 PSW 组成，用于执行加减乘除和逻辑运算。 控制器由指令寄存器 IR，程序计数器 PC（存放指令地址），地址寄存器 AR，指令译码器 ID，用于程序控制和时序控制。</p>
+<h3 id="数据表示"><a href="#数据表示" class="headerlink" title="数据表示"></a>数据表示</h3><p>十进制转 R进制，取余然后从下往上排列即可。 M转N进制，用十进制中转即可。 原码：数的正常二进制表示 反码：负数的反码取反，即为对应的数值 补码：负数的补码取反加一 移码： 常用于表示浮点数中的阶码（0.123 * 10^3），这个 3 就是阶码，包含1个符号位和n个数值位，特点是方便比大小 移码计算：偏移量为 2^n - 1，真值（整数）+偏移量即为移码的表示 比如补码 0111 1110，其移码表示 0111 1110 + 0111 1111 &#x3D; 1011 1101 浮点数规格化的意思就类似 0.12*10^3，二进制上的表现就是 0.101011 * 2^n，小数后第一位不为0，这时候阶码才是对齐的 《阶码，尾数，移码》<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/180baf2e88d4">https://www.jianshu.com/p/180baf2e88d4</a> 移码怎么算啊～? <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/491056632/answer/2234280842">https://www.zhihu.com/question/491056632/answer/2234280842</a> 小数的范围直接除以 2^(n-1)，因为留一个1在小数点前，其他的数用二进制表示，补码和移码范围一致 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_a6f983f8bee6e20646fe2a1f09afe9f1.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_a6f983f8bee6e20646fe2a1f09afe9f1.jpg"></a> 字长指的是 CPU 能同时处理和传输的位数，字(word)用于表示一次性处理事务的固定长度，字的位数就是字长。 浮点数表示法：N &#x3D; F * 2^E，F 为尾数，E为阶码，类似 101.011 &#x3D; 0.101011 * 2^3 浮点数由 阶符 + 阶码 + 数符 + 尾数组成，范围由阶码确定，数值精度由尾数确定 规格化表示里，正数的补码为 0.1xxx，负数的补码应为 1.0xxx（取反+1后，第一个小数位还是1） 对阶，两个数的阶码需要相同，小阶码向大阶码看起，阶码加几位，尾数右移几位，注意溢出。 结果做规格化，尾数就可以直接相加 如果阶码（包括阶符）由 R 位移码表示，尾数（包括数符）由 M 位补码表示，则浮点数数值范围： 最大正数：(1-2(-M+1))*2^(2^(R-1) -1) 最小负数：-1*2^(2^(R-1) -1)</p>
+<h3 id="校验码"><a href="#校验码" class="headerlink" title="校验码"></a>校验码</h3><p>码距指编码 A -&gt; 编码 B 需要改变的位的数，比如 00-&gt;01 的码距为1，因为只改变一位</p>
+<h4 id="奇偶校验码"><a href="#奇偶校验码" class="headerlink" title="奇偶校验码"></a>奇偶校验码</h4><p>奇偶校验码，指的是多一个位来使1的个数为奇数或者偶数，相当于把变化的码距由1变为2，只能校验正确性不能纠错，但有问题，比如刚好改了两个位，奇偶校验是看不出来的。</p>
+<h4 id="CRC-校验（重点）"><a href="#CRC-校验（重点）" class="headerlink" title="CRC 校验（重点）"></a>CRC 校验（重点）</h4><p>CRC 校验，只能校验不能纠错，原理是把原码除以本源多项式，所得余数即为 CRC 校验码。 实际做题会比较简单，直接拿着数字除即可，多项式有n位，原码后补充 n-1 个0，CRC 结果也需要补齐到 n-1 位，左侧补0。 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_84dbaf55fafed13ce4f4aa5fa27e92f3.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_84dbaf55fafed13ce4f4aa5fa27e92f3.jpg"></a> 参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/u013073067/article/details/86621770">https://blog.csdn.net/u013073067/article/details/86621770</a></p>
+<h4 id="海明码（重点）"><a href="#海明码（重点）" class="headerlink" title="海明码（重点）"></a>海明码（重点）</h4><p>海明码：原理是通过奇偶校验位，以及固定位填充数据扩大码距，从而达到校验和纠错的目的。 校验位于从低往高数，2^n 方位都是校验位，从0次方开始，1&#x2F;2&#x2F;4&#x2F;8&#x2F;16，其余位用于填充数据。 基于这个原理有个结论，海明码的校验位 k，数据位 n 满足 2^k &gt; n+k，因为 2^k 是临界点，对应下一个校验码。 具体的算法就是，每一个校验位对应 2^k，那么其左侧的包含 2^k 的所有数据都要拿过来做顺序的疑惑，详见截图。 位于从右往左数位于第四位的校验码，即为 5&#x2F;6&#x2F;7 这三个位的值异或而来，1 xor 0 &#x3D; 1, 1 xor 1 &#x3D;0，也可以理解为奇数个 1为1，偶数个1 为0，因为 5 &#x3D; 4 + 1, 6 &#x3D; 4 + 2, 7 &#x3D; 4 + 2 + 1 同理，位于从右往左数位于第二位的校验码，就要找解构后包含 2 的位，即为 3&#x2F;6&#x2F;7 异或而来，所以为0 再同理，位于第一位的校验码，找解构后包含1的位，即 3&#x2F;5&#x2F;7 异或而来，所以为 1 如果接收方发现数据位算出来的校验位非全0（因为算上校验位和校验位对应的位，一定是偶数个1），那么接收方拿到的校验位，比如是 100，那么就说明第 4 位数据有误，需要翻转。 为啥只有一位呢，因为错误的那个位，对应的所有校验位都是错的，比如 7 错了，那么包含他的校验位 4&#x2F;2&#x2F;1 都会错，因为 7 &#x3D; 4 + 2 + 1，而 4&#x2F;2&#x2F;1 都错，也就是 111 相当于对应的 2^n 方拼接起来 4 + 2 + 1 &#x3D; 7。 但这样只能纠错一位，如果两个位都错了，得出来的结果就有问题了。 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_2d817c91509a4f094a5c4a84b5070826.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_2d817c91509a4f094a5c4a84b5070826.jpg"></a></p>
+<h2 id="体系结构"><a href="#体系结构" class="headerlink" title="体系结构"></a>体系结构</h2><p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_b945e950bea9af4769b7eec7a54d6c99.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_b945e950bea9af4769b7eec7a54d6c99.jpg"></a> Flynn 分类法，两个指标，指令流和数据流，指令 Instruction，数据 Data，单 Sing，多 M，所以分为 SISD&#x2F;SIMD&#x2F;MISD&#x2F;MIMD 四种类型。 指令对应的是控制部分，数据对应的是处理器，而内存模块是只要指令和数据存在一个是多个，那么就需要是多个。 所以多指令，单数据这个模型不实际，因为指挥者有多个，数据处理却只有一个，但对应后端关联一下，nodejs 这种事件轮询机制，redis 这种单线程处理请求的模式却有点像这个特点。</p>
+<h3 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h3><p>指令由操作码和操作数组成，指令执行过程，<strong>取指-&gt;分析-&gt;执行</strong> 指令寻址 - 顺序，直接从 PC（程序计数器）一条条读取 - 跳跃，特殊的 jump 操作码，跳转到指定的指令上 操作数寻址 - 立即寻址，操作数即为值 - 直接寻址，给到主存地址 - 间接寻址，给到主存地址，其主存对应存放值的真实地址 - 寄存器寻址，存寄存器编号 <strong>重点</strong> 指令系统，CISC（复杂指令集），RISC（精简指令集） 特点 - CISC 指令数量多，使用频率差距大，可变格式，多种寻址方式，微程序控制实现，成本高 - RISC 指令数量少，使用频率差不多，格式少，寻址方式少，寄存器多，硬件实现逻辑，适合指令流水线，可以进行编译优化，支持高级语言 <strong>指令流水线</strong>是指 取指-&gt;分析-&gt;执行 这三个过程可以叠加在同一时间并行执行，A指令分析时，B指令就可以取指了。 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_8c16b555640c3af36ba8412610ec6600.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_8c16b555640c3af36ba8412610ec6600.jpg"></a> <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_bbb5846df264a1901c7304ed0c0a9da1.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_bbb5846df264a1901c7304ed0c0a9da1.jpg"></a> 流水线周期，指的是 取指-&gt;分析-&gt;执行 中最长过程的执行事件，因为这三个执行过程会相互影响和等待。 指令执行时间，n个指令的总执行时间为 一个完整的指令执行时间 + (n-1) * 流水线周期 吞吐率，指令执行数量&#x2F;指令执行时间 加速比，不适用流水线时间&#x2F;用了流水线的时间 如果有超标量流水线，比如同时能3个一起执行，那么总执行时间为 一个完整指令执行时间 + ceil((n-1)&#x2F;3) * 流水线周期</p>
+<h3 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h3><p>金字塔型是为了解决容量和速度的矛盾，从上到下，容量+，速度-。 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_e3b42870efdfe091c7ab3f2b59cad144.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_e3b42870efdfe091c7ab3f2b59cad144.jpg"></a> 为什么要做缓存，因为存储有局部性原理，也就是 CPU 在运行时，会倾向于访问较小的局部空间地址。</p>
+<ul>
+<li>时间局部性原理，如果一个数据项正在被访问，不短的将来，可能会被再次访问</li>
+<li>空间局部性原理，一个数据被访问，与之相邻的数据可能被再次访问</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_7ba587b9bd8ea27d8f35bab270ded191.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_7ba587b9bd8ea27d8f35bab270ded191.jpg"></a> 因为 CPU 访问 cache 的时候，用的是主存地址，那么缓存需要将主存地址映射到自己的空间内以查看是否存在，<strong>这个映射由硬件完成</strong>，主要有如下几种方案。</p>
+<ul>
+<li>直接映射法，将主存分为 M个区和 N个块，缓存也分块分组，直接对应到主存的某块内存，缺点是浪费资源，因为有些分组可能用得很少</li>
+<li>全相连映射法，主存直接分块，缓存记录这是在主存的哪个块，可以随意映射，缺点是慢，但不容易冲突</li>
+<li>组相连映射法，结合上述两者，先给主存和缓存分组分块，然后在每一组内，进行不固定块的全相联映射，确保一个组内尽可能高的利用率，但又不至于数据规模过大导致缓存读写缓慢。</li>
+</ul>
+<h4 id="存储相关的计算"><a href="#存储相关的计算" class="headerlink" title="存储相关的计算"></a>存储相关的计算</h4><p>如何计算主存容量呢，容量 &#x3D; 内存单元 * N字节编址，做下单位转换即可 需要用多少存储芯片，主存容量除以存储芯片容量即可 <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_16cfe339b8013e72cdc52b643360a3b8.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_16cfe339b8013e72cdc52b643360a3b8.jpg"></a></p>
+<h3 id="总线"><a href="#总线" class="headerlink" title="总线"></a>总线</h3><p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_5ffa2c30408396365382bba6b21826d6.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_5ffa2c30408396365382bba6b21826d6.jpg"></a> 总线分三类</p>
+<ul>
+<li>内部总线，芯片级别总线，芯片与处理器间通信的总线</li>
+<li>系统总线，连接各个组件<ul>
+<li>数据总线，并行处理数据的大小</li>
+<li>地址总线，可管理内存的大小</li>
+<li>控制总线，传递控制命令</li>
+</ul>
+</li>
+<li>外部总线，设备一级的，SCSI&#x2F;USB 等</li>
+</ul>
+<h2 id="安全性可靠性"><a href="#安全性可靠性" class="headerlink" title="安全性可靠性"></a>安全性可靠性</h2><h3 id="可靠性分析"><a href="#可靠性分析" class="headerlink" title="可靠性分析"></a>可靠性分析</h3><p>平均无故障时间 MTTF &#x3D; 1&#x2F;失效率 平均故障修复时间 MTTR &#x3D; 1&#x2F;修复率 平均故障间隔 MTBF &#x3D; MTTF + MTTR 系统可用性 MTTF&#x2F;(MTTF + MTTR) * 100% 串联、并联、混合，串联是一个不可靠，全都不可靠，并联是全部不可靠才会让系统不可靠，混合就是两个可靠性公式组合在一起。 串：R&#x3D;R1*R2; 并：R&#x3D;1- (1-R1)*(1-R2) 混：R&#x3D;R1*(1- (1-R2)*(1-R3)) <a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_55b130ee0d8498c57aec83e722f2c04c.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_55b130ee0d8498c57aec83e722f2c04c.jpg"></a></p>
+<h3 id="网络安全"><a href="#网络安全" class="headerlink" title="网络安全"></a>网络安全</h3><p>网络安全五要素</p>
+<ul>
+<li>保密性，最小授权，信息加密，物理加密</li>
+<li>完整性，传输正确无误</li>
+<li>可用性，合法用户能以合法的方式访问数据</li>
+<li>可控性，控制授权范围内信息流向及行为方式</li>
+<li>不可抵赖性，信息参与者不能否认自己的行为，参与者身份真实有效</li>
+</ul>
+<p>网络安全分类</p>
+<ul>
+<li><strong>重放攻击 ARP</strong></li>
+<li><strong>拒绝服务 DOS</strong></li>
+<li>窃听</li>
+<li>业务流分析</li>
+<li>信息泄露</li>
+<li>破坏信息完整</li>
+<li>非授权访问</li>
+<li>假冒</li>
+<li><strong>旁路攻击</strong></li>
+<li><strong>授权侵犯，不是按照设计的授权去做应该做的事</strong></li>
+<li><strong>木马</strong></li>
+<li>陷阱门，隐藏逻辑</li>
+<li>抵赖（侵犯不可抵赖性）</li>
+</ul>
+<h3 id="加密和认证"><a href="#加密和认证" class="headerlink" title="加密和认证"></a>加密和认证</h3><p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_b22cc0090d422d64a5ad28256094e045.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_b22cc0090d422d64a5ad28256094e045.jpg"></a> 常见对称加密算法：</p>
+<ul>
+<li>DES</li>
+<li>3DES</li>
+<li><strong>AES</strong></li>
+<li>RC-5</li>
+<li>IDEA 算法</li>
+</ul>
+<p>常见非对称算法：</p>
+<ul>
+<li><strong>RSA</strong></li>
+<li>PGP</li>
+<li>ECC 椭圆曲线</li>
+<li>Elgamal</li>
+<li>背包算法、Rabin、D-H 等</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_a2c50d6b4cc87a749797bb3ec965de01.jpg"><img src="https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/static/uploads/2022/03/wp_editor_md_a2c50d6b4cc87a749797bb3ec965de01.jpg"></a></p>
+<h5 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h5><p>基于非对称加密，信息发送方私钥加密报文签名，公钥公开出去，接收方用公钥解密得到可信的报文签名即可。 由 CA 认证过的数字证书，以避免信息发送方的公钥私钥被替换，用户会从 CA 下载公钥，并用 CA 的公钥验证真实性。 PKI 公钥基础设施 KMC(Key Mangement Center,密钥管理中心) KMI，由 KMC 提供的密钥管理服务 三大功能 - 核实发送者报文签名，验证来源真实姓 - 发送方无法抵赖对报文的签名 - 数据摘要能正常的被公钥解密则表明未被篡改</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>计算机组成结构是比较重点的一个章节，分值比较高，主要复习大学时期组成原理以及部分网络原理的内容。</p>
+
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>Jeffrey Wang<br>
+        <strong>本文链接：</strong><a href="https://blog.wj2015.com/2022/03/27/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/" title="https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2022&#x2F;03&#x2F;27&#x2F;%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2022&#x2F;03&#x2F;27&#x2F;%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/" rel="tag">计算机组成结构</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E8%BD%AF%E8%80%83/" rel="tag">软考</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: 'd7b7061e43e1334a5aa9',
+        clientSecret: '5af2efcfc06b854bc5ccc23babfa3a06a7508c1e',
+        id: window.location.pathname,
+        repo: 'blog',
+        owner: 'wangerzi',
+        admin: 'wangerzi'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AB%A0%E8%8A%82%E5%A4%A7%E7%BA%B2"><span class="toc-number">1.1.</span> <span class="toc-text">章节大纲</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.</span> <span class="toc-text">计算机系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A1%AC%E4%BB%B6%E7%BB%84%E6%88%90"><span class="toc-number">2.1.</span> <span class="toc-text">硬件组成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CPU"><span class="toc-number">2.2.</span> <span class="toc-text">CPU</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA"><span class="toc-number">2.3.</span> <span class="toc-text">数据表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%A1%E9%AA%8C%E7%A0%81"><span class="toc-number">2.4.</span> <span class="toc-text">校验码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C%E7%A0%81"><span class="toc-number">2.4.1.</span> <span class="toc-text">奇偶校验码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CRC-%E6%A0%A1%E9%AA%8C%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-number">2.4.2.</span> <span class="toc-text">CRC 校验（重点）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%B7%E6%98%8E%E7%A0%81%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-number">2.4.3.</span> <span class="toc-text">海明码（重点）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="toc-number">3.</span> <span class="toc-text">体系结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E4%BB%A4"><span class="toc-number">3.1.</span> <span class="toc-text">指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%98%E5%82%A8"><span class="toc-number">3.2.</span> <span class="toc-text">存储</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E7%9B%B8%E5%85%B3%E7%9A%84%E8%AE%A1%E7%AE%97"><span class="toc-number">3.2.1.</span> <span class="toc-text">存储相关的计算</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BA%BF"><span class="toc-number">3.3.</span> <span class="toc-text">总线</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E6%80%A7%E5%8F%AF%E9%9D%A0%E6%80%A7"><span class="toc-number">4.</span> <span class="toc-text">安全性可靠性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E9%9D%A0%E6%80%A7%E5%88%86%E6%9E%90"><span class="toc-number">4.1.</span> <span class="toc-text">可靠性分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8"><span class="toc-number">4.2.</span> <span class="toc-text">网络安全</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E5%AF%86%E5%92%8C%E8%AE%A4%E8%AF%81"><span class="toc-number">4.3.</span> <span class="toc-text">加密和认证</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D"><span class="toc-number">4.3.0.1.</span> <span class="toc-text">数字签名</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+ 
+
+<script async src="/js/app.js?v=1651830304468"></script>
+
+
+	<script async src="/js/search.js?v=1651830304468"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHH2NFM6CG"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZHH2NFM6CG');
+</script>
+
+
+
+
+
+</body>
+
+</html>
