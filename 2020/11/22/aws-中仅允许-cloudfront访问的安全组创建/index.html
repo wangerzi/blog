@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/11/wp_editor_md_2b9bec1d31d33d7d265e7d560cf9670c.jpg">
 <meta property="og:image" content="https://blog.wj2015.com/static/uploads/2020/11/wp_editor_md_d3e3ab1240d6a3bf5e5ff0d8634402c0.jpg">
 <meta property="article:published_time" content="2020-11-22T05:21:01.000Z">
-<meta property="article:modified_time" content="2022-05-06T18:08:41.120Z">
+<meta property="article:modified_time" content="2022-05-07T12:53:44.566Z">
 <meta property="article:author" content="Jeffrey Wang">
 <meta property="article:tag" content="aws">
 <meta property="article:tag" content="cloudfront">
@@ -40,16 +40,16 @@
 <meta name="twitter:image" content="https://blog.wj2015.com/static/uploads/2020/11/wp_editor_md_7092ef83875ab140cb81c7e1d9fed2d8.jpg">
     <link
         rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"
+        href="/static/libs/fancybox.css"
     />
     <link
         rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"
+        href="/static/libs/justifiedGallery.min.css"
     />
     
-    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651860541625">
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651860541625">
-    <link rel="stylesheet" href="/css/style.css?v=1651860541625">
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1651928043262">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1651928043262">
+    <link rel="stylesheet" href="/css/style.css?v=1651928043262">
      
     
 <meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
@@ -235,41 +235,55 @@
 <p>注意：如果服务器在多个区或同一个区不同的 VPC，需要每个区都执行安全组创建+lambda，同区的不同 VPC 只要创建好安全组即可。 注意：如果运行过程中提示你每个安全组规则数量不可超过 50 导致无法更新成功，需要在 AWS 控制台申请扩大单个安全组规则最大限制，100~200即可。</p>
 </blockquote>
 <h2 id="操作过程"><a href="#操作过程" class="headerlink" title="操作过程"></a>操作过程</h2><h3 id="创建安全组"><a href="#创建安全组" class="headerlink" title="创建安全组"></a>创建安全组</h3><p><a target="_blank" rel="noopener" href="https://us-west-2.console.aws.amazon.com/ec2/v2/home?region=us-west-2#SecurityGroups:">安全组控制台</a> 首先把需要CloudFront IP 访问控制的安全组创建起来，由于 Global 和 Region 是分两个组存的，HTTP 和 HTTPS 也是分两个组存的，所以我们需要创建四个安全组，名称和标签如下表所示。</p>
-<p>安全组名称</p>
-<p>描述</p>
-<p>协议</p>
-<p>类型</p>
-<p>Tag:Name</p>
-<p>Tag:Protocol</p>
-<p>Tag:AutoUpdate</p>
-<p>HTTP_CLOUDFRONT_IP_ONLY</p>
-<p>HTTP for cloudfront global ip.</p>
-<p>HTTP</p>
-<p>Global</p>
-<p>cloudfront_g</p>
-<p>http</p>
-<p>true</p>
-<p>HTTP_CLOUDFRONT_IP_ONLY_R</p>
-<p>HTTP for cloudfront region ip.</p>
-<p>HTTP</p>
-<p>Region</p>
-<p>cloudfront_r</p>
-<p>http</p>
-<p>true</p>
-<p>HTTPS_CLOUDFRONT_IP_ONLY</p>
-<p>HTTPS for cloudfront global ip.</p>
-<p>HTTPS</p>
-<p>Global</p>
-<p>cloudfront_g</p>
-<p>https</p>
-<p>true</p>
-<p>HTTPS_CLOUDFRONT_IP_ONLY_R</p>
-<p>HTTPS for cloudfront region ip.</p>
-<p>HTTPS</p>
-<p>Region</p>
-<p>cloudfront_r</p>
-<p>https</p>
-<p>true</p>
+<table>
+<thead>
+<tr>
+<th>安全组名称</th>
+<th>描述</th>
+<th>协议</th>
+<th>类型</th>
+<th>Tag:Name</th>
+<th>Tag:Protocol</th>
+<th>Tag:AutoUpdate</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HTTP_CLOUDFRONT_IP_ONLY</td>
+<td>HTTP for cloudfront global ip.</td>
+<td>HTTP</td>
+<td>Global</td>
+<td>cloudfront_g</td>
+<td>http</td>
+<td>true</td>
+</tr>
+<tr>
+<td>HTTP_CLOUDFRONT_IP_ONLY_R</td>
+<td>HTTP for cloudfront region ip.</td>
+<td>HTTP</td>
+<td>Region</td>
+<td>cloudfront_r</td>
+<td>http</td>
+<td>true</td>
+</tr>
+<tr>
+<td>HTTPS_CLOUDFRONT_IP_ONLY</td>
+<td>HTTPS for cloudfront global ip.</td>
+<td>HTTPS</td>
+<td>Global</td>
+<td>cloudfront_g</td>
+<td>https</td>
+<td>true</td>
+</tr>
+<tr>
+<td>HTTPS_CLOUDFRONT_IP_ONLY_R</td>
+<td>HTTPS for cloudfront region ip.</td>
+<td>HTTPS</td>
+<td>Region</td>
+<td>cloudfront_r</td>
+<td>https</td>
+<td>true</td>
+</tr>
+</tbody></table>
 <blockquote>
 <p>注：所有的 EC2 和 LB 都需要选择 HTTP_CLOUDFRONT_IP_ONLY 和 HTTP_CLOUDFRONT_IP_ONLY_R 这两个安全组。</p>
 </blockquote>
@@ -316,9 +330,9 @@
   
       <div class="nexmoe-post-footer">
           <section class="nexmoe-comment">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css">
+    <link rel="stylesheet" href="/static/libs/gitalk.min.css">
 <div id="gitalk"></div>
-<script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script>
+<script src="/static/libs/gitalk.min.js"></script>
 <script type="text/javascript">
     var gitalk = new Gitalk({
         clientID: 'd7b7061e43e1334a5aa9',
@@ -371,19 +385,19 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+    <script src="/static/libs/mdui.min.js"></script>
+<script src="/static/libs/jquery.min.js"></script>
+<script src="/static/libs/fancybox.umd.js"></script>
 
  
 
-<script async src="/js/app.js?v=1651860541630"></script>
+<script async src="/js/app.js?v=1651928043266"></script>
 
 
-	<script async src="/js/search.js?v=1651860541630"></script>
+	<script async src="/js/search.js?v=1651928043266"></script>
 
 
-<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+<script src="/static/libs/jquery.justifiedGallery.min.js"></script>
 <script>
 	$(".justified-gallery").justifiedGallery({
 		rowHeight: 160,
