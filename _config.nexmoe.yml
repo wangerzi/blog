@@ -48,10 +48,28 @@ cdn: # 这里可以修改站点使用的库的CDN
     css: https://cdn.jsdelivr.net/npm/disqusjs@1.2.5/dist/disqusjs.min.css
     js: https://cdn.jsdelivr.net/npm/disqusjs@1.2.5/dist/disqus.min.js
   gitalk:
-    css: https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css
-    js: https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js
+    # css: https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css
+    # js: https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js
+    css: /static/libs/gitalk.min.css
+    js: /static/libs/gitalk.min.js
   valine:
     js: https://cdn.jsdelivr.net/npm/valine
+  mdui:
+    # js: https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js?v=mine
+    js: /static/libs/mdui.min.js
+  jquery:
+    # js: https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js?v=mine
+    js: /static/libs/jquery.min.js
+  fancybox:
+    # css: https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css?v=mine
+    # js: https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js?v=mine
+    css: /static/libs/fancybox.css
+    js: /static/libs/fancybox.umd.js
+  justifiedGallery:
+    # js: https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js?v=mine
+    # css: https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css?v=mine
+    css: /static/libs/justifiedGallery.min.css
+    js: /static/libs/jquery.justifiedGallery.min.js
 
 menu:
   回到首页: 

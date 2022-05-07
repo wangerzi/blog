@@ -7,7 +7,7 @@ id: '646'
 categories:
   - - 前端开发
 date: 2021-01-25 10:22:51
-cover: ../static/uploads/2019/11/10-21-http-request.png
+cover: ../static/uploads/2021/01/temp-1200x661.jpeg
 ---
 
 > 本文也发布于 learnku社区，博主最近有部分时间在该社区活跃，翻译文章，讨论问题等，learnku文章链接：https://learnku.com/articles/53633

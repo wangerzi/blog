@@ -34,6 +34,10 @@ function urlForHelper(path = '/', docPath = '') {
 }
 hexo.extend.filter.register('after_post_render', function (data) {
     const docPath = data.full_source
+    if (!docPath.endsWith('.md')) {
+        console.log('path break', data.asset_dir, data.full_source)
+        return ;
+    }
     // console.log('path', data.asset_dir, data.full_source)
     // console.log("excerpt === " + data.excerpt);
     // console.log("more === " + data.more);

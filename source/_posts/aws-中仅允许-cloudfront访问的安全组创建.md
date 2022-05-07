@@ -12,8 +12,6 @@ date: 2020-11-22 13:21:01
 cover: ../static/uploads/2020/11/timg.jpg
 ---
 
-
-
 ## 目的
 
 生产环境中出于安全和并发的考虑，一般会用 CDN 和 LB 为后端服务/资源进行加速和并发防护，在 AWS 中，CDN 服务是 CloudFront，为了从根源上避免直接访问到源，需要通过安全组的方式组织非 CloudFront 边缘节点的访问。
@@ -30,75 +28,12 @@ cover: ../static/uploads/2020/11/timg.jpg
 
 [安全组控制台](https://us-west-2.console.aws.amazon.com/ec2/v2/home?region=us-west-2#SecurityGroups:) 首先把需要CloudFront IP 访问控制的安全组创建起来，由于 Global 和 Region 是分两个组存的，HTTP 和 HTTPS 也是分两个组存的，所以我们需要创建四个安全组，名称和标签如下表所示。
 
-安全组名称
-
-描述
-
-协议
-
-类型
-
-Tag:Name
-
-Tag:Protocol
-
-Tag:AutoUpdate
-
-HTTP\_CLOUDFRONT\_IP\_ONLY
-
-HTTP for cloudfront global ip.
-
-HTTP
-
-Global
-
-cloudfront\_g
-
-http
-
-true
-
-HTTP\_CLOUDFRONT\_IP\_ONLY\_R
-
-HTTP for cloudfront region ip.
-
-HTTP
-
-Region
-
-cloudfront\_r
-
-http
-
-true
-
-HTTPS\_CLOUDFRONT\_IP\_ONLY
-
-HTTPS for cloudfront global ip.
-
-HTTPS
-
-Global
-
-cloudfront\_g
-
-https
-
-true
-
-HTTPS\_CLOUDFRONT\_IP\_ONLY\_R
-
-HTTPS for cloudfront region ip.
-
-HTTPS
-
-Region
-
-cloudfront\_r
-
-https
-
-true
+| 安全组名称                      | 描述                              | 协议    | 类型     | Tag:Name     | Tag:Protocol | Tag:AutoUpdate |
+| -------------------------- | ------------------------------- | ----- | ------ | ------------ | ------------ | -------------- |
+| HTTP_CLOUDFRONT_IP_ONLY    | HTTP for cloudfront global ip.  | HTTP  | Global | cloudfront_g | http         | true           |
+| HTTP_CLOUDFRONT_IP_ONLY_R  | HTTP for cloudfront region ip.  | HTTP  | Region | cloudfront_r | http         | true           |
+| HTTPS_CLOUDFRONT_IP_ONLY   | HTTPS for cloudfront global ip. | HTTPS | Global | cloudfront_g | https        | true           |
+| HTTPS_CLOUDFRONT_IP_ONLY_R | HTTPS for cloudfront region ip. | HTTPS | Region | cloudfront_r | https        | true           |
 
 > 注：所有的 EC2 和 LB 都需要选择 HTTP\_CLOUDFRONT\_IP\_ONLY 和 HTTP\_CLOUDFRONT\_IP\_ONLY\_R 这两个安全组。
 
