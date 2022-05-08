@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>hexo博客迁移 - 九层台</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="前端开发,后端开发,LINUX,机器学习,软考">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="目的五六年前买的腾讯云学生机，系统太过老旧，目前正在逐步执行迁移计划，首当其冲的就是托管于服务器上的静态页面，以及偶有访问的博客系统，最好做到不停机不变 URL 的迁移，也是对自己技术的一个检验。 现状之前记录博客使用的是 Wordpress，当时非常喜欢里边完善的功能以及丰富的主题，插件和界面调整也比较方便。   但用的时间越久，就越发觉庞大且运行缓慢，里边的 markdown 插件体验不佳，每">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hexo博客迁移">
+<meta property="og:url" content="https://blog.wj2015.com/2022/05/08/hexo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB-md/">
+<meta property="og:site_name" content="九层台">
+<meta property="og:description" content="目的五六年前买的腾讯云学生机，系统太过老旧，目前正在逐步执行迁移计划，首当其冲的就是托管于服务器上的静态页面，以及偶有访问的博客系统，最好做到不停机不变 URL 的迁移，也是对自己技术的一个检验。 现状之前记录博客使用的是 Wordpress，当时非常喜欢里边完善的功能以及丰富的主题，插件和界面调整也比较方便。   但用的时间越久，就越发觉庞大且运行缓慢，里边的 markdown 插件体验不佳，每">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-08-14-10-52-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-08-14-30-51-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-08-14-32-54-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-08-14-33-46-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-08-15-48-44-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-08-15-49-09-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-08-15-49-20-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-08-15-15-28-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-08-15-17-52-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-08-15-20-47-image.png">
+<meta property="og:image" content="https://user-images.githubusercontent.com/22190579/167250696-d5e5cefc-29cf-4ea9-a757-c775cf1a1d2b.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-08-15-39-02-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-08-15-37-50-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-08-16-09-51-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-08-16-11-33-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-08-16-12-24-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-08-16-13-07-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-08-16-24-21-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-08-16-26-12-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-08-16-35-28-image.png">
+<meta property="article:published_time" content="2022-05-08T05:34:20.000Z">
+<meta property="article:modified_time" content="2022-05-08T08:53:40.493Z">
+<meta property="article:author" content="Jeffrey Wang">
+<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="博客">
+<meta property="article:tag" content="CDN">
+<meta property="article:tag" content="GithubAction">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.wj2015.com/static/assets/2022-05-08-14-10-52-image.png">
+    <link
+        rel="stylesheet"
+        href="/static/libs/fancybox.css"
+    />
+    <link
+        rel="stylesheet"
+        href="/static/libs/justifiedGallery.min.css"
+    />
+    
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1652000038273">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1652000038273">
+    <link rel="stylesheet" href="/css/style.css?v=1652000038273">
+     
+    
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
+</head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(/static/background.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="Jeffrey Wang" class="mdui-btn mdui-btn-icon"><img src="/static/avatar.jpg" alt="Jeffrey Wang"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="Jeffrey Wang">
+            <img src="/static/avatar.jpg" alt="Jeffrey Wang" alt="Jeffrey Wang">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>61</div>
+        <div><span>标签</span>118</div>
+        <div><span>分类</span>14</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/friends.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        
+            <form id="search_form">
+                <label><input class="st-default-search-input" id="search_value" name="q" type="search" placeholder="搜索" style="
+                    font-size: 15px !important;
+                    height: 56px !important;
+                    background-image: none;
+                "></label>
+            </form>
+         
+    </div>
+</div>
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/2020/" style="font-size: 10px;">2020</a> <a href="/tags/B-tree/" style="font-size: 10px;">B+ tree</a> <a href="/tags/BP/" style="font-size: 10px;">BP</a> <a href="/tags/BP%E7%AE%97%E6%B3%95/" style="font-size: 10px;">BP算法</a> <a href="/tags/CDN/" style="font-size: 10px;">CDN</a> <a href="/tags/GithubAction/" style="font-size: 10px;">GithubAction</a> <a href="/tags/Hash/" style="font-size: 10px;">Hash</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/Mysql/" style="font-size: 16.67px;">Mysql</a> <a href="/tags/POW/" style="font-size: 10px;">POW</a> <a href="/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/tags/SVN/" style="font-size: 10px;">SVN</a> <a href="/tags/Serverless/" style="font-size: 10px;">Serverless</a> <a href="/tags/Vmware/" style="font-size: 10px;">Vmware</a> <a href="/tags/apply/" style="font-size: 10px;">apply</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/authorization/" style="font-size: 10px;">authorization</a> <a href="/tags/aws/" style="font-size: 11.67px;">aws</a> <a href="/tags/cloudfront/" style="font-size: 11.67px;">cloudfront</a> <a href="/tags/ctm/" style="font-size: 10px;">ctm</a> <a href="/tags/eth0/" style="font-size: 10px;">eth0</a> <a href="/tags/excel/" style="font-size: 10px;">excel</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/gasPrice/" style="font-size: 10px;">gasPrice</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gltf/" style="font-size: 10px;">gltf</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/iges/" style="font-size: 10px;">iges</a> <a href="/tags/ios/" style="font-size: 11.67px;">ios</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/js-xlsx/" style="font-size: 10px;">js-xlsx</a> <a href="/tags/kali/" style="font-size: 10px;">kali</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/layui/" style="font-size: 10px;">layui</a> <a href="/tags/layuiAdmin/" style="font-size: 10px;">layuiAdmin</a> <a href="/tags/nextTick/" style="font-size: 10px;">nextTick</a> <a href="/tags/nextcloud/" style="font-size: 10px;">nextcloud</a> <a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/php-fpm/" style="font-size: 11.67px;">php-fpm</a> <a href="/tags/php7/" style="font-size: 10px;">php7</a> <a href="/tags/phpMyAdmin/" style="font-size: 10px;">phpMyAdmin</a> <a href="/tags/phpunit/" style="font-size: 10px;">phpunit</a> <a href="/tags/python/" style="font-size: 13.33px;">python</a> <a href="/tags/pythonocc/" style="font-size: 10px;">pythonocc</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/stl/" style="font-size: 10px;">stl</a> <a href="/tags/stp/" style="font-size: 10px;">stp</a> <a href="/tags/style/" style="font-size: 10px;">style</a> <a href="/tags/syncting/" style="font-size: 10px;">syncting</a> <a href="/tags/three-js/" style="font-size: 10px;">three.js</a> <a href="/tags/utools/" style="font-size: 10px;">utools</a> <a href="/tags/vbot/" style="font-size: 10px;">vbot</a> <a href="/tags/video/" style="font-size: 11.67px;">video</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/web3/" style="font-size: 10px;">web3</a> <a href="/tags/web3d/" style="font-size: 10px;">web3d</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0/" style="font-size: 10px;">代价函数</a> <a href="/tags/%E5%81%8F%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">偏导数</a> <a href="/tags/%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">关系式</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8/" style="font-size: 10px;">内存占用</a> <a href="/tags/%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A/" style="font-size: 10px;">动态绑定</a> <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" style="font-size: 11.67px;">区块链</a> <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" style="font-size: 10px;">单元测试</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">博客</a> <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 11.67px;">卷积神经网络</a> <a href="/tags/%E5%8F%82%E6%95%B0%E8%8E%B7%E5%8F%96/" style="font-size: 10px;">参数获取</a> <a href="/tags/%E5%8F%8D%E5%90%91%E9%80%92%E6%8E%A8%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">反向递推关系式</a> <a href="/tags/%E5%90%8C%E6%AD%A5/" style="font-size: 10px;">同步</a> <a href="/tags/%E5%90%91%E9%87%8F/" style="font-size: 10px;">向量</a> <a href="/tags/%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/" style="font-size: 10px;">命名规则</a> <a href="/tags/%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0%E6%B1%82%E5%AF%BC/" style="font-size: 10px;">复合函数求导</a> <a href="/tags/%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C/" style="font-size: 10px;">多人协作</a> <a href="/tags/%E5%A4%9A%E5%8F%98%E9%87%8F%E5%87%BD%E6%95%B0/" style="font-size: 10px;">多变量函数</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%AF%BC%E5%87%BA%E6%A0%B7%E5%BC%8F/" style="font-size: 10px;">导出样式</a> <a href="/tags/%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">导数</a> <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 11.67px;">小程序</a> <a href="/tags/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" style="font-size: 10px;">异常处理</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%9C%8D/" style="font-size: 10px;">微信客服</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91/" style="font-size: 11.67px;">微信开发</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5/" style="font-size: 10px;">拉格朗日</a> <a href="/tags/%E6%8F%92%E4%BB%B6/" style="font-size: 10px;">插件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%94%B9%E9%80%A0/" style="font-size: 10px;">改造</a> <a href="/tags/%E6%95%A3%E5%88%97%E8%A1%A8/" style="font-size: 10px;">散列表</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" style="font-size: 10px;">数据类型</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a> <a href="/tags/%E6%97%85%E8%A1%8C/" style="font-size: 10px;">旅行</a> <a href="/tags/%E6%97%A0%E9%99%90%E7%BA%A7%E5%88%86%E7%B1%BB/" style="font-size: 10px;">无限级分类</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 18.33px;">机器学习</a> <a href="/tags/%E6%9E%81%E5%80%BC/" style="font-size: 10px;">极值</a> <a href="/tags/%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/" style="font-size: 10px;">格式转换</a> <a href="/tags/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" style="font-size: 13.33px;">梯度下降</a> <a href="/tags/%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9/" style="font-size: 10px;">模型压缩</a> <a href="/tags/%E6%B1%A0%E5%8C%96/" style="font-size: 10px;">池化</a> <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 16.67px;">深度学习</a> <a href="/tags/%E7%89%B9%E5%BE%81%E6%98%A0%E5%B0%84/" style="font-size: 10px;">特征映射</a> <a href="/tags/%E7%9F%A9%E9%98%B5/" style="font-size: 10px;">矩阵</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E5%8D%95%E5%85%83%E8%AF%AF%E5%B7%AE/" style="font-size: 10px;">神经单元误差</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" style="font-size: 10px;">索引原理</a> <a href="/tags/%E7%BD%91%E5%8D%A1/" style="font-size: 10px;">网卡</a> <a href="/tags/%E8%A7%86%E9%A2%91%E6%B5%81/" style="font-size: 11.67px;">视频流</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/" style="font-size: 10px;">计算机组成结构</a> <a href="/tags/%E8%AF%AF%E5%B7%AE%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E6%B3%95/" style="font-size: 10px;">误差反向传播法</a> <a href="/tags/%E8%B7%A8%E8%A1%A8/" style="font-size: 10px;">跨表</a> <a href="/tags/%E8%B8%A9%E5%9D%91/" style="font-size: 13.33px;">踩坑</a> <a href="/tags/%E8%BD%AF%E8%80%83/" style="font-size: 15px;">软考</a> <a href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" style="font-size: 10px;">过滤器</a> <a href="/tags/%E8%BF%91%E4%BC%BC%E5%85%AC%E5%BC%8F/" style="font-size: 10px;">近似公式</a> <a href="/tags/%E8%BF%AD%E4%BB%A3%E5%99%A8/" style="font-size: 10px;">迭代器</a>
+    </div>
+    
+      <script>
+        var maxTagcloud = parseInt(20);
+        var tags_length = parseInt(118);
+        var tags_arr = [];
+        for(var i = 0; i < tags_length; i++){
+          tags_arr.push(i);
+        }
+        tags_arr.sort(function (l, r) {
+          return Math.random() > 0.5 ? -1 : 1;
+        });
+        tags_arr = tags_arr.slice(0, maxTagcloud < tags_length ? tags_length - maxTagcloud : 0);
+        for(var tag_i = 0; tag_i < tags_arr.length; tag_i++){
+          document.getElementById("randomtagcloud").children[tags_arr[tag_i]].style.display = 'none';
+        }
+      </script>
+    
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/05/08/hexo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB-md/">hexo博客迁移</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/10/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%95%B0%E6%8D%AE%E5%BA%93/">【软考知识总结】数据库</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/10/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">【软考知识总结】操作系统</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/27/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/">【软考知识总结】计算机组成结构</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/27/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%A6%82%E8%A7%88/">【软考知识总结】概览</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://github.com/wangerzi/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a><a class="mdui-ripple" href="/atom.xml" target="_blank" mdui-tooltip="{content: 'RSS'}" style="color: rgb(247, 132, 34);background-color: rgba(247, 132, 34, .1);">
+            <i class="nexmoefont icon-rss"></i>
+        </a>
+    </div>
+</div>
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 Jeffrey Wang
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: 66.66666666666666%;"> 
+              <img data-fancybox="gallery" src="/static/background.jpg" alt="hexo博客迁移" loading="lazy">
+              <h1>hexo博客迁移</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2022年05月08日</a>
+</div>
+
+      <html><head></head><body><h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><p>五六年前买的腾讯云学生机，系统太过老旧，目前正在逐步执行迁移计划，首当其冲的就是托管于服务器上的静态页面，以及偶有访问的博客系统，最好做到<strong>不停机不变 URL 的迁移</strong>，也是对自己技术的一个检验。</p>
+<h2 id="现状"><a href="#现状" class="headerlink" title="现状"></a>现状</h2><p>之前记录博客使用的是 Wordpress，当时非常喜欢里边<strong>完善的功能以及丰富的主题</strong>，插件和界面调整也比较方便。</p>
+<p><img src="/static/assets/2022-05-08-14-10-52-image.png"></p>
+<p><img src="/static/assets/2022-05-08-14-30-51-image.png"></p>
+<p>但用的时间越久，就越发觉<strong>庞大且运行缓慢</strong>，里边的 markdown 插件体验不佳，每次在慢吞吞进入系统后，还需要忍受比较糟糕的编写体验（没有实时预览，纯手写 markdown），比较打击写文积极性（咕咕咕借口+1）</p>
+<p><img src="/static/assets/2022-05-08-14-32-54-image.png"></p>
+<p>一段时间不进入系统还会有很多<strong>机器人发的乱七八糟的垃圾评论</strong>出现在后台等待审核，一是有安全性上的担忧，万一有人搞一个 XSS，我在审核评论时中招了不就危险了；二来评论审核和过滤也非常的慢，处理完这些事情，写文积极性又降低了一成。</p>
+<p><img src="/static/assets/2022-05-08-14-33-46-image.png"></p>
+<p>并且我女朋友的博客也在上面，<a target="_blank" rel="noopener" href="https://lhx.blog.wj2015.com/">https://lhx.blog.wj2015.com/</a>，用 Wordpress 的多站点做的，与我一样，每次登陆至少几分钟的精力耗在与无关的事情上，甚至太久没登还需要找回密码。</p>
+<p>于是，借个人服务器升级的东风，翻查了现有的博客方案，发现将博客全部静态化可能更符合我现在的调性，评论等需求用 gitlk 等三方服务即可，无需另行操心。</p>
+<h2 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h2><p>这里用了 <a target="_blank" rel="noopener" href="https://github.com/theme-nexmoe/hexo-theme-nexmoe">GitHub - theme-nexmoe/hexo-theme-nexmoe: 🔥 一个比较特别的 Hexo 主题</a> 主题，稍作修改就成了现在的模样。</p>
+<blockquote>
+<p>PS：以后可能会变化，所以先留个档记录下初始状况</p>
+</blockquote>
+<p><img src="/static/assets/2022-05-08-15-48-44-image.png"></p>
+<p><img src="/static/assets/2022-05-08-15-49-09-image.png"></p>
+<p><img src="/static/assets/2022-05-08-15-49-20-image.png"></p>
+<h2 id="调研"><a href="#调研" class="headerlink" title="调研"></a>调研</h2><p>借助百度娘谷歌娘，以及万能的 github，我大概看了三款静态博客生成器</p>
+<p>还有一个项目对这类静态网站生成器做了整理，可太多了，<a target="_blank" rel="noopener" href="https://github.com/pinceladasdaweb/Static-Site-Generators">GitHub - pinceladasdaweb/Static-Site-Generators: A definitive list of tools for generating static websites.</a></p>
+<ul>
+<li><p>Hexo：<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/index.html">https://hexo.io/zh-cn/index.html</a></p>
+</li>
+<li><p>Jekyll：<a target="_blank" rel="noopener" href="https://jekyllrb.com/">https://jekyllrb.com/</a></p>
+</li>
+<li><p>Hugo：<a target="_blank" rel="noopener" href="https://www.gohugo.org/">https://www.gohugo.org/</a></p>
+</li>
+</ul>
+<p>最后还是 hexo 吸引住了我，理由有三</p>
+<ul>
+<li><p>程序是 nodejs 写的，<strong>插件生态比较多</strong>，我也比较熟悉 Nodejs，有些问题文档描述不清可以看源码了解，一般 nodejs 社区高级前端比较多，主题产出质量应该也高一点吧；</p>
+</li>
+<li><p><strong>已有不少主题比较好看且切换便利</strong>，利用插件完全可以用 markdown 编辑器预览和编写文章，再通过脚本或 CI/CD 一键发布</p>
+</li>
+<li><p>有一个从 wordpress 迁移到 hexo 的方案，这个比较重要</p>
+</li>
+</ul>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><h3 id="数据迁移和问题处理"><a href="#数据迁移和问题处理" class="headerlink" title="数据迁移和问题处理"></a>数据迁移和问题处理</h3><p>从 Wordpres 迁移到 hexo，有这么一个插件 <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-migrator-wordpress">GitHub - hexojs/hexo-migrator-wordpress: WordPress migrator for Hexo.</a></p>
+<p>安装完毕后在源站的『工具』-&gt;『导出』中导出所有内容</p>
+<p><img src="/static/assets/2022-05-08-15-15-28-image.png"></p>
+<p>再执行进入 hexo 项目中，安装此插件</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>将导出的 <code>wordpress.xml</code> 放入进去，</p>
+<p> <code>hexo migrate wordpress ./wordpress.xml --skipduplicate --import_image</code></p>
+<h4 id="碰到的问题"><a href="#碰到的问题" class="headerlink" title="碰到的问题"></a>碰到的问题</h4><h5 id="图片没有默认导入"><a href="#图片没有默认导入" class="headerlink" title="图片没有默认导入"></a>图片没有默认导入</h5><p>估计也是迁移插件功能不完善导致的，但好在 Wordpress 所有的上传文件都在 <code>uploads</code> 目录中，多站点模式下还会有 <code>uploads/sites/{id}/</code> 的子目录，我把所有的图片打包下载下来后，做了下批量替换 <strong>（这里记得检查 zip 包的 md5，否则可能解压失败或图片丢失）</strong>，<strong>将路径换为本地相对路径即可</strong></p>
+<p>用相对路径的好处在于：</p>
+<ul>
+<li><p>Markdown 编辑器一般都支持将图片传到固定路径，并优先使用相对路径，编辑时体验相对友好</p>
+</li>
+<li><p>博客项目和资源存在于一个项目中，方便查看和维护</p>
+</li>
+<li><p>本地编辑时更顺畅，不必依赖网络</p>
+</li>
+</ul>
+<p>但也带来了坏处，是个大坑：</p>
+<ul>
+<li>由于博客路径需要与 wordpress 保持一致，也就是 <code>:year/:month/:day/:title/</code> 格式的链接地址，相对路径不能直接渲染，<strong>必须在程序上转换为 CDN 地址或绝对地址</strong></li>
+</ul>
+<p><strong>如果有自己稳定使用的图床，那么用 picgo 等软件上传完毕后直接粘贴图片地址，会更简单轻松</strong>，但图床自身的维护成本及日后迁移的成本、以及本地预览时一定需要从网络上下载图片，体验上以及增加的资源都是代价。</p>
+<p>所以任何方案都有代价的，选择了其中一条道路，享受了好处，就需要解决他带来的问题。</p>
+<h5 id="博客没有封面"><a href="#博客没有封面" class="headerlink" title="博客没有封面"></a>博客没有封面</h5><p>因为 hexo 默认的 post 属性是不带封面的，wordpress 中封面也并非必填</p>
+<ul>
+<li>解决方法：把必要的博客 cover 手动填补上即可</li>
+</ul>
+<h5 id="分类紊乱"><a href="#分类紊乱" class="headerlink" title="分类紊乱"></a>分类紊乱</h5><p>这个看主题是如何处理分类的，Wordpress 中分类是可以有父级结构的，hexo 也支持父子分类，但插件如果不做区分和配置全部输出出来，效果就不会太好看</p>
+<ul>
+<li>解决方法：通过查找和替换，整理好不规范和过多的子分类</li>
+</ul>
+<h5 id="表格导入不正确"><a href="#表格导入不正确" class="headerlink" title="表格导入不正确"></a>表格导入不正确</h5><p>导入的表格会丢失格式，像下面这样</p>
+<p><img src="/static/assets/2022-05-08-15-17-52-image.png"></p>
+<p>目前没发现好的解决办法，我平时 Markdown 表格用的不多，只能自己手动编辑改过来了</p>
+<p><img src="/static/assets/2022-05-08-15-20-47-image.png"></p>
+<h5 id="CDN-问题"><a href="#CDN-问题" class="headerlink" title="CDN 问题"></a>CDN 问题</h5><p>部分主题喜欢使用 jsdrivr，这个 CDN 免费且在国外速度飞快，缺点就是国内很慢。由于我选择了图片相对路径这条路，以及 Wordpress 迁移过来的特殊性，使用了市面上各式各样的图片处理插件都无法满足我的需求。</p>
+<p>于是乎，我参考了国人同胞写的，<a target="_blank" rel="noopener" href="https://github.com/JoeyBling/hexo-filter-image">GitHub - JoeyBling/hexo-filter-image: 自动为hexo中的图片映射绝对路径 | Automatically maps absolute paths to images in hexo</a> 插件，自己写了一个 <code>scripts/images.js</code></p>
+<p>通过 <code>_config.yml</code> 中的 <code>imageRoot</code> 参数来控制文章中所有图片的访问路径</p>
+<figure class="highlight yml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 流量负担不起的时候，再用这个吧</span></span><br><span class="line"><span class="comment"># imageRoot: https://cdn.jsdelivr.net/gh/wangerzi/blog@latest/source/</span></span><br><span class="line"><span class="attr">imageRoot:</span> <span class="string">/</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>如果后面我发现直接用腾讯云 CDN 图片加载着实慢，改一个配置即可，脚本的原理是<strong>每次渲染后将 img src 中满足相对路径条件的 img 提取出来，根据 markdown 的路径，计算出图片相对 sourcePath 的绝对路径，最后拼接上 imageRoot 即可</strong>，根据 hexo 的规则，就可以顺利的访问到相关资源了。</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>)</span><br><span class="line"><span class="keyword">const</span> cheerio = <span class="built_in">require</span>(<span class="string">'cheerio'</span>);</span><br><span class="line"><span class="keyword">const</span> imageRoot = hexo.<span class="property">config</span>.<span class="property">imageRoot</span> || <span class="string">'/'</span>;</span><br><span class="line"><span class="keyword">const</span> sourcePath = hexo.<span class="property">config</span>.<span class="property">source_dir</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">convertRoot</span>(<span class="params">docAbsPath, relSrc, sourcePath=<span class="string">''</span></span>) {</span><br><span class="line">    <span class="keyword">const</span> dirname = path.<span class="title function_">dirname</span>(docAbsPath)</span><br><span class="line">    <span class="keyword">const</span> srcPath = path.<span class="title function_">normalize</span>(path.<span class="title function_">resolve</span>(dirname, relSrc));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> path.<span class="title function_">relative</span>(sourcePath, srcPath).<span class="title function_">replace</span>(<span class="regexp">/\\/g</span>, <span class="string">'/'</span>)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">urlForHelper</span>(<span class="params">path = <span class="string">'/'</span>, docPath = <span class="string">''</span></span>) {</span><br><span class="line">    path = path.<span class="title function_">replace</span>(<span class="string">'\\'</span>, <span class="string">'/'</span>);</span><br><span class="line">    <span class="keyword">if</span> (<span class="regexp">/http[s]*.*|\/\/.*/</span>.<span class="title function_">test</span>(path) ||</span><br><span class="line">        <span class="regexp">/^\s+\//</span>.<span class="title function_">test</span>(path)) {</span><br><span class="line">        <span class="keyword">return</span> path</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">if</span> (path[<span class="number">0</span>] === <span class="string">'#'</span> || path.<span class="title function_">startsWith</span>(<span class="string">'//'</span>)) {</span><br><span class="line">        <span class="keyword">return</span> path;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (path.<span class="title function_">startsWith</span>(<span class="string">'/'</span>)) {</span><br><span class="line">        path = path.<span class="title function_">slice</span>(<span class="number">1</span>)</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    path = <span class="title function_">convertRoot</span>(docPath, path, sourcePath)</span><br><span class="line">    <span class="comment">// Prepend path</span></span><br><span class="line">    path = imageRoot + path;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// path.replace(/\/{2,}/g, '/');</span></span><br><span class="line">    <span class="comment">// return path.replace(/(\\|\/){2,}/g, '/');</span></span><br><span class="line">    <span class="keyword">return</span> path;</span><br><span class="line">}</span><br><span class="line">hexo.<span class="property">extend</span>.<span class="property">filter</span>.<span class="title function_">register</span>(<span class="string">'after_post_render'</span>, <span class="keyword">function</span> (<span class="params">data</span>) {</span><br><span class="line">    <span class="keyword">const</span> docPath = data.<span class="property">full_source</span></span><br><span class="line">    <span class="keyword">if</span> (!docPath.<span class="title function_">endsWith</span>(<span class="string">'.md'</span>)) {</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">'path break'</span>, data.<span class="property">asset_dir</span>, data.<span class="property">full_source</span>)</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    }</span><br><span class="line">    <span class="comment">// console.log('path', data.asset_dir, data.full_source)</span></span><br><span class="line">    <span class="comment">// console.log("excerpt === " + data.excerpt);</span></span><br><span class="line">    <span class="comment">// console.log("more === " + data.more);</span></span><br><span class="line">    <span class="comment">// console.log("content === " + data.content);</span></span><br><span class="line">    <span class="keyword">if</span> (data.<span class="property">cover</span>) {</span><br><span class="line">        data.<span class="property">cover</span> = <span class="title function_">urlForHelper</span>(data.<span class="property">cover</span>, docPath)</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">const</span> dispose = [<span class="string">'excerpt'</span>, <span class="string">'more'</span>, <span class="string">'content'</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; dispose.<span class="property">length</span>; i++) {</span><br><span class="line">        <span class="keyword">var</span> key = dispose[i];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!data[key]) {</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">var</span> $ = cheerio.<span class="title function_">load</span>(data[key], {</span><br><span class="line">            <span class="attr">ignoreWhitespace</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">xmlMode</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">lowerCaseTags</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">decodeEntities</span>: <span class="literal">false</span></span><br><span class="line">        });</span><br><span class="line"></span><br><span class="line">        $(<span class="string">'img'</span>).<span class="title function_">each</span>(<span class="keyword">function</span> (<span class="params"></span>) {</span><br><span class="line">            <span class="keyword">var</span> src = $(<span class="variable language_">this</span>).<span class="title function_">attr</span>(<span class="string">'src'</span>);</span><br><span class="line">            <span class="keyword">if</span> (src) {</span><br><span class="line">                <span class="comment">// For windows style path, we replace '\' to '/'.</span></span><br><span class="line">                <span class="keyword">const</span> newUrl = <span class="title function_">urlForHelper</span>(src, docPath);</span><br><span class="line">                <span class="comment">// console.log('change', $(this).parent().attr('href'), src, newUrl, data.full_source);</span></span><br><span class="line">                <span class="keyword">if</span> (src !== newUrl) {</span><br><span class="line">                    $(<span class="variable language_">this</span>).<span class="title function_">attr</span>(<span class="string">'src'</span>, newUrl);</span><br><span class="line">                }</span><br><span class="line">                <span class="comment">// too slow!!!</span></span><br><span class="line">                <span class="keyword">if</span> (src.<span class="title function_">indexOf</span>($(<span class="variable language_">this</span>).<span class="title function_">parent</span>().<span class="title function_">attr</span>(<span class="string">'href'</span>)) !== -<span class="number">1</span>) {</span><br><span class="line">                    $(<span class="variable language_">this</span>).<span class="title function_">parent</span>().<span class="title function_">attr</span>(<span class="string">'href'</span>, newUrl)</span><br><span class="line">                }</span><br><span class="line">            } <span class="keyword">else</span> {</span><br><span class="line">            }</span><br><span class="line">        });</span><br><span class="line">        data[key] = $.<span class="title function_">html</span>();</span><br><span class="line">    }</span><br><span class="line">    <span class="comment">// if (this.config.imagePrefix) {</span></span><br><span class="line">    <span class="comment">//     data.content = data.content.replace(</span></span><br><span class="line">    <span class="comment">//         new RegExp(themeCfg.imageCDN.origin, "gm"),</span></span><br><span class="line">    <span class="comment">//         themeCfg.imageCDN.to</span></span><br><span class="line">    <span class="comment">//     );</span></span><br><span class="line">    <span class="comment">// }</span></span><br><span class="line">})</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">''</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h5 id="主题写死-CDN-的问题"><a href="#主题写死-CDN-的问题" class="headerlink" title="主题写死 CDN 的问题"></a>主题写死 CDN 的问题</h5><p>用的主题有硬编码 jsdrivr 的 CDN 地址，国内用户体验很差。</p>
+<p><img src="https://user-images.githubusercontent.com/22190579/167250696-d5e5cefc-29cf-4ea9-a757-c775cf1a1d2b.png"></p>
+<p>在 ISSUE 下也有其他用户反馈这个问题，于是乎写了一个脚本在渲染完毕后动态的替换这些硬编码地址，具体用法和代码都附在了这个 ISSUE 上。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/theme-nexmoe/hexo-theme-nexmoe/issues/184">优化被硬编码的可达性不佳的cdn地址 · Issue #184 · theme-nexmoe/hexo-theme-nexmoe · GitHub</a></p>
+<h5 id="网站统计分析"><a href="#网站统计分析" class="headerlink" title="网站统计分析"></a>网站统计分析</h5><p>既然纯静态了，那么分析统计方面自然也只能用三方服务了，这里用了 <strong>Google Analytics</strong>，注册一个谷歌账号，创建一个项目后在 hexo 中引入即可使用，还是比较方便的。</p>
+<p><img src="/static/assets/2022-05-08-15-39-02-image.png"></p>
+<h4 id="待解决的问题"><a href="#待解决的问题" class="headerlink" title="待解决的问题"></a>待解决的问题</h4><h5 id="静态资源压缩问题"><a href="#静态资源压缩问题" class="headerlink" title="静态资源压缩问题"></a>静态资源压缩问题</h5><p>这个问题比较复杂，hexo 中 html / js /css 都没有经过压缩，<strong>以及我们平时用的微信/QQ截图保存生成的图贼拉大，粘贴到项目或图床前本身就需要经过一次压缩。</strong></p>
+<p>比如偶尔一个微信生成的 1080p 屏幕的截图，4M多，简单压缩一下 8k 多，虽然也很大，但相对来说不至于特别无法接受。</p>
+<p>而且这个问题还可能跟使用的主题有关，在调研 <a target="_blank" rel="noopener" href="https://keep-docs.xpoet.cn/">hexo-theme-keep</a> 时，作者在文档中写道可以使用 <a target="_blank" rel="noopener" href="https://github.com/chenzhutian/hexo-all-minifier">hexo-all-minifier</a> 插件，这个插件在 keep 上体验良好（<strong>但压缩 PNG 会导致 CPU 爆掉</strong>），但其他主题上就可能有兼容性问题。</p>
+<p>上述插件也有段时间没更新了，毕竟是开源全靠情怀，可以理解。</p>
+<h5 id="评论问题"><a href="#评论问题" class="headerlink" title="评论问题"></a>评论问题</h5><p>一开始是打算用 gitlk 这类评论系统的，但其<strong>国内连接 github 过慢的连接速度对体验的影响让我还是关闭掉了这个功能</strong>，后面有更合适的，更有必要的场景时，再考虑打开。</p>
+<p>找主题的时候，发现 hexo-theme-yun 主题的作者，对三方评论系统做了这样一番总结，可供参考：<a target="_blank" rel="noopener" href="https://www.yunyoujun.cn/share/third-party-comment-system/">https://www.yunyoujun.cn/share/third-party-comment-system/</a></p>
+<p>hexo-theme-yun 主题链接：<a target="_blank" rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun">GitHub - YunYouJun/hexo-theme-yun: ☁️ A fast &amp; light &amp; lovely theme for Hexo. 一个对可爱自以为是的 Hexo 主题。</a></p>
+<h5 id="国内和境外访问的问题"><a href="#国内和境外访问的问题" class="headerlink" title="国内和境外访问的问题"></a>国内和境外访问的问题</h5><p>虽然我这是个中文博客，但我在谷歌上的统计报表上发现，每天还是<strong>有人通过 google 搜索到我的页面并访问的</strong>，而我用的 CDN 是腾讯云，在我不开国外流量包时，他们的访问速度会特别慢，甚至慢过直接访问 githubpages 。</p>
+<p><img src="/static/assets/2022-05-08-15-37-50-image.png"></p>
+<p>这里倒是有一些解决办法，比如<strong>动态 DNS，分区域解析不同的记录</strong>，但受限于我在数年前在腾讯云上购买和使用的域名，所以里边不像 AWS 可以分区域做不同的 CNAME 解析（或者这在腾讯云上是付费服务），对于我来说暂时不会考虑，随后再解决吧，毕竟有本地缓存之后，体验尚可。</p>
+<p>再比如 element 官网那样，检查是否国内用户，给到不同的网址，说来话长，随后再想办法解决。</p>
+<h3 id="如何部署"><a href="#如何部署" class="headerlink" title="如何部署"></a>如何部署</h3><p>之前看过 hexo-deployer-cos-cdn 作者写了一篇帖子，是将所有图片和生成的资源放在 cos 上的，<a target="_blank" rel="noopener" href="https://www.lixl.cn/2020/020936412.html">https://www.lixl.cn/2020/020936412.html</a></p>
+<p>插件地址：<a target="_blank" rel="noopener" href="https://github.com/lxl80/hexo-deployer-cos-cdn">GitHub - lxl80/hexo-deployer-cos-cdn: Hexo部署插件，支持将静态博客发布到腾讯云对象存储中，并同步刷新被更新文件的CDN缓存。</a></p>
+<p>因为我刚将我的开源插件插件文档、静态化的项目都放到了腾讯云的 COS 中，所以我一开始也打算使用这种方式，<strong>但后来在尝试 githubaction + netflix 后，发现推到 github 中随后什么也不管更爽一点</strong>，反正都是静态资源，其他的让 CDN 自动加速好了，还能省去未来图片过多 COS 收费的问题。</p>
+<h5 id="GithubAction"><a href="#GithubAction" class="headerlink" title="GithubAction"></a>GithubAction</h5><p>按照官方教程，做一个 workflow 即可，也就是在 <code>.github/workflows/pages.yml</code> 中填入如下内容，目录没有自己建好即可</p>
+<blockquote>
+<p>原理是执行 npm run build 后，将产物推送到 gh-pages 分支上</p>
+</blockquote>
+<figure class="highlight yml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Pages</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">master</span>  <span class="comment"># default branch</span></span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">pages:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v2</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Use</span> <span class="string">Node.js</span> <span class="number">16.</span><span class="string">x</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/setup-node@v2</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">node-version:</span> <span class="string">'16'</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Cache</span> <span class="string">NPM</span> <span class="string">dependencies</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/cache@v2</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">path:</span> <span class="string">node_modules</span></span><br><span class="line">          <span class="attr">key:</span> <span class="string">${{</span> <span class="string">runner.OS</span> <span class="string">}}-npm-cache</span></span><br><span class="line">          <span class="attr">restore-keys:</span> <span class="string">|</span></span><br><span class="line"><span class="string">            ${{ runner.OS }}-npm-cache</span></span><br><span class="line"><span class="string"></span>      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">Dependencies</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">npm</span> <span class="string">install</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Build</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">npm</span> <span class="string">run</span> <span class="string">build</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Deploy</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">peaceiris/actions-gh-pages@v3</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">github_token:</span> <span class="string">${{</span> <span class="string">secrets.GITHUB_TOKEN</span> <span class="string">}}</span></span><br><span class="line">          <span class="attr">publish_dir:</span> <span class="string">./public</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>然后在项目 Setting -&gt; Actions -&gt; General 下，允许 action 读写仓库，不然执行会失败</p>
+<p><img src="/static/assets/2022-05-08-16-09-51-image.png"></p>
+<p>提交数据并推送后，会在 actions 界面看到执行记录</p>
+<p><img src="/static/assets/2022-05-08-16-11-33-image.png"></p>
+<p>并且能够找到自动创建的分支，点进去之后会发现全都是自动生成的静态文件</p>
+<p><img src="/static/assets/2022-05-08-16-12-24-image.png"></p>
+<h5 id="GithubPage"><a href="#GithubPage" class="headerlink" title="GithubPage"></a>GithubPage</h5><p>选一下分支保存就行，就可以得到一个可访问地址了</p>
+<p><img src="/static/assets/2022-05-08-16-13-07-image.png"></p>
+<h5 id="Netlify"><a href="#Netlify" class="headerlink" title="Netlify"></a>Netlify</h5><p><a target="_blank" rel="noopener" href="https://www.netlify.com/">https://www.netlify.com/</a></p>
+<p>这个服务可以给到你一个带 CDN 的地址，性能比 githubpages 稍微好点，但是国内依旧很慢，如果这已经可以满足需求，直接把自己的域名 CNAME 到他生成好的域名上即可。</p>
+<p>这里有篇教程：<a target="_blank" rel="noopener" href="https://kalasearch.cn/blog/gatsby-blog-setup-tutorial-with-netlify/">https://kalasearch.cn/blog/gatsby-blog-setup-tutorial-with-netlify/</a></p>
+<h5 id="腾讯云-CDN"><a href="#腾讯云-CDN" class="headerlink" title="腾讯云 CDN"></a>腾讯云 CDN</h5><p>界面操作建好即可，唯一需要注意的可能就是缓存部分，其实是可以做到每次更新就刷新缓存的，但介于博客的场景，新增多、修改少，所以我做了如下规则，根路径下的 <code>about.html/friends.html/archives.html</code> 等页面会随着文章编写而变化，而静态的图片和 CSS/JS 等资源基本就不变，所以设置了节点7天缓存的规则，也足够了。</p>
+<p><img src="/static/assets/2022-05-08-16-24-21-image.png"></p>
+<p>腾讯云的 HTTP2 有点坑，存在偶现的图片无法加载的情况，所以我关掉了</p>
+<p>回源我配置的 netlify 地址，因为腾讯云不能指定回源路径，微坑，只能通过回源配置里的 URL 重写来曲线救国，不然也可以多配一个 githubPages 的链接，但我没测过两者回源谁比较快<img src="/static/assets/2022-05-08-16-26-12-image.png"></p>
+<p>等 CDN 部署完毕，修改 DNS 解析就可以实现平滑的迁移</p>
+<h5 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h5><p>从用户到服务，大概是这么个过程</p>
+<ul>
+<li><p>DNS 解析到距离用户最近的腾讯云 CDN 节点</p>
+</li>
+<li><p>CDN 节点是否有缓存且未过期</p>
+<ul>
+<li><p>是：直接返回数据</p>
+</li>
+<li><p>否：向 netlify 回源</p>
+</li>
+</ul>
+</li>
+<li><p>Netlify 这里会监控 github 上 gh-page 分支，可以认为是提交后实时变化的</p>
+</li>
+</ul>
+<h2 id="博客编写流程"><a href="#博客编写流程" class="headerlink" title="博客编写流程"></a>博客编写流程</h2><p>之前是用 Typora 的，但最近要收费了，于是目标转向了一个开源的编辑器 MarkText</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/marktext/marktext">GitHub - marktext/marktext: 📝A simple and elegant markdown editor, available for Linux, macOS and Windows.</a></p>
+<p>虽然不支持中文，但是我最希望有的图片相对路径保存是有的，这就足够了，配置如下：</p>
+<blockquote>
+<p>ctrl + shift + O 打开项目文件，然后 global image foldr 设为 sourcePath，relative image folder 设为相对于项目的路径，然后粘贴图片就会保存至指定的目录</p>
+</blockquote>
+<p><img src="/static/assets/2022-05-08-16-35-28-image.png"></p>
+<p>编写完毕后，<code>npm run server</code>，本地预览无误后，<code>git commit</code>、<code>git push</code> 即可</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>静态化看起来简单，但细节上还是有很多问题的，特别是图片资产管理上，跟 CDN 访问和路由混在一起就比较复杂，甚至要达到最好的效果还需要自己写点代码。 </p>
+<p>虽然碰到了很多问题，但这个过程也是很有趣且快乐的，也是对自己技术上的一次综合测试。</p>
+</body></html>
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>Jeffrey Wang<br>
+        <strong>本文链接：</strong><a href="https://blog.wj2015.com/2022/05/08/hexo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB-md/" title="https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2022&#x2F;05&#x2F;08&#x2F;hexo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB-md&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2022&#x2F;05&#x2F;08&#x2F;hexo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB-md&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/Linux/">Linux</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/CDN/" rel="tag">CDN</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/GithubAction/" rel="tag">GithubAction</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/hexo/" rel="tag">hexo</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E7%9A%84"><span class="toc-number">1.</span> <span class="toc-text">目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%B0%E7%8A%B6"><span class="toc-number">2.</span> <span class="toc-text">现状</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%88%E6%9E%9C"><span class="toc-number">3.</span> <span class="toc-text">效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E7%A0%94"><span class="toc-number">4.</span> <span class="toc-text">调研</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5"><span class="toc-number">5.</span> <span class="toc-text">实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB%E5%92%8C%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86"><span class="toc-number">5.1.</span> <span class="toc-text">数据迁移和问题处理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A2%B0%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">5.1.1.</span> <span class="toc-text">碰到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E6%B2%A1%E6%9C%89%E9%BB%98%E8%AE%A4%E5%AF%BC%E5%85%A5"><span class="toc-number">5.1.1.1.</span> <span class="toc-text">图片没有默认导入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8D%9A%E5%AE%A2%E6%B2%A1%E6%9C%89%E5%B0%81%E9%9D%A2"><span class="toc-number">5.1.1.2.</span> <span class="toc-text">博客没有封面</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%86%E7%B1%BB%E7%B4%8A%E4%B9%B1"><span class="toc-number">5.1.1.3.</span> <span class="toc-text">分类紊乱</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A1%A8%E6%A0%BC%E5%AF%BC%E5%85%A5%E4%B8%8D%E6%AD%A3%E7%A1%AE"><span class="toc-number">5.1.1.4.</span> <span class="toc-text">表格导入不正确</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#CDN-%E9%97%AE%E9%A2%98"><span class="toc-number">5.1.1.5.</span> <span class="toc-text">CDN 问题</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%BB%E9%A2%98%E5%86%99%E6%AD%BB-CDN-%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">5.1.1.6.</span> <span class="toc-text">主题写死 CDN 的问题</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BD%91%E7%AB%99%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90"><span class="toc-number">5.1.1.7.</span> <span class="toc-text">网站统计分析</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BE%85%E8%A7%A3%E5%86%B3%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">5.1.2.</span> <span class="toc-text">待解决的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E5%8E%8B%E7%BC%A9%E9%97%AE%E9%A2%98"><span class="toc-number">5.1.2.1.</span> <span class="toc-text">静态资源压缩问题</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%AF%84%E8%AE%BA%E9%97%AE%E9%A2%98"><span class="toc-number">5.1.2.2.</span> <span class="toc-text">评论问题</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9B%BD%E5%86%85%E5%92%8C%E5%A2%83%E5%A4%96%E8%AE%BF%E9%97%AE%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">5.1.2.3.</span> <span class="toc-text">国内和境外访问的问题</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E9%83%A8%E7%BD%B2"><span class="toc-number">5.2.</span> <span class="toc-text">如何部署</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#GithubAction"><span class="toc-number">5.2.0.1.</span> <span class="toc-text">GithubAction</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#GithubPage"><span class="toc-number">5.2.0.2.</span> <span class="toc-text">GithubPage</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Netlify"><span class="toc-number">5.2.0.3.</span> <span class="toc-text">Netlify</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%85%BE%E8%AE%AF%E4%BA%91-CDN"><span class="toc-number">5.2.0.4.</span> <span class="toc-text">腾讯云 CDN</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84"><span class="toc-number">5.2.0.5.</span> <span class="toc-text">网络结构</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%9A%E5%AE%A2%E7%BC%96%E5%86%99%E6%B5%81%E7%A8%8B"><span class="toc-number">6.</span> <span class="toc-text">博客编写流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    <script src="/static/libs/mdui.min.js"></script>
+<script src="/static/libs/jquery.min.js"></script>
+<script src="/static/libs/fancybox.umd.js"></script>
+
+ 
+
+<script async src="/js/app.js?v=1652000038301"></script>
+
+
+	<script async src="/js/search.js?v=1652000038301"></script>
+
+
+<script src="/static/libs/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHH2NFM6CG"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZHH2NFM6CG');
+</script>
+
+
+
+
+
+</body>
+
+</html>
