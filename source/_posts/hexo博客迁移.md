@@ -8,6 +8,7 @@ tags:
 - GithubAction
 categories:
 - Linux
+cover: ../../static/blog.jpg
 ---
 
 ## 目的
