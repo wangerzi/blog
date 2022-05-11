@@ -79,12 +79,14 @@ categories:
 再执行进入 hexo 项目中，安装此插件
 
 ```bash
-
+npm i hexo-migrator-wordpress -D
 ```
 
-将导出的 `wordpress.xml` 放入进去，
+将导出的 `wordpress.xml` 放入进去
 
- `hexo migrate wordpress ./wordpress.xml --skipduplicate --import_image`
+```bash
+hexo migrate wordpress ./wordpress.xml --skipduplicate --import_image
+```
 
 #### 碰到的问题
 
@@ -390,11 +392,15 @@ https://www.netlify.com/
 
 [GitHub - marktext/marktext: 📝A simple and elegant markdown editor, available for Linux, macOS and Windows.](https://github.com/marktext/marktext)
 
-虽然不支持中文，但是我最希望有的图片相对路径保存是有的，这就足够了，配置如下：
+虽然不支持中文，但是我最希望有的**图片相对路径保存**是有的，这就足够了，配置如下：
 
 > ctrl + shift + O 打开项目文件，然后 global image foldr 设为 sourcePath，relative image folder 设为相对于项目的路径，然后粘贴图片就会保存至指定的目录
 
 ![](../static/assets/2022-05-08-16-35-28-image.png)
+
+效果：
+
+![](../static/assets/2022-05-09-10-41-57-image.png)
 
 编写完毕后，`npm run server`，本地预览无误后，`git commit`、`git push` 即可
 
