@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>测试环境升级整理实录 - 九层台</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="前端开发,后端开发,LINUX,机器学习,软考">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="前言我的服务器在16年创建之初，近乎白嫖了腾讯云的学生机后，就没有升级过系统，没记错还是 centos 6.8，服务器里边的数据也比较混乱，有学生时期做的临时服务，有自建云盘数据、自建博客数据、各种静态网站+动态网站的 VHOST 托管、自建代码仓库、自建内网穿透等等。  绝版学生机，S1.SMALL1，性能最差但也是续费最便宜的机器   虽然一直以来，他工作良好，但是为了日后的扩展性以及运行效率">
+<meta property="og:type" content="article">
+<meta property="og:title" content="测试环境升级整理实录">
+<meta property="og:url" content="https://blog.wj2015.com/2022/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E5%8D%87%E7%BA%A7%E6%95%B4%E7%90%86%E5%AE%9E%E5%BD%95/">
+<meta property="og:site_name" content="九层台">
+<meta property="og:description" content="前言我的服务器在16年创建之初，近乎白嫖了腾讯云的学生机后，就没有升级过系统，没记错还是 centos 6.8，服务器里边的数据也比较混乱，有学生时期做的临时服务，有自建云盘数据、自建博客数据、各种静态网站+动态网站的 VHOST 托管、自建代码仓库、自建内网穿透等等。  绝版学生机，S1.SMALL1，性能最差但也是续费最便宜的机器   虽然一直以来，他工作良好，但是为了日后的扩展性以及运行效率">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-11-11-14-46-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-11-11-28-28-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-11-16-50-29-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-11-16-56-55-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-11-17-05-42-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-11-17-12-24-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-11-17-12-41-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-11-19-47-13-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-11-19-47-56-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-11-20-49-43-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-11-21-28-06-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-12-00-17-22-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-12-00-59-47-image.png">
+<meta property="article:published_time" content="2022-05-11T02:59:17.000Z">
+<meta property="article:modified_time" content="2022-05-11T17:13:05.340Z">
+<meta property="article:author" content="Jeffrey Wang">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="反向代理">
+<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.wj2015.com/static/assets/2022-05-11-11-14-46-image.png">
+    <link
+        rel="stylesheet"
+        href="/static/libs/fancybox.css"
+    />
+    <link
+        rel="stylesheet"
+        href="/static/libs/justifiedGallery.min.css"
+    />
+    
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1652289202286">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1652289202286">
+    <link rel="stylesheet" href="/css/style.css?v=1652289202286">
+     
+    
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
+</head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(/static/background.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="Jeffrey Wang" class="mdui-btn mdui-btn-icon"><img src="/static/avatar.jpg" alt="Jeffrey Wang"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="Jeffrey Wang">
+            <img src="/static/avatar.jpg" alt="Jeffrey Wang" alt="Jeffrey Wang">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>62</div>
+        <div><span>标签</span>121</div>
+        <div><span>分类</span>15</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/friends.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        
+            <form id="search_form">
+                <label><input class="st-default-search-input" id="search_value" name="q" type="search" placeholder="搜索" style="
+                    font-size: 15px !important;
+                    height: 56px !important;
+                    background-image: none;
+                "></label>
+            </form>
+         
+    </div>
+</div>
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/2020/" style="font-size: 10px;">2020</a> <a href="/tags/B-tree/" style="font-size: 10px;">B+ tree</a> <a href="/tags/BP/" style="font-size: 10px;">BP</a> <a href="/tags/BP%E7%AE%97%E6%B3%95/" style="font-size: 10px;">BP算法</a> <a href="/tags/CDN/" style="font-size: 10px;">CDN</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/GithubAction/" style="font-size: 10px;">GithubAction</a> <a href="/tags/Hash/" style="font-size: 10px;">Hash</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 17.14px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Mysql/" style="font-size: 15.71px;">Mysql</a> <a href="/tags/POW/" style="font-size: 10px;">POW</a> <a href="/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/tags/SVN/" style="font-size: 10px;">SVN</a> <a href="/tags/Serverless/" style="font-size: 10px;">Serverless</a> <a href="/tags/Vmware/" style="font-size: 10px;">Vmware</a> <a href="/tags/apply/" style="font-size: 10px;">apply</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/authorization/" style="font-size: 10px;">authorization</a> <a href="/tags/aws/" style="font-size: 11.43px;">aws</a> <a href="/tags/cloudfront/" style="font-size: 11.43px;">cloudfront</a> <a href="/tags/ctm/" style="font-size: 10px;">ctm</a> <a href="/tags/eth0/" style="font-size: 10px;">eth0</a> <a href="/tags/excel/" style="font-size: 10px;">excel</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/gasPrice/" style="font-size: 10px;">gasPrice</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gltf/" style="font-size: 10px;">gltf</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/iges/" style="font-size: 10px;">iges</a> <a href="/tags/ios/" style="font-size: 11.43px;">ios</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/js-xlsx/" style="font-size: 10px;">js-xlsx</a> <a href="/tags/kali/" style="font-size: 10px;">kali</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/layui/" style="font-size: 10px;">layui</a> <a href="/tags/layuiAdmin/" style="font-size: 10px;">layuiAdmin</a> <a href="/tags/nextTick/" style="font-size: 10px;">nextTick</a> <a href="/tags/nextcloud/" style="font-size: 10px;">nextcloud</a> <a href="/tags/nginx/" style="font-size: 12.86px;">nginx</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/php-fpm/" style="font-size: 11.43px;">php-fpm</a> <a href="/tags/php7/" style="font-size: 10px;">php7</a> <a href="/tags/phpMyAdmin/" style="font-size: 10px;">phpMyAdmin</a> <a href="/tags/phpunit/" style="font-size: 10px;">phpunit</a> <a href="/tags/python/" style="font-size: 12.86px;">python</a> <a href="/tags/pythonocc/" style="font-size: 10px;">pythonocc</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/stl/" style="font-size: 10px;">stl</a> <a href="/tags/stp/" style="font-size: 10px;">stp</a> <a href="/tags/style/" style="font-size: 10px;">style</a> <a href="/tags/syncting/" style="font-size: 10px;">syncting</a> <a href="/tags/three-js/" style="font-size: 10px;">three.js</a> <a href="/tags/utools/" style="font-size: 10px;">utools</a> <a href="/tags/vbot/" style="font-size: 10px;">vbot</a> <a href="/tags/video/" style="font-size: 11.43px;">video</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/web3/" style="font-size: 10px;">web3</a> <a href="/tags/web3d/" style="font-size: 10px;">web3d</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0/" style="font-size: 10px;">代价函数</a> <a href="/tags/%E5%81%8F%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">偏导数</a> <a href="/tags/%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">关系式</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8/" style="font-size: 10px;">内存占用</a> <a href="/tags/%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A/" style="font-size: 10px;">动态绑定</a> <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" style="font-size: 11.43px;">区块链</a> <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" style="font-size: 10px;">单元测试</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">博客</a> <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 11.43px;">卷积神经网络</a> <a href="/tags/%E5%8F%82%E6%95%B0%E8%8E%B7%E5%8F%96/" style="font-size: 10px;">参数获取</a> <a href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" style="font-size: 10px;">反向代理</a> <a href="/tags/%E5%8F%8D%E5%90%91%E9%80%92%E6%8E%A8%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">反向递推关系式</a> <a href="/tags/%E5%90%8C%E6%AD%A5/" style="font-size: 10px;">同步</a> <a href="/tags/%E5%90%91%E9%87%8F/" style="font-size: 10px;">向量</a> <a href="/tags/%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/" style="font-size: 10px;">命名规则</a> <a href="/tags/%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0%E6%B1%82%E5%AF%BC/" style="font-size: 10px;">复合函数求导</a> <a href="/tags/%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C/" style="font-size: 10px;">多人协作</a> <a href="/tags/%E5%A4%9A%E5%8F%98%E9%87%8F%E5%87%BD%E6%95%B0/" style="font-size: 10px;">多变量函数</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%AF%BC%E5%87%BA%E6%A0%B7%E5%BC%8F/" style="font-size: 10px;">导出样式</a> <a href="/tags/%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">导数</a> <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 11.43px;">小程序</a> <a href="/tags/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" style="font-size: 10px;">异常处理</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%9C%8D/" style="font-size: 10px;">微信客服</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91/" style="font-size: 11.43px;">微信开发</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5/" style="font-size: 10px;">拉格朗日</a> <a href="/tags/%E6%8F%92%E4%BB%B6/" style="font-size: 10px;">插件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%94%B9%E9%80%A0/" style="font-size: 10px;">改造</a> <a href="/tags/%E6%95%A3%E5%88%97%E8%A1%A8/" style="font-size: 10px;">散列表</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" style="font-size: 10px;">数据类型</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a> <a href="/tags/%E6%97%85%E8%A1%8C/" style="font-size: 10px;">旅行</a> <a href="/tags/%E6%97%A0%E9%99%90%E7%BA%A7%E5%88%86%E7%B1%BB/" style="font-size: 10px;">无限级分类</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 18.57px;">机器学习</a> <a href="/tags/%E6%9E%81%E5%80%BC/" style="font-size: 10px;">极值</a> <a href="/tags/%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/" style="font-size: 10px;">格式转换</a> <a href="/tags/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" style="font-size: 12.86px;">梯度下降</a> <a href="/tags/%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9/" style="font-size: 10px;">模型压缩</a> <a href="/tags/%E6%B1%A0%E5%8C%96/" style="font-size: 10px;">池化</a> <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 15.71px;">深度学习</a> <a href="/tags/%E7%89%B9%E5%BE%81%E6%98%A0%E5%B0%84/" style="font-size: 10px;">特征映射</a> <a href="/tags/%E7%9F%A9%E9%98%B5/" style="font-size: 10px;">矩阵</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E5%8D%95%E5%85%83%E8%AF%AF%E5%B7%AE/" style="font-size: 10px;">神经单元误差</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" style="font-size: 10px;">索引原理</a> <a href="/tags/%E7%BD%91%E5%8D%A1/" style="font-size: 10px;">网卡</a> <a href="/tags/%E8%A7%86%E9%A2%91%E6%B5%81/" style="font-size: 11.43px;">视频流</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/" style="font-size: 10px;">计算机组成结构</a> <a href="/tags/%E8%AF%AF%E5%B7%AE%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E6%B3%95/" style="font-size: 10px;">误差反向传播法</a> <a href="/tags/%E8%B7%A8%E8%A1%A8/" style="font-size: 10px;">跨表</a> <a href="/tags/%E8%B8%A9%E5%9D%91/" style="font-size: 12.86px;">踩坑</a> <a href="/tags/%E8%BD%AF%E8%80%83/" style="font-size: 14.29px;">软考</a> <a href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" style="font-size: 10px;">过滤器</a> <a href="/tags/%E8%BF%91%E4%BC%BC%E5%85%AC%E5%BC%8F/" style="font-size: 10px;">近似公式</a> <a href="/tags/%E8%BF%AD%E4%BB%A3%E5%99%A8/" style="font-size: 10px;">迭代器</a>
+    </div>
+    
+      <script>
+        var maxTagcloud = parseInt(20);
+        var tags_length = parseInt(121);
+        var tags_arr = [];
+        for(var i = 0; i < tags_length; i++){
+          tags_arr.push(i);
+        }
+        tags_arr.sort(function (l, r) {
+          return Math.random() > 0.5 ? -1 : 1;
+        });
+        tags_arr = tags_arr.slice(0, maxTagcloud < tags_length ? tags_length - maxTagcloud : 0);
+        for(var tag_i = 0; tag_i < tags_arr.length; tag_i++){
+          document.getElementById("randomtagcloud").children[tags_arr[tag_i]].style.display = 'none';
+        }
+      </script>
+    
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E5%8D%87%E7%BA%A7%E6%95%B4%E7%90%86%E5%AE%9E%E5%BD%95/">测试环境升级整理实录</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/08/hexo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/">hexo博客迁移</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/10/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%95%B0%E6%8D%AE%E5%BA%93/">【软考知识总结】数据库</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/10/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">【软考知识总结】操作系统</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/27/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/">【软考知识总结】计算机组成结构</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://github.com/wangerzi/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a><a class="mdui-ripple" href="/atom.xml" target="_blank" mdui-tooltip="{content: 'RSS'}" style="color: rgb(247, 132, 34);background-color: rgba(247, 132, 34, .1);">
+            <i class="nexmoefont icon-rss"></i>
+        </a>
+    </div>
+</div>
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 Jeffrey Wang
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: NaN%;"> 
+              <img src="/../static/servers.jpg" alt="测试环境升级整理实录" loading="lazy">
+              <h1>测试环境升级整理实录</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2022年05月11日</a>
+</div>
+
+      <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我的服务器在16年创建之初，近乎白嫖了腾讯云的学生机后，就没有升级过系统，没记错还是 centos 6.8，服务器里边的数据也比较混乱，<strong>有学生时期做的临时服务，有自建云盘数据、自建博客数据、各种静态网站+动态网站的 VHOST 托管、自建代码仓库、自建内网穿透等等</strong>。</p>
+<blockquote>
+<p>绝版学生机，S1.SMALL1，性能最差但也是续费最便宜的机器</p>
+</blockquote>
+<p><img src="/static/assets/2022-05-11-11-14-46-image.png"></p>
+<p>虽然一直以来，他工作良好，但是为了日后的扩展性以及运行效率、安全等因素考虑，一直都想对他做个升级，升级主要想达到几个目的：</p>
+<ul>
+<li><p><strong>完美支持 Docker</strong>，之前系统内核太老旧，docker 跑起来都有各种各样的问题</p>
+</li>
+<li><p>HTTPS 做到动态配置，<strong>不再每年需要上传新的 SSL 并修改配置</strong></p>
+</li>
+<li><p>动态网站<strong>尽量容器化</strong></p>
+</li>
+<li><p>不能容器化的动态网站也需要<strong>支持 vhost 映射，共用 80端口</strong>，并且由 systemctl 进行服务管理，开机自启，停掉后自动拉起</p>
+</li>
+<li><p><strong>静态网站走统一托管 + CDN</strong></p>
+</li>
+<li><p><strong>收束端口</strong>，尽量做到仅暴露 22 和 80，提高安全性</p>
+<ul>
+<li>比如自建代码仓库的 SSH 连接不用新开 TCP 端口，树莓派穿透到服务器的 SSH 连接也不用新开 TCP 端口</li>
+</ul>
+</li>
+<li><p>Mysql 升级， 再找一个更合适的数据库管理工具</p>
+</li>
+<li><p>Mongo 升级</p>
+</li>
+</ul>
+<p>整个迁移过程尽量平滑，哪怕宕机也不要超过两分钟</p>
+<blockquote>
+<p>这一点算是基本做到了吧，虽然中间碰到了一点问题，但整体过程还算平稳</p>
+</blockquote>
+<h2 id="迁移过程"><a href="#迁移过程" class="headerlink" title="迁移过程"></a>迁移过程</h2><h3 id="静态网站走托管"><a href="#静态网站走托管" class="headerlink" title="静态网站走托管"></a>静态网站走托管</h3><p>静态网站毕竟只是静态资源的分发，放对象存储和 CDN 最合适了，并且我的大多数静态网站都是更新缓存不敏感的，比如开源项目文档、个人作品、博客等等</p>
+<p>于是<strong>整体思路就是借助对象存储管理静态网站数据，以及 CDN 做内容的分发缓存</strong>，但是需要克服的是腾讯云这 CDN 不支持指定回源路径，以及实践中碰上的各种各样的坑</p>
+<p><img src="/static/assets/2022-05-11-11-28-28-image.png"></p>
+<h4 id="静态文档和作品展示"><a href="#静态文档和作品展示" class="headerlink" title="静态文档和作品展示"></a>静态文档和作品展示</h4><p>比如如下站点，分别是我一些前端插件文档和一些效果展示的网页</p>
+<p>3d-works.wj2015.com</p>
+<p>hire-tools.wj2015.com</p>
+<p>authtree.wj2015.com</p>
+<p>excel.wj2015.com</p>
+<p>借助 cosbrowser <strong>全传到一个 webstaic 的存储桶即可</strong>，然后 CDN 那边做特殊处理来回源</p>
+<p><img src="/static/assets/2022-05-11-16-50-29-image.png"></p>
+<p>然后创建一个通用的 CDN <a href="%5Bhttps://webstatic.wj2015.com%5D(https://webstatic.wj2015.com)">https://webstatic.wj2015.com</a>，配置好 HTTPS 以及通用缓存策略、报警等等，<strong>这里只给这一个静态站点做 https，因为免费的证书只有一年有效期</strong>，每年续就挺麻烦的，但一些特殊的测试场景又需要 HTTPS，所以静态网站上留了这一个，方便测试。</p>
+<p><img src="/static/assets/2022-05-11-16-56-55-image.png"></p>
+<p>因为一般站点是独立的，并且由于<strong>免费 HTTPS 证书对特定子域名绑定这一特性</strong>，泛解析 HTTPS 证书太贵了，每一个网站都需要建立独立的 CDN</p>
+<blockquote>
+<p>微微吐槽：这点确实不如 AWS 了，虽说同样有效期一年，但人家可以给泛解析证书，CDN 回源还能更灵活的部署边缘节点处理、回源路径等</p>
+</blockquote>
+<p>每一个网站配置也类似，但为了管理方便需要回源到同一个 COS BUCKET，否则每次想新建一个站还得从 COS 做起，工作效率会有影响。</p>
+<p>所以翻遍了腾讯云 CDN 的功能，在回源配置中找到了 <strong>『URL重写配置』</strong>，再写一个特殊的匹配规则，就可以实现不同的域名回源时，回源到同一个 COS BUCKET 不同的路径了</p>
+<p><img src="/static/assets/2022-05-11-17-05-42-image.png"></p>
+<p>然后用他的复制配置功能创建其他站点的 CDN，只需要改这一个地方即可</p>
+<h4 id="博客动态转静态"><a href="#博客动态转静态" class="headerlink" title="博客动态转静态"></a>博客动态转静态</h4><p>也就是 <a href="%5Bhttps://blog.wj2015.com/%5D(https://blog.wj2015.com/)">https://blog.wj2015.com/</a> 以及 <a target="_blank" rel="noopener" href="http://lhx.blog.wj2015.com/">http://lhx.blog.wj2015.com/</a> ，之前是使用 Wordpress 搭建的博客系统，现在想用静态页面生成的方式优化编写体验以及访问体验。</p>
+<p>长这样：</p>
+<p><img src="/static/assets/2022-05-11-17-12-24-image.png"></p>
+<p>和这样：</p>
+<p><img src="/static/assets/2022-05-11-17-12-41-image.png"></p>
+<p>还专门写了篇博客记录这个过程：<a href="https://blog.wj2015.com/2022/05/08/hexo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB-md/">hexo博客迁移 - 九层台</a></p>
+<h3 id="动态网站走-Docker"><a href="#动态网站走-Docker" class="headerlink" title="动态网站走 Docker"></a>动态网站走 Docker</h3><p>首先是容器化，服务器用了最新的 debian 11 LTS，之所以没有继续选 centos，<strong>是因为了解到随后的 centos stream 会转为滚动发布，对稳定性有影响</strong>，所以乘现在有得选，转向 debian 的怀抱，加之我的树莓派也是 debian，之前还用过 deepin 、KUbuntu 等 debian 衍生系统，用起来倒还听习惯。</p>
+<h5 id="一款优秀的反代软件-Traefik"><a href="#一款优秀的反代软件-Traefik" class="headerlink" title="一款优秀的反代软件 Traefik"></a>一款优秀的反代软件 Traefik</h5><p>之前的服务器中，都是<strong>用 nginx 的 proxy_server 配合 vhost 来服务不同站点</strong>的，配置已经比较精简了，但 HTTPS 证书的维护和零散的配置文件，管理起来总是有点不便的。</p>
+<p>而且做新的服务器，动态网站都倾向于使用 Docker，而 nginx 放 Docker 中，之前工作中踩过一些坑，<strong>比如部分服务下线的情况下重启 NGINX 会启动不了，导致所有的服务都挂掉</strong>。</p>
+<p>后来在公司同事的协助下，了解到了 treafik，稳定高效并且支持动态配置，<a target="_blank" rel="noopener" href="https://doc.traefik.io/traefik/">Traefik Proxy Documentation - Traefik</a>，公司已经稳定用了挺久了</p>
+<p>还自带一个直观的 Dashboard 以及统计工具</p>
+<p><img src="/static/assets/2022-05-11-19-47-13-image.png"></p>
+<p><img src="/static/assets/2022-05-11-19-47-56-image.png"></p>
+<p>配置也很简单，<code>docker-compose.yml</code> 中引入 <code>traefik</code> 后，其他容器可以以 Label 的形式动态的配置反向代理，也可以在静态的配置文件中，配置全局的、中间件</p>
+<figure class="highlight yaml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'3.1'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">reverse-proxy:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">traefik:v2.6</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">command:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"--configFile=/etc/traefik/config.yml"</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="comment"># The HTTP port</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"80:80"</span></span><br><span class="line">        <span class="comment"># The Web UI (enabled by --api.insecure=true)</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"8081:8080"</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./traefik/:/etc/traefik/</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/var/run/docker.sock:/var/run/docker.sock</span></span><br><span class="line">  <span class="attr">whoami:</span></span><br><span class="line">    <span class="comment"># A container that exposes an API to show its IP address</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">traefik/whoami</span></span><br><span class="line">    <span class="attr">labels:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>然后 <code>traefik/config.yml</code> 中可以配置一些基础信息，声明动态配置 <code>traefik/dynamic.yml</code> 等操作</p>
+<figure class="highlight yml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">api:</span></span><br><span class="line">  <span class="attr">insecure:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">dashboard:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">entryPoints:</span></span><br><span class="line">  <span class="attr">web:</span></span><br><span class="line">    <span class="attr">address:</span> <span class="string">":80"</span></span><br><span class="line">  <span class="attr">websecure:</span></span><br><span class="line">    <span class="attr">address:</span> <span class="string">":443"</span></span><br><span class="line"><span class="attr">providers:</span></span><br><span class="line">  <span class="attr">docker:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">file:</span></span><br><span class="line">    <span class="attr">directory:</span> <span class="string">"/etc/traefik"</span></span><br><span class="line">    <span class="attr">filename:</span> <span class="string">"dynamic.yml"</span></span><br><span class="line">    <span class="attr">watch:</span> <span class="literal">true</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>动态配置中即可申明可复用的<strong>中间件，路由，非容器服务</strong>等，比如下面的配置就可以实现一个统一密码的 basicAuth，并且路由中可指定匹配的 Host，使用哪些中间件，以及本机运行的其他服务</p>
+<blockquote>
+<p>172.17.0.1 是 docker 网关地址，可指代宿主机</p>
+</blockquote>
+<figure class="highlight yaml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">http:</span></span><br><span class="line">  <span class="attr">middlewares:</span></span><br><span class="line">    <span class="comment"># 一些有权限要求的，可以自定义 basicAuth 加强保护</span></span><br><span class="line">    <span class="attr">admin-auth:</span></span><br><span class="line">      <span class="attr">basicAuth:</span></span><br><span class="line">        <span class="attr">users:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="string">"admin:xxxxxxx"</span></span><br><span class="line">  <span class="attr">routers:</span></span><br><span class="line">    <span class="attr">traefik:</span></span><br><span class="line">      <span class="attr">rule:</span> <span class="string">"Host(`traefik.wj2015.com`)"</span></span><br><span class="line">      <span class="attr">middlewares:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">admin-auth</span></span><br><span class="line">      <span class="attr">service:</span> <span class="string">traefik</span></span><br><span class="line">  <span class="attr">services:</span></span><br><span class="line">    <span class="attr">traefik:</span></span><br><span class="line">      <span class="attr">loadBalancer:</span></span><br><span class="line">        <span class="attr">servers:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">url:</span> <span class="string">"http://172.17.0.1:8081/"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>然后外层 <code>docker-compose up -d</code> 运行起来即可</p>
+<h6 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h6><p>Treafik 的博客：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904030557175822">更好的反向代理工具 Traefik 配置入门——Docker 篇 - 掘金</a></p>
+<p>Treafik 的文档：[Traefik Services Documentation - Traefik</p>
+<h4 id="代码托管库-gogs-转-gitea"><a href="#代码托管库-gogs-转-gitea" class="headerlink" title="代码托管库 gogs 转 gitea"></a>代码托管库 gogs 转 gitea</h4><p>在许久之前，我用的 gogs（<a href="%5Bhttps://gogs.io/%5D(https://gogs.io/)">https://gogs.io/</a>），但是当时由于服务器内核版本等等限制，始终无法使用 ssh 提交代码，给操作带来了诸多不便。</p>
+<p>这次系统升级完之后，ssh 方面将不会是障碍，那就顺便再调研了一下轻量化的 git 版本管理工具有哪些。</p>
+<p>后来就找到了由 gogs 衍生出来的，功能更丰富的 gitea（<a target="_blank" rel="noopener" href="https://gitea.io/">https://gitea.io/</a>），引用一下外网评论观点，<strong>gogs 以稳定为主</strong>，可无缝的跨版本升级（虽然我从 0.10.x 并没法升级到 0.12），<strong>gitea 以更丰富的界面和功能为特点，甚至我在文档里看到了自带的 npm 、composer 等私仓管理，一次安装多种享受</strong>。</p>
+<p>这是我 gitea 服务的界面</p>
+<p><img src="/static/assets/2022-05-11-20-49-43-image.png"></p>
+<p>gogs 在迁移前忘记截图了，界面大同小异，<strong>都是速度飞快、占用资源很低的优秀产品</strong></p>
+<h6 id="共用-SSH-端口"><a href="#共用-SSH-端口" class="headerlink" title="共用 SSH 端口"></a>共用 SSH 端口</h6><p>云服务器只有一个 22 端口，但 gitea 的 SSH 仓库也需要暴露 SSH 服务，Gitea 官方文档给到了一个解决方案，就是利用 ssh 配置中的 <code>command</code>，<strong>将 ssh 转到容器内的 ssh 上</strong></p>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://github.com/go-gitea/gitea/blob/a56fcdfa8f19efcc53c2163d60c9c1e1bafbc019/docs/content/doc/installation/with-docker.en-us.md">gitea/with-docker.en-us.md at a56fcdfa8f19efcc53c2163d60c9c1e1bafbc019 · go-gitea/gitea · GitHub</a></p>
+<blockquote>
+<p>微微吐槽一句，还是官方文档靠谱，中文文档这里边把命令文件路径写错了，还调试了挺久的</p>
+</blockquote>
+<p>大概意思就是</p>
+<ul>
+<li><p>宿主机创建一个用户，比如叫 git</p>
+</li>
+<li><p>给这个用户生成一个公私钥对，比如 <code>/home/git/.ssh/id_rsa</code> 和 <code>/home/git/.ssh/id_rsa.pub</code></p>
+</li>
+<li><p>然后给 git 用户的 <code>/home/git/.ssh/authorized_keys</code> <strong>添加上刚生成好的公钥（很重要）</strong></p>
+</li>
+</ul>
+<p>Gitea 在用户上传 ssh-key 之后的操作是</p>
+<ul>
+<li>在 <code>/home/git/.ssh/authorized_keys</code> 下追加一行</li>
+<li>command=”/usr/local/bin/gitea –config=/data/gitea/conf/app.ini serv key-6”,no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty,no-user-rc,restrict ssh-rsa AAAAxxx commit</li>
+</ul>
+<p>所以 git 用户的 <code>/home/git/.ssh/authorized_keys</code> 文件大概就像这样</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ssh-rsa AAAAxxx Gitea Host Key</span><br><span class="line"># gitea public key</span><br><span class="line">command="/usr/local/bin/gitea --config=/data/gitea/conf/app.ini serv key-4",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty,no-user-rc,restrict ssh-rsa AAAAxxxx== other</span><br><span class="line"># gitea public key</span><br><span class="line">command="/usr/local/bin/gitea --config=/data/gitea/conf/app.ini serv key-6",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty,no-user-rc,restrict ssh-rsa AAAAxxx commit</span><br></pre></td></tr></tbody></table></figure>
+
+<p>文件中的 command 是用来查找服务认可的公钥用的，网上也有人摸过里边的坑，可以看这个博客理解下</p>
+<p><a target="_blank" rel="noopener" href="https://blog.tankywoo.com/2020/12/29/ssh-authorizedkeyscommand.html">SSH AuthorizedKeysCommand 配置和坑 | Blog·Tanky Woo</a></p>
+<p>而 <code>/usr/local/bin/gitea</code> 是官方提供的，2222 是 gitea 给宿主机映射的 ssh 端口</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/sh</span></span><br><span class="line">ssh -p 2222 -o StrictHostKeyChecking=no git@127.0.0.1 "SSH_ORIGINAL_COMMAND=\"$SSH_ORIGINAL_COMMAND\" $0 $@"</span><br></pre></td></tr></tbody></table></figure>
+
+<p>所以 gitea 自定义私钥认证的过程大概就是：</p>
+<ul>
+<li><p>用户拿着自己的私钥，以 git 为用户名连接服务器</p>
+</li>
+<li><p>宿主机 git 用户可接受的公钥经过 <code>/usr/local/bin/gitea</code> 的转发，以 git 的私钥 ssh 连接 gitea 容器</p>
+</li>
+<li><p>gitea 容器的 <code>authorized_keys</code> 文件就是 git 用户的 <code>authorized_keys</code> 文件，进而通过 <code>/usr/local/bin/gitea</code> 发起的 ssh 连接认证，信息得以传递</p>
+</li>
+</ul>
+<h4 id="蚂蚁笔记数据迁移"><a href="#蚂蚁笔记数据迁移" class="headerlink" title="蚂蚁笔记数据迁移"></a>蚂蚁笔记数据迁移</h4><p><a target="_blank" rel="noopener" href="https://leanote.com/">蚂蚁笔记</a> 也是我之前部署的一个私有服务，里边记录了很多对个人来说有价值的笔记、思考等等，自然在迁移服务时也是要带上的</p>
+<p>在新机器上新安装了蚂蚁笔记服务端后，剩下的过程也比较简单了</p>
+<h6 id="动态笔记数据的迁移"><a href="#动态笔记数据的迁移" class="headerlink" title="动态笔记数据的迁移"></a>动态笔记数据的迁移</h6><p>蚂蚁笔记的<strong>动态数据存在 mongo 上</strong>，随后的 Mongo 服务化及数据迁移会详细描述迁移过程</p>
+<h5 id="上传静态文件和配置的迁移"><a href="#上传静态文件和配置的迁移" class="headerlink" title="上传静态文件和配置的迁移"></a>上传静态文件和配置的迁移</h5><p>笔记中的图片都是存放在 <code>files/</code> 下的，配置文件是放到 <code>conf/app.conf</code>，前者打一个压缩包传到新服务器上去，后者对照新旧配置传入即可</p>
+<p>迁移完长这样：</p>
+<p><img src="/static/assets/2022-05-11-21-28-06-image.png"></p>
+<h4 id="phpmyadmin-转-adminer"><a href="#phpmyadmin-转-adminer" class="headerlink" title="phpmyadmin 转 adminer"></a>phpmyadmin 转 adminer</h4><p>之前服务器管理 mysql 用的 phpmyadmin，因为当时服务器上有全套 LNMP 环境，搭建方便，但现在全员容器化了，也就得再调研下更适合容器化部署的方案了。</p>
+<p>最后从 github 扒拉出来一个挺多人使用的，但界面也挺古老的管理工具，adminer，不过实用就好</p>
+<p>官网：<a href="%5Bhttps://www.adminer.org/%5D(https://www.adminer.org/)">https://www.adminer.org/</a></p>
+<p>镜像用的官方提供的，<a target="_blank" rel="noopener" href="https://hub.docker.com/_/adminer/">Docker Hub</a>，良心好用</p>
+<p>部署完界面长这样：</p>
+<p><img src="/static/assets/2022-05-12-00-17-22-image.png"></p>
+<p>不过这个服务是部署在容器中的，需要给这个 IP 单独放一下权限，创建一个管理用户</p>
+<p>参考博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_27066963/article/details/114745731">mysql 8 create user_MySQL8.0 创建用户及授权_臻太太的博客-CSDN博客</a></p>
+<p><strong>安全起见，这个服务不能对外暴露</strong>，所以域名解析会设置一个比较偏门的，不容易猜到的域名，并且入口也会做上面 traefik 提到的 BasicAuth 增加安全性，要不是我还没有自建的 VPN，我可能还会加一个来源 IP 防护。</p>
+<h3 id="服务迁移"><a href="#服务迁移" class="headerlink" title="服务迁移"></a>服务迁移</h3><p>主要是测试用途和部分后端服务需要用到的服务，Mysql 经过一番清理，已经成功空掉了，建一个新库放这儿，以后新站有用的时候方便调用。</p>
+<h4 id="Mysql-升级-8-0"><a href="#Mysql-升级-8-0" class="headerlink" title="Mysql 升级 8.0"></a>Mysql 升级 8.0</h4><p>本来是想用容器化来实现的，但是考虑到效率并且本来服务器性能就孱弱，就没这样搞了</p>
+<p>根据官方的安装文档，以服务的方式引入的，<a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/installing.html">MySQL :: MySQL 8.0 Reference Manual :: 2 Installing and Upgrading MySQL</a></p>
+<p>如果要迁移数据也比较简单，自己项目的数据简单导入导出即可，如果非得尽量无缝迁移，做个同步再提升主实例也可以操作。</p>
+<h5 id="Mongo-服务化及数据迁移"><a href="#Mongo-服务化及数据迁移" class="headerlink" title="Mongo 服务化及数据迁移"></a>Mongo 服务化及数据迁移</h5><p>Mongo 同样遵循官方的引导，服务化的方式引入的，<a target="_blank" rel="noopener" href="https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-debian/#install-mongodb-community-edition-on-debian"># Install MongoDB Community Edition on Debian</a></p>
+<p>然后迁移老数据，借助 mongodump 和 mongorestore 即可，不太费事儿</p>
+<p><a target="_blank" rel="noopener" href="https://www.mongodb.com/docs/database-tools/mongodump/">https://www.mongodb.com/docs/database-tools/mongodump/</a></p>
+<p>再参考了 <a target="_blank" rel="noopener" href="https://www.mongodb.com/docs/manual/reference/command/createUser/">https://www.mongodb.com/docs/manual/reference/command/createUser/</a> 创建一个安全的用户，仅访问业务对应的库，不给太多权限</p>
+<h4 id="FRP-的迁移和服务化"><a href="#FRP-的迁移和服务化" class="headerlink" title="FRP 的迁移和服务化"></a>FRP 的迁移和服务化</h4><p>家里用树莓派做了个小 NAS，偶有远程管理的需求，但由于网络限制又不能走端口映射，于是之前就搞了一个 frp 服务，专门用于内网穿透</p>
+<p>内网穿透有两个重要的业务，一个是访问 NAS 数据的网页端，另一个是需要支持透过宿主机访问树莓派 22 端口</p>
+<p>客户端配置大概这样，宿主机上再通过 traefik 转发到本机的 frp http 端口，带上 Host 即可解决第一个问题了</p>
+<figure class="highlight ini"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[common]</span></span><br><span class="line"><span class="attr">server_addr</span> = xxx.xxx.xxx.xxx</span><br><span class="line"><span class="attr">server_port</span> = xxxx</span><br><span class="line"><span class="attr">privilege_token</span> = xxxxxxxxx</span><br><span class="line"><span class="section">[ssh]</span></span><br><span class="line"><span class="attr">type</span> = tcp</span><br><span class="line"><span class="attr">local_ip</span> = <span class="number">127.0</span>.<span class="number">0.1</span></span><br><span class="line"><span class="attr">local_port</span> = <span class="number">22</span></span><br><span class="line"><span class="attr">remote_port</span> = <span class="number">32222</span></span><br><span class="line"><span class="section">[nas]</span></span><br><span class="line"><span class="attr">type</span> = http</span><br><span class="line"><span class="attr">local_port</span> = <span class="number">8886</span></span><br><span class="line"><span class="attr">custom_domains</span> = nas.wj2015.com</span><br></pre></td></tr></tbody></table></figure>
+
+<p>而第二个，我不像单独再开一个 <code>32222</code> 端口，想复用目前机器的 22 端口，采用 gitea 的方案，新增 command 的话会有问题是</p>
+<ul>
+<li><p>我必须在宿主机上为树莓派新建一个用户，这不合理</p>
+</li>
+<li><p>宿主机需要知道树莓派的密钥，这更不合理了</p>
+</li>
+</ul>
+<p>所以经过一番调查，发现用 <code>ssh -j</code> 跳板功能即可完美实现，终端用的 <code>Tabby</code>，可以这样配置，完美收束</p>
+<p>关于 <code>ssh -L</code> 以及 <code>ssh -j</code> 的用法可以参考文档：</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/148825449">https://zhuanlan.zhihu.com/p/148825449</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.codewoody.com/posts/11038/">ssh 跳板(Jump Host)的使用 | 治部少辅</a></p>
+</li>
+</ul>
+<p><img src="/static/assets/2022-05-12-00-59-47-image.png"></p>
+<h4 id="SWAP"><a href="#SWAP" class="headerlink" title="SWAP"></a>SWAP</h4><p>低配服务器，总归还是要加点 swap 分区，不然稍微激烈一点就会碰上内存不足的错误，影响使用</p>
+<p>参考博客：<a target="_blank" rel="noopener" href="https://blog.csdn.net/zhangxiaoyang0/article/details/82501209">Linux上创建SWAP文件/分区_每天进步一点_点的博客-CSDN博客_创建swap分区</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>服务器迁移整体消耗我快一周的实践来整理服务、试错、调研，不过最终结果还是挺满意的，新服务器整理完毕后做了个镜像，两分钟就完全切换过去了，速度比之前快，并且结构清晰，哪怕再次迁移或者扩展都能比较方便的实现。</p>
+</body></html>
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>Jeffrey Wang<br>
+        <strong>本文链接：</strong><a href="https://blog.wj2015.com/2022/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E5%8D%87%E7%BA%A7%E6%95%B4%E7%90%86%E5%AE%9E%E5%BD%95/" title="https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2022&#x2F;05&#x2F;11&#x2F;%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E5%8D%87%E7%BA%A7%E6%95%B4%E7%90%86%E5%AE%9E%E5%BD%95&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2022&#x2F;05&#x2F;11&#x2F;%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E5%8D%87%E7%BA%A7%E6%95%B4%E7%90%86%E5%AE%9E%E5%BD%95&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/Linux/">Linux</a><a class="nexmoefont icon-appstore-fill -link" href="/categories/Linux/Docker/">Docker</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/Docker/" rel="tag">Docker</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/Linux/" rel="tag">Linux</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/MySQL/" rel="tag">MySQL</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" rel="tag">反向代理</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%81%E7%A7%BB%E8%BF%87%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">迁移过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E8%B5%B0%E6%89%98%E7%AE%A1"><span class="toc-number">2.1.</span> <span class="toc-text">静态网站走托管</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E6%96%87%E6%A1%A3%E5%92%8C%E4%BD%9C%E5%93%81%E5%B1%95%E7%A4%BA"><span class="toc-number">2.1.1.</span> <span class="toc-text">静态文档和作品展示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%9A%E5%AE%A2%E5%8A%A8%E6%80%81%E8%BD%AC%E9%9D%99%E6%80%81"><span class="toc-number">2.1.2.</span> <span class="toc-text">博客动态转静态</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E7%BD%91%E7%AB%99%E8%B5%B0-Docker"><span class="toc-number">2.2.</span> <span class="toc-text">动态网站走 Docker</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%80%E6%AC%BE%E4%BC%98%E7%A7%80%E7%9A%84%E5%8F%8D%E4%BB%A3%E8%BD%AF%E4%BB%B6-Traefik"><span class="toc-number">2.2.0.1.</span> <span class="toc-text">一款优秀的反代软件 Traefik</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="toc-number">2.2.0.1.1.</span> <span class="toc-text">参考文档</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%89%98%E7%AE%A1%E5%BA%93-gogs-%E8%BD%AC-gitea"><span class="toc-number">2.2.1.</span> <span class="toc-text">代码托管库 gogs 转 gitea</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%85%B1%E7%94%A8-SSH-%E7%AB%AF%E5%8F%A3"><span class="toc-number">2.2.1.0.1.</span> <span class="toc-text">共用 SSH 端口</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%9A%82%E8%9A%81%E7%AC%94%E8%AE%B0%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB"><span class="toc-number">2.2.2.</span> <span class="toc-text">蚂蚁笔记数据迁移</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E7%AC%94%E8%AE%B0%E6%95%B0%E6%8D%AE%E7%9A%84%E8%BF%81%E7%A7%BB"><span class="toc-number">2.2.2.0.1.</span> <span class="toc-text">动态笔记数据的迁移</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E5%92%8C%E9%85%8D%E7%BD%AE%E7%9A%84%E8%BF%81%E7%A7%BB"><span class="toc-number">2.2.2.1.</span> <span class="toc-text">上传静态文件和配置的迁移</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#phpmyadmin-%E8%BD%AC-adminer"><span class="toc-number">2.2.3.</span> <span class="toc-text">phpmyadmin 转 adminer</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E8%BF%81%E7%A7%BB"><span class="toc-number">2.3.</span> <span class="toc-text">服务迁移</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Mysql-%E5%8D%87%E7%BA%A7-8-0"><span class="toc-number">2.3.1.</span> <span class="toc-text">Mysql 升级 8.0</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Mongo-%E6%9C%8D%E5%8A%A1%E5%8C%96%E5%8F%8A%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB"><span class="toc-number">2.3.1.1.</span> <span class="toc-text">Mongo 服务化及数据迁移</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FRP-%E7%9A%84%E8%BF%81%E7%A7%BB%E5%92%8C%E6%9C%8D%E5%8A%A1%E5%8C%96"><span class="toc-number">2.3.2.</span> <span class="toc-text">FRP 的迁移和服务化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SWAP"><span class="toc-number">2.3.3.</span> <span class="toc-text">SWAP</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    <script src="/static/libs/mdui.min.js"></script>
+<script src="/static/libs/jquery.min.js"></script>
+<script src="/static/libs/fancybox.umd.js"></script>
+
+ 
+
+<script async src="/js/app.js?v=1652289202303"></script>
+
+
+	<script async src="/js/search.js?v=1652289202303"></script>
+
+
+<script src="/static/libs/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHH2NFM6CG"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZHH2NFM6CG');
+</script>
+
+
+
+
+
+</body>
+
+</html>
