@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>合约交易中InputData的编解码实践 - 九层台</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="前端开发,后端开发,LINUX,机器学习,软考">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="前言在之前的博客中提到，我们不自建节点的时候，可以借助 Alchemy 的 API 实现交易发送、余额获取、合约操作等等功能。 而合约操作中，我们 经常会根据合约 ABI 和函数调用参数编码为一串 byte 传到交易的 data 属性中，关于 ABI 可以参考博客：如何理解以太坊ABI - 应用程序二进制接口 | 登链社区 | 深入浅出区块链技术 在生产环境实践中，区块链上的交易一般都是要排队的，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="合约交易中InputData的编解码实践">
+<meta property="og:url" content="https://blog.wj2015.com/2022/05/12/%E5%90%88%E7%BA%A6%E4%BA%A4%E6%98%93%E4%B8%ADInputData%E7%9A%84%E7%BC%96%E8%A7%A3%E7%A0%81%E5%AE%9E%E8%B7%B5/">
+<meta property="og:site_name" content="九层台">
+<meta property="og:description" content="前言在之前的博客中提到，我们不自建节点的时候，可以借助 Alchemy 的 API 实现交易发送、余额获取、合约操作等等功能。 而合约操作中，我们 经常会根据合约 ABI 和函数调用参数编码为一串 byte 传到交易的 data 属性中，关于 ABI 可以参考博客：如何理解以太坊ABI - 应用程序二进制接口 | 登链社区 | 深入浅出区块链技术 在生产环境实践中，区块链上的交易一般都是要排队的，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-12-10-54-17-image.png">
+<meta property="article:published_time" content="2022-05-12T02:26:00.000Z">
+<meta property="article:modified_time" content="2022-05-12T06:34:40.942Z">
+<meta property="article:author" content="Jeffrey Wang">
+<meta property="article:tag" content="区块链">
+<meta property="article:tag" content="合约">
+<meta property="article:tag" content="交易">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.wj2015.com/static/assets/2022-05-12-10-54-17-image.png">
+    <link
+        rel="stylesheet"
+        href="/static/libs/fancybox.css"
+    />
+    <link
+        rel="stylesheet"
+        href="/static/libs/justifiedGallery.min.css"
+    />
+    
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1652337297147">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1652337297147">
+    <link rel="stylesheet" href="/css/style.css?v=1652337297147">
+     
+    
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
+</head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(/static/background.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="Jeffrey Wang" class="mdui-btn mdui-btn-icon"><img src="/static/avatar.jpg" alt="Jeffrey Wang"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="Jeffrey Wang">
+            <img src="/static/avatar.jpg" alt="Jeffrey Wang" alt="Jeffrey Wang">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>63</div>
+        <div><span>标签</span>123</div>
+        <div><span>分类</span>15</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/friends.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        
+            <form id="search_form">
+                <label><input class="st-default-search-input" id="search_value" name="q" type="search" placeholder="搜索" style="
+                    font-size: 15px !important;
+                    height: 56px !important;
+                    background-image: none;
+                "></label>
+            </form>
+         
+    </div>
+</div>
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/2020/" style="font-size: 10px;">2020</a> <a href="/tags/B-tree/" style="font-size: 10px;">B+ tree</a> <a href="/tags/BP/" style="font-size: 10px;">BP</a> <a href="/tags/BP%E7%AE%97%E6%B3%95/" style="font-size: 10px;">BP算法</a> <a href="/tags/CDN/" style="font-size: 10px;">CDN</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/GithubAction/" style="font-size: 10px;">GithubAction</a> <a href="/tags/Hash/" style="font-size: 10px;">Hash</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 17.14px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Mysql/" style="font-size: 15.71px;">Mysql</a> <a href="/tags/POW/" style="font-size: 10px;">POW</a> <a href="/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/tags/SVN/" style="font-size: 10px;">SVN</a> <a href="/tags/Serverless/" style="font-size: 10px;">Serverless</a> <a href="/tags/Vmware/" style="font-size: 10px;">Vmware</a> <a href="/tags/apply/" style="font-size: 10px;">apply</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/authorization/" style="font-size: 10px;">authorization</a> <a href="/tags/aws/" style="font-size: 11.43px;">aws</a> <a href="/tags/cloudfront/" style="font-size: 11.43px;">cloudfront</a> <a href="/tags/ctm/" style="font-size: 10px;">ctm</a> <a href="/tags/eth0/" style="font-size: 10px;">eth0</a> <a href="/tags/excel/" style="font-size: 10px;">excel</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/gasPrice/" style="font-size: 10px;">gasPrice</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gltf/" style="font-size: 10px;">gltf</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/iges/" style="font-size: 10px;">iges</a> <a href="/tags/ios/" style="font-size: 11.43px;">ios</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/js-xlsx/" style="font-size: 10px;">js-xlsx</a> <a href="/tags/kali/" style="font-size: 10px;">kali</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/layui/" style="font-size: 10px;">layui</a> <a href="/tags/layuiAdmin/" style="font-size: 10px;">layuiAdmin</a> <a href="/tags/nextTick/" style="font-size: 10px;">nextTick</a> <a href="/tags/nextcloud/" style="font-size: 10px;">nextcloud</a> <a href="/tags/nginx/" style="font-size: 12.86px;">nginx</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/php-fpm/" style="font-size: 11.43px;">php-fpm</a> <a href="/tags/php7/" style="font-size: 10px;">php7</a> <a href="/tags/phpMyAdmin/" style="font-size: 10px;">phpMyAdmin</a> <a href="/tags/phpunit/" style="font-size: 10px;">phpunit</a> <a href="/tags/python/" style="font-size: 12.86px;">python</a> <a href="/tags/pythonocc/" style="font-size: 10px;">pythonocc</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/stl/" style="font-size: 10px;">stl</a> <a href="/tags/stp/" style="font-size: 10px;">stp</a> <a href="/tags/style/" style="font-size: 10px;">style</a> <a href="/tags/syncting/" style="font-size: 10px;">syncting</a> <a href="/tags/three-js/" style="font-size: 10px;">three.js</a> <a href="/tags/utools/" style="font-size: 10px;">utools</a> <a href="/tags/vbot/" style="font-size: 10px;">vbot</a> <a href="/tags/video/" style="font-size: 11.43px;">video</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/web3/" style="font-size: 10px;">web3</a> <a href="/tags/web3d/" style="font-size: 10px;">web3d</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/%E4%BA%A4%E6%98%93/" style="font-size: 10px;">交易</a> <a href="/tags/%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0/" style="font-size: 10px;">代价函数</a> <a href="/tags/%E5%81%8F%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">偏导数</a> <a href="/tags/%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">关系式</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8/" style="font-size: 10px;">内存占用</a> <a href="/tags/%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A/" style="font-size: 10px;">动态绑定</a> <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" style="font-size: 12.86px;">区块链</a> <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" style="font-size: 10px;">单元测试</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">博客</a> <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 11.43px;">卷积神经网络</a> <a href="/tags/%E5%8F%82%E6%95%B0%E8%8E%B7%E5%8F%96/" style="font-size: 10px;">参数获取</a> <a href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" style="font-size: 10px;">反向代理</a> <a href="/tags/%E5%8F%8D%E5%90%91%E9%80%92%E6%8E%A8%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">反向递推关系式</a> <a href="/tags/%E5%90%88%E7%BA%A6/" style="font-size: 10px;">合约</a> <a href="/tags/%E5%90%8C%E6%AD%A5/" style="font-size: 10px;">同步</a> <a href="/tags/%E5%90%91%E9%87%8F/" style="font-size: 10px;">向量</a> <a href="/tags/%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/" style="font-size: 10px;">命名规则</a> <a href="/tags/%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0%E6%B1%82%E5%AF%BC/" style="font-size: 10px;">复合函数求导</a> <a href="/tags/%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C/" style="font-size: 10px;">多人协作</a> <a href="/tags/%E5%A4%9A%E5%8F%98%E9%87%8F%E5%87%BD%E6%95%B0/" style="font-size: 10px;">多变量函数</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%AF%BC%E5%87%BA%E6%A0%B7%E5%BC%8F/" style="font-size: 10px;">导出样式</a> <a href="/tags/%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">导数</a> <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 11.43px;">小程序</a> <a href="/tags/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" style="font-size: 10px;">异常处理</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%9C%8D/" style="font-size: 10px;">微信客服</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91/" style="font-size: 11.43px;">微信开发</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5/" style="font-size: 10px;">拉格朗日</a> <a href="/tags/%E6%8F%92%E4%BB%B6/" style="font-size: 10px;">插件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%94%B9%E9%80%A0/" style="font-size: 10px;">改造</a> <a href="/tags/%E6%95%A3%E5%88%97%E8%A1%A8/" style="font-size: 10px;">散列表</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" style="font-size: 10px;">数据类型</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a> <a href="/tags/%E6%97%85%E8%A1%8C/" style="font-size: 10px;">旅行</a> <a href="/tags/%E6%97%A0%E9%99%90%E7%BA%A7%E5%88%86%E7%B1%BB/" style="font-size: 10px;">无限级分类</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 18.57px;">机器学习</a> <a href="/tags/%E6%9E%81%E5%80%BC/" style="font-size: 10px;">极值</a> <a href="/tags/%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/" style="font-size: 10px;">格式转换</a> <a href="/tags/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" style="font-size: 12.86px;">梯度下降</a> <a href="/tags/%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9/" style="font-size: 10px;">模型压缩</a> <a href="/tags/%E6%B1%A0%E5%8C%96/" style="font-size: 10px;">池化</a> <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 15.71px;">深度学习</a> <a href="/tags/%E7%89%B9%E5%BE%81%E6%98%A0%E5%B0%84/" style="font-size: 10px;">特征映射</a> <a href="/tags/%E7%9F%A9%E9%98%B5/" style="font-size: 10px;">矩阵</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E5%8D%95%E5%85%83%E8%AF%AF%E5%B7%AE/" style="font-size: 10px;">神经单元误差</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" style="font-size: 10px;">索引原理</a> <a href="/tags/%E7%BD%91%E5%8D%A1/" style="font-size: 10px;">网卡</a> <a href="/tags/%E8%A7%86%E9%A2%91%E6%B5%81/" style="font-size: 11.43px;">视频流</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/" style="font-size: 10px;">计算机组成结构</a> <a href="/tags/%E8%AF%AF%E5%B7%AE%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E6%B3%95/" style="font-size: 10px;">误差反向传播法</a> <a href="/tags/%E8%B7%A8%E8%A1%A8/" style="font-size: 10px;">跨表</a> <a href="/tags/%E8%B8%A9%E5%9D%91/" style="font-size: 12.86px;">踩坑</a> <a href="/tags/%E8%BD%AF%E8%80%83/" style="font-size: 14.29px;">软考</a> <a href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" style="font-size: 10px;">过滤器</a> <a href="/tags/%E8%BF%91%E4%BC%BC%E5%85%AC%E5%BC%8F/" style="font-size: 10px;">近似公式</a> <a href="/tags/%E8%BF%AD%E4%BB%A3%E5%99%A8/" style="font-size: 10px;">迭代器</a>
+    </div>
+    
+      <script>
+        var maxTagcloud = parseInt(20);
+        var tags_length = parseInt(123);
+        var tags_arr = [];
+        for(var i = 0; i < tags_length; i++){
+          tags_arr.push(i);
+        }
+        tags_arr.sort(function (l, r) {
+          return Math.random() > 0.5 ? -1 : 1;
+        });
+        tags_arr = tags_arr.slice(0, maxTagcloud < tags_length ? tags_length - maxTagcloud : 0);
+        for(var tag_i = 0; tag_i < tags_arr.length; tag_i++){
+          document.getElementById("randomtagcloud").children[tags_arr[tag_i]].style.display = 'none';
+        }
+      </script>
+    
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/05/12/%E5%90%88%E7%BA%A6%E4%BA%A4%E6%98%93%E4%B8%ADInputData%E7%9A%84%E7%BC%96%E8%A7%A3%E7%A0%81%E5%AE%9E%E8%B7%B5/">合约交易中InputData的编解码实践</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E5%8D%87%E7%BA%A7%E6%95%B4%E7%90%86%E5%AE%9E%E5%BD%95/">测试环境升级整理实录</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/08/hexo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/">hexo博客迁移</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/10/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%95%B0%E6%8D%AE%E5%BA%93/">【软考知识总结】数据库</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/10/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">【软考知识总结】操作系统</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://github.com/wangerzi/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a><a class="mdui-ripple" href="/atom.xml" target="_blank" mdui-tooltip="{content: 'RSS'}" style="color: rgb(247, 132, 34);background-color: rgba(247, 132, 34, .1);">
+            <i class="nexmoefont icon-rss"></i>
+        </a>
+    </div>
+</div>
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 Jeffrey Wang
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: NaN%;"> 
+              <img src="/../static/eth.jpg" alt="合约交易中InputData的编解码实践" loading="lazy">
+              <h1>合约交易中InputData的编解码实践</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2022年05月12日</a>
+</div>
+
+      <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在之前的博客中提到，我们不自建节点的时候，可以借助 Alchemy 的 API 实现交易发送、余额获取、合约操作等等功能。</p>
+<p>而合约操作中，我们 <strong>经常会根据合约 ABI 和函数调用参数编码为一串 byte</strong> 传到交易的 data 属性中，关于 ABI 可以参考博客：<a target="_blank" rel="noopener" href="https://learnblockchain.cn/2018/08/09/understand-abi/">如何理解以太坊ABI - 应用程序二进制接口 | 登链社区 | 深入浅出区块链技术</a></p>
+<p>在生产环境实践中，<strong>区块链上的交易一般都是要排队的</strong>，不然会有交易累积或者覆盖等等问题，所以可能会有先计算好 InputData ，然后由统一的交易管理服务排队及发送交易。</p>
+<p>而计算的过程是不需要 Alchemy 参与的，也就不必要引入一个带 web3 和 alchemy 逻辑的这么大的一个库，<strong>只需要能编码合约方法的短小精悍的库即可</strong>。同样的，交易服务上也应该有解码 InputData 的能力，以便判断业务场景。</p>
+<p>比如 PolygonScan 上就提供了这样的解码服务，可以比较方便的看到参数</p>
+<p><img src="/static/assets/2022-05-12-10-54-17-image.png"></p>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><h3 id="编解码核心流程"><a href="#编解码核心流程" class="headerlink" title="编解码核心流程"></a>编解码核心流程</h3><p>这里的 ABI 是一个 JSON 数组，以此为例，定义了其中各种 input/output</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">{</span></span><br><span class="line">        <span class="attr">"constant"</span><span class="punctuation">:</span> <span class="keyword">false</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">"inputs"</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">            <span class="punctuation">{</span></span><br><span class="line">                <span class="attr">"name"</span><span class="punctuation">:</span> <span class="string">"newAddr"</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">"type"</span><span class="punctuation">:</span> <span class="string">"address"</span></span><br><span class="line">            <span class="punctuation">}</span></span><br><span class="line">        <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">"name"</span><span class="punctuation">:</span> <span class="string">"setFoundationWallet"</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">"outputs"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">"payable"</span><span class="punctuation">:</span> <span class="keyword">false</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">"type"</span><span class="punctuation">:</span> <span class="string">"function"</span></span><br><span class="line">    <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">{</span></span><br><span class="line">        <span class="attr">"constant"</span><span class="punctuation">:</span> <span class="keyword">true</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">"inputs"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">"name"</span><span class="punctuation">:</span> <span class="string">"name"</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">"outputs"</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">            <span class="punctuation">{</span></span><br><span class="line">                <span class="attr">"name"</span><span class="punctuation">:</span> <span class="string">""</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">"type"</span><span class="punctuation">:</span> <span class="string">"string"</span></span><br><span class="line">            <span class="punctuation">}</span></span><br><span class="line">        <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">"payable"</span><span class="punctuation">:</span> <span class="keyword">false</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">"type"</span><span class="punctuation">:</span> <span class="string">"function"</span></span><br><span class="line">    <span class="punctuation">}</span><span class="punctuation">,</span></span><br><span class="line">    <span class="punctuation">{</span></span><br><span class="line">        <span class="attr">"constant"</span><span class="punctuation">:</span> <span class="keyword">true</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">"inputs"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">"name"</span><span class="punctuation">:</span> <span class="string">"totalUnrestrictedAssignments"</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">"outputs"</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">            <span class="punctuation">{</span></span><br><span class="line">                <span class="attr">"name"</span><span class="punctuation">:</span> <span class="string">""</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">"type"</span><span class="punctuation">:</span> <span class="string">"uint256"</span></span><br><span class="line">            <span class="punctuation">}</span></span><br><span class="line">        <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">"payable"</span><span class="punctuation">:</span> <span class="keyword">false</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">"type"</span><span class="punctuation">:</span> <span class="string">"function"</span></span><br><span class="line">    <span class="punctuation">}</span></span><br><span class="line"><span class="punctuation">]</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>编码大概流程是：</p>
+<ul>
+<li><p>首先拿到 abi 数组数据</p>
+</li>
+<li><p>根据方法名称找到 abi 数据中对应的方法名、输入和输出</p>
+</li>
+<li><p>根据方法定义计算方法的 signature</p>
+<ul>
+<li><p>也就是 web3js abi 基础库的 encodeFunctionSignature 方法， <a target="_blank" rel="noopener" href="https://web3js.readthedocs.io/en/v1.2.11/web3-eth-abi.html#encodefunctionsignature">web3.eth.abi &amp;mdash; web3.js 1.0.0 documentation</a></p>
+</li>
+<li><p>方法的 signature 是把方法字符串拼接起来，做一个 sha3 取一个4字节</p>
+<ul>
+<li>web3 的实现：<a target="_blank" rel="noopener" href="https://github.com/ChainSafe/web3.js/blob/1.x/packages/web3-eth-abi/src/index.js#L46-L59">web3.js/index.js at 1.x · ChainSafe/web3.js · GitHub</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>将参数列表配合方法的输入参数列表进行编码</p>
+<ul>
+<li>也就是 web3js abi 基础库的 encodeParameters 方法， <a target="_blank" rel="noopener" href="https://web3js.readthedocs.io/en/v1.2.11/web3-eth-abi.html#encodeparameters">web3.eth.abi &amp;mdash; web3.js 1.0.0 documentation</a></li>
+<li>大意是对应参数和方法对应的参数列表，循环生成最终的 0x 开头，符合标准的编码<ul>
+<li>web3 的实现：<a target="_blank" rel="noopener" href="https://github.com/ChainSafe/web3.js/blob/1.x/packages/web3-eth-abi/src/index.js#L90-L142">web3.js/index.js at 1.x · ChainSafe/web3.js · GitHub</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>解码的大概流程是：</p>
+<blockquote>
+<p>解码一定要 abi ，因为不拿 abi 的话，没法通过方法签名反过来找到方法的输入输出</p>
+</blockquote>
+<ul>
+<li><p>首先拿到 abi 数组数据</p>
+</li>
+<li><p>根据 abi 数据算出来所有的方法签名</p>
+</li>
+<li><p>在 InputData 中截取出来方法签名</p>
+</li>
+<li><p>根据算出来的签名在 abi 所有签名中找到对应的方法名、输入和输出</p>
+</li>
+<li><p>将参数编码从 InputData 中截取出来并解码</p>
+</li>
+<li><p>对照方法的输入，返回对应格式的数据即可</p>
+</li>
+</ul>
+<p>参考代码实现：<a target="_blank" rel="noopener" href="https://github.com/miguelmota/ethereum-input-data-decoder/blob/master/index.js">ethereum-input-data-decoder/index.js at master · miguelmota/ethereum-input-data-decoder · GitHub</a></p>
+<p>Solidity 中对 ABI 的详细介绍：<a target="_blank" rel="noopener" href="https://docs.soliditylang.org/en/develop/abi-spec.html">Contract ABI Specification &amp;mdash; Solidity 0.8.14 documentation</a></p>
+<h3 id="编码部分"><a href="#编码部分" class="headerlink" title="编码部分"></a>编码部分</h3><p>工作中主要用的 web3.js，官方提供了一个 <a target="_blank" rel="noopener" href="https://web3js.readthedocs.io/en/v1.7.3/web3-eth-contract.html#methods-mymethod-encodeabi">web3.eth.Contract &amp;mdash; web3.js 1.0.0 documentation</a></p>
+<p>官方给了一个用例，<code>web3-eth-contract</code> 这个库也是独立的，位于</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="title class_">Contract</span> = <span class="built_in">require</span>(<span class="string">'web3-eth-contract'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// set provider for all later instances to use</span></span><br><span class="line"><span class="title class_">Contract</span>.<span class="title function_">setProvider</span>(<span class="string">'ws://localhost:8546'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> contract = <span class="keyword">new</span> <span class="title class_">Contract</span>(jsonInterface, address);</span><br><span class="line"></span><br><span class="line">contract.<span class="property">methods</span>.<span class="title function_">somFunc</span>().<span class="title function_">send</span>({<span class="attr">from</span>: ....})</span><br><span class="line">.<span class="title function_">on</span>(<span class="string">'receipt'</span>, <span class="keyword">function</span>(<span class="params"></span>){</span><br><span class="line">    ...</span><br><span class="line">});</span><br></pre></td></tr></tbody></table></figure>
+
+<p>但我们只需要编码的话，可以安装完这个包之后，只需要按照文档所述调用 <code>encodeABI</code> 即可</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="title class_">Contract</span> = <span class="built_in">require</span>(<span class="string">'web3-eth-contract'</span>);</span><br><span class="line"><span class="keyword">var</span> contract = <span class="keyword">new</span> <span class="title class_">Contract</span>(jsonInterface, address);</span><br><span class="line">contract.<span class="property">methods</span>.<span class="title function_">mint</span>(<span class="string">'0xxxx'</span>, <span class="string">'0xxxx'</span>).<span class="title function_">encodeABI</span>();</span><br></pre></td></tr></tbody></table></figure>
+
+<p>编码部分的核心代码在：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ChainSafe/web3.js/blob/1.x/packages/web3-eth-contract/src/index.js#L535-L579">web3.js/index.js at 1.x · ChainSafe/web3.js · GitHub</a></p>
+<h3 id="解码部分"><a href="#解码部分" class="headerlink" title="解码部分"></a>解码部分</h3><p>解码部分 web3 有一个基础包 web3.eth.abi，但是调用不太方便</p>
+<p><a target="_blank" rel="noopener" href="https://web3js.readthedocs.io/en/v1.2.11/web3-eth-abi.html">https://web3js.readthedocs.io/en/v1.2.11/web3-eth-abi.html</a></p>
+<p>经过一番查找，有找到这么一个包，基于 ethers 实现的，可以做到传入一个 abi 数组以及 InputData 就获取到解码信息</p>
+<p><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/ethereum-input-data-decoder">https://www.npmjs.com/package/ethereum-input-data-decoder</a></p>
+<p>给到的测试网站：</p>
+<p><a target="_blank" rel="noopener" href="https://lab.miguelmota.com/ethereum-input-data-decoder/example/">https://lab.miguelmota.com/ethereum-input-data-decoder/example/</a></p>
+<p>再做一定的修改和封装</p>
+<figure class="highlight js"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">InputDataDecoder</span> = <span class="built_in">require</span>(<span class="string">'ethereum-input-data-decoder'</span>);</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">decodeMethodData</span>(<span class="params">abi = [], inputData=<span class="string">""</span></span>) {</span><br><span class="line">        <span class="keyword">const</span> origin = <span class="keyword">new</span> <span class="title class_">InputDataDecoder</span>(abi).<span class="title function_">decodeData</span>(inputData))</span><br><span class="line">        <span class="keyword">if</span> (!origin || !origin.<span class="property">method</span>) {</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">ContractError</span>(<span class="string">'input data is not valid'</span>)</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">let</span> paramsTmp = []</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; origin.<span class="property">names</span>.<span class="property">length</span>; i++) {</span><br><span class="line">            paramsTmp.<span class="title function_">push</span>(<span class="string">`<span class="subst">${origin.types[i]}</span> <span class="subst">${origin.names[i]}</span>`</span>)</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> params = origin.<span class="property">inputs</span>.<span class="title function_">map</span>(<span class="function"><span class="params">v</span> =&gt;</span> {</span><br><span class="line">            <span class="keyword">if</span> (v.<span class="property">_isBigNumber</span>) {</span><br><span class="line">                <span class="keyword">return</span> v.<span class="title function_">toHexString</span>();</span><br><span class="line">            } <span class="keyword">else</span> {</span><br><span class="line">                <span class="keyword">return</span> v;</span><br><span class="line">            }</span><br><span class="line">        });</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> {</span><br><span class="line">            <span class="attr">method</span>: <span class="string">`<span class="subst">${origin.method}</span>(<span class="subst">${paramsTmp.join(<span class="string">','</span>)}</span>)`</span>,</span><br><span class="line">            <span class="attr">params</span>: params,</span><br><span class="line">        }</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
+
+<p>就可以得到类似这样的结果：</p>
+<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">{</span></span><br><span class="line">    <span class="attr">"method"</span><span class="punctuation">:</span> <span class="string">"burn(address account,uint256 id,uint256 value)"</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">"params"</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">"0xsdf"</span><span class="punctuation">,</span><span class="string">"0xdsxxxx"</span><span class="punctuation">,</span><span class="string">"0x01"</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="一些问题"><a href="#一些问题" class="headerlink" title="一些问题"></a>一些问题</h3><p>解码的时候一定需要传入 abi ，但是合约的 ABI 不一定公开，交易服务目前是这样实现的：</p>
+<ul>
+<li><p>用常见的预设的 abi 依次检测，如果解码出来数据，那就以此为准</p>
+<ul>
+<li>比如 1155、721 的预设 abi，循环检测即可</li>
+</ul>
+</li>
+<li><p>PolygonScan 有 Verified Contract，可以通过 Polygon 获取并缓存</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://polygonscan.com/contractsVerified">https://polygonscan.com/contractsVerified</a></li>
+</ul>
+</li>
+<li><p>我们只知道 contract 的情况下，用 <a target="_blank" rel="noopener" href="https://eveem.org/api/">https://eveem.org/api/</a> 可以获取到部分 ABI</p>
+<ul>
+<li>但实际验证下来不那么好用</li>
+</ul>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>合约交易是以太坊中比较重要组成部分，而其中传递数据的 data 就是调用者跟合约交互的钥匙，整体就是将函数调用按照 abi 约定编译为一个二进制串。</p>
+</body></html>
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>Jeffrey Wang<br>
+        <strong>本文链接：</strong><a href="https://blog.wj2015.com/2022/05/12/%E5%90%88%E7%BA%A6%E4%BA%A4%E6%98%93%E4%B8%ADInputData%E7%9A%84%E7%BC%96%E8%A7%A3%E7%A0%81%E5%AE%9E%E8%B7%B5/" title="https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2022&#x2F;05&#x2F;12&#x2F;%E5%90%88%E7%BA%A6%E4%BA%A4%E6%98%93%E4%B8%ADInputData%E7%9A%84%E7%BC%96%E8%A7%A3%E7%A0%81%E5%AE%9E%E8%B7%B5&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2022&#x2F;05&#x2F;12&#x2F;%E5%90%88%E7%BA%A6%E4%BA%A4%E6%98%93%E4%B8%ADInputData%E7%9A%84%E7%BC%96%E8%A7%A3%E7%A0%81%E5%AE%9E%E8%B7%B5&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E4%BA%A4%E6%98%93/" rel="tag">交易</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" rel="tag">区块链</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E5%90%88%E7%BA%A6/" rel="tag">合约</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5"><span class="toc-number">2.</span> <span class="toc-text">实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%A7%A3%E7%A0%81%E6%A0%B8%E5%BF%83%E6%B5%81%E7%A8%8B"><span class="toc-number">2.1.</span> <span class="toc-text">编解码核心流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E9%83%A8%E5%88%86"><span class="toc-number">2.2.</span> <span class="toc-text">编码部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E7%A0%81%E9%83%A8%E5%88%86"><span class="toc-number">2.3.</span> <span class="toc-text">解码部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98"><span class="toc-number">2.4.</span> <span class="toc-text">一些问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    <script src="/static/libs/mdui.min.js"></script>
+<script src="/static/libs/jquery.min.js"></script>
+<script src="/static/libs/fancybox.umd.js"></script>
+
+ 
+
+<script async src="/js/app.js?v=1652337297160"></script>
+
+
+	<script async src="/js/search.js?v=1652337297160"></script>
+
+
+<script src="/static/libs/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHH2NFM6CG"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZHH2NFM6CG');
+</script>
+
+
+
+
+
+</body>
+
+</html>
