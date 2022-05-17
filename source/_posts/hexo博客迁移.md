@@ -270,21 +270,13 @@ console.log('')
 
 ##### 评论问题
 
-一开始是打算用 gitlk 这类评论系统的，但其**国内连接 github 过慢的连接速度对体验的影响让我还是关闭掉了这个功能**，后面有更合适的，更有必要的场景时，再考虑打开。
+一开始是打算用 gitlk 这类评论系统的，但其**国内连接 github 过慢的连接速度对体验的影响让我还是暂时关闭掉了这个功能**，后面有更合适的，更有必要的场景时，再考虑打开。
 
 找主题的时候，发现 hexo-theme-yun 主题的作者，对三方评论系统做了这样一番总结，可供参考：https://www.yunyoujun.cn/share/third-party-comment-system/
 
 hexo-theme-yun 主题链接：[GitHub - YunYouJun/hexo-theme-yun: ☁️ A fast & light & lovely theme for Hexo. 一个对可爱自以为是的 Hexo 主题。](https://github.com/YunYouJun/hexo-theme-yun)
 
-##### 国内和境外访问的问题
-
-虽然我这是个中文博客，但我在谷歌上的统计报表上发现，每天还是**有人通过 google 搜索到我的页面并访问的**，而我用的 CDN 是腾讯云，在我不开国外流量包时，他们的访问速度会特别慢，甚至慢过直接访问 githubpages 。
-
-![](../static/assets/2022-05-08-15-37-50-image.png)
-
-这里倒是有一些解决办法，比如**动态 DNS，分区域解析不同的记录**，但受限于我在数年前在腾讯云上购买和使用的域名，所以里边不像 AWS 可以分区域做不同的 CNAME 解析（或者这在腾讯云上是付费服务），对于我来说暂时不会考虑，随后再解决吧，毕竟有本地缓存之后，体验尚可。
-
-再比如 element 官网那样，检查是否国内用户，给到不同的网址，说来话长，随后再想办法解决。
+> PS：2022-05-17 优化完网络后，gitlk 真香
 
 ### 如何部署
 
@@ -359,7 +351,9 @@ https://www.netlify.com/
 
 这个服务可以给到你一个带 CDN 的地址，性能比 githubpages 稍微好点，但是国内依旧很慢，如果这已经可以满足需求，直接把自己的域名 CNAME 到他生成好的域名上即可。
 
-这里有篇教程：https://kalasearch.cn/blog/gatsby-blog-setup-tutorial-with-netlify/
+这里有篇教程： https://kalasearch.cn/blog/gatsby-blog-setup-tutorial-with-netlify/
+
+![](../static/assets/2022-05-17-09-41-31-image.png)
 
 ##### 腾讯云 CDN
 
@@ -367,15 +361,55 @@ https://www.netlify.com/
 
 ![](../static/assets/2022-05-08-16-24-21-image.png)
 
-腾讯云的 HTTP2 有点坑，存在偶现的图片无法加载的情况，所以我关掉了
+**腾讯云的 HTTP2 有点坑，存在偶现的图片无法加载的情况**，所以我关掉了
 
 回源我配置的 netlify 地址，因为腾讯云不能指定回源路径，微坑，只能通过回源配置里的 URL 重写来曲线救国，不然也可以多配一个 githubPages 的链接，但我没测过两者回源谁比较快![](../static/assets/2022-05-08-16-26-12-image.png)
 
-等 CDN 部署完毕，修改 DNS 解析就可以实现平滑的迁移
+##### 境外访问优化
+
+虽然我这是个中文博客，但我在谷歌上的统计报表上发现，每天还是**有人通过 google 搜索到我的页面并访问的**，而我用的 CDN 是腾讯云，在我不开国外流量包时，他们的访问速度会特别慢，甚至慢过直接访问 githubpages 。
+
+![](../static/assets/2022-05-08-15-37-50-image.png)
+
+但我们可以把 DNS 线路解析到境外可导向 Netlify，100G 的流量仅供境外也是完全足够的。
+
+![](../static/assets/2022-05-17-09-48-17-image.png)
+
+Netlify 自定义域名做 HTTPS，官方有提供文档 [HTTPS (SSL) | Netlify Docs](https://docs.netlify.com/domains-https/https-ssl/?_ga=2.45208612.1419951095.1652751472-1142532394.1652751472)
+
+>  得先验证好 DNS 才能点击 verify dns 以自动生成证书，是通过 acme 做的，非常好用的免费 HTTPS 证书工具 [GitHub - acmesh-official/acme.sh: A pure Unix shell script implementing ACME client protocol](https://github.com/acmesh-official/acme.sh)
+
+![](../static/assets/2022-05-17-09-53-40-image.png)
+
+DNS 生效后，即可平滑的迁移（最好建一个测试站验证下）
+
+然后通过访问速度检测，可以看到国内通过腾讯云的 CDN 访问，国内节点访问检测 https://www.17ce.com/ 比较好用
+
+![](../static/assets/2022-05-17-10-00-01-image.png)
+
+国外可通过 [CDNPerf - CDN Benchmark - Worldwide multiple locations ping tool](https://www.cdnperf.com/tools/cdn-latency-benchmark) 或者 [CDN Performance Check | Uptrends](https://www.uptrends.com/tools/cdn-performance-check)检查，比较好用
+
+> 如果不做境外的解析优化，并且不开腾讯云 CDN 的全球服务（加钱），国外访问是很慢的，比如从访问者通过特殊手段访问 Google 进来，并且没有配置好 pac，就可能几秒才能出来
+
+优化后：
+
+![](../static/assets/2022-05-17-10-25-09-image.png)
+
+未优化的腾讯云 CDN：
+
+>  部分地区无法访问
+
+![](../static/assets/2022-05-17-10-26-42-image.png)
 
 ##### 网络结构
 
 从用户到服务，大概是这么个过程
+
+- DNS 线路判断境外 IP
+  
+  - 如果是，解析到 netlify 地址
+  
+  - 否则解析到国内地址，进行下面的步骤
 
 - DNS 解析到距离用户最近的腾讯云 CDN 节点
 
