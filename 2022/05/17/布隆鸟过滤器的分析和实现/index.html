@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>使用 Golang 快速实现布谷鸟过滤器解决大数据判重问题 - 九层台</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="前端开发,后端开发,LINUX,机器学习,软考">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="前言业务中时常会有类似检索一个元素是否在集合中这样的场景，如果对时间和空间要求不高，我们可能会  查表，或者建唯一索引避免重复插入  Redis 中使用 set 或者类似 hash 表的数据结构，将数据做 hash 后放到 key 上，以待后续查询   而当我们有大量数据需要判重并且业务允许小概率误阳判断的前提下  使用布隆过滤器做大量数据隶属判断，但由于底层实现的原因，无法删除历史已加入集合的数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 Golang 快速实现布谷鸟过滤器解决大数据判重问题">
+<meta property="og:url" content="https://blog.wj2015.com/2022/05/17/%E5%B8%83%E9%9A%86%E9%B8%9F%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E5%88%86%E6%9E%90%E5%92%8C%E5%AE%9E%E7%8E%B0/">
+<meta property="og:site_name" content="九层台">
+<meta property="og:description" content="前言业务中时常会有类似检索一个元素是否在集合中这样的场景，如果对时间和空间要求不高，我们可能会  查表，或者建唯一索引避免重复插入  Redis 中使用 set 或者类似 hash 表的数据结构，将数据做 hash 后放到 key 上，以待后续查询   而当我们有大量数据需要判重并且业务允许小概率误阳判断的前提下  使用布隆过滤器做大量数据隶属判断，但由于底层实现的原因，无法删除历史已加入集合的数">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-18-22-52-13-image.png">
+<meta property="og:image" content="http://www.linvon.cn/img/cuckoo/1.jpg">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-18-20-46-48-image.png">
+<meta property="article:published_time" content="2022-05-17T14:08:41.000Z">
+<meta property="article:modified_time" content="2022-05-18T14:59:49.462Z">
+<meta property="article:author" content="Jeffrey Wang">
+<meta property="article:tag" content="Hash">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="大数据">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.wj2015.com/static/assets/2022-05-18-22-52-13-image.png">
+    <link
+        rel="stylesheet"
+        href="/static/libs/fancybox.css"
+    />
+    <link
+        rel="stylesheet"
+        href="/static/libs/justifiedGallery.min.css"
+    />
+    
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1652886009091">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1652886009091">
+    <link rel="stylesheet" href="/css/style.css?v=1652886009091">
+     
+    
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
+</head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(/static/background.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="Jeffrey Wang" class="mdui-btn mdui-btn-icon"><img src="/static/avatar.jpg" alt="Jeffrey Wang"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="Jeffrey Wang">
+            <img src="/static/avatar.jpg" alt="Jeffrey Wang" alt="Jeffrey Wang">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>65</div>
+        <div><span>标签</span>127</div>
+        <div><span>分类</span>15</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/friends.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        
+            <form id="search_form">
+                <label><input class="st-default-search-input" id="search_value" name="q" type="search" placeholder="搜索" style="
+                    font-size: 15px !important;
+                    height: 56px !important;
+                    background-image: none;
+                "></label>
+            </form>
+         
+    </div>
+</div>
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/2020/" style="font-size: 10px;">2020</a> <a href="/tags/B-tree/" style="font-size: 10px;">B+ tree</a> <a href="/tags/BP/" style="font-size: 10px;">BP</a> <a href="/tags/BP%E7%AE%97%E6%B3%95/" style="font-size: 10px;">BP算法</a> <a href="/tags/CDN/" style="font-size: 10px;">CDN</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/GithubAction/" style="font-size: 10px;">GithubAction</a> <a href="/tags/Hash/" style="font-size: 11.43px;">Hash</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 17.14px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Mysql/" style="font-size: 15.71px;">Mysql</a> <a href="/tags/POW/" style="font-size: 10px;">POW</a> <a href="/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/tags/SVN/" style="font-size: 10px;">SVN</a> <a href="/tags/Serverless/" style="font-size: 10px;">Serverless</a> <a href="/tags/Vmware/" style="font-size: 10px;">Vmware</a> <a href="/tags/apply/" style="font-size: 10px;">apply</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/authorization/" style="font-size: 10px;">authorization</a> <a href="/tags/aws/" style="font-size: 11.43px;">aws</a> <a href="/tags/cloudfront/" style="font-size: 11.43px;">cloudfront</a> <a href="/tags/ctm/" style="font-size: 10px;">ctm</a> <a href="/tags/eth0/" style="font-size: 10px;">eth0</a> <a href="/tags/excel/" style="font-size: 10px;">excel</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/gasPrice/" style="font-size: 10px;">gasPrice</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gltf/" style="font-size: 10px;">gltf</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/iges/" style="font-size: 10px;">iges</a> <a href="/tags/ios/" style="font-size: 11.43px;">ios</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/js-xlsx/" style="font-size: 10px;">js-xlsx</a> <a href="/tags/kali/" style="font-size: 10px;">kali</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/layui/" style="font-size: 10px;">layui</a> <a href="/tags/layuiAdmin/" style="font-size: 10px;">layuiAdmin</a> <a href="/tags/nextTick/" style="font-size: 10px;">nextTick</a> <a href="/tags/nextcloud/" style="font-size: 10px;">nextcloud</a> <a href="/tags/nginx/" style="font-size: 12.86px;">nginx</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/php-fpm/" style="font-size: 11.43px;">php-fpm</a> <a href="/tags/php7/" style="font-size: 10px;">php7</a> <a href="/tags/phpMyAdmin/" style="font-size: 10px;">phpMyAdmin</a> <a href="/tags/phpunit/" style="font-size: 10px;">phpunit</a> <a href="/tags/python/" style="font-size: 12.86px;">python</a> <a href="/tags/pythonocc/" style="font-size: 10px;">pythonocc</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/stl/" style="font-size: 10px;">stl</a> <a href="/tags/stp/" style="font-size: 10px;">stp</a> <a href="/tags/style/" style="font-size: 10px;">style</a> <a href="/tags/syncting/" style="font-size: 10px;">syncting</a> <a href="/tags/three-js/" style="font-size: 10px;">three.js</a> <a href="/tags/utools/" style="font-size: 10px;">utools</a> <a href="/tags/vbot/" style="font-size: 10px;">vbot</a> <a href="/tags/video/" style="font-size: 11.43px;">video</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/web3/" style="font-size: 10px;">web3</a> <a href="/tags/web3d/" style="font-size: 10px;">web3d</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/%E4%BA%A4%E6%98%93/" style="font-size: 10px;">交易</a> <a href="/tags/%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0/" style="font-size: 10px;">代价函数</a> <a href="/tags/%E5%81%8F%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">偏导数</a> <a href="/tags/%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">关系式</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8/" style="font-size: 10px;">内存占用</a> <a href="/tags/%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A/" style="font-size: 10px;">动态绑定</a> <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" style="font-size: 12.86px;">区块链</a> <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" style="font-size: 10px;">单元测试</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">博客</a> <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 11.43px;">卷积神经网络</a> <a href="/tags/%E5%8F%82%E6%95%B0%E8%8E%B7%E5%8F%96/" style="font-size: 10px;">参数获取</a> <a href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" style="font-size: 10px;">反向代理</a> <a href="/tags/%E5%8F%8D%E5%90%91%E9%80%92%E6%8E%A8%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">反向递推关系式</a> <a href="/tags/%E5%90%88%E7%BA%A6/" style="font-size: 10px;">合约</a> <a href="/tags/%E5%90%8C%E6%AD%A5/" style="font-size: 10px;">同步</a> <a href="/tags/%E5%90%91%E9%87%8F/" style="font-size: 10px;">向量</a> <a href="/tags/%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/" style="font-size: 10px;">命名规则</a> <a href="/tags/%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0%E6%B1%82%E5%AF%BC/" style="font-size: 10px;">复合函数求导</a> <a href="/tags/%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C/" style="font-size: 10px;">多人协作</a> <a href="/tags/%E5%A4%9A%E5%8F%98%E9%87%8F%E5%87%BD%E6%95%B0/" style="font-size: 10px;">多变量函数</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%AF%BC%E5%87%BA%E6%A0%B7%E5%BC%8F/" style="font-size: 10px;">导出样式</a> <a href="/tags/%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">导数</a> <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 11.43px;">小程序</a> <a href="/tags/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" style="font-size: 10px;">异常处理</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%9C%8D/" style="font-size: 10px;">微信客服</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91/" style="font-size: 11.43px;">微信开发</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 10px;">思考</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5/" style="font-size: 10px;">拉格朗日</a> <a href="/tags/%E6%8F%92%E4%BB%B6/" style="font-size: 10px;">插件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%94%B9%E9%80%A0/" style="font-size: 10px;">改造</a> <a href="/tags/%E6%95%A3%E5%88%97%E8%A1%A8/" style="font-size: 10px;">散列表</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" style="font-size: 10px;">数据类型</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a> <a href="/tags/%E6%97%85%E8%A1%8C/" style="font-size: 10px;">旅行</a> <a href="/tags/%E6%97%A0%E9%99%90%E7%BA%A7%E5%88%86%E7%B1%BB/" style="font-size: 10px;">无限级分类</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 18.57px;">机器学习</a> <a href="/tags/%E6%9E%81%E5%80%BC/" style="font-size: 10px;">极值</a> <a href="/tags/%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/" style="font-size: 10px;">格式转换</a> <a href="/tags/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" style="font-size: 12.86px;">梯度下降</a> <a href="/tags/%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9/" style="font-size: 10px;">模型压缩</a> <a href="/tags/%E6%AF%9B%E9%80%89/" style="font-size: 10px;">毛选</a> <a href="/tags/%E6%B1%A0%E5%8C%96/" style="font-size: 10px;">池化</a> <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 15.71px;">深度学习</a> <a href="/tags/%E7%89%B9%E5%BE%81%E6%98%A0%E5%B0%84/" style="font-size: 10px;">特征映射</a> <a href="/tags/%E7%9F%A9%E9%98%B5/" style="font-size: 10px;">矩阵</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E5%8D%95%E5%85%83%E8%AF%AF%E5%B7%AE/" style="font-size: 10px;">神经单元误差</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 10px;">算法</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" style="font-size: 10px;">索引原理</a> <a href="/tags/%E7%BD%91%E5%8D%A1/" style="font-size: 10px;">网卡</a> <a href="/tags/%E8%A7%86%E9%A2%91%E6%B5%81/" style="font-size: 11.43px;">视频流</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/" style="font-size: 10px;">计算机组成结构</a> <a href="/tags/%E8%AF%AF%E5%B7%AE%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E6%B3%95/" style="font-size: 10px;">误差反向传播法</a> <a href="/tags/%E8%B7%A8%E8%A1%A8/" style="font-size: 10px;">跨表</a> <a href="/tags/%E8%B8%A9%E5%9D%91/" style="font-size: 12.86px;">踩坑</a> <a href="/tags/%E8%BD%AF%E8%80%83/" style="font-size: 14.29px;">软考</a> <a href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" style="font-size: 10px;">过滤器</a> <a href="/tags/%E8%BF%91%E4%BC%BC%E5%85%AC%E5%BC%8F/" style="font-size: 10px;">近似公式</a> <a href="/tags/%E8%BF%AD%E4%BB%A3%E5%99%A8/" style="font-size: 10px;">迭代器</a>
+    </div>
+    
+      <script>
+        var maxTagcloud = parseInt(20);
+        var tags_length = parseInt(127);
+        var tags_arr = [];
+        for(var i = 0; i < tags_length; i++){
+          tags_arr.push(i);
+        }
+        tags_arr.sort(function (l, r) {
+          return Math.random() > 0.5 ? -1 : 1;
+        });
+        tags_arr = tags_arr.slice(0, maxTagcloud < tags_length ? tags_length - maxTagcloud : 0);
+        for(var tag_i = 0; tag_i < tags_arr.length; tag_i++){
+          document.getElementById("randomtagcloud").children[tags_arr[tag_i]].style.display = 'none';
+        }
+      </script>
+    
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/05/17/%E5%B8%83%E9%9A%86%E9%B8%9F%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E5%88%86%E6%9E%90%E5%92%8C%E5%AE%9E%E7%8E%B0/">使用 Golang 快速实现布谷鸟过滤器解决大数据判重问题</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/12/%E3%80%90%E6%AF%9B%E9%80%89%E3%80%91%E5%AE%9E%E8%B7%B5%E8%AE%BA%E5%B8%A6%E6%9D%A5%E7%9A%84%E6%80%9D%E8%80%83/">【毛选】实践论带来的思考</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/12/%E5%90%88%E7%BA%A6%E4%BA%A4%E6%98%93%E4%B8%ADInputData%E7%9A%84%E7%BC%96%E8%A7%A3%E7%A0%81%E5%AE%9E%E8%B7%B5/">合约交易中InputData的编解码实践</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E5%8D%87%E7%BA%A7%E6%95%B4%E7%90%86%E5%AE%9E%E5%BD%95/">测试环境升级整理实录</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/08/hexo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/">hexo博客迁移</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://github.com/wangerzi/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a><a class="mdui-ripple" href="/atom.xml" target="_blank" mdui-tooltip="{content: 'RSS'}" style="color: rgb(247, 132, 34);background-color: rgba(247, 132, 34, .1);">
+            <i class="nexmoefont icon-rss"></i>
+        </a>
+    </div>
+</div>
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 Jeffrey Wang
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: NaN%;"> 
+              <img src="/../static/bird.jpg" alt="使用 Golang 快速实现布谷鸟过滤器解决大数据判重问题" loading="lazy">
+              <h1>使用 Golang 快速实现布谷鸟过滤器解决大数据判重问题</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2022年05月17日</a>
+</div>
+
+      <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>业务中时常会有类似<strong>检索一个元素是否在集合中这样的场景</strong>，如果对时间和空间要求不高，我们可能会</p>
+<ul>
+<li><p>查表，或者建唯一索引避免重复插入</p>
+</li>
+<li><p>Redis 中使用 set 或者类似 hash 表的数据结构，将数据做 hash 后放到 key 上，以待后续查询</p>
+</li>
+</ul>
+<p>而当我们有<strong>大量数据</strong>需要判重并且业务<strong>允许小概率误阳</strong>判断的前提下</p>
+<ul>
+<li><p>使用布隆过滤器做大量数据隶属判断，但由于底层实现的原因，无法删除历史已加入集合的数据</p>
+</li>
+<li><p>使用布隆过滤器的升级版，比如 counting bloom 就可以支持删除，但代价是三到四倍的空间占用</p>
+</li>
+</ul>
+<p>但 2014 年的时候，我们有了另一个选择，外网有位大哥提出了布隆鸟过滤器来解决大量数据判重的问题，并且支持删除</p>
+<p>论文地址： <a target="_blank" rel="noopener" href="https://www.cs.cmu.edu/~dga/papers/cuckoo-conext2014.pdf">https://www.cs.cmu.edu/~dga/papers/cuckoo-conext2014.pdf</a></p>
+<p>国内翻译：<a target="_blank" rel="noopener" href="http://www.linvon.cn/posts/cuckoo/#sec31">布谷鸟过滤器：实际上优于布隆过滤器</a></p>
+<p>开源实现：<a target="_blank" rel="noopener" href="https://github.com/linvon/cuckoo-filter/blob/main/cuckoofilter.go">cuckoo-filter/cuckoofilter.go at main · linvon/cuckoo-filter · GitHub</a></p>
+<blockquote>
+<p>译者非常之有耐心，翻译到位并解答了我在理解过程中产生的部分疑惑，👍</p>
+</blockquote>
+<p>通读论文和部分代码后，大致理解了其实现原理，觉着这个算法非常巧妙，就产生了自己动手实现加深理解的想法</p>
+<p>通过博客记录下来，<strong>同时也让读者能更快的掌握其中关键，不必通读论文和实现代码</strong>。</p>
+<blockquote>
+<p>PS：上面给到的开源实现也是 Golang 做的，自定义参数的功能强大，但定制性高带来的就是底层实现复杂，不便于初学者理解</p>
+</blockquote>
+<h2 id="实现关键"><a href="#实现关键" class="headerlink" title="实现关键"></a>实现关键</h2><h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><p>理解一个算法第一步就是了解它的存储结构，理解底层数据结构后，算法随后的巧妙构思都会围绕数据结构展开</p>
+<h4 id="普通的-Hash"><a href="#普通的-Hash" class="headerlink" title="普通的 Hash"></a>普通的 Hash</h4><p>众所周知，普通的 Hash 表的工作原理是给内容生成一段 <strong>“唯一”的摘要</strong>，然后映射到索引数组上，并在数组的每一项上外挂链表或者数组开放寻址以解决 Hash 冲突</p>
+<p>结构大概是这样的：</p>
+<p><img src="/static/assets/2022-05-18-22-52-13-image.png"></p>
+<p>网上找了一篇介绍普通 Hash 的文章，如有不理解可通读此篇：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/dolphin0520/archive/2012/09/28/2700000.html">Hash表 - Matrix海子 - 博客园</a></p>
+<h4 id="布谷鸟-Hash"><a href="#布谷鸟-Hash" class="headerlink" title="布谷鸟 Hash"></a>布谷鸟 Hash</h4><p>而布谷鸟 hash 不同，分为如下几个概念</p>
+<ul>
+<li><p>指纹：原始数据生成的 <strong>“唯一” 标志</strong></p>
+</li>
+<li><p>桶：对应一个数组，每个桶可以存储多个指纹</p>
+</li>
+<li><p>桶数组：对应多个桶，可以<strong>理解为一个存指纹的二维数组</strong></p>
+</li>
+</ul>
+<p><strong>【重点】</strong> 布谷鸟 Hash 在插入数据时是这样维护桶数组的：</p>
+<ul>
+<li><p>通过两个 hash 函数和原始数据 x 算出两个候选桶的位置，<strong>称为 h1 和 h2</strong></p>
+</li>
+<li><p>从 h1 桶和 h2 桶中随机找一个放数据指纹</p>
+</li>
+<li><p>一个桶可存储的指纹是有限的</p>
+<ul>
+<li><p>如果没满，就往后追加存储即可</p>
+</li>
+<li><p>如果存满了，就在桶中随机找一个位置，把原有的踢出去，新的指纹放到那个位置</p>
+</li>
+</ul>
+</li>
+<li><p>如果过程中踢出去了（Kick out）一个元素，被踢出去的元素<strong>就会找其对应的另一个候选桶</strong></p>
+<ul>
+<li><p>比如某个元素 x，<strong>有固定的两个候选桶</strong> hx1 和 hx2，通过随机选择顺利的<strong>将指纹</strong>存放到了 hx1 中</p>
+</li>
+<li><p>然后新加了一个元素 b，有固定的两个候选桶 hb1 和 hb2，但不巧的是 <strong>hb1 和 hx1 相同</strong> （hb2 和 hx2 再次相同的概率比较低，所以先不考虑这个情况）</p>
+</li>
+<li><p>假设元素b 对应的两个候选桶都满了，通过随机选择，选到了 hb1（也就是 hx1）中元素 x 的指纹，x 的指纹就被踢出去了</p>
+</li>
+<li><p>x 的指纹踢出去之后放哪儿呢，它还有<strong>另一个选择就是 hx2</strong>，通过 hash 算法找到 hx2</p>
+<ul>
+<li><p>如果 hx2 未满，将 x 的指纹加进去</p>
+</li>
+<li><p>如果 hx2 满了，将 x 的指纹加进去，随机踢一个出去，重复上述过程，直到成功或者超出最大踢出限制</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img data-fancybox="gallery" src="http://www.linvon.cn/img/cuckoo/1.jpg" alt="1" data-caption="1" loading="lazy"></p>
+<p>这样做就会始终<strong>保证某个元素 x 对应的指纹一定在 hx1 桶或者 hx2 桶中</strong>，查找和删除的时候就顺着这个规律找即可</p>
+<p>由于布谷鸟哈希并不存储原文，仅存储 <strong>“唯一”</strong> 指纹，上述设计还有几个隐藏的问题：</p>
+<ul>
+<li><p>布谷鸟 Hash 没有存储原文，踢出元素时我们只会获取到 hx1（或 hx2）以及指纹，<strong>怎么从 hx1 推算出 hx2呢</strong>？（或者反过来）</p>
+</li>
+<li><p>指纹是有长度限制的，如果设置过短，<strong>指纹冲突的可能性就很高</strong>，比如 8 位指纹最多能表示 2 的 8 次方个指纹，也就是 256 种，指纹的冲突会不会导致阳性率升高呢？</p>
+</li>
+<li><p>如果我们插入很多重复的元素，<strong>他们的候选桶一样，指纹也一样</strong>，踢来踢去也插入不进去，这个过滤器不就陷入死循环了？</p>
+</li>
+</ul>
+<h5 id="【重点】踢出时-h1-和-h2-候选桶之间的转换"><a href="#【重点】踢出时-h1-和-h2-候选桶之间的转换" class="headerlink" title="【重点】踢出时 h1 和 h2 候选桶之间的转换"></a>【重点】踢出时 h1 和 h2 候选桶之间的转换</h5><p><strong>标准的布谷鸟 hash，确实是需要用两个 Hash 算法</strong>，通过原文算出两个候选桶的</p>
+<p>但布谷鸟过滤器里边，对这个 hash 计算做了优化，<strong>设计了一个公式可以让 h1 和 h2 互相转换</strong></p>
+<blockquote>
+<p>h1(x) = hash(x), h2(x) = h1(x) ⊕ hash(x’s fingerprint)</p>
+<p>两者可以通过同一个公式相互转换</p>
+<p>h1(x) = h2(x) ⊕ hash(fingerprint)</p>
+<p>h2(x) = h1(x) ⊕ hash(fingerprint)</p>
+</blockquote>
+<p>所以<strong>踢出时只需要使用指纹和其中一个候选桶，就可以求到另一个候选桶的位置了</strong></p>
+<h5 id="指纹过短的冲突"><a href="#指纹过短的冲突" class="headerlink" title="指纹过短的冲突"></a>指纹过短的冲突</h5><p>指纹设置很短造成表达能力有限，比如 8位最多表示 256 个指纹，但并不代表布谷鸟 Hash 整体表达能力有限</p>
+<p>举个例子，假设我们做了 8 位指纹，有个 1024 个桶</p>
+<p>假设有这么一个特殊数据 a 和 b，他俩指纹相同，但通过 hash 映射到的候选桶却不一定相同，<strong>因为指纹的生成和桶的选取是两个过程</strong></p>
+<p>假设再有一个特殊的数据 c 和 d，他俩指纹相同，而且两个候选桶也一致，那么这两个数据就会有<strong>假阳性</strong>，也就是如果我把 c 放入了布谷鸟过滤器中，我判断 d 是否存在于过滤器中，会返回 true</p>
+<blockquote>
+<p>扩展下，可以根据参数推算出假阳性碰撞的概率，只有指纹相同和 hash 候选桶相同才会有阳性，引用论文的描述</p>
+<p>让我们首先推导给定一个含有q个项的集合在同一个桶中碰撞的概率。假设第一个项x有它的第一个桶&nbsp;i_1&nbsp;和一个指纹&nbsp;t_x。如果其他 q-1 个项和这个项 x 有相同的两个桶，它们必须<a target="_blank" rel="noopener" href="http://www.linvon.cn/posts/cuckoo/#fn:3">3</a>:</p>
+<p>（1）具有相同的指纹，发生概率为 1/2^f</p>
+<p>（2）第一个存储桶为 i_1或 i_1⊕h()，发生概率为2/m</p>
+<p>因此，这些q个项共享相同两个存储桶的概率为 (2/m·1/2^f)^q-1</p>
+</blockquote>
+<h5 id="重复数据导致无限踢出"><a href="#重复数据导致无限踢出" class="headerlink" title="重复数据导致无限踢出"></a>重复数据导致无限踢出</h5><p>这个问题是切实存在的，假设每个桶可以存 b 个指纹，那么不难想到，重复元素最多能占用 2 * b 个空间，然后就踢不动了</p>
+<p>所以要么就是先判重再加入，就不会有这个问题，所以要么就是重复数据不要超过预设</p>
+<h2 id="代码拆解"><a href="#代码拆解" class="headerlink" title="代码拆解"></a>代码拆解</h2><p>完整代码可于 <a target="_blank" rel="noopener" href="https://github.com/wangerzi/blog/tree/master/source/static/assets/code/cuckoo-filter">code/cuckoo-filter</a> 处查看，包含基础实现和部分核心用例</p>
+<h3 id="基础对象定义和操作"><a href="#基础对象定义和操作" class="headerlink" title="基础对象定义和操作"></a>基础对象定义和操作</h3><p>这个的约束都是有作用的，以便将实现复杂度约束在一篇博客的范围内</p>
+<ul>
+<li><p>桶的数量转换为 2 的次幂是因为 <strong>2的次幂取余数有快捷的位运算算法</strong></p>
+</li>
+<li><p>指纹的位数一定要是 8 的倍数，<strong>因为 8 位是一个字节存起来比较方便</strong>，指纹位数右移3就是需要的字节数了</p>
+</li>
+<li><p>bucket 用 uint8，也是因为 <strong>uint8 代表一个字节</strong>，跟指纹的位数尽可能匹配起来，判空也方便，用 byte 也是一样的效果</p>
+</li>
+</ul>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">const</span> MaxKickOut = <span class="hljs-number">500</span><br><br><span class="hljs-keyword">type</span> CuckooFilter <span class="hljs-keyword">struct</span> {<br>    m <span class="hljs-type">uint64</span> <span class="hljs-comment">// 有多少个桶，强制转换为 2 的次幂</span><br>    b <span class="hljs-type">uint64</span> <span class="hljs-comment">// 每个桶能存多少个指纹</span><br>    f <span class="hljs-type">uint64</span> <span class="hljs-comment">// 每个指纹多少位，方便实现，需要是 8 的倍数，且小于 24 * 8，不然 hash 不够用</span><br>    bucket []<span class="hljs-type">uint8</span> <span class="hljs-comment">// 实际存放桶的空间</span><br>}<br><br><span class="hljs-comment">// New m 为桶的数量，b 为每个桶内含指纹数量，f 为指纹长度，New(1&lt;&lt;10, 4, 8)</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">New</span><span class="hljs-params">(m <span class="hljs-type">uint64</span>, b <span class="hljs-type">uint64</span>, f <span class="hljs-type">uint64</span>)</span></span> (*CuckooFilter, <span class="hljs-type">error</span>) {<br>    <span class="hljs-comment">// 确保 m 为 2 的 n 次幂，确保 f 为 8 的倍数</span><br>    <span class="hljs-keyword">if</span> !checkPow2(m) {<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, errors.New(<span class="hljs-string">"m needs 2^n"</span>)<br>    }<br>    <span class="hljs-keyword">if</span> remain, err := fastRemain(f, <span class="hljs-number">8</span>); err != <span class="hljs-literal">nil</span> || remain &gt; <span class="hljs-number">0</span> || f &lt; <span class="hljs-number">8</span> {<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, errors.New(<span class="hljs-string">"m needs 8*n and &gt; 0"</span>)<br>    }<br>    <span class="hljs-keyword">return</span> &amp;CuckooFilter{<br>        m:      m,<br>        b:      b,<br>        f:      f,<br>        bucket: <span class="hljs-built_in">make</span>([]<span class="hljs-type">uint8</span>, m * b * (f &gt;&gt; <span class="hljs-number">3</span>)), <span class="hljs-comment">// 分配的 bit 大小是 m * n * f/8</span><br>    }, <span class="hljs-literal">nil</span><br>}<br><br><span class="hljs-comment">// checkPow2 检查是否为 2 的整次幂</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">checkPow2</span><span class="hljs-params">(a <span class="hljs-type">uint64</span>)</span></span> <span class="hljs-type">bool</span> {<br>    <span class="hljs-keyword">return</span> a &amp; (a<span class="hljs-number">-1</span>) == <span class="hljs-number">0</span><br>}<br><br><span class="hljs-comment">// fastRemain 求 a % b，前提是 b 需要是 2 的次幂, remain = a &amp; (b - 1)</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">fastRemain</span><span class="hljs-params">(a <span class="hljs-type">uint64</span>, b <span class="hljs-type">uint64</span>)</span></span> (<span class="hljs-type">uint64</span>, <span class="hljs-type">error</span>) {<br>    <span class="hljs-keyword">if</span> !checkPow2(b) {<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>, errors.New(<span class="hljs-string">"fast remain failed"</span>)<br>    }<br>    <span class="hljs-keyword">return</span> a &amp; (b - <span class="hljs-number">1</span>), <span class="hljs-literal">nil</span><br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<h5 id="【核心】计算-h1-、-finger-以及-h2"><a href="#【核心】计算-h1-、-finger-以及-h2" class="headerlink" title="【核心】计算 h1 、 finger 以及 h2"></a>【核心】计算 h1 、 finger 以及 h2</h5><p>计算比较简单，只是取了个巧，借助 sha256 返回的固定 32 字节数据，首 8 字节取出来<strong>正好可以表达 uint64，对桶数量取余即可得到 h1</strong>，后面还剩 24 个字节，<strong>根据配置的 f 需要几个字节就取几个字节</strong></p>
+<p>h2 就根据公式计算即可</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// CalcHash 计算 h1 的，具体分配到哪个桶，sha input % m</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(f *CuckooFilter)</span></span> CalcHash(input []<span class="hljs-type">byte</span>) (h1 <span class="hljs-type">uint64</span>, err <span class="hljs-type">error</span>) {<br>    <span class="hljs-comment">// m 最多 8 字节，返回固定 32 字节的数据，取余即可</span><br>    sum := sha256.Sum256(input)<br><br>    <span class="hljs-comment">// 取首 8 字节，转为 uint64</span><br>    h1, err = fastRemain(binary.BigEndian.Uint64(sum[:<span class="hljs-number">8</span>]), f.m)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>        <span class="hljs-keyword">return</span><br>    }<br>    <span class="hljs-keyword">return</span><br>}<br><span class="hljs-comment">// CalcFinger 计算指纹</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(f *CuckooFilter)</span></span> CalcFinger(input []<span class="hljs-type">byte</span>) []<span class="hljs-type">byte</span> {<br>    sum := sha256.Sum256(input)<br><br>    <span class="hljs-keyword">return</span> sum[<span class="hljs-number">8</span>:<span class="hljs-number">8</span>+f.f&gt;&gt;<span class="hljs-number">3</span>]<br>}<br><br><span class="hljs-comment">// AltHash 计算 h2 以及 KickOut 的新位置的，h1 ^ sha finger % m</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(f *CuckooFilter)</span></span> AltHash(h <span class="hljs-type">uint64</span>, finger []<span class="hljs-type">byte</span>) (<span class="hljs-type">uint64</span>, <span class="hljs-type">error</span>) {<br>    fingerHash, err := f.CalcHash(finger)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>, err<br>    }<br><br>    <span class="hljs-keyword">return</span> h ^ fingerHash, <span class="hljs-literal">nil</span><br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<h4 id="桶的基础操作"><a href="#桶的基础操作" class="headerlink" title="桶的基础操作"></a>桶的基础操作</h4><p>包含桶是否有空位，桶内是否有目标指纹，桶特定位置的指纹数据，桶特定位置替换等等基础功能，<strong>本质上就是对 bucket 数组的操作</strong>，供随后的上层操作调用</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// CheckBucketFull 检查桶是不是满的，检查最后一个 finger 即可</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(f *CuckooFilter)</span></span> CheckBucketFull(index <span class="hljs-type">uint64</span>) <span class="hljs-type">bool</span> {<br>    lastFinger := f.GetBucketFinger(index, f.b - <span class="hljs-number">1</span>)<br><br>    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(lastFinger); i++ {<br>        <span class="hljs-keyword">if</span> <span class="hljs-type">uint8</span>(lastFinger[i]) != <span class="hljs-number">0</span> {<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>        }<br>    }<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>}<br><br><span class="hljs-comment">// CheckBucketHaveFinger 检查桶内是否有这个指纹</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(f *CuckooFilter)</span></span> CheckBucketHaveFinger(index <span class="hljs-type">uint64</span>, finger []<span class="hljs-type">byte</span>) <span class="hljs-type">bool</span> {<br>    empty := f.GetEmptyFinger()<br><br>    <span class="hljs-keyword">for</span> i := <span class="hljs-type">uint64</span>(<span class="hljs-number">0</span>); i &lt; f.b; i++ {<br>        currFinger := f.GetBucketFinger(index, i)<br>        <span class="hljs-keyword">if</span> bytes.Equal(currFinger, finger) {<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>        }<br>        <span class="hljs-keyword">if</span> bytes.Equal(currFinger, empty) {<br>            <span class="hljs-comment">// 空了就不用比了</span><br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>        }<br>    }<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>}<br><br><span class="hljs-comment">// InsertBucket 桶内插入数据</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(f *CuckooFilter)</span></span> InsertBucket(index <span class="hljs-type">uint64</span>, finger []<span class="hljs-type">byte</span>) <span class="hljs-type">error</span> {<br>    empty := f.GetEmptyFinger()<br>    <span class="hljs-comment">// 找到一个空的位置就可以放进去了</span><br>    <span class="hljs-keyword">for</span> i := <span class="hljs-type">uint64</span>(<span class="hljs-number">0</span>); i &lt; f.b; i++ {<br>        currFinger := f.GetBucketFinger(index, i)<br>        <span class="hljs-keyword">if</span> bytes.Equal(currFinger, empty) {<br>            f.ReplaceBucket(index, i, finger)<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>        }<br>    }<br>    <span class="hljs-keyword">return</span> errors.New(<span class="hljs-string">"bucket fulled"</span>)<br>}<br><br><span class="hljs-comment">// ReplaceBucket 替换 Bucket 中某个 finger</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(f *CuckooFilter)</span></span> ReplaceBucket(index <span class="hljs-type">uint64</span>, bucketIndex <span class="hljs-type">uint64</span>, finger []<span class="hljs-type">byte</span>) []<span class="hljs-type">byte</span> {<br>    origin := f.GetBucketFinger(index, bucketIndex)<br><br>    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(finger); i++ {<br>        origin[i] = finger[i]<br>    }<br><br>    <span class="hljs-keyword">return</span> origin<br>}<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(f *CuckooFilter)</span></span> GetBucketFinger(index <span class="hljs-type">uint64</span>, bucketIndex <span class="hljs-type">uint64</span>) []<span class="hljs-type">byte</span> {<br>    fingerByte := f.f&gt;&gt;<span class="hljs-number">3</span><br>    bucketBase := index * f.b * fingerByte<br><br>    <span class="hljs-keyword">return</span> f.bucket[bucketBase+bucketIndex*fingerByte:bucketBase+(bucketIndex+<span class="hljs-number">1</span>)*fingerByte]<br>}<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(f *CuckooFilter)</span></span> GetEmptyFinger() []<span class="hljs-type">byte</span> {<br>    fingerByte := f.f&gt;&gt;<span class="hljs-number">3</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">make</span>([]<span class="hljs-type">byte</span>, fingerByte)<br>}<br><br><span class="hljs-comment">// RandomReplaceInFullBucket 随机替换满桶中的某个 finger</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(f *CuckooFilter)</span></span> RandomReplaceInFullBucket(index <span class="hljs-type">uint64</span>, finger []<span class="hljs-type">byte</span>) (replaceFinger []<span class="hljs-type">byte</span>, err <span class="hljs-type">error</span>) {<br>    <span class="hljs-keyword">if</span> !f.CheckBucketFull(index) {<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, errors.New(<span class="hljs-string">"bucket not full"</span>)<br>    }<br>    randomIndex := <span class="hljs-type">uint64</span>(rand.Intn(<span class="hljs-type">int</span>(f.b)))<br><br>    replaceFinger= f.ReplaceBucket(index, randomIndex, finger)<br><br>    <span class="hljs-keyword">return</span><br>}<br><br><span class="hljs-comment">// DeleteFingerFromBucket 从桶中删除 finger，类似数组操作</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(f *CuckooFilter)</span></span> DeleteFingerFromBucket(index <span class="hljs-type">uint64</span>, finger []<span class="hljs-type">byte</span>) <span class="hljs-type">error</span> {<br>    empty := f.GetEmptyFinger()<br><br>    <span class="hljs-keyword">for</span> i := <span class="hljs-type">uint64</span>(<span class="hljs-number">0</span>); i &lt; f.b; i++ {<br>        currFinger := f.GetBucketFinger(index, i)<br>        <span class="hljs-keyword">if</span> bytes.Equal(currFinger, finger) {<br>            f.ReplaceBucket(index, i, empty)<br>            <span class="hljs-keyword">for</span> j := i; j &lt; f.b; j++ {<br>                <span class="hljs-keyword">if</span> j == f.b<span class="hljs-number">-1</span> {<br>                    f.ReplaceBucket(index, j, empty)<br>                } <span class="hljs-keyword">else</span> {<br>                    nextFinger := f.GetBucketFinger(index, j + <span class="hljs-number">1</span>)<br>                    f.ReplaceBucket(index, j, nextFinger)<br>                }<br>            }<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>        }<br>    }<br>    <span class="hljs-keyword">return</span> errors.New(<span class="hljs-string">"finger not found"</span>)<br>}<br><br><span class="hljs-comment">// GetHashFinger 获取 finger</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(f *CuckooFilter)</span></span> GetHashFinger(input []<span class="hljs-type">byte</span>) (h1 <span class="hljs-type">uint64</span>, h2 <span class="hljs-type">uint64</span>, finger []<span class="hljs-type">byte</span>, err <span class="hljs-type">error</span>) {<br>    h1, err = f.CalcHash(input)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>        <span class="hljs-keyword">return</span><br>    }<br><br>    finger = f.CalcFinger(input)<br><br>    h2, err = f.AltHash(h1, finger)<br><br>    <span class="hljs-keyword">return</span><br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<h3 id="判断包含"><a href="#判断包含" class="headerlink" title="判断包含"></a>判断包含</h3><p>在上面实现的桶基本功能前提下，包含就很简单了，看是不是在 h1 和 h2 里就好</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// Contain 是否包含</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(f *CuckooFilter)</span></span> Contain(input []<span class="hljs-type">byte</span>) (<span class="hljs-type">bool</span>, <span class="hljs-type">error</span>) {<br>    h1, h2, finger, err := f.GetHashFinger(input)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>, err<br>    }<br>    <span class="hljs-keyword">return</span> f.CheckBucketHaveFinger(h1, finger) || f.CheckBucketHaveFinger(h2, finger), <span class="hljs-literal">nil</span><br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><p>插入相对比较复杂，整体思路也围绕着</p>
+<ul>
+<li><p>h1 和 h2 有空的就放进去</p>
+</li>
+<li><p>没有空的就随机把元素踢出去，把换出来的元素换个地方存</p>
+</li>
+</ul>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// Add 加一个</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(f *CuckooFilter)</span></span> Add(input []<span class="hljs-type">byte</span>) <span class="hljs-type">error</span> {<br>    h1, h2, finger, err := f.GetHashFinger(input)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>        <span class="hljs-keyword">return</span> err<br>    }<br><br>    h1Full := f.CheckBucketFull(h1)<br>    h2Full := f.CheckBucketFull(h2)<br><br>    rand.Seed(time.Now().UnixNano())<br>    <span class="hljs-keyword">if</span> !h1Full || !h2Full {<br>        index := <span class="hljs-type">uint64</span>(<span class="hljs-number">0</span>)<br>        <span class="hljs-keyword">if</span> !h1Full &amp;&amp; !h2Full {<br>            <span class="hljs-comment">// 随机选择 h1 和 h2，有空位就插入</span><br>            <span class="hljs-keyword">if</span> rand.Intn(<span class="hljs-number">2</span>) &gt; <span class="hljs-number">0</span> {<br>                index = h1<br>            } <span class="hljs-keyword">else</span> {<br>                index = h2<br>            }<br>        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> !h1Full {<br>            index = h1<br>        } <span class="hljs-keyword">else</span> {<br>            index = h2<br>        }<br>        <span class="hljs-comment">// 放到桶里</span><br>        err = f.InsertBucket(index, finger)<br>        <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>            <span class="hljs-keyword">return</span> err<br>        }<br>        <span class="hljs-comment">// 成功</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>    } <span class="hljs-keyword">else</span> {<br>        <span class="hljs-comment">// kick out</span><br>        <span class="hljs-comment">// 随机选择 h1 和 h2</span><br>        currIndex := <span class="hljs-type">uint64</span>(<span class="hljs-number">0</span>)<br>        <span class="hljs-keyword">if</span> rand.Intn(<span class="hljs-number">2</span>) &gt; <span class="hljs-number">0</span> {<br>            currIndex = h1<br>        } <span class="hljs-keyword">else</span> {<br>            currIndex = h2<br>        }<br>        currFinger := finger<br>        <span class="hljs-keyword">for</span> i:= <span class="hljs-number">0</span>; i &lt; MaxKickOut; i++ {<br>            <span class="hljs-keyword">if</span> f.CheckBucketFull(currIndex) {<br>                <span class="hljs-comment">// 满了没空位，就随机替换出来</span><br>                currFinger, err = f.RandomReplaceInFullBucket(currIndex, currFinger)<br>                <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>                    <span class="hljs-keyword">return</span> err<br>                }<br><br>                <span class="hljs-comment">// 把换出来的数据，换一个桶存</span><br>                currIndex, err = f.AltHash(currIndex, currFinger)<br>                <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>                    <span class="hljs-keyword">return</span> err<br>                }<br>            } <span class="hljs-keyword">else</span> {<br>                <span class="hljs-comment">// 有空位就插</span><br>                err = f.InsertBucket(currIndex, currFinger)<br>                <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>                    <span class="hljs-keyword">return</span> err<br>                }<br>                <span class="hljs-comment">// 成功</span><br>                <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>            }<br>        }<br><br>        <span class="hljs-keyword">return</span> errors.New(<span class="hljs-string">"over max kick out"</span>)<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><p>整体逻辑就是，h1 和 h2 能找到就删，找不到就删不了</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// Delete 删除一个</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(f *CuckooFilter)</span></span> Delete(input []<span class="hljs-type">byte</span>) <span class="hljs-type">error</span> {<br>    h1, h2, finger, err := f.GetHashFinger(input)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>        <span class="hljs-keyword">return</span> err<br>    }<br><br>    <span class="hljs-comment">// 如果能找到的话，就删掉</span><br>    <span class="hljs-keyword">if</span> f.CheckBucketHaveFinger(h1, finger) {<br>        <span class="hljs-keyword">return</span> f.DeleteFingerFromBucket(h1, finger)<br>    }<br>    <span class="hljs-keyword">if</span> f.CheckBucketHaveFinger(h2, finger) {<br>        <span class="hljs-keyword">return</span> f.DeleteFingerFromBucket(h2, finger)<br>    }<br><br>    <span class="hljs-keyword">return</span> errors.New(<span class="hljs-string">"finger not found"</span>)<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<h3 id="测试用例"><a href="#测试用例" class="headerlink" title="测试用例"></a>测试用例</h3><p>最基本的用法如下，结果应该是 <code>false, true</code></p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> {<br>    filter, err := New(<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-number">5</span>, <span class="hljs-number">2</span>, <span class="hljs-number">8</span>)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>        fmt.Println(<span class="hljs-string">"err"</span>, err)<br>        <span class="hljs-keyword">return</span><br>    }<br><br>    _ = filter.Add([]<span class="hljs-type">byte</span>(<span class="hljs-string">"Hello"</span>))<br>    _ = filter.Add([]<span class="hljs-type">byte</span>(<span class="hljs-string">"World"</span>))<br><br>    res1, err := filter.Contain([]<span class="hljs-type">byte</span>(<span class="hljs-string">"hello"</span>))<br>    res2, err := filter.Contain([]<span class="hljs-type">byte</span>(<span class="hljs-string">"Hello"</span>))<br><br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>        fmt.Println(<span class="hljs-string">"filter contain"</span>, err)<br>        <span class="hljs-keyword">return</span><br>    }<br><br>    fmt.Println(<span class="hljs-string">"hello"</span>, res1, <span class="hljs-string">"Hello"</span>, res2)<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>扩展一些特殊的情况，比如插入大量重复数据造成的踢出超限，判重，删除等等，可参见代码中的 <code>filter_test.go</code></p>
+<p>执行 <code>go test .</code> 运行测试用例的结果</p>
+<p><img src="/static/assets/2022-05-18-20-46-48-image.png"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>布谷鸟过滤器，算法确实挺奇妙的，但理解了其中数据结构以及核心的 h1 、h2 、finger 之间的运算和转换关系，就会变的简单起来。</p>
+</body></html>
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>Jeffrey Wang<br>
+        <strong>本文链接：</strong><a href="https://blog.wj2015.com/2022/05/17/%E5%B8%83%E9%9A%86%E9%B8%9F%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E5%88%86%E6%9E%90%E5%92%8C%E5%AE%9E%E7%8E%B0/" title="https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2022&#x2F;05&#x2F;17&#x2F;%E5%B8%83%E9%9A%86%E9%B8%9F%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E5%88%86%E6%9E%90%E5%92%8C%E5%AE%9E%E7%8E%B0&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2022&#x2F;05&#x2F;17&#x2F;%E5%B8%83%E9%9A%86%E9%B8%9F%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E5%88%86%E6%9E%90%E5%92%8C%E5%AE%9E%E7%8E%B0&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/Hash/" rel="tag">Hash</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          <section class="nexmoe-comment">
+    <link rel="stylesheet" href="/static/libs/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="/static/libs/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: 'd7b7061e43e1334a5aa9',
+        clientSecret: '5af2efcfc06b854bc5ccc23babfa3a06a7508c1e',
+        id: window.location.pathname,
+        repo: 'blog',
+        owner: 'wangerzi',
+        admin: 'wangerzi'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%85%B3%E9%94%AE"><span class="toc-number">2.</span> <span class="toc-text">实现关键</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-number">2.1.</span> <span class="toc-text">数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E7%9A%84-Hash"><span class="toc-number">2.1.1.</span> <span class="toc-text">普通的 Hash</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%83%E8%B0%B7%E9%B8%9F-Hash"><span class="toc-number">2.1.2.</span> <span class="toc-text">布谷鸟 Hash</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91%E8%B8%A2%E5%87%BA%E6%97%B6-h1-%E5%92%8C-h2-%E5%80%99%E9%80%89%E6%A1%B6%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="toc-number">2.1.2.1.</span> <span class="toc-text">【重点】踢出时 h1 和 h2 候选桶之间的转换</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8C%87%E7%BA%B9%E8%BF%87%E7%9F%AD%E7%9A%84%E5%86%B2%E7%AA%81"><span class="toc-number">2.1.2.2.</span> <span class="toc-text">指纹过短的冲突</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE%E5%AF%BC%E8%87%B4%E6%97%A0%E9%99%90%E8%B8%A2%E5%87%BA"><span class="toc-number">2.1.2.3.</span> <span class="toc-text">重复数据导致无限踢出</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%8B%86%E8%A7%A3"><span class="toc-number">3.</span> <span class="toc-text">代码拆解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E5%AF%B9%E8%B1%A1%E5%AE%9A%E4%B9%89%E5%92%8C%E6%93%8D%E4%BD%9C"><span class="toc-number">3.1.</span> <span class="toc-text">基础对象定义和操作</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E3%80%90%E6%A0%B8%E5%BF%83%E3%80%91%E8%AE%A1%E7%AE%97-h1-%E3%80%81-finger-%E4%BB%A5%E5%8F%8A-h2"><span class="toc-number">3.1.0.1.</span> <span class="toc-text">【核心】计算 h1 、 finger 以及 h2</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A1%B6%E7%9A%84%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9C"><span class="toc-number">3.1.1.</span> <span class="toc-text">桶的基础操作</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E5%8C%85%E5%90%AB"><span class="toc-number">3.2.</span> <span class="toc-text">判断包含</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E5%85%A5"><span class="toc-number">3.3.</span> <span class="toc-text">插入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4"><span class="toc-number">3.4.</span> <span class="toc-text">删除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B"><span class="toc-number">3.5.</span> <span class="toc-text">测试用例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    <script src="/static/libs/mdui.min.js"></script>
+<script src="/static/libs/jquery.min.js"></script>
+<script src="/static/libs/fancybox.umd.js"></script>
+
+ 
+
+<script async src="/js/app.js?v=1652886009124"></script>
+
+
+	<script async src="/js/search.js?v=1652886009124"></script>
+
+
+<script src="/static/libs/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHH2NFM6CG"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZHH2NFM6CG');
+</script>
+
+
+
+
+
+</body>
+
+</html>
