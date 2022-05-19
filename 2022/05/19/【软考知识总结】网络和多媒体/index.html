@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>【软考知识总结】网络和多媒体 - 九层台</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="前端开发,后端开发,LINUX,机器学习,软考">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="前言章节大纲网络概述  概念  分类  拓扑结构  OSI&#x2F;RM 模型   互联硬件  设备  传输介质  组网   网络协议  局域网协议  广域网协议  TCP&#x2F;IP 协议族   网络应用  IP 地址  网络安全  安全协议  防火墙  病毒   多媒体  声音  图像  相关计算   网络概述网络的概念  数据通信  资源共享  负载  高可靠   局域网 LAN、城域网 MAN、广域网">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【软考知识总结】网络和多媒体">
+<meta property="og:url" content="https://blog.wj2015.com/2022/05/19/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E7%BD%91%E7%BB%9C%E5%92%8C%E5%A4%9A%E5%AA%92%E4%BD%93/">
+<meta property="og:site_name" content="九层台">
+<meta property="og:description" content="前言章节大纲网络概述  概念  分类  拓扑结构  OSI&#x2F;RM 模型   互联硬件  设备  传输介质  组网   网络协议  局域网协议  广域网协议  TCP&#x2F;IP 协议族   网络应用  IP 地址  网络安全  安全协议  防火墙  病毒   多媒体  声音  图像  相关计算   网络概述网络的概念  数据通信  资源共享  负载  高可靠   局域网 LAN、城域网 MAN、广域网">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-19-22-33-39-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-19-22-35-50-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-19-22-36-25-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-19-22-39-10-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-19-22-41-19-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-19-22-42-11-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-19-22-43-46-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-19-22-45-02-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-19-22-47-19-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-19-22-48-23-image.png">
+<meta property="article:published_time" content="2022-05-19T14:26:14.000Z">
+<meta property="article:modified_time" content="2022-05-19T14:56:47.058Z">
+<meta property="article:author" content="Jeffrey Wang">
+<meta property="article:tag" content="软考">
+<meta property="article:tag" content="计算机网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.wj2015.com/static/assets/2022-05-19-22-33-39-image.png">
+    <link
+        rel="stylesheet"
+        href="/static/libs/fancybox.css"
+    />
+    <link
+        rel="stylesheet"
+        href="/static/libs/justifiedGallery.min.css"
+    />
+    
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1652972223828">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1652972223828">
+    <link rel="stylesheet" href="/css/style.css?v=1652972223828">
+     
+    
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
+</head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(/static/background.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="Jeffrey Wang" class="mdui-btn mdui-btn-icon"><img src="/static/avatar.jpg" alt="Jeffrey Wang"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="Jeffrey Wang">
+            <img src="/static/avatar.jpg" alt="Jeffrey Wang" alt="Jeffrey Wang">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>66</div>
+        <div><span>标签</span>128</div>
+        <div><span>分类</span>15</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/friends.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        
+            <form id="search_form">
+                <label><input class="st-default-search-input" id="search_value" name="q" type="search" placeholder="搜索" style="
+                    font-size: 15px !important;
+                    height: 56px !important;
+                    background-image: none;
+                "></label>
+            </form>
+         
+    </div>
+</div>
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/2020/" style="font-size: 10px;">2020</a> <a href="/tags/B-tree/" style="font-size: 10px;">B+ tree</a> <a href="/tags/BP/" style="font-size: 10px;">BP</a> <a href="/tags/BP%E7%AE%97%E6%B3%95/" style="font-size: 10px;">BP算法</a> <a href="/tags/CDN/" style="font-size: 10px;">CDN</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/GithubAction/" style="font-size: 10px;">GithubAction</a> <a href="/tags/Hash/" style="font-size: 11.67px;">Hash</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Mysql/" style="font-size: 15px;">Mysql</a> <a href="/tags/POW/" style="font-size: 10px;">POW</a> <a href="/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/tags/SVN/" style="font-size: 10px;">SVN</a> <a href="/tags/Serverless/" style="font-size: 10px;">Serverless</a> <a href="/tags/Vmware/" style="font-size: 10px;">Vmware</a> <a href="/tags/apply/" style="font-size: 10px;">apply</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/authorization/" style="font-size: 10px;">authorization</a> <a href="/tags/aws/" style="font-size: 11.67px;">aws</a> <a href="/tags/cloudfront/" style="font-size: 11.67px;">cloudfront</a> <a href="/tags/ctm/" style="font-size: 10px;">ctm</a> <a href="/tags/eth0/" style="font-size: 10px;">eth0</a> <a href="/tags/excel/" style="font-size: 10px;">excel</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/gasPrice/" style="font-size: 10px;">gasPrice</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gltf/" style="font-size: 10px;">gltf</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/iges/" style="font-size: 10px;">iges</a> <a href="/tags/ios/" style="font-size: 11.67px;">ios</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/js-xlsx/" style="font-size: 10px;">js-xlsx</a> <a href="/tags/kali/" style="font-size: 10px;">kali</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/layui/" style="font-size: 10px;">layui</a> <a href="/tags/layuiAdmin/" style="font-size: 10px;">layuiAdmin</a> <a href="/tags/nextTick/" style="font-size: 10px;">nextTick</a> <a href="/tags/nextcloud/" style="font-size: 10px;">nextcloud</a> <a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/php-fpm/" style="font-size: 11.67px;">php-fpm</a> <a href="/tags/php7/" style="font-size: 10px;">php7</a> <a href="/tags/phpMyAdmin/" style="font-size: 10px;">phpMyAdmin</a> <a href="/tags/phpunit/" style="font-size: 10px;">phpunit</a> <a href="/tags/python/" style="font-size: 13.33px;">python</a> <a href="/tags/pythonocc/" style="font-size: 10px;">pythonocc</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/stl/" style="font-size: 10px;">stl</a> <a href="/tags/stp/" style="font-size: 10px;">stp</a> <a href="/tags/style/" style="font-size: 10px;">style</a> <a href="/tags/syncting/" style="font-size: 10px;">syncting</a> <a href="/tags/three-js/" style="font-size: 10px;">three.js</a> <a href="/tags/utools/" style="font-size: 10px;">utools</a> <a href="/tags/vbot/" style="font-size: 10px;">vbot</a> <a href="/tags/video/" style="font-size: 11.67px;">video</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/web3/" style="font-size: 10px;">web3</a> <a href="/tags/web3d/" style="font-size: 10px;">web3d</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/%E4%BA%A4%E6%98%93/" style="font-size: 10px;">交易</a> <a href="/tags/%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0/" style="font-size: 10px;">代价函数</a> <a href="/tags/%E5%81%8F%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">偏导数</a> <a href="/tags/%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">关系式</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8/" style="font-size: 10px;">内存占用</a> <a href="/tags/%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A/" style="font-size: 10px;">动态绑定</a> <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" style="font-size: 13.33px;">区块链</a> <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" style="font-size: 10px;">单元测试</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">博客</a> <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 11.67px;">卷积神经网络</a> <a href="/tags/%E5%8F%82%E6%95%B0%E8%8E%B7%E5%8F%96/" style="font-size: 10px;">参数获取</a> <a href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" style="font-size: 10px;">反向代理</a> <a href="/tags/%E5%8F%8D%E5%90%91%E9%80%92%E6%8E%A8%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">反向递推关系式</a> <a href="/tags/%E5%90%88%E7%BA%A6/" style="font-size: 10px;">合约</a> <a href="/tags/%E5%90%8C%E6%AD%A5/" style="font-size: 10px;">同步</a> <a href="/tags/%E5%90%91%E9%87%8F/" style="font-size: 10px;">向量</a> <a href="/tags/%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/" style="font-size: 10px;">命名规则</a> <a href="/tags/%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0%E6%B1%82%E5%AF%BC/" style="font-size: 10px;">复合函数求导</a> <a href="/tags/%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C/" style="font-size: 10px;">多人协作</a> <a href="/tags/%E5%A4%9A%E5%8F%98%E9%87%8F%E5%87%BD%E6%95%B0/" style="font-size: 10px;">多变量函数</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%AF%BC%E5%87%BA%E6%A0%B7%E5%BC%8F/" style="font-size: 10px;">导出样式</a> <a href="/tags/%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">导数</a> <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 11.67px;">小程序</a> <a href="/tags/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" style="font-size: 10px;">异常处理</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%9C%8D/" style="font-size: 10px;">微信客服</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91/" style="font-size: 11.67px;">微信开发</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 10px;">思考</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5/" style="font-size: 10px;">拉格朗日</a> <a href="/tags/%E6%8F%92%E4%BB%B6/" style="font-size: 10px;">插件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%94%B9%E9%80%A0/" style="font-size: 10px;">改造</a> <a href="/tags/%E6%95%A3%E5%88%97%E8%A1%A8/" style="font-size: 10px;">散列表</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" style="font-size: 10px;">数据类型</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a> <a href="/tags/%E6%97%85%E8%A1%8C/" style="font-size: 10px;">旅行</a> <a href="/tags/%E6%97%A0%E9%99%90%E7%BA%A7%E5%88%86%E7%B1%BB/" style="font-size: 10px;">无限级分类</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 18.33px;">机器学习</a> <a href="/tags/%E6%9E%81%E5%80%BC/" style="font-size: 10px;">极值</a> <a href="/tags/%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/" style="font-size: 10px;">格式转换</a> <a href="/tags/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" style="font-size: 13.33px;">梯度下降</a> <a href="/tags/%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9/" style="font-size: 10px;">模型压缩</a> <a href="/tags/%E6%AF%9B%E9%80%89/" style="font-size: 10px;">毛选</a> <a href="/tags/%E6%B1%A0%E5%8C%96/" style="font-size: 10px;">池化</a> <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 15px;">深度学习</a> <a href="/tags/%E7%89%B9%E5%BE%81%E6%98%A0%E5%B0%84/" style="font-size: 10px;">特征映射</a> <a href="/tags/%E7%9F%A9%E9%98%B5/" style="font-size: 10px;">矩阵</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E5%8D%95%E5%85%83%E8%AF%AF%E5%B7%AE/" style="font-size: 10px;">神经单元误差</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 10px;">算法</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" style="font-size: 10px;">索引原理</a> <a href="/tags/%E7%BD%91%E5%8D%A1/" style="font-size: 10px;">网卡</a> <a href="/tags/%E8%A7%86%E9%A2%91%E6%B5%81/" style="font-size: 11.67px;">视频流</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/" style="font-size: 10px;">计算机组成结构</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">计算机网络</a> <a href="/tags/%E8%AF%AF%E5%B7%AE%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E6%B3%95/" style="font-size: 10px;">误差反向传播法</a> <a href="/tags/%E8%B7%A8%E8%A1%A8/" style="font-size: 10px;">跨表</a> <a href="/tags/%E8%B8%A9%E5%9D%91/" style="font-size: 13.33px;">踩坑</a> <a href="/tags/%E8%BD%AF%E8%80%83/" style="font-size: 15px;">软考</a> <a href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" style="font-size: 10px;">过滤器</a> <a href="/tags/%E8%BF%91%E4%BC%BC%E5%85%AC%E5%BC%8F/" style="font-size: 10px;">近似公式</a> <a href="/tags/%E8%BF%AD%E4%BB%A3%E5%99%A8/" style="font-size: 10px;">迭代器</a>
+    </div>
+    
+      <script>
+        var maxTagcloud = parseInt(20);
+        var tags_length = parseInt(128);
+        var tags_arr = [];
+        for(var i = 0; i < tags_length; i++){
+          tags_arr.push(i);
+        }
+        tags_arr.sort(function (l, r) {
+          return Math.random() > 0.5 ? -1 : 1;
+        });
+        tags_arr = tags_arr.slice(0, maxTagcloud < tags_length ? tags_length - maxTagcloud : 0);
+        for(var tag_i = 0; tag_i < tags_arr.length; tag_i++){
+          document.getElementById("randomtagcloud").children[tags_arr[tag_i]].style.display = 'none';
+        }
+      </script>
+    
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/05/19/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E7%BD%91%E7%BB%9C%E5%92%8C%E5%A4%9A%E5%AA%92%E4%BD%93/">【软考知识总结】网络和多媒体</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/17/%E5%B8%83%E9%9A%86%E9%B8%9F%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E5%88%86%E6%9E%90%E5%92%8C%E5%AE%9E%E7%8E%B0/">使用 Golang 快速实现布谷鸟过滤器解决大数据判重问题</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/12/%E3%80%90%E6%AF%9B%E9%80%89%E3%80%91%E5%AE%9E%E8%B7%B5%E8%AE%BA%E5%B8%A6%E6%9D%A5%E7%9A%84%E6%80%9D%E8%80%83/">【毛选】实践论带来的思考</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/12/%E5%90%88%E7%BA%A6%E4%BA%A4%E6%98%93%E4%B8%ADInputData%E7%9A%84%E7%BC%96%E8%A7%A3%E7%A0%81%E5%AE%9E%E8%B7%B5/">合约交易中InputData的编解码实践</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E5%8D%87%E7%BA%A7%E6%95%B4%E7%90%86%E5%AE%9E%E5%BD%95/">测试环境升级整理实录</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://github.com/wangerzi/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a><a class="mdui-ripple" href="/atom.xml" target="_blank" mdui-tooltip="{content: 'RSS'}" style="color: rgb(247, 132, 34);background-color: rgba(247, 132, 34, .1);">
+            <i class="nexmoefont icon-rss"></i>
+        </a>
+    </div>
+</div>
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 Jeffrey Wang
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: NaN%;"> 
+              <img src="/static/uploads/2022/04/nick-morrison-FHnnjk1Yj7Y-unsplash-1200x661.jpg" alt="【软考知识总结】网络和多媒体" loading="lazy">
+              <h1>【软考知识总结】网络和多媒体</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2022年05月19日</a>
+</div>
+
+      <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><h3 id="章节大纲"><a href="#章节大纲" class="headerlink" title="章节大纲"></a>章节大纲</h3><p>网络概述</p>
+<ul>
+<li><p>概念</p>
+</li>
+<li><p>分类</p>
+</li>
+<li><p>拓扑结构</p>
+</li>
+<li><p><strong>OSI/RM 模型</strong></p>
+</li>
+</ul>
+<p>互联硬件</p>
+<ul>
+<li><p>设备</p>
+</li>
+<li><p>传输介质</p>
+</li>
+<li><p>组网</p>
+</li>
+</ul>
+<p>网络协议</p>
+<ul>
+<li><p>局域网协议</p>
+</li>
+<li><p>广域网协议</p>
+</li>
+<li><p><strong>TCP/IP 协议族</strong></p>
+</li>
+</ul>
+<p>网络应用</p>
+<ul>
+<li>IP 地址</li>
+</ul>
+<p>网络安全</p>
+<ul>
+<li><p>安全协议</p>
+</li>
+<li><p>防火墙</p>
+</li>
+<li><p>病毒</p>
+</li>
+</ul>
+<p>多媒体</p>
+<ul>
+<li><p>声音</p>
+</li>
+<li><p>图像</p>
+</li>
+<li><p><strong>相关计算</strong></p>
+</li>
+</ul>
+<h2 id="网络概述"><a href="#网络概述" class="headerlink" title="网络概述"></a>网络概述</h2><p>网络的概念</p>
+<ul>
+<li><p>数据通信</p>
+</li>
+<li><p>资源共享</p>
+</li>
+<li><p>负载</p>
+</li>
+<li><p>高可靠</p>
+</li>
+</ul>
+<p>局域网 LAN、城域网 MAN、广域网 WAN，距离越短，传输越快</p>
+<p>拓扑结构</p>
+<ul>
+<li><p>总线型</p>
+</li>
+<li><p>星型</p>
+</li>
+<li><p>环型</p>
+</li>
+<li><p>树型</p>
+</li>
+<li><p>分布式</p>
+</li>
+</ul>
+<p><img src="/static/assets/2022-05-19-22-33-39-image.png"></p>
+<h3 id="【重点】OSI-七层模型"><a href="#【重点】OSI-七层模型" class="headerlink" title="【重点】OSI 七层模型"></a>【重点】OSI 七层模型</h3><p>物理层，数据链路层，网络层，传输层，会话层，表示层，应用层</p>
+<p><img src="/static/assets/2022-05-19-22-35-50-image.png"></p>
+<h2 id="网络协议"><a href="#网络协议" class="headerlink" title="网络协议"></a>网络协议</h2><p>网络协议标准（常识性的知识）</p>
+<p><img src="/static/assets/2022-05-19-22-36-25-image.png"></p>
+<h3 id="【重点】TCP-x2F-IP-协议族"><a href="#【重点】TCP-x2F-IP-协议族" class="headerlink" title="【重点】TCP/IP 协议族"></a>【重点】TCP/IP 协议族</h3><h4 id="TCP-x2F-IP-协议族的特性"><a href="#TCP-x2F-IP-协议族的特性" class="headerlink" title="TCP/IP 协议族的特性"></a>TCP/IP 协议族的特性</h4><ul>
+<li><p>逻辑编址（IP地址）</p>
+</li>
+<li><p>路由选择</p>
+</li>
+<li><p>域名解析</p>
+</li>
+<li><p>错误检测，流量控制</p>
+</li>
+</ul>
+<h4 id="TCP-x2F-IP-分层模型"><a href="#TCP-x2F-IP-分层模型" class="headerlink" title="TCP/IP 分层模型"></a>TCP/IP 分层模型</h4><ul>
+<li><p><strong>应用层，具体应用功能，对应 OSI 的三层</strong></p>
+</li>
+<li><p>传输层，端口到端口，对应 OSI 的传输层</p>
+</li>
+<li><p>网络层，对应 OSI 的网络层</p>
+</li>
+<li><p>网络接口层对应 OSI 数据链路层</p>
+</li>
+</ul>
+<p>网络层最重要的协议</p>
+<ul>
+<li><p>IP 协议</p>
+</li>
+<li><p>ICMP 协议，确认存货</p>
+</li>
+<li><p>ARP 和 RARP，分别对应 IP 转 mac 地址，mac 地址转 IP</p>
+</li>
+</ul>
+<p>传输层最重要的协议</p>
+<ul>
+<li><p><strong>TCP 可靠</strong>，速度慢，有验证，三次握手四次挥手</p>
+</li>
+<li><p><strong>UDP 不可靠</strong>，实时性高，速度快</p>
+</li>
+</ul>
+<p>TCP 下最重要的协议</p>
+<ul>
+<li><p><strong>停止等待协议</strong>，发送完一个分组后，等到对方确认后方可发送下一个分组</p>
+</li>
+<li><p>连续 ARQ 协议，维持了一个窗口，窗口内的多个分组可以一起发，然后到窗口内最后一个分组确认后再发下一堆分组</p>
+</li>
+<li><p><strong>滑动窗口协议</strong>，控制一次性发送多少报文，可加速传输且有利于流量控制</p>
+</li>
+</ul>
+<h4 id="应用层协议"><a href="#应用层协议" class="headerlink" title="应用层协议"></a>应用层协议</h4><p>基于 TCP 的 FTP/HTTP 都是可靠协议，基于 UDP 的 DHCP DNS 都是不可靠协议</p>
+<p>基于 TCP</p>
+<ul>
+<li><p>FTP：文件传输协议</p>
+</li>
+<li><p>HTTP、HTTPS</p>
+</li>
+<li><p>SMTP 和 POP3，邮件传输协议</p>
+</li>
+<li><p>Telnet 远程连接协议</p>
+</li>
+</ul>
+<p>基于 UDP</p>
+<ul>
+<li><p>TFTP 不可靠的小文件传输协议</p>
+</li>
+<li><p>SNMP 简单网络管理协议</p>
+</li>
+<li><p>DHCP 动态 IP 分配协议</p>
+</li>
+<li><p>DNS 域名解析协议</p>
+</li>
+</ul>
+<h5 id="DNS-的解析"><a href="#DNS-的解析" class="headerlink" title="DNS 的解析"></a>DNS 的解析</h5><ul>
+<li><p>DNS 服务器，维持域名和 IP 的映射表</p>
+</li>
+<li><p>从下到上：本地域名服务器，权威域名服务器，顶级域名服务器，根域名服务器</p>
+</li>
+</ul>
+<p>查询顺序</p>
+<ul>
+<li><p>查本地 DNS 缓存</p>
+</li>
+<li><p>查本地 DNS 服务器</p>
+</li>
+<li><p>然后递归查询上层 DNS 服务器</p>
+</li>
+<li><p>上层 DNS 服务器迭代查询直到查到结果</p>
+</li>
+</ul>
+<p><strong>查询分递归查询和迭代查询</strong></p>
+<p>递归查询：被查询机器会自动按照层级查询，最后把结果应答客户端</p>
+<p>迭代查询：被查询机器没有记录时，<strong>返回其他层次的服务器地址，然后客户端再次向另一个服务器发起查询</strong></p>
+<p>本机向本地域名服务器发起请求一般是递归，而本机域名服务器向其他域名服务器发起请求一般是迭代</p>
+<p><img src="/static/assets/2022-05-19-22-39-10-image.png"></p>
+<h2 id="IP-和路由"><a href="#IP-和路由" class="headerlink" title="IP 和路由"></a>IP 和路由</h2><h3 id="路由选择策略"><a href="#路由选择策略" class="headerlink" title="路由选择策略"></a>路由选择策略</h3><ul>
+<li><p>静态路由，只有固定的线路，不能找出最佳路由</p>
+<ul>
+<li><p>固定式路由选择，保持一个路由表，保存目的节点的下一跳，然后找到了直接转过去即可</p>
+</li>
+<li><p>泛洪式，每次发包都给相邻的全部节点发消息，最先到达的肯定是走的最短路径，存起来下一次还走，适用于健壮性要求很高的场景</p>
+</li>
+<li><p>随机式，随机抽一条转过去</p>
+</li>
+</ul>
+</li>
+<li><p>动态路由，由网络状态决定</p>
+<ul>
+<li><p>分布式路由选择，距离向量算法和链路状态算法，前者周期性的朝相邻节点发报文以动态刷新路由表，后者各节点独立计算最佳通路，需要做的通信少，但逻辑复杂</p>
+</li>
+<li><p>集中式路由选择，网络中心算好最佳路由后，定期同步到每一个节点</p>
+</li>
+<li><p>混合式动态路由选择，多种路由混合使用</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="IP"><a href="#IP" class="headerlink" title="IP"></a>IP</h3><p>IPV4 点分十进制表示法，分网络号和主机号</p>
+<p>主机个数计算的时候需要注意，全0和全1是不能分配的，所以公式是 2^n -2，其中 n 为主机位数</p>
+<p><img src="/static/assets/2022-05-19-22-41-19-image.png"></p>
+<p>四个分类</p>
+<ul>
+<li><p>A 类，8位网络号，其中1位固定</p>
+</li>
+<li><p>B类，16位网络号，其中2位固定</p>
+</li>
+<li><p>C类，24位网络号，其中3位固定</p>
+</li>
+<li><p>D类，多播地址，前缀 1110</p>
+</li>
+<li><p>E类，保留地址，前缀 1111</p>
+</li>
+</ul>
+<p>而且 A/B/C 类网络的网络号前几位都是固定的，避免网络号重合的问题</p>
+<p>主机号里边划拉出来一部分子网号，将一个完整网络分为不同的子网，网络号和子网号都为1，主机号都为0，这就是子网掩码。</p>
+<p>同样，把网络号的几位作为主机号就成为了一个更大的网络，这叫超网，虽然不知道这是怎么解决 IP 冲突的。</p>
+<p><img src="/static/assets/2022-05-19-22-42-11-image.png"></p>
+<h3 id="层次化网络模型"><a href="#层次化网络模型" class="headerlink" title="层次化网络模型"></a>层次化网络模型</h3><p>网络模型分三层</p>
+<ul>
+<li><p>接入层，功能单一，仅供接入</p>
+</li>
+<li><p>汇聚层，网络访问策略，数据包过滤，寻址等等操作</p>
+</li>
+<li><p>核心层，功能单一，只负责数据交换</p>
+</li>
+</ul>
+<p>NAT 转换</p>
+<ul>
+<li><p>仅需要少量 IP 访问互联网，但内部所有主机都可通过少量外网 IP 访问互联网</p>
+</li>
+<li><p>大量地址映射到少量的外网IP，这个过程就叫 NAT 转换</p>
+</li>
+</ul>
+<p>默认网关</p>
+<p>机器找不到 IP 对应的 mac 地址，就会把数据发往默认网关，默认网关必须跟本机 IP 处于同一网段下</p>
+<p>冲突域和广播域</p>
+<ul>
+<li><p>冲突域，一个普通二层交换机下同时只能有一个设备发送和接受消息，因为通信通道同时只能给一个设备用</p>
+</li>
+<li><p>广播域，指网络中可接受到同网络下任意设备发出数据的设备集合</p>
+</li>
+</ul>
+<p>什么是冲突域和广播域：<a target="_blank" rel="noopener" href="https://blog.csdn.net/cwl421/article/details/49639399?msclkid=a6e8a77ab0ac11ecb184c466e0d418d1">blog.csdn.net</a></p>
+<p>路由器可以划分广播域和冲突域，虚拟机只能划分冲突域，集线器不能划分冲突域/广播域（重点）</p>
+<p>VLAN，虚拟局域网，基于路由器实现不同局域网下冲突域和广播域的隔离，能有效提高转发性能</p>
+<p>VPN，可通过网络或其他非物理链路直连的方式，安全的访问网络内部资源。</p>
+<h4 id="一个例题"><a href="#一个例题" class="headerlink" title="一个例题"></a>一个例题</h4><p><img src="/static/assets/2022-05-19-22-43-46-image.png"></p>
+<h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><p>不同网络层次有不同的安全控制手段</p>
+<ul>
+<li><p>物理层：隔离和屏蔽</p>
+</li>
+<li><p>数据链路层：链路加密 PPTP、L2TP</p>
+</li>
+<li><p>网络层：防火墙、IPSEC</p>
+</li>
+<li><p>传输层：TLS、SET</p>
+</li>
+<li><p>会话层、表示层、应用层：HTTPS</p>
+</li>
+</ul>
+<p>跨越传输层、会话层、表示层、应用层的安全控制手段是 SSL，SSL 的过程大概分为如下几步</p>
+<ul>
+<li><p>接通阶段</p>
+</li>
+<li><p>交换对称加密密码阶段（用非对称加密的方式确保安全）</p>
+</li>
+<li><p>会谈密码阶段，双方认可此密码（发一条消息双方加解密即可）</p>
+</li>
+<li><p>检验阶段</p>
+</li>
+<li><p>客户认证阶段</p>
+</li>
+</ul>
+<p>防火墙，参考资料：<a target="_blank" rel="noopener" href="https://www.docin.com/p-827926767.html">www.docin.com</a></p>
+<ul>
+<li><p>网络级，层次低，效率高</p>
+</li>
+<li><p>应用级，层次高，效率低，会拆开包检查</p>
+<ul>
+<li><p><strong>被屏蔽子网方案</strong>，内网所有机器网络通信都强制经过一个屏蔽子网，也就一定会被防火墙过滤，这层网络叫 DMZ（非军事区）</p>
+</li>
+<li><p>双宿主机网关，防火墙拥有对内和对外的两个网卡，设备的网关设为防火墙，所有数据一定要通过防火墙机器才能发出和接收</p>
+</li>
+<li><p>屏蔽主机网关，顾名思义，网关就是防火墙的地址</p>
+<ul>
+<li><p>单宿堡垒主机，防火墙只需要一个网卡，只需要保证所有机器的网关指向防火墙，路由器也只将外部回传的数据转发给防火墙即可</p>
+</li>
+<li><p>双宿堡垒主机，防火墙拥有对内和对外的两个网卡，所有数据一定要通过防火墙机器才能发出和接收</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>病毒和木马</p>
+<ul>
+<li><p>病毒主要是破坏计算机功能和数据的，能够自我复制的一串代码或程序</p>
+<ul>
+<li>具有传染性，隐蔽性，潜伏性，破坏性，针对性，衍生性，寄生性，未知性</li>
+</ul>
+</li>
+<li><p>木马一般用于监控、窃取数据</p>
+</li>
+</ul>
+<p><img src="/static/assets/2022-05-19-22-45-02-image.png"></p>
+<h2 id="多媒体"><a href="#多媒体" class="headerlink" title="多媒体"></a>多媒体</h2><p>多媒体的分类：</p>
+<ul>
+<li><p>感觉媒体，直接作用于人的器官，听觉，触觉等等</p>
+</li>
+<li><p>表示媒体，传输感觉的中介媒体，就是数据的编码，比如图像声音的编码</p>
+</li>
+<li><p>表现媒体，进行输入输出的媒体</p>
+</li>
+<li><p>存储媒体，存储介质，内存，硬盘等</p>
+</li>
+<li><p>传输媒体，网线，光纤等</p>
+</li>
+</ul>
+<h3 id="声音"><a href="#声音" class="headerlink" title="声音"></a>声音</h3><p>以声音的带宽衡量声音的大小，单位 HZ，从模拟信号转为数字信号有三个步骤</p>
+<ul>
+<li><p>采样</p>
+</li>
+<li><p>量化</p>
+</li>
+<li><p>编码</p>
+</li>
+</ul>
+<p>人耳能听到的声音在 20Hz ~ 20KHz 之间</p>
+<p>一般来说，采样频率为声音最高频率的两倍才能不失真</p>
+<p>未经压缩传输率计算公式：</p>
+<p>传输率(bps) = 采样频率(Hz) * 量化位数(bit) * 声道数</p>
+<p>数字调频合成法 FM，可合成电子模拟音</p>
+<p>波表合成法 WaveTable，记录所有真实乐器能发出的所有声音，存为波表文件，然后合成并加工回放</p>
+<h4 id="声音的特性"><a href="#声音的特性" class="headerlink" title="声音的特性"></a>声音的特性</h4><p>音量：响度，强弱程度，由振幅决定</p>
+<p>音高：音量的高低，取决于声波震动频率，频率越高音越高</p>
+<p>音调：调子的高低，声音本身的频率而定</p>
+<p>音色：也称音品</p>
+<h3 id="图像"><a href="#图像" class="headerlink" title="图像"></a>图像</h3><h4 id="颜色三要素"><a href="#颜色三要素" class="headerlink" title="颜色三要素"></a>颜色三要素</h4><p>亮度：颜色明暗深浅程度</p>
+<p>色调：偏红还是偏绿，颜色分类</p>
+<p>饱和度：某颜色的深浅程度</p>
+<h4 id="彩色空间"><a href="#彩色空间" class="headerlink" title="彩色空间"></a>彩色空间</h4><p>一般显示器使用 RGB 彩色空间，除了红黄蓝三原色，其他色都是三原色叠加形成</p>
+<p>电视使用 YUV 色彩空间，主要为了兼容黑白电视，不同的亮度显示不同的颜色</p>
+<p>印刷使用 CMY，用和 RGB 相反的减法原理</p>
+<p>HSV，按照艺术角度划分的色彩</p>
+<p>图像属性：分辨率（单位 dpi）、像素深度（存储每个像素用的二进制数，单位 bit）</p>
+<p>水平分辨率：横向具有的像素点数量</p>
+<p>垂直分辨率：纵向具有的像素点数量</p>
+<h4 id="矢量图和位图"><a href="#矢量图和位图" class="headerlink" title="矢量图和位图"></a>矢量图和位图</h4><p>矢量图的基本组成单元是图元，位图的基本组成单位是像素，视频和动画的基本组成单元式帧。</p>
+<p>计算的时候注意单位，DPI 表示单位英寸像素点数，分水平和垂直，截图的题只告诉 150 dpi，意思是水平和垂直都为 150</p>
+<p><img src="/static/assets/2022-05-19-22-47-19-image.png"></p>
+<p><img src="/static/assets/2022-05-19-22-48-23-image.png"></p>
+<h4 id="ISO-标准"><a href="#ISO-标准" class="headerlink" title="ISO 标准"></a>ISO 标准</h4><p>MPEG 是 Moving Picture Expert Group 简称，1/2/4 是音视频编码，7是多媒体内容描述接口标准，21是多媒体应用框架标准。</p>
+<p>VCD 用的 MPEG-1</p>
+<p>DVD 用的 MPEG-2</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>网络是一个比较重点的部分，需要重点理解里边的协议、TCP/IP协议簇、IP和子网等等，多媒体部分的知识点主要是常识和概念性的东西。</p>
+</body></html>
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>Jeffrey Wang<br>
+        <strong>本文链接：</strong><a href="https://blog.wj2015.com/2022/05/19/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E7%BD%91%E7%BB%9C%E5%92%8C%E5%A4%9A%E5%AA%92%E4%BD%93/" title="https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2022&#x2F;05&#x2F;19&#x2F;%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E7%BD%91%E7%BB%9C%E5%92%8C%E5%A4%9A%E5%AA%92%E4%BD%93&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2022&#x2F;05&#x2F;19&#x2F;%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E7%BD%91%E7%BB%9C%E5%92%8C%E5%A4%9A%E5%AA%92%E4%BD%93&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag">计算机网络</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E8%BD%AF%E8%80%83/" rel="tag">软考</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          <section class="nexmoe-comment">
+    <link rel="stylesheet" href="/static/libs/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="/static/libs/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: 'd7b7061e43e1334a5aa9',
+        clientSecret: '5af2efcfc06b854bc5ccc23babfa3a06a7508c1e',
+        id: window.location.pathname,
+        repo: 'blog',
+        owner: 'wangerzi',
+        admin: 'wangerzi'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AB%A0%E8%8A%82%E5%A4%A7%E7%BA%B2"><span class="toc-number">1.1.</span> <span class="toc-text">章节大纲</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E6%A6%82%E8%BF%B0"><span class="toc-number">2.</span> <span class="toc-text">网络概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91OSI-%E4%B8%83%E5%B1%82%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.1.</span> <span class="toc-text">【重点】OSI 七层模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.</span> <span class="toc-text">网络协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%80%90%E9%87%8D%E7%82%B9%E3%80%91TCP-x2F-IP-%E5%8D%8F%E8%AE%AE%E6%97%8F"><span class="toc-number">3.1.</span> <span class="toc-text">【重点】TCP&#x2F;IP 协议族</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#TCP-x2F-IP-%E5%8D%8F%E8%AE%AE%E6%97%8F%E7%9A%84%E7%89%B9%E6%80%A7"><span class="toc-number">3.1.1.</span> <span class="toc-text">TCP&#x2F;IP 协议族的特性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TCP-x2F-IP-%E5%88%86%E5%B1%82%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.1.2.</span> <span class="toc-text">TCP&#x2F;IP 分层模型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%B1%82%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.1.3.</span> <span class="toc-text">应用层协议</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#DNS-%E7%9A%84%E8%A7%A3%E6%9E%90"><span class="toc-number">3.1.3.1.</span> <span class="toc-text">DNS 的解析</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IP-%E5%92%8C%E8%B7%AF%E7%94%B1"><span class="toc-number">4.</span> <span class="toc-text">IP 和路由</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5"><span class="toc-number">4.1.</span> <span class="toc-text">路由选择策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IP"><span class="toc-number">4.2.</span> <span class="toc-text">IP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%82%E6%AC%A1%E5%8C%96%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.3.</span> <span class="toc-text">层次化网络模型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E4%BE%8B%E9%A2%98"><span class="toc-number">4.3.1.</span> <span class="toc-text">一个例题</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C"><span class="toc-number">5.</span> <span class="toc-text">网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E5%AA%92%E4%BD%93"><span class="toc-number">6.</span> <span class="toc-text">多媒体</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A3%B0%E9%9F%B3"><span class="toc-number">6.1.</span> <span class="toc-text">声音</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A3%B0%E9%9F%B3%E7%9A%84%E7%89%B9%E6%80%A7"><span class="toc-number">6.1.1.</span> <span class="toc-text">声音的特性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F"><span class="toc-number">6.2.</span> <span class="toc-text">图像</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%9C%E8%89%B2%E4%B8%89%E8%A6%81%E7%B4%A0"><span class="toc-number">6.2.1.</span> <span class="toc-text">颜色三要素</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BD%A9%E8%89%B2%E7%A9%BA%E9%97%B4"><span class="toc-number">6.2.2.</span> <span class="toc-text">彩色空间</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9F%A2%E9%87%8F%E5%9B%BE%E5%92%8C%E4%BD%8D%E5%9B%BE"><span class="toc-number">6.2.3.</span> <span class="toc-text">矢量图和位图</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ISO-%E6%A0%87%E5%87%86"><span class="toc-number">6.2.4.</span> <span class="toc-text">ISO 标准</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    <script src="/static/libs/mdui.min.js"></script>
+<script src="/static/libs/jquery.min.js"></script>
+<script src="/static/libs/fancybox.umd.js"></script>
+
+ 
+
+<script async src="/js/app.js?v=1652972223836"></script>
+
+
+	<script async src="/js/search.js?v=1652972223836"></script>
+
+
+<script src="/static/libs/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHH2NFM6CG"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZHH2NFM6CG');
+</script>
+
+
+
+
+
+</body>
+
+</html>
