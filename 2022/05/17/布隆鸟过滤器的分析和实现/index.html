@@ -20,10 +20,10 @@
 <meta property="og:description" content="前言业务中时常会有类似检索一个元素是否在集合中这样的场景，如果对时间和空间要求不高，我们可能会  查表，或者建唯一索引避免重复插入  Redis 中使用 set 或者类似 hash 表的数据结构，将数据做 hash 后放到 key 上，以待后续查询   而当我们有大量数据需要判重并且业务允许小概率误阳判断的前提下  使用布隆过滤器做大量数据隶属判断，但由于底层实现的原因，无法删除历史已加入集合的数">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-18-22-52-13-image.png">
-<meta property="og:image" content="http://www.linvon.cn/img/cuckoo/1.jpg">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-19-13-34-58-1.jpg">
 <meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-05-18-20-46-48-image.png">
 <meta property="article:published_time" content="2022-05-17T14:08:41.000Z">
-<meta property="article:modified_time" content="2022-05-18T14:59:49.462Z">
+<meta property="article:modified_time" content="2022-05-19T05:38:30.086Z">
 <meta property="article:author" content="Jeffrey Wang">
 <meta property="article:tag" content="Hash">
 <meta property="article:tag" content="算法">
@@ -39,9 +39,9 @@
         href="/static/libs/justifiedGallery.min.css"
     />
     
-    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1652886009091">
-    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1652886009091">
-    <link rel="stylesheet" href="/css/style.css?v=1652886009091">
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1652938724880">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1652938724880">
+    <link rel="stylesheet" href="/css/style.css?v=1652938724880">
      
     
 <meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
@@ -294,7 +294,7 @@
 </ul>
 </li>
 </ul>
-<p><img data-fancybox="gallery" src="http://www.linvon.cn/img/cuckoo/1.jpg" alt="1" data-caption="1" loading="lazy"></p>
+<p><img src="/static/assets/2022-05-19-13-34-58-1.jpg"></p>
 <p>这样做就会始终<strong>保证某个元素 x 对应的指纹一定在 hx1 桶或者 hx2 桶中</strong>，查找和删除的时候就顺着这个规律找即可</p>
 <p>由于布谷鸟哈希并不存储原文，仅存储 <strong>“唯一”</strong> 指纹，上述设计还有几个隐藏的问题：</p>
 <ul>
@@ -457,10 +457,10 @@
 
  
 
-<script async src="/js/app.js?v=1652886009124"></script>
+<script async src="/js/app.js?v=1652938724904"></script>
 
 
-	<script async src="/js/search.js?v=1652886009124"></script>
+	<script async src="/js/search.js?v=1652938724904"></script>
 
 
 <script src="/static/libs/jquery.justifiedGallery.min.js"></script>
