@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>【软考知识总结】程序设计 - 九层台</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="前端开发,后端开发,LINUX,机器学习,软考">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="前言程序设计这一章节，主要是讲程序的基本组成、编译原理、知识产权、标准化 基本概念编程语言的类型解释和翻译  解释型：不生成可执行文件，由运行时由解释器逐条解释执行，运行时可以控制源程序，执行速度慢，效率底  翻译型：生成可执行文件，直接运行，运行时无法干预源程序，速度快，效率高   编译过程大概分为几个阶段  词法分析  语法分析  语义分析  中间代码生成（可选）  代码优化（可选）  最终代">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【软考知识总结】程序设计">
+<meta property="og:url" content="https://blog.wj2015.com/2022/06/02/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/">
+<meta property="og:site_name" content="九层台">
+<meta property="og:description" content="前言程序设计这一章节，主要是讲程序的基本组成、编译原理、知识产权、标准化 基本概念编程语言的类型解释和翻译  解释型：不生成可执行文件，由运行时由解释器逐条解释执行，运行时可以控制源程序，执行速度慢，效率底  翻译型：生成可执行文件，直接运行，运行时无法干预源程序，速度快，效率高   编译过程大概分为几个阶段  词法分析  语法分析  语义分析  中间代码生成（可选）  代码优化（可选）  最终代">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/328d274c0f1fe176f67134d89d69be9c6ffbf8e5.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/4c644c1692f83e06988952ab90f66229fc738dc0.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/9a2580a9b4ad709db4ae784599cc6c0d7b13cb4a.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/62d26288915c628fbeb1bcc747f7c96ad69d3561.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/b048b18051b2a0fbf01cc031fa47b7118f1ba632.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/d21eee1d04ea2882ae822189316519509d357018.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/b1f1af4d955ff4214c9c8cde94a626fd64e87279.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/857dc7a700198485e424b0b793ebf60c4605cd36.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/809d57ab36898be3f0415d2acf06e025c0631411.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/4dec0b18c892caa060f8fe0bed1968cc14460503.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/d9a1dd048dec5c75f025f18882f4dfc5efb0cb93.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/ed68733952d4c459eb1c0558f6dc89541f36f0c6.png">
+<meta property="article:published_time" content="2022-06-02T08:31:25.000Z">
+<meta property="article:modified_time" content="2022-06-02T09:16:40.845Z">
+<meta property="article:author" content="Jeffrey Wang">
+<meta property="article:tag" content="软考">
+<meta property="article:tag" content="程序设计">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.wj2015.com/static/assets/328d274c0f1fe176f67134d89d69be9c6ffbf8e5.png">
+    <link
+        rel="stylesheet"
+        href="/static/libs/fancybox.css"
+    />
+    <link
+        rel="stylesheet"
+        href="/static/libs/justifiedGallery.min.css"
+    />
+    
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1654161420461">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1654161420461">
+    <link rel="stylesheet" href="/css/style.css?v=1654161420461">
+     
+    
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
+</head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(/static/background.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="Jeffrey Wang" class="mdui-btn mdui-btn-icon"><img src="/static/avatar.jpg" alt="Jeffrey Wang"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="Jeffrey Wang">
+            <img src="/static/avatar.jpg" alt="Jeffrey Wang" alt="Jeffrey Wang">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>67</div>
+        <div><span>标签</span>129</div>
+        <div><span>分类</span>15</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/friends.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        
+            <form id="search_form">
+                <label><input class="st-default-search-input" id="search_value" name="q" type="search" placeholder="搜索" style="
+                    font-size: 15px !important;
+                    height: 56px !important;
+                    background-image: none;
+                "></label>
+            </form>
+         
+    </div>
+</div>
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/2020/" style="font-size: 10px;">2020</a> <a href="/tags/B-tree/" style="font-size: 10px;">B+ tree</a> <a href="/tags/BP/" style="font-size: 10px;">BP</a> <a href="/tags/BP%E7%AE%97%E6%B3%95/" style="font-size: 10px;">BP算法</a> <a href="/tags/CDN/" style="font-size: 10px;">CDN</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/GithubAction/" style="font-size: 10px;">GithubAction</a> <a href="/tags/Hash/" style="font-size: 11.67px;">Hash</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Mysql/" style="font-size: 15px;">Mysql</a> <a href="/tags/POW/" style="font-size: 10px;">POW</a> <a href="/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/tags/SVN/" style="font-size: 10px;">SVN</a> <a href="/tags/Serverless/" style="font-size: 10px;">Serverless</a> <a href="/tags/Vmware/" style="font-size: 10px;">Vmware</a> <a href="/tags/apply/" style="font-size: 10px;">apply</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/authorization/" style="font-size: 10px;">authorization</a> <a href="/tags/aws/" style="font-size: 11.67px;">aws</a> <a href="/tags/cloudfront/" style="font-size: 11.67px;">cloudfront</a> <a href="/tags/ctm/" style="font-size: 10px;">ctm</a> <a href="/tags/eth0/" style="font-size: 10px;">eth0</a> <a href="/tags/excel/" style="font-size: 10px;">excel</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/gasPrice/" style="font-size: 10px;">gasPrice</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gltf/" style="font-size: 10px;">gltf</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/iges/" style="font-size: 10px;">iges</a> <a href="/tags/ios/" style="font-size: 11.67px;">ios</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/js-xlsx/" style="font-size: 10px;">js-xlsx</a> <a href="/tags/kali/" style="font-size: 10px;">kali</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/layui/" style="font-size: 10px;">layui</a> <a href="/tags/layuiAdmin/" style="font-size: 10px;">layuiAdmin</a> <a href="/tags/nextTick/" style="font-size: 10px;">nextTick</a> <a href="/tags/nextcloud/" style="font-size: 10px;">nextcloud</a> <a href="/tags/nginx/" style="font-size: 13.33px;">nginx</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/php-fpm/" style="font-size: 11.67px;">php-fpm</a> <a href="/tags/php7/" style="font-size: 10px;">php7</a> <a href="/tags/phpMyAdmin/" style="font-size: 10px;">phpMyAdmin</a> <a href="/tags/phpunit/" style="font-size: 10px;">phpunit</a> <a href="/tags/python/" style="font-size: 13.33px;">python</a> <a href="/tags/pythonocc/" style="font-size: 10px;">pythonocc</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/stl/" style="font-size: 10px;">stl</a> <a href="/tags/stp/" style="font-size: 10px;">stp</a> <a href="/tags/style/" style="font-size: 10px;">style</a> <a href="/tags/syncting/" style="font-size: 10px;">syncting</a> <a href="/tags/three-js/" style="font-size: 10px;">three.js</a> <a href="/tags/utools/" style="font-size: 10px;">utools</a> <a href="/tags/vbot/" style="font-size: 10px;">vbot</a> <a href="/tags/video/" style="font-size: 11.67px;">video</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/web3/" style="font-size: 10px;">web3</a> <a href="/tags/web3d/" style="font-size: 10px;">web3d</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/%E4%BA%A4%E6%98%93/" style="font-size: 10px;">交易</a> <a href="/tags/%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0/" style="font-size: 10px;">代价函数</a> <a href="/tags/%E5%81%8F%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">偏导数</a> <a href="/tags/%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">关系式</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8/" style="font-size: 10px;">内存占用</a> <a href="/tags/%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A/" style="font-size: 10px;">动态绑定</a> <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" style="font-size: 13.33px;">区块链</a> <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" style="font-size: 10px;">单元测试</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">博客</a> <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 11.67px;">卷积神经网络</a> <a href="/tags/%E5%8F%82%E6%95%B0%E8%8E%B7%E5%8F%96/" style="font-size: 10px;">参数获取</a> <a href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" style="font-size: 10px;">反向代理</a> <a href="/tags/%E5%8F%8D%E5%90%91%E9%80%92%E6%8E%A8%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">反向递推关系式</a> <a href="/tags/%E5%90%88%E7%BA%A6/" style="font-size: 10px;">合约</a> <a href="/tags/%E5%90%8C%E6%AD%A5/" style="font-size: 10px;">同步</a> <a href="/tags/%E5%90%91%E9%87%8F/" style="font-size: 10px;">向量</a> <a href="/tags/%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/" style="font-size: 10px;">命名规则</a> <a href="/tags/%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0%E6%B1%82%E5%AF%BC/" style="font-size: 10px;">复合函数求导</a> <a href="/tags/%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C/" style="font-size: 10px;">多人协作</a> <a href="/tags/%E5%A4%9A%E5%8F%98%E9%87%8F%E5%87%BD%E6%95%B0/" style="font-size: 10px;">多变量函数</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%AF%BC%E5%87%BA%E6%A0%B7%E5%BC%8F/" style="font-size: 10px;">导出样式</a> <a href="/tags/%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">导数</a> <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 11.67px;">小程序</a> <a href="/tags/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" style="font-size: 10px;">异常处理</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%9C%8D/" style="font-size: 10px;">微信客服</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91/" style="font-size: 11.67px;">微信开发</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 10px;">思考</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5/" style="font-size: 10px;">拉格朗日</a> <a href="/tags/%E6%8F%92%E4%BB%B6/" style="font-size: 10px;">插件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%94%B9%E9%80%A0/" style="font-size: 10px;">改造</a> <a href="/tags/%E6%95%A3%E5%88%97%E8%A1%A8/" style="font-size: 10px;">散列表</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" style="font-size: 10px;">数据类型</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 10px;">数据结构</a> <a href="/tags/%E6%97%85%E8%A1%8C/" style="font-size: 10px;">旅行</a> <a href="/tags/%E6%97%A0%E9%99%90%E7%BA%A7%E5%88%86%E7%B1%BB/" style="font-size: 10px;">无限级分类</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 18.33px;">机器学习</a> <a href="/tags/%E6%9E%81%E5%80%BC/" style="font-size: 10px;">极值</a> <a href="/tags/%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/" style="font-size: 10px;">格式转换</a> <a href="/tags/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" style="font-size: 13.33px;">梯度下降</a> <a href="/tags/%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9/" style="font-size: 10px;">模型压缩</a> <a href="/tags/%E6%AF%9B%E9%80%89/" style="font-size: 10px;">毛选</a> <a href="/tags/%E6%B1%A0%E5%8C%96/" style="font-size: 10px;">池化</a> <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 15px;">深度学习</a> <a href="/tags/%E7%89%B9%E5%BE%81%E6%98%A0%E5%B0%84/" style="font-size: 10px;">特征映射</a> <a href="/tags/%E7%9F%A9%E9%98%B5/" style="font-size: 10px;">矩阵</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E5%8D%95%E5%85%83%E8%AF%AF%E5%B7%AE/" style="font-size: 10px;">神经单元误差</a> <a href="/tags/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" style="font-size: 10px;">程序设计</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 10px;">算法</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" style="font-size: 10px;">索引原理</a> <a href="/tags/%E7%BD%91%E5%8D%A1/" style="font-size: 10px;">网卡</a> <a href="/tags/%E8%A7%86%E9%A2%91%E6%B5%81/" style="font-size: 11.67px;">视频流</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/" style="font-size: 10px;">计算机组成结构</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">计算机网络</a> <a href="/tags/%E8%AF%AF%E5%B7%AE%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E6%B3%95/" style="font-size: 10px;">误差反向传播法</a> <a href="/tags/%E8%B7%A8%E8%A1%A8/" style="font-size: 10px;">跨表</a> <a href="/tags/%E8%B8%A9%E5%9D%91/" style="font-size: 13.33px;">踩坑</a> <a href="/tags/%E8%BD%AF%E8%80%83/" style="font-size: 16.67px;">软考</a> <a href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" style="font-size: 10px;">过滤器</a> <a href="/tags/%E8%BF%91%E4%BC%BC%E5%85%AC%E5%BC%8F/" style="font-size: 10px;">近似公式</a> <a href="/tags/%E8%BF%AD%E4%BB%A3%E5%99%A8/" style="font-size: 10px;">迭代器</a>
+    </div>
+    
+      <script>
+        var maxTagcloud = parseInt(20);
+        var tags_length = parseInt(129);
+        var tags_arr = [];
+        for(var i = 0; i < tags_length; i++){
+          tags_arr.push(i);
+        }
+        tags_arr.sort(function (l, r) {
+          return Math.random() > 0.5 ? -1 : 1;
+        });
+        tags_arr = tags_arr.slice(0, maxTagcloud < tags_length ? tags_length - maxTagcloud : 0);
+        for(var tag_i = 0; tag_i < tags_arr.length; tag_i++){
+          document.getElementById("randomtagcloud").children[tags_arr[tag_i]].style.display = 'none';
+        }
+      </script>
+    
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/06/02/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/">【软考知识总结】程序设计</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/19/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E7%BD%91%E7%BB%9C%E5%92%8C%E5%A4%9A%E5%AA%92%E4%BD%93/">【软考知识总结】网络和多媒体</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/17/%E5%B8%83%E9%9A%86%E9%B8%9F%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E5%88%86%E6%9E%90%E5%92%8C%E5%AE%9E%E7%8E%B0/">使用 Golang 快速实现布谷鸟过滤器解决大数据判重问题</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/12/%E3%80%90%E6%AF%9B%E9%80%89%E3%80%91%E5%AE%9E%E8%B7%B5%E8%AE%BA%E5%B8%A6%E6%9D%A5%E7%9A%84%E6%80%9D%E8%80%83/">【毛选】实践论带来的思考</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/12/%E5%90%88%E7%BA%A6%E4%BA%A4%E6%98%93%E4%B8%ADInputData%E7%9A%84%E7%BC%96%E8%A7%A3%E7%A0%81%E5%AE%9E%E8%B7%B5/">合约交易中InputData的编解码实践</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://github.com/wangerzi/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a><a class="mdui-ripple" href="/atom.xml" target="_blank" mdui-tooltip="{content: 'RSS'}" style="color: rgb(247, 132, 34);background-color: rgba(247, 132, 34, .1);">
+            <i class="nexmoefont icon-rss"></i>
+        </a>
+    </div>
+</div>
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 Jeffrey Wang
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: NaN%;"> 
+              <img src="/static/uploads/2022/04/nick-morrison-FHnnjk1Yj7Y-unsplash-1200x661.jpg" alt="【软考知识总结】程序设计" loading="lazy">
+              <h1>【软考知识总结】程序设计</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2022年06月02日</a>
+</div>
+
+      <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>程序设计这一章节，主要是讲程序的基本组成、编译原理、知识产权、标准化</p>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="编程语言的类型"><a href="#编程语言的类型" class="headerlink" title="编程语言的类型"></a>编程语言的类型</h3><p>解释和翻译</p>
+<ul>
+<li><p>解释型：不生成可执行文件，由运行时<strong>由解释器逐条解释执行</strong>，运行时可以控制源程序，<strong>执行速度慢，效率底</strong></p>
+</li>
+<li><p>翻译型：生成可执行文件，直接运行，<strong>运行时无法干预源程序，速度快，效率高</strong></p>
+</li>
+</ul>
+<p>编译过程大概分为几个阶段</p>
+<ul>
+<li><p>词法分析</p>
+</li>
+<li><p>语法分析</p>
+</li>
+<li><p>语义分析</p>
+</li>
+<li><p>中间代码生成（可选）</p>
+</li>
+<li><p>代码优化（可选）</p>
+</li>
+<li><p>最终代码生成</p>
+</li>
+</ul>
+<p>程序设计语言的组成：</p>
+<ul>
+<li><p>语法（规则）</p>
+</li>
+<li><p>语义（含义）</p>
+</li>
+<li><p>语用（关系）</p>
+</li>
+</ul>
+<h3 id="程序基本成分"><a href="#程序基本成分" class="headerlink" title="程序基本成分"></a>程序基本成分</h3><p>数据成分：</p>
+<ul>
+<li><p>数据和数据类型</p>
+<ul>
+<li><p>数据分常量、变量、局部量、全局量</p>
+</li>
+<li><p>数据类型分整数、字符、单/双精度浮点、布尔、字符等</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>运算成分：</p>
+<p>指明的运算符号和规则，算数运算、逻辑运算、关系运算、位运算</p>
+<p>控制成分：</p>
+<p>控制结构，顺序、循环、选择</p>
+<p>传输成分：</p>
+<p>指明允许的传输方式，赋值、输入输出等</p>
+<p>函数：</p>
+<p><strong>函数是程序运行的主要成分，包含定义、声明、调用</strong></p>
+<p>传值/传址：</p>
+<p>传值是拷贝值，函数内修改该值并不会造成原有值的改变，传址是拷贝一个地址，函数内修改该值会造成原有值的改变</p>
+<p>实参：</p>
+<p>实际参数，调用时传入的参数，可以是变量、常量、表达式、函数调用</p>
+<p>形参：</p>
+<p>形式参数，函数参数列表中的参数</p>
+<h2 id="编译原理"><a href="#编译原理" class="headerlink" title="编译原理"></a>编译原理</h2><p>编译的目标是把高级程序翻译成目标程序（汇编、机器语言）</p>
+<p><img data-fancybox="gallery" src="/static/assets/328d274c0f1fe176f67134d89d69be9c6ffbf8e5.png" alt="1654161024666.png" data-caption="1654161024666.png" loading="lazy"></p>
+<p>编译过程分为六个阶段</p>
+<ul>
+<li><p>词法分析，顺序扫描，识别符号</p>
+</li>
+<li><p>语法分析，判断源程序在结构上是否正确</p>
+</li>
+<li><p>语义分析，进行上下文有关性质的审查，比如类型匹配等</p>
+<ul>
+<li><p>静态语义错误就在这个阶段</p>
+</li>
+<li><p>动态语义错误在运行时才能发现</p>
+</li>
+</ul>
+</li>
+<li><p>中间代码生成，只是根据语义生成的，因为目标代码需要根据机器不同做不同的处理，有一个中间代码可以方便移植有利于跨机器的实现</p>
+<ul>
+<li><p>后缀式</p>
+</li>
+<li><p>三元式</p>
+</li>
+<li><p>四元式</p>
+</li>
+<li><p>树</p>
+</li>
+</ul>
+</li>
+<li><p>代码优化</p>
+</li>
+<li><p>目标代码生成，简洁高效</p>
+<ul>
+<li><p>如何生成<strong>较短</strong>目标代码</p>
+</li>
+<li><p>充分<strong>利用寄存器</strong>减少存储单元访问</p>
+</li>
+<li><p>利用指令系统特点，提高代码质量</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>相关计算：</p>
+<p><strong>掌握中缀式到后缀式，就是通过中缀还原树然后后缀式表达出来即可</strong>，与二叉树部分的遍历类似，相关例题如下，正确答案是B</p>
+<p><img data-fancybox="gallery" src="/static/assets/4c644c1692f83e06988952ab90f66229fc738dc0.png" alt="1654159127386.png" data-caption="1654159127386.png" loading="lazy"></p>
+<h2 id="文法定义"><a href="#文法定义" class="headerlink" title="文法定义"></a>文法定义</h2><p><img data-fancybox="gallery" src="/static/assets/9a2580a9b4ad709db4ae784599cc6c0d7b13cb4a.png" alt="1654159442142.png" data-caption="1654159442142.png" loading="lazy"></p>
+<p>代码被解析抽象为文法，而文法在概念上是一个有序四元组 G = (V, T, S, P)</p>
+<ul>
+<li><p>V 非终结符</p>
+</li>
+<li><p>T 终结符，最终结果</p>
+</li>
+<li><p>S 启始符</p>
+</li>
+<li><p>P 产生式</p>
+</li>
+</ul>
+<p>大概过程就是 S -&gt; V（在 P 的作用下）-&gt;T 这么个过程</p>
+<p>闭包只需要记住一个公式</p>
+<p>正则闭包：(ab)+ = {ab, abab, ababab, ….}</p>
+<p>闭包：(ab)* = {segma} ∪ (ab)+， 正则集合里边加上 {segma} 即可</p>
+<p>比如这个例题，需要做的就是把 AB 带入文法，进而得到 S 的可能结果</p>
+<p><img data-fancybox="gallery" src="/static/assets/62d26288915c628fbeb1bcc747f7c96ad69d3561.png" alt="1654159509463.png" data-caption="1654159509463.png" loading="lazy"></p>
+<p>文法类型关键点：</p>
+<p>上下文无关-&gt;语法</p>
+<p>上下文有关-&gt;语义</p>
+<p>所以这个例题应该选 B，上下文无关描述语法</p>
+<p><img data-fancybox="gallery" src="/static/assets/b048b18051b2a0fbf01cc031fa47b7118f1ba632.png" alt="1654159664144.png" data-caption="1654159664144.png" loading="lazy"></p>
+<p>表达式到正规式的转换，一定要注意是<strong>可逆的有充要性的转换</strong>，能否通过有限自动机识别，就看里边有没有动态的不可确认的属性，有无终态即可。</p>
+<p><img data-fancybox="gallery" src="/static/assets/d21eee1d04ea2882ae822189316519509d357018.png" alt="1654159714678.png" data-caption="1654159714678.png" loading="lazy"></p>
+<p><img data-fancybox="gallery" src="/static/assets/b1f1af4d955ff4214c9c8cde94a626fd64e87279.png" alt="1654159747086.png" data-caption="1654159747086.png" loading="lazy"></p>
+<p>语法分析方法，两个重点</p>
+<ul>
+<li><p>自上而下的分析，相当于从左到右的推导</p>
+</li>
+<li><p>自下而上的分析，相当于从右到左的规约</p>
+</li>
+</ul>
+<p>图内例题，移进-规约法是自下而上的分析方法，所以选 B</p>
+<p><img data-fancybox="gallery" src="/static/assets/857dc7a700198485e424b0b793ebf60c4605cd36.png" alt="1654159834429.png" data-caption="1654159834429.png" loading="lazy"></p>
+<h2 id="知识产权"><a href="#知识产权" class="headerlink" title="知识产权"></a>知识产权</h2><p>保护期限重点</p>
+<ul>
+<li><p>署名、修改等所属权力，没有限制</p>
+</li>
+<li><p>商业上的权利，50年（12月31日）</p>
+</li>
+<li><p>注册商标10年，需要续注</p>
+</li>
+<li><p>发明专利，20年，不可续注</p>
+</li>
+<li><p>实用新型+外观设计专利，10年</p>
+</li>
+<li><p>商业秘密，不确定</p>
+</li>
+</ul>
+<p><img data-fancybox="gallery" src="/static/assets/809d57ab36898be3f0415d2acf06e025c0631411.png" alt="1654160125591.png" data-caption="1654160125591.png" loading="lazy"></p>
+<p>知识产权人重点</p>
+<ul>
+<li><p><strong>只有作品与单位一点关系没有，属于其他类别才享有著作权，否则权力都属于单位</strong></p>
+</li>
+<li><p>作品著作权受保护，使用的数学思想，算法思想不受保护</p>
+</li>
+</ul>
+<blockquote>
+<p>在程序员生涯中，有一点需要注意就是，供职于公司，哪怕业余时间开发的程序，著作权和专利权都是属于公司的，大名鼎鼎的 NGINX 就有这样的纠纷</p>
+</blockquote>
+<p><img data-fancybox="gallery" src="/static/assets/4dec0b18c892caa060f8fe0bed1968cc14460503.png" alt="1654160136430.png" data-caption="1654160136430.png" loading="lazy"></p>
+<p>委托开发重点</p>
+<p>委托开发合同不做申明，著作权默认属于创作方，有合同的时候，默认归属于单位（委托方）</p>
+<p><img data-fancybox="gallery" src="/static/assets/d9a1dd048dec5c75f025f18882f4dfc5efb0cb93.png" alt="1654160220294.png" data-caption="1654160220294.png" loading="lazy"></p>
+<p><img data-fancybox="gallery" src="/static/assets/ed68733952d4c459eb1c0558f6dc89541f36f0c6.png" alt="1654160723921.png" data-caption="1654160723921.png" loading="lazy"></p>
+<h2 id="标准化"><a href="#标准化" class="headerlink" title="标准化"></a>标准化</h2><p>标准分类：</p>
+<ul>
+<li><p>国际标准，ISO/IEC 等</p>
+</li>
+<li><p>国家标准，GB 中国，ANSI 美国，BS 英国，JIS 日本等</p>
+</li>
+<li><p>区域标准，PASC 太平洋地区标准</p>
+</li>
+<li><p>行业标准，GJB 中国军用标准</p>
+</li>
+<li><p>地方标准，地方一级机构制定的标准</p>
+</li>
+<li><p>企业标准</p>
+</li>
+<li><p>项目规范</p>
+</li>
+</ul>
+<p>国际标准组成：标准代号+专业类号+顺序号+年代号</p>
+<p>我国标准组成：GB 强制国标，GB/T 推荐国标，GB/Z 指导国标</p>
+<p>行业标准组成：一般是首拼，比如汽车 QC</p>
+<p>地方标准组成：DB + 省级代码前两位</p>
+<p>企业标准组成：Q/ 企业代号</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>程序设计这一部分，概念比较多，对应考来说，理解题目的考察模式，结合自身经验进行理解即可，最后的产权、标准化，可作为尝试理解记忆。</p>
+</body></html>
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>Jeffrey Wang<br>
+        <strong>本文链接：</strong><a href="https://blog.wj2015.com/2022/06/02/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" title="https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2022&#x2F;06&#x2F;02&#x2F;%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2022&#x2F;06&#x2F;02&#x2F;%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" rel="tag">程序设计</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E8%BD%AF%E8%80%83/" rel="tag">软考</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          <section class="nexmoe-comment">
+    <link rel="stylesheet" href="/static/libs/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="/static/libs/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: 'd7b7061e43e1334a5aa9',
+        clientSecret: '5af2efcfc06b854bc5ccc23babfa3a06a7508c1e',
+        id: window.location.pathname,
+        repo: 'blog',
+        owner: 'wangerzi',
+        admin: 'wangerzi'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">2.</span> <span class="toc-text">基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.1.</span> <span class="toc-text">编程语言的类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E5%9F%BA%E6%9C%AC%E6%88%90%E5%88%86"><span class="toc-number">2.2.</span> <span class="toc-text">程序基本成分</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">编译原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E6%B3%95%E5%AE%9A%E4%B9%89"><span class="toc-number">4.</span> <span class="toc-text">文法定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%A5%E8%AF%86%E4%BA%A7%E6%9D%83"><span class="toc-number">5.</span> <span class="toc-text">知识产权</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E5%8C%96"><span class="toc-number">6.</span> <span class="toc-text">标准化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    <script src="/static/libs/mdui.min.js"></script>
+<script src="/static/libs/jquery.min.js"></script>
+<script src="/static/libs/fancybox.umd.js"></script>
+
+ 
+
+<script async src="/js/app.js?v=1654161420468"></script>
+
+
+	<script async src="/js/search.js?v=1654161420468"></script>
+
+
+<script src="/static/libs/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHH2NFM6CG"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZHH2NFM6CG');
+</script>
+
+
+
+
+
+</body>
+
+</html>
