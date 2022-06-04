@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>【软考知识总结】数据结构和算法 - 九层台</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="前端开发,后端开发,LINUX,机器学习,软考">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="前言这一部分的内容除了选择题会出现，还有最后的大题涉及到算法设计和实现，主要内容就是大学时期讲的数据结构相关的内容，数组、链表、栈、队列、串以及常见的排序和搜索算法。 数据结构数组连续的存储空间，顺序的分配给数据结构，地址计算，本质是起始地址+前面的元素数量*长度 特殊矩阵  对称矩阵，a[i][j]&#x3D;a[j][i]，相当于对角线对称  对角矩阵，非零元素集中在对角线中心  三角矩阵，主对角线上方">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【软考知识总结】数据结构和算法">
+<meta property="og:url" content="https://blog.wj2015.com/2022/06/03/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/">
+<meta property="og:site_name" content="九层台">
+<meta property="og:description" content="前言这一部分的内容除了选择题会出现，还有最后的大题涉及到算法设计和实现，主要内容就是大学时期讲的数据结构相关的内容，数组、链表、栈、队列、串以及常见的排序和搜索算法。 数据结构数组连续的存储空间，顺序的分配给数据结构，地址计算，本质是起始地址+前面的元素数量*长度 特殊矩阵  对称矩阵，a[i][j]&#x3D;a[j][i]，相当于对角线对称  对角矩阵，非零元素集中在对角线中心  三角矩阵，主对角线上方">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-06-04-15-06-26-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-06-04-15-08-27-042e781f406dfd609d69319e1cd53fd0.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-06-04-15-44-42-a711beaeb1c3317ae8a52d2afa68055f.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-06-04-15-45-22-d58b367b5173977d038ec020d54f9fba.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-06-04-15-49-06-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-06-04-15-51-12-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-06-04-15-51-28-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-06-04-15-54-28-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-06-04-15-54-50-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-06-04-15-55-26-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-06-04-15-56-14-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-06-04-15-57-01-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-06-04-16-00-35-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-06-04-16-01-37-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-06-04-16-03-06-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-06-04-16-06-27-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-06-04-16-06-25-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-06-04-16-09-41-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-06-04-16-10-28-image.png">
+<meta property="article:published_time" content="2022-06-03T01:57:25.000Z">
+<meta property="article:modified_time" content="2022-06-04T08:25:39.015Z">
+<meta property="article:author" content="Jeffrey Wang">
+<meta property="article:tag" content="软考">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.wj2015.com/static/assets/2022-06-04-15-06-26-image.png">
+    <link
+        rel="stylesheet"
+        href="/static/libs/fancybox.css"
+    />
+    <link
+        rel="stylesheet"
+        href="/static/libs/justifiedGallery.min.css"
+    />
+    
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1654331176151">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1654331176151">
+    <link rel="stylesheet" href="/css/style.css?v=1654331176151">
+     
+    
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
+</head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(/static/background.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="Jeffrey Wang" class="mdui-btn mdui-btn-icon"><img src="/static/avatar.jpg" alt="Jeffrey Wang"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="Jeffrey Wang">
+            <img src="/static/avatar.jpg" alt="Jeffrey Wang" alt="Jeffrey Wang">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>68</div>
+        <div><span>标签</span>129</div>
+        <div><span>分类</span>15</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/friends.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        
+            <form id="search_form">
+                <label><input class="st-default-search-input" id="search_value" name="q" type="search" placeholder="搜索" style="
+                    font-size: 15px !important;
+                    height: 56px !important;
+                    background-image: none;
+                "></label>
+            </form>
+         
+    </div>
+</div>
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/2020/" style="font-size: 10px;">2020</a> <a href="/tags/B-tree/" style="font-size: 10px;">B+ tree</a> <a href="/tags/BP/" style="font-size: 10px;">BP</a> <a href="/tags/BP%E7%AE%97%E6%B3%95/" style="font-size: 10px;">BP算法</a> <a href="/tags/CDN/" style="font-size: 10px;">CDN</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/GithubAction/" style="font-size: 10px;">GithubAction</a> <a href="/tags/Hash/" style="font-size: 11.43px;">Hash</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 15.71px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Mysql/" style="font-size: 14.29px;">Mysql</a> <a href="/tags/POW/" style="font-size: 10px;">POW</a> <a href="/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/tags/SVN/" style="font-size: 10px;">SVN</a> <a href="/tags/Serverless/" style="font-size: 10px;">Serverless</a> <a href="/tags/Vmware/" style="font-size: 10px;">Vmware</a> <a href="/tags/apply/" style="font-size: 10px;">apply</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/authorization/" style="font-size: 10px;">authorization</a> <a href="/tags/aws/" style="font-size: 11.43px;">aws</a> <a href="/tags/cloudfront/" style="font-size: 11.43px;">cloudfront</a> <a href="/tags/ctm/" style="font-size: 10px;">ctm</a> <a href="/tags/eth0/" style="font-size: 10px;">eth0</a> <a href="/tags/excel/" style="font-size: 10px;">excel</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/gasPrice/" style="font-size: 10px;">gasPrice</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gltf/" style="font-size: 10px;">gltf</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/iges/" style="font-size: 10px;">iges</a> <a href="/tags/ios/" style="font-size: 11.43px;">ios</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/js-xlsx/" style="font-size: 10px;">js-xlsx</a> <a href="/tags/kali/" style="font-size: 10px;">kali</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/layui/" style="font-size: 10px;">layui</a> <a href="/tags/layuiAdmin/" style="font-size: 10px;">layuiAdmin</a> <a href="/tags/nextTick/" style="font-size: 10px;">nextTick</a> <a href="/tags/nextcloud/" style="font-size: 10px;">nextcloud</a> <a href="/tags/nginx/" style="font-size: 12.86px;">nginx</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/php-fpm/" style="font-size: 11.43px;">php-fpm</a> <a href="/tags/php7/" style="font-size: 10px;">php7</a> <a href="/tags/phpMyAdmin/" style="font-size: 10px;">phpMyAdmin</a> <a href="/tags/phpunit/" style="font-size: 10px;">phpunit</a> <a href="/tags/python/" style="font-size: 12.86px;">python</a> <a href="/tags/pythonocc/" style="font-size: 10px;">pythonocc</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/stl/" style="font-size: 10px;">stl</a> <a href="/tags/stp/" style="font-size: 10px;">stp</a> <a href="/tags/style/" style="font-size: 10px;">style</a> <a href="/tags/syncting/" style="font-size: 10px;">syncting</a> <a href="/tags/three-js/" style="font-size: 10px;">three.js</a> <a href="/tags/utools/" style="font-size: 10px;">utools</a> <a href="/tags/vbot/" style="font-size: 10px;">vbot</a> <a href="/tags/video/" style="font-size: 11.43px;">video</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/web3/" style="font-size: 10px;">web3</a> <a href="/tags/web3d/" style="font-size: 10px;">web3d</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/%E4%BA%A4%E6%98%93/" style="font-size: 10px;">交易</a> <a href="/tags/%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0/" style="font-size: 10px;">代价函数</a> <a href="/tags/%E5%81%8F%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">偏导数</a> <a href="/tags/%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">关系式</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8/" style="font-size: 10px;">内存占用</a> <a href="/tags/%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A/" style="font-size: 10px;">动态绑定</a> <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" style="font-size: 12.86px;">区块链</a> <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" style="font-size: 10px;">单元测试</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">博客</a> <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 11.43px;">卷积神经网络</a> <a href="/tags/%E5%8F%82%E6%95%B0%E8%8E%B7%E5%8F%96/" style="font-size: 10px;">参数获取</a> <a href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" style="font-size: 10px;">反向代理</a> <a href="/tags/%E5%8F%8D%E5%90%91%E9%80%92%E6%8E%A8%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">反向递推关系式</a> <a href="/tags/%E5%90%88%E7%BA%A6/" style="font-size: 10px;">合约</a> <a href="/tags/%E5%90%8C%E6%AD%A5/" style="font-size: 10px;">同步</a> <a href="/tags/%E5%90%91%E9%87%8F/" style="font-size: 10px;">向量</a> <a href="/tags/%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/" style="font-size: 10px;">命名规则</a> <a href="/tags/%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0%E6%B1%82%E5%AF%BC/" style="font-size: 10px;">复合函数求导</a> <a href="/tags/%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C/" style="font-size: 10px;">多人协作</a> <a href="/tags/%E5%A4%9A%E5%8F%98%E9%87%8F%E5%87%BD%E6%95%B0/" style="font-size: 10px;">多变量函数</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%AF%BC%E5%87%BA%E6%A0%B7%E5%BC%8F/" style="font-size: 10px;">导出样式</a> <a href="/tags/%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">导数</a> <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 11.43px;">小程序</a> <a href="/tags/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" style="font-size: 10px;">异常处理</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%9C%8D/" style="font-size: 10px;">微信客服</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91/" style="font-size: 11.43px;">微信开发</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 10px;">思考</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5/" style="font-size: 10px;">拉格朗日</a> <a href="/tags/%E6%8F%92%E4%BB%B6/" style="font-size: 10px;">插件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%94%B9%E9%80%A0/" style="font-size: 10px;">改造</a> <a href="/tags/%E6%95%A3%E5%88%97%E8%A1%A8/" style="font-size: 10px;">散列表</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" style="font-size: 10px;">数据类型</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 11.43px;">数据结构</a> <a href="/tags/%E6%97%85%E8%A1%8C/" style="font-size: 10px;">旅行</a> <a href="/tags/%E6%97%A0%E9%99%90%E7%BA%A7%E5%88%86%E7%B1%BB/" style="font-size: 10px;">无限级分类</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 18.57px;">机器学习</a> <a href="/tags/%E6%9E%81%E5%80%BC/" style="font-size: 10px;">极值</a> <a href="/tags/%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/" style="font-size: 10px;">格式转换</a> <a href="/tags/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" style="font-size: 12.86px;">梯度下降</a> <a href="/tags/%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9/" style="font-size: 10px;">模型压缩</a> <a href="/tags/%E6%AF%9B%E9%80%89/" style="font-size: 10px;">毛选</a> <a href="/tags/%E6%B1%A0%E5%8C%96/" style="font-size: 10px;">池化</a> <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 14.29px;">深度学习</a> <a href="/tags/%E7%89%B9%E5%BE%81%E6%98%A0%E5%B0%84/" style="font-size: 10px;">特征映射</a> <a href="/tags/%E7%9F%A9%E9%98%B5/" style="font-size: 10px;">矩阵</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E5%8D%95%E5%85%83%E8%AF%AF%E5%B7%AE/" style="font-size: 10px;">神经单元误差</a> <a href="/tags/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" style="font-size: 10px;">程序设计</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.43px;">算法</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" style="font-size: 10px;">索引原理</a> <a href="/tags/%E7%BD%91%E5%8D%A1/" style="font-size: 10px;">网卡</a> <a href="/tags/%E8%A7%86%E9%A2%91%E6%B5%81/" style="font-size: 11.43px;">视频流</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/" style="font-size: 10px;">计算机组成结构</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">计算机网络</a> <a href="/tags/%E8%AF%AF%E5%B7%AE%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E6%B3%95/" style="font-size: 10px;">误差反向传播法</a> <a href="/tags/%E8%B7%A8%E8%A1%A8/" style="font-size: 10px;">跨表</a> <a href="/tags/%E8%B8%A9%E5%9D%91/" style="font-size: 12.86px;">踩坑</a> <a href="/tags/%E8%BD%AF%E8%80%83/" style="font-size: 17.14px;">软考</a> <a href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" style="font-size: 10px;">过滤器</a> <a href="/tags/%E8%BF%91%E4%BC%BC%E5%85%AC%E5%BC%8F/" style="font-size: 10px;">近似公式</a> <a href="/tags/%E8%BF%AD%E4%BB%A3%E5%99%A8/" style="font-size: 10px;">迭代器</a>
+    </div>
+    
+      <script>
+        var maxTagcloud = parseInt(20);
+        var tags_length = parseInt(129);
+        var tags_arr = [];
+        for(var i = 0; i < tags_length; i++){
+          tags_arr.push(i);
+        }
+        tags_arr.sort(function (l, r) {
+          return Math.random() > 0.5 ? -1 : 1;
+        });
+        tags_arr = tags_arr.slice(0, maxTagcloud < tags_length ? tags_length - maxTagcloud : 0);
+        for(var tag_i = 0; tag_i < tags_arr.length; tag_i++){
+          document.getElementById("randomtagcloud").children[tags_arr[tag_i]].style.display = 'none';
+        }
+      </script>
+    
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/06/03/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/">【软考知识总结】数据结构和算法</a>
+          </li>
+        
+          <li>
+            <a href="/2022/06/02/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/">【软考知识总结】程序设计</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/19/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E7%BD%91%E7%BB%9C%E5%92%8C%E5%A4%9A%E5%AA%92%E4%BD%93/">【软考知识总结】网络和多媒体</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/17/%E5%B8%83%E9%9A%86%E9%B8%9F%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E5%88%86%E6%9E%90%E5%92%8C%E5%AE%9E%E7%8E%B0/">使用 Golang 快速实现布谷鸟过滤器解决大数据判重问题</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/12/%E3%80%90%E6%AF%9B%E9%80%89%E3%80%91%E5%AE%9E%E8%B7%B5%E8%AE%BA%E5%B8%A6%E6%9D%A5%E7%9A%84%E6%80%9D%E8%80%83/">【毛选】实践论带来的思考</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://github.com/wangerzi/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a><a class="mdui-ripple" href="/atom.xml" target="_blank" mdui-tooltip="{content: 'RSS'}" style="color: rgb(247, 132, 34);background-color: rgba(247, 132, 34, .1);">
+            <i class="nexmoefont icon-rss"></i>
+        </a>
+    </div>
+</div>
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 Jeffrey Wang
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: NaN%;"> 
+              <img src="/static/uploads/2022/04/nick-morrison-FHnnjk1Yj7Y-unsplash-1200x661.jpg" alt="【软考知识总结】数据结构和算法" loading="lazy">
+              <h1>【软考知识总结】数据结构和算法</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2022年06月03日</a>
+</div>
+
+      <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这一部分的内容除了选择题会出现，还有最后的大题涉及到算法设计和实现，主要内容就是大学时期讲的数据结构相关的内容，数组、链表、栈、队列、串以及常见的排序和搜索算法。</p>
+<h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><p>连续的存储空间，顺序的分配给数据结构，地址计算，本质是起始地址+前面的元素数量*长度</p>
+<p>特殊矩阵</p>
+<ul>
+<li><p>对称矩阵，a[i][j]=a[j][i]，相当于对角线对称</p>
+</li>
+<li><p>对角矩阵，非零元素集中在对角线中心</p>
+</li>
+<li><p>三角矩阵，主对角线上方全是非零，下方全是零，或者反过来</p>
+</li>
+</ul>
+<p>稀疏矩阵</p>
+<ul>
+<li><p>非零元素个数远少于零元素个数，且不规律</p>
+</li>
+<li><p>存的时候，可以直接存非零元素</p>
+</li>
+</ul>
+<h3 id="广义表"><a href="#广义表" class="headerlink" title="广义表"></a>广义表</h3><p>普通线性表的元素只能是单元素或者单个子表，<strong>广义表可以部分元素是单元素，部分元素是子表</strong></p>
+<p>一般记为 LS = (a1, a2, …, an)，深度就是最深的括号的个数，比如 LS = (1, (2, {3}))，深度就是3，原子深度为0，空表深度为1</p>
+<p>表头可能是单元素或者表，但表尾只能是表，因为<strong>表尾的定义是除去表头之外的其他元素组成的表</strong></p>
+<p><img src="/static/assets/2022-06-04-15-06-26-image.png"></p>
+<h3 id="树"><a href="#树" class="headerlink" title="树"></a>树</h3><p>树的定义是，其中<strong>每一个元素可以有两个或以上的直接后继元素</strong></p>
+<p><img src="/static/assets/2022-06-04-15-08-27-042e781f406dfd609d69319e1cd53fd0.png"></p>
+<h4 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h4><p><img src="/static/assets/2022-06-04-15-44-42-a711beaeb1c3317ae8a52d2afa68055f.png"></p>
+<h5 id="线索二叉树"><a href="#线索二叉树" class="headerlink" title="线索二叉树"></a>线索二叉树</h5><p>线索二叉树，以<strong>比特标记位，利用那些空闲的指针保存前驱和后继</strong>，前驱和后继由遍历形式决定，比如前中后三种遍历方式中，前驱和后继的定义并不一致。</p>
+<p><img src="/static/assets/2022-06-04-15-45-22-d58b367b5173977d038ec020d54f9fba.png"></p>
+<h5 id="哈夫曼树"><a href="#哈夫曼树" class="headerlink" title="哈夫曼树"></a>哈夫曼树</h5><p>哈夫曼树<strong>代价的计算</strong>，叶子节点的权值*根节点到叶子节点的路径长度，并求和</p>
+<p><img src="/static/assets/2022-06-04-15-49-06-image.png"></p>
+<p>构建哈夫曼树的重点是，<strong>找两个最小的权值节点，加起来作为其父节点，然后把父节点放到集合中，再找两个最小的权值节点，循环往复即可。</strong></p>
+<p><img src="/static/assets/2022-06-04-15-51-12-image.png"></p>
+<p>哈夫曼树编码的规则是往 <strong>左走是0，往右走是1，注意左边小右边大，</strong> 构造出来的哈夫曼树是唯一的，所以编码和解码也是唯一的。</p>
+<p><img src="/static/assets/2022-06-04-15-51-28-image.png"></p>
+<h4 id="树和森林"><a href="#树和森林" class="headerlink" title="树和森林"></a>树和森林</h4><p>树和二叉树转换需要掌握</p>
+<p><img src="/static/assets/2022-06-04-15-54-28-image.png"></p>
+<p>三叉树，主要是把最左边的节点单独拧出来，然后兄弟节点接到最左节点的右边顺着排，然后每个节点的左边就是其下最左的节点，右边就是兄弟，最左节点的规律等同。</p>
+<p>还原的时候，也是先把左节点拧出来，然后兄弟列出来，再以同样的方式遍历兄弟节点的最左节点及其兄弟。</p>
+<p><img src="/static/assets/2022-06-04-15-54-50-image.png"></p>
+<p>查找二叉树，根节点的选择很重要，树的深度影响效率</p>
+<p><img src="/static/assets/2022-06-04-15-55-26-image.png"></p>
+<p>先序和中序反推树，<strong>先序确认根节点，中序确认左右子树</strong>，一定不要搞反了，确认根节点后，中序中在根节点前的位于其左边，内部的结构同样的，按照先序找到根节点，然后同样的规律求解。</p>
+<h3 id="图"><a href="#图" class="headerlink" title="图"></a>图</h3><p>图的定义：</p>
+<ul>
+<li><p>无向图：无箭头，不分方向</p>
+</li>
+<li><p>有向图：有方向</p>
+</li>
+<li><p>完全图：无向完全图和有向完全图，无向完全图中，每个节点两两间都有连线，连线数量为 (n-1) + (n-2)+….1 = n*(n-1)/2，有向完全图的连线数量为无向完全图连线数量的两倍，n*(n-1)</p>
+</li>
+<li><p>度：顶点的度指的是与顶点相关的边的数量，有向图中由顶点指出以及指入顶点的边分别被称为出度和入度，顶点的度为两者之和。</p>
+</li>
+<li><p>路径：从一个顶点到另一个顶点的通路，有向图的路径带方向</p>
+</li>
+<li><p>连通图：如果无向图中所有顶点都是连通的就是连通图</p>
+</li>
+<li><p>连通分量：无向连通图中最大的连通子图就是连通分量</p>
+</li>
+<li><p>强连通图：有向图中所有顶点都是连通的图</p>
+</li>
+<li><p>强连通分量：有向连通图中最大的强连通子图就是连通分量</p>
+</li>
+<li><p>网：边带权值的图称为网</p>
+</li>
+</ul>
+<p><img src="/static/assets/2022-06-04-15-56-14-image.png"></p>
+<p>图的存储</p>
+<ul>
+<li><p>邻接矩阵，arr[i][j] 表示节点 i 到 节点 j 有单向的通路，所以无向图是延对角线对称的，其数组对应的值也可自定义存储权值等信息</p>
+</li>
+<li><p>邻接表，arr[i] 表示节点 i 到其他节点有单向通路的链表，可附带存储权值等信息</p>
+</li>
+</ul>
+<p><strong>适合采用什么形式，跟图的类型无关，跟节点数和连接数有关</strong></p>
+<p>图的遍历</p>
+<ul>
+<li><p>深度遍历，遍历到底，所以遍历结果不一定是一致的</p>
+</li>
+<li><p>广度遍历，一层层访问所有节点</p>
+</li>
+</ul>
+<p><img src="/static/assets/2022-06-04-15-57-01-image.png"></p>
+<h4 id="图的最小生成树"><a href="#图的最小生成树" class="headerlink" title="图的最小生成树"></a>图的最小生成树</h4><p>用一个树把所有顶点连起来，树的边权值之和最小，那么这个树就是最小生成树</p>
+<p><img src="/static/assets/2022-06-04-16-00-35-image.png"></p>
+<p>克鲁斯卡尔算法：把边<strong>按照权值排序，依次引用，碰到环的就排除</strong>，直到所有的节点被连接起来</p>
+<p>普里姆算法：从任意顶点出发，<strong>找到最小边，然后把这条边对应的另一个顶点与初始顶点放入集合中，再从这个集合中找最小的边</strong>，重复操作直到把所有的顶点都连接起来</p>
+<p>克鲁斯卡尔算法和普里姆算法都用了<strong>贪心的思维</strong>，普利姆算法因为每次都是从集合中的点往外扩散找新的点，所以所有的顶点只会有一个入度，就不会成环。</p>
+<h4 id="图的拓扑结构"><a href="#图的拓扑结构" class="headerlink" title="图的拓扑结构"></a>图的拓扑结构</h4><p>其诞生是<strong>为了解决活动序列成环检测</strong>，因为作为一个活动执行计划来说，不能出现活动 A 依赖活动B 执行完毕，而活动 B 反向依赖活动 A 执行完毕，那不就死锁了</p>
+<p>构造方法：<strong>找到入度为0的节点，然后删掉这个节点和这个节点所对应的边</strong>（表示执行这个节点的活动），然后继续找入度为0的节点，循环往复，<strong>如果能把所有的节点都删完，说明所有的活动都可以执行完毕，反之就存在环。</strong></p>
+<p><img src="/static/assets/2022-06-04-16-01-37-image.png"></p>
+<h2 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h2><p>重要特性</p>
+<ul>
+<li>有穷性，有穷步骤，有穷时间</li>
+<li>确定性，相同输入得到相同输出</li>
+<li>可行性，算法中的操作需可行</li>
+<li>输入，零个或多个输入</li>
+<li>输出，一个或多个输出</li>
+</ul>
+<p>查找</p>
+<ul>
+<li>顺序查找，O(n)</li>
+<li>二分查找，已排序的情况，O(logn)</li>
+<li>hash查找</li>
+</ul>
+<p>排序</p>
+<ul>
+<li>稳定，不稳定</li>
+<li>内和外</li>
+</ul>
+<p><img src="/static/assets/2022-06-04-16-03-06-image.png"></p>
+<h3 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h3><p><img src="/static/assets/2022-06-04-16-06-27-image.png"></p>
+<ul>
+<li><p>插入排序，<strong>顺序序列</strong>找到比较合理的位置插入，稳定排序</p>
+</li>
+<li><p>希尔排序，对<strong>大量数据进行分组</strong>（按照增量序列分组），<strong>每个组内进行插入排序</strong>，然后所有的<strong>组再进行大的插入排序</strong>，同时操作的数据量级可控，<strong>适合大量数据排序</strong></p>
+</li>
+<li><p>简单选择排序，<strong>找到合理的数据进行交换</strong>，不稳定排序</p>
+</li>
+<li><p>堆排序，初始化一个大/小顶堆，然后不停的<strong>取堆顶，调整堆结构，进而得到顺序的序列，适用于得出仅前几名的场景，效率比较高</strong></p>
+</li>
+<li><p>冒泡排序，看起来比简单选择交换的数据多，但这是<strong>稳定排序</strong></p>
+</li>
+<li><p>快速排序，给一个基准，<strong>左边小于基准，右边大于基准</strong></p>
+<ul>
+<li>两个指针，尽可能减少基准和指针数据的交换</li>
+</ul>
+</li>
+<li><p>归并排序，从<strong>子序列长度为1的分组归并开始，一步步的把所有数据排到一个集合内</strong>，适合线性表，大文件的排序等</p>
+</li>
+<li><p>基数排序，<strong>多关键字排序</strong>，一般是数据特别庞大的时候适用，比如个位、十位、百位做三轮排序，然后从大到小找出结果</p>
+</li>
+</ul>
+<p>推排序的重点</p>
+<p>先用二叉树把元素顺序排列好，然后通过大/小顶堆的规则初始化一个堆，<strong>取堆顶元素就是一个最值，然后把叶子节点放到堆顶</strong> ，再根据大/小堆的规则进行调整，直到取出自己想要的数量。</p>
+<blockquote>
+<p>只有插入、冒泡、归并和基数是稳定排序，其他的都是不稳定排序</p>
+</blockquote>
+<p><img src="/static/assets/2022-06-04-16-06-25-image.png"></p>
+<h3 id="算法理论"><a href="#算法理论" class="headerlink" title="算法理论"></a>算法理论</h3><p>分治法：<strong>分解为多个独立子问题</strong>进行处理，<strong>子问题互相独立</strong>，并与原问题形式相同</p>
+<p>回溯法：系统性的<strong>搜索所有的解</strong>，深度优先搜索可能解的树</p>
+<p>动态规划法：划分子问题，并<strong>保证每一个子问题最优，且全局最优</strong></p>
+<p>贪心法：划分子问题，<strong>子问题是最优的，不考虑全局</strong>，不用穷举所有解，但相对<strong>性能比较好，不一定能得到最优解</strong></p>
+<p>分支限界法：跟回溯法的区别在于，<strong>列出所有子情况并抛弃不合理的情况</strong>，并非回溯法走深度遍历，<strong>相当于广度优先遍历</strong></p>
+<p>概率算法：随机选择下一步，<strong>能接受一定的错误，能很快出解</strong></p>
+<p>近似算法：放弃最优解，使用<strong>近似最优解，换取时间和空间复杂度</strong></p>
+<h3 id="数据挖掘"><a href="#数据挖掘" class="headerlink" title="数据挖掘"></a>数据挖掘</h3><p>爆炸式增长的数据进行分析和信息挖掘，核心是算法</p>
+<p>主要功能包含，<strong>分类，回归，关联和聚类</strong></p>
+<p>考点：</p>
+<p>分类是有监督的学习过程</p>
+<p>聚类是无监督的学习过程</p>
+<p>频繁模式和关联规则挖掘，从频繁模式出发，找到其中关联规则，进而发现交叉销售机会</p>
+<p><img src="/static/assets/2022-06-04-16-09-41-image.png"></p>
+<h3 id="智能优化算法"><a href="#智能优化算法" class="headerlink" title="智能优化算法"></a>智能优化算法</h3><p>以数学为基础，求解工程中优化解的应用技术，包括：</p>
+<ul>
+<li><p>ANN，人工神经网络</p>
+</li>
+<li><p>深度学习</p>
+</li>
+<li><p>遗传算法，基于自然的演化机制</p>
+</li>
+<li><p>SA，退火算法，求解全局优化算法，模拟加温、等温、冷却</p>
+</li>
+<li><p>TS，禁忌搜索算法，有点贪心的思维，局部近邻搜索的扩展</p>
+</li>
+<li><p>蚁群算法，寻找优化路径的概率型算法，模拟蚁群寻找食物最短路径，留下类似信息素的信号，形成一个类似正反馈的机制</p>
+</li>
+<li><p>鸟群觅食法，模拟鸟群飞行时整体方向一致</p>
+<ul>
+<li>跟踪个体/全局的极值，通过迭代找到最优解</li>
+</ul>
+</li>
+</ul>
+<p><img src="/static/assets/2022-06-04-16-10-28-image.png"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>数据结构需要掌握其原理和多种表现形式，算法需要了解其核心逻辑以及特点</p>
+</body></html>
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>Jeffrey Wang<br>
+        <strong>本文链接：</strong><a href="https://blog.wj2015.com/2022/06/03/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/" title="https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2022&#x2F;06&#x2F;03&#x2F;%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2022&#x2F;06&#x2F;03&#x2F;%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">基础知识</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E8%BD%AF%E8%80%83/" rel="tag">软考</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          <section class="nexmoe-comment">
+    <link rel="stylesheet" href="/static/libs/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="/static/libs/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: 'd7b7061e43e1334a5aa9',
+        clientSecret: '5af2efcfc06b854bc5ccc23babfa3a06a7508c1e',
+        id: window.location.pathname,
+        repo: 'blog',
+        owner: 'wangerzi',
+        admin: 'wangerzi'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E7%BB%84"><span class="toc-number">2.1.</span> <span class="toc-text">数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%BF%E4%B9%89%E8%A1%A8"><span class="toc-number">2.2.</span> <span class="toc-text">广义表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%91"><span class="toc-number">2.3.</span> <span class="toc-text">树</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="toc-number">2.3.1.</span> <span class="toc-text">二叉树</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BA%BF%E7%B4%A2%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="toc-number">2.3.1.1.</span> <span class="toc-text">线索二叉树</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91"><span class="toc-number">2.3.1.2.</span> <span class="toc-text">哈夫曼树</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%91%E5%92%8C%E6%A3%AE%E6%9E%97"><span class="toc-number">2.3.2.</span> <span class="toc-text">树和森林</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE"><span class="toc-number">2.4.</span> <span class="toc-text">图</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%BE%E7%9A%84%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91"><span class="toc-number">2.4.1.</span> <span class="toc-text">图的最小生成树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%BE%E7%9A%84%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84"><span class="toc-number">2.4.2.</span> <span class="toc-text">图的拓扑结构</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90"><span class="toc-number">3.</span> <span class="toc-text">算法分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95"><span class="toc-number">3.1.</span> <span class="toc-text">排序算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E7%90%86%E8%AE%BA"><span class="toc-number">3.2.</span> <span class="toc-text">算法理论</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98"><span class="toc-number">3.3.</span> <span class="toc-text">数据挖掘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%99%BA%E8%83%BD%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95"><span class="toc-number">3.4.</span> <span class="toc-text">智能优化算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    <script src="/static/libs/mdui.min.js"></script>
+<script src="/static/libs/jquery.min.js"></script>
+<script src="/static/libs/fancybox.umd.js"></script>
+
+ 
+
+<script async src="/js/app.js?v=1654331176157"></script>
+
+
+	<script async src="/js/search.js?v=1654331176157"></script>
+
+
+<script src="/static/libs/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHH2NFM6CG"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZHH2NFM6CG');
+</script>
+
+
+
+
+
+</body>
+
+</html>
