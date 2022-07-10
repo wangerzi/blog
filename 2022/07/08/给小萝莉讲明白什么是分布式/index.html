@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>给偶遇的小萝莉讲明白什么是分布式 - 九层台</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="前端开发,后端开发,LINUX,机器学习,软考">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="前言事情要从半个月前说起，由于通勤距离比较长，通常会带一本书，最近带的书是 《深入理解分布式系统》，长这样：  然后在地铁上碰到一个小姑娘歪着脑袋看我拿着这本书的书皮，很可爱，而且还很有缘分的，空出了两个位置，坐到了一起。  当时在看 Paxos 算法部分的代码实现，看着她实在好奇的盯着我的书看，我决定克服社恐跟她聊聊。 先唠了唠嗑儿，了解了她的年级、课程、学习压力等等 她现在三年级，那天是去学校">
+<meta property="og:type" content="article">
+<meta property="og:title" content="给偶遇的小萝莉讲明白什么是分布式">
+<meta property="og:url" content="https://blog.wj2015.com/2022/07/08/%E7%BB%99%E5%B0%8F%E8%90%9D%E8%8E%89%E8%AE%B2%E6%98%8E%E7%99%BD%E4%BB%80%E4%B9%88%E6%98%AF%E5%88%86%E5%B8%83%E5%BC%8F/">
+<meta property="og:site_name" content="九层台">
+<meta property="og:description" content="前言事情要从半个月前说起，由于通勤距离比较长，通常会带一本书，最近带的书是 《深入理解分布式系统》，长这样：  然后在地铁上碰到一个小姑娘歪着脑袋看我拿着这本书的书皮，很可爱，而且还很有缘分的，空出了两个位置，坐到了一起。  当时在看 Paxos 算法部分的代码实现，看着她实在好奇的盯着我的书看，我决定克服社恐跟她聊聊。 先唠了唠嗑儿，了解了她的年级、课程、学习压力等等 她现在三年级，那天是去学校">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-07-08-17-32-01-98394aa824b8e194b42e3f5cf387612.jpg">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-07-08-17-36-34-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-07-10-14-50-16-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-07-10-11-31-19-dc9f33b961d48ce6f3e0a3b754bc1bc.jpg">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-07-10-14-36-40-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-07-10-14-36-52-image.png">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-07-10-15-09-55-image.png">
+<meta property="article:published_time" content="2022-07-08T09:25:30.000Z">
+<meta property="article:modified_time" content="2022-07-10T07:37:36.527Z">
+<meta property="article:author" content="Jeffrey Wang">
+<meta property="article:tag" content="分布式">
+<meta property="article:tag" content="Paxos">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.wj2015.com/static/assets/2022-07-08-17-32-01-98394aa824b8e194b42e3f5cf387612.jpg">
+    <link
+        rel="stylesheet"
+        href="/static/libs/fancybox.css"
+    />
+    <link
+        rel="stylesheet"
+        href="/static/libs/justifiedGallery.min.css"
+    />
+    
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1657438690870">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1657438690870">
+    <link rel="stylesheet" href="/css/style.css?v=1657438690870">
+     
+    
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
+</head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(/static/background.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="Jeffrey Wang" class="mdui-btn mdui-btn-icon"><img src="/static/avatar.jpg" alt="Jeffrey Wang"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="Jeffrey Wang">
+            <img src="/static/avatar.jpg" alt="Jeffrey Wang" alt="Jeffrey Wang">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>69</div>
+        <div><span>标签</span>131</div>
+        <div><span>分类</span>16</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/friends.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        
+            <form id="search_form">
+                <label><input class="st-default-search-input" id="search_value" name="q" type="search" placeholder="搜索" style="
+                    font-size: 15px !important;
+                    height: 56px !important;
+                    background-image: none;
+                "></label>
+            </form>
+         
+    </div>
+</div>
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/2020/" style="font-size: 10px;">2020</a> <a href="/tags/B-tree/" style="font-size: 10px;">B+ tree</a> <a href="/tags/BP/" style="font-size: 10px;">BP</a> <a href="/tags/BP%E7%AE%97%E6%B3%95/" style="font-size: 10px;">BP算法</a> <a href="/tags/CDN/" style="font-size: 10px;">CDN</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/GithubAction/" style="font-size: 10px;">GithubAction</a> <a href="/tags/Hash/" style="font-size: 11.43px;">Hash</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 15.71px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Mysql/" style="font-size: 14.29px;">Mysql</a> <a href="/tags/POW/" style="font-size: 10px;">POW</a> <a href="/tags/Paxos/" style="font-size: 10px;">Paxos</a> <a href="/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/tags/SVN/" style="font-size: 10px;">SVN</a> <a href="/tags/Serverless/" style="font-size: 10px;">Serverless</a> <a href="/tags/Vmware/" style="font-size: 10px;">Vmware</a> <a href="/tags/apply/" style="font-size: 10px;">apply</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/authorization/" style="font-size: 10px;">authorization</a> <a href="/tags/aws/" style="font-size: 11.43px;">aws</a> <a href="/tags/cloudfront/" style="font-size: 11.43px;">cloudfront</a> <a href="/tags/ctm/" style="font-size: 10px;">ctm</a> <a href="/tags/eth0/" style="font-size: 10px;">eth0</a> <a href="/tags/excel/" style="font-size: 10px;">excel</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/gasPrice/" style="font-size: 10px;">gasPrice</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gltf/" style="font-size: 10px;">gltf</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/iges/" style="font-size: 10px;">iges</a> <a href="/tags/ios/" style="font-size: 11.43px;">ios</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/js-xlsx/" style="font-size: 10px;">js-xlsx</a> <a href="/tags/kali/" style="font-size: 10px;">kali</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/layui/" style="font-size: 10px;">layui</a> <a href="/tags/layuiAdmin/" style="font-size: 10px;">layuiAdmin</a> <a href="/tags/nextTick/" style="font-size: 10px;">nextTick</a> <a href="/tags/nextcloud/" style="font-size: 10px;">nextcloud</a> <a href="/tags/nginx/" style="font-size: 12.86px;">nginx</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/php-fpm/" style="font-size: 11.43px;">php-fpm</a> <a href="/tags/php7/" style="font-size: 10px;">php7</a> <a href="/tags/phpMyAdmin/" style="font-size: 10px;">phpMyAdmin</a> <a href="/tags/phpunit/" style="font-size: 10px;">phpunit</a> <a href="/tags/python/" style="font-size: 12.86px;">python</a> <a href="/tags/pythonocc/" style="font-size: 10px;">pythonocc</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/stl/" style="font-size: 10px;">stl</a> <a href="/tags/stp/" style="font-size: 10px;">stp</a> <a href="/tags/style/" style="font-size: 10px;">style</a> <a href="/tags/syncting/" style="font-size: 10px;">syncting</a> <a href="/tags/three-js/" style="font-size: 10px;">three.js</a> <a href="/tags/utools/" style="font-size: 10px;">utools</a> <a href="/tags/vbot/" style="font-size: 10px;">vbot</a> <a href="/tags/video/" style="font-size: 11.43px;">video</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/web3/" style="font-size: 10px;">web3</a> <a href="/tags/web3d/" style="font-size: 10px;">web3d</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/%E4%BA%A4%E6%98%93/" style="font-size: 10px;">交易</a> <a href="/tags/%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0/" style="font-size: 10px;">代价函数</a> <a href="/tags/%E5%81%8F%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">偏导数</a> <a href="/tags/%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">关系式</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8/" style="font-size: 10px;">内存占用</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 10px;">分布式</a> <a href="/tags/%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A/" style="font-size: 10px;">动态绑定</a> <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" style="font-size: 12.86px;">区块链</a> <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" style="font-size: 10px;">单元测试</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">博客</a> <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 11.43px;">卷积神经网络</a> <a href="/tags/%E5%8F%82%E6%95%B0%E8%8E%B7%E5%8F%96/" style="font-size: 10px;">参数获取</a> <a href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" style="font-size: 10px;">反向代理</a> <a href="/tags/%E5%8F%8D%E5%90%91%E9%80%92%E6%8E%A8%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">反向递推关系式</a> <a href="/tags/%E5%90%88%E7%BA%A6/" style="font-size: 10px;">合约</a> <a href="/tags/%E5%90%8C%E6%AD%A5/" style="font-size: 10px;">同步</a> <a href="/tags/%E5%90%91%E9%87%8F/" style="font-size: 10px;">向量</a> <a href="/tags/%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/" style="font-size: 10px;">命名规则</a> <a href="/tags/%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0%E6%B1%82%E5%AF%BC/" style="font-size: 10px;">复合函数求导</a> <a href="/tags/%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C/" style="font-size: 10px;">多人协作</a> <a href="/tags/%E5%A4%9A%E5%8F%98%E9%87%8F%E5%87%BD%E6%95%B0/" style="font-size: 10px;">多变量函数</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%AF%BC%E5%87%BA%E6%A0%B7%E5%BC%8F/" style="font-size: 10px;">导出样式</a> <a href="/tags/%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">导数</a> <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 11.43px;">小程序</a> <a href="/tags/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" style="font-size: 10px;">异常处理</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%9C%8D/" style="font-size: 10px;">微信客服</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91/" style="font-size: 11.43px;">微信开发</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 10px;">思考</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5/" style="font-size: 10px;">拉格朗日</a> <a href="/tags/%E6%8F%92%E4%BB%B6/" style="font-size: 10px;">插件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%94%B9%E9%80%A0/" style="font-size: 10px;">改造</a> <a href="/tags/%E6%95%A3%E5%88%97%E8%A1%A8/" style="font-size: 10px;">散列表</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" style="font-size: 10px;">数据类型</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 11.43px;">数据结构</a> <a href="/tags/%E6%97%85%E8%A1%8C/" style="font-size: 10px;">旅行</a> <a href="/tags/%E6%97%A0%E9%99%90%E7%BA%A7%E5%88%86%E7%B1%BB/" style="font-size: 10px;">无限级分类</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 18.57px;">机器学习</a> <a href="/tags/%E6%9E%81%E5%80%BC/" style="font-size: 10px;">极值</a> <a href="/tags/%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/" style="font-size: 10px;">格式转换</a> <a href="/tags/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" style="font-size: 12.86px;">梯度下降</a> <a href="/tags/%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9/" style="font-size: 10px;">模型压缩</a> <a href="/tags/%E6%AF%9B%E9%80%89/" style="font-size: 10px;">毛选</a> <a href="/tags/%E6%B1%A0%E5%8C%96/" style="font-size: 10px;">池化</a> <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 14.29px;">深度学习</a> <a href="/tags/%E7%89%B9%E5%BE%81%E6%98%A0%E5%B0%84/" style="font-size: 10px;">特征映射</a> <a href="/tags/%E7%9F%A9%E9%98%B5/" style="font-size: 10px;">矩阵</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E5%8D%95%E5%85%83%E8%AF%AF%E5%B7%AE/" style="font-size: 10px;">神经单元误差</a> <a href="/tags/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" style="font-size: 10px;">程序设计</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.43px;">算法</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" style="font-size: 10px;">索引原理</a> <a href="/tags/%E7%BD%91%E5%8D%A1/" style="font-size: 10px;">网卡</a> <a href="/tags/%E8%A7%86%E9%A2%91%E6%B5%81/" style="font-size: 11.43px;">视频流</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/" style="font-size: 10px;">计算机组成结构</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">计算机网络</a> <a href="/tags/%E8%AF%AF%E5%B7%AE%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E6%B3%95/" style="font-size: 10px;">误差反向传播法</a> <a href="/tags/%E8%B7%A8%E8%A1%A8/" style="font-size: 10px;">跨表</a> <a href="/tags/%E8%B8%A9%E5%9D%91/" style="font-size: 12.86px;">踩坑</a> <a href="/tags/%E8%BD%AF%E8%80%83/" style="font-size: 17.14px;">软考</a> <a href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" style="font-size: 10px;">过滤器</a> <a href="/tags/%E8%BF%91%E4%BC%BC%E5%85%AC%E5%BC%8F/" style="font-size: 10px;">近似公式</a> <a href="/tags/%E8%BF%AD%E4%BB%A3%E5%99%A8/" style="font-size: 10px;">迭代器</a>
+    </div>
+    
+      <script>
+        var maxTagcloud = parseInt(20);
+        var tags_length = parseInt(131);
+        var tags_arr = [];
+        for(var i = 0; i < tags_length; i++){
+          tags_arr.push(i);
+        }
+        tags_arr.sort(function (l, r) {
+          return Math.random() > 0.5 ? -1 : 1;
+        });
+        tags_arr = tags_arr.slice(0, maxTagcloud < tags_length ? tags_length - maxTagcloud : 0);
+        for(var tag_i = 0; tag_i < tags_arr.length; tag_i++){
+          document.getElementById("randomtagcloud").children[tags_arr[tag_i]].style.display = 'none';
+        }
+      </script>
+    
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/07/08/%E7%BB%99%E5%B0%8F%E8%90%9D%E8%8E%89%E8%AE%B2%E6%98%8E%E7%99%BD%E4%BB%80%E4%B9%88%E6%98%AF%E5%88%86%E5%B8%83%E5%BC%8F/">给偶遇的小萝莉讲明白什么是分布式</a>
+          </li>
+        
+          <li>
+            <a href="/2022/06/03/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/">【软考知识总结】数据结构和算法</a>
+          </li>
+        
+          <li>
+            <a href="/2022/06/02/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/">【软考知识总结】程序设计</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/19/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E7%BD%91%E7%BB%9C%E5%92%8C%E5%A4%9A%E5%AA%92%E4%BD%93/">【软考知识总结】网络和多媒体</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/17/%E5%B8%83%E9%9A%86%E9%B8%9F%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E5%88%86%E6%9E%90%E5%92%8C%E5%AE%9E%E7%8E%B0/">使用 Golang 快速实现布谷鸟过滤器解决大数据判重问题</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://github.com/wangerzi/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a><a class="mdui-ripple" href="/atom.xml" target="_blank" mdui-tooltip="{content: 'RSS'}" style="color: rgb(247, 132, 34);background-color: rgba(247, 132, 34, .1);">
+            <i class="nexmoefont icon-rss"></i>
+        </a>
+    </div>
+</div>
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 Jeffrey Wang
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: NaN%;"> 
+              <img src="/static/assets/2022-07-08-17-36-34-image.png" alt="给偶遇的小萝莉讲明白什么是分布式" loading="lazy">
+              <h1>给偶遇的小萝莉讲明白什么是分布式</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2022年07月08日</a>
+</div>
+
+      <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>事情要从半个月前说起，由于通勤距离比较长，通常会带一本书，最近带的书是 <strong>《深入理解分布式系统》</strong>，长这样：</p>
+<p><img src="/static/assets/2022-07-08-17-32-01-98394aa824b8e194b42e3f5cf387612.jpg"></p>
+<p>然后在地铁上碰到一个小姑娘歪着脑袋看我拿着这本书的书皮，很可爱，而且还很有缘分的，空出了两个位置，坐到了一起。</p>
+<p><img src="/static/assets/2022-07-08-17-36-34-image.png"></p>
+<p>当时在看 Paxos 算法部分的代码实现，看着她实在好奇的盯着我的书看，我决定克服社恐跟她聊聊。</p>
+<p>先唠了唠嗑儿，了解了她的年级、课程、学习压力等等</p>
+<p>她现在三年级，那天是去学校领暑假通知书，也许是因为父母户口在老家，所以在这边学校期末考试之后还要回老家的学校再考一次，每天作业传小程序，学习压力也不小。</p>
+<p>再问了问她们学校的微机课，说是经常被数学老师占，老师会交一些 Word、画图等等基本操作，跟之前我小学时候的区别是，不用穿鞋套。</p>
+<blockquote>
+<p>PS：现在都还记得没带鞋套被老师罚站在门口</p>
+</blockquote>
+<h2 id="什么是分布式系统"><a href="#什么是分布式系统" class="headerlink" title="什么是分布式系统"></a>什么是分布式系统</h2><p>接下来的对话与现实情况相比有所缩减和扩展，毕竟对三年级的小朋友来说，引导兴趣和引发思考比较重要</p>
+<blockquote>
+<p>我：（指着书皮）这几个字认识么</p>
+<p>小萝莉：认识，<strong>深入理解分布式系统</strong>（一字字的念出来），但是不知道什么意思</p>
+<p>我：你想听一个故事么，听完就知道这本书讲的什么了</p>
+<p>小萝莉：想听（带点不好意思）</p>
+</blockquote>
+<h3 id="拜占庭将军问题"><a href="#拜占庭将军问题" class="headerlink" title="拜占庭将军问题"></a>拜占庭将军问题</h3><p>接下来我就把书开头的拜占庭将军问题简化的讲了讲</p>
+<p><img src="/static/assets/2022-07-10-14-50-16-image.png"></p>
+<blockquote>
+<p>我：假如在古代，有两个将军想要进攻一个城市，他们想要进攻一个城市，需要两个人同时发起进攻，否则战争就会失败。</p>
+<p>那么这时就需要双方约定几日几时开始进攻，但好巧不巧两个将军中间隔了一座山，那么问题就是，<strong>他们需要怎么传递消息，才能保证约定的时间无误呢</strong></p>
+<p>小萝莉想了想，说：可以飞鸽传书</p>
+<p>我：但是<strong>鸽子也可能在半路被射下来，骑马也可能在山里迷路</strong></p>
+<p>小萝莉又说：可以放烟花，然后看到烟花就开始进攻</p>
+<p>我：烟花在晚上很醒目，但是白天可能看不太清楚，要是另一方没有看到烟花，行动不就失败了么</p>
+<p>小萝莉：我再想想，要是在现在，打一个电话过去就说清楚了</p>
+<p>我：电话也可能存在干扰哦，比如我们现在在地铁里，给远方的人们打电话，可能话说到一半对方就听不到了</p>
+<p>我：而且我们目前只提到了两个将军，<strong>如果有五个将军要协同进攻同一个城市，而且这些将军里边可能有叛徒，会瞒报或者传递错情报，这时候要让里边的大多数好将军约定好进攻时间，会是个更复杂的问题；</strong> 我手里拿的这本书讲的就是在计算机里是怎么解决这个问题的。</p>
+</blockquote>
+<p>而在技术的世界中，提供稳定的服务通常有如下需求</p>
+<ul>
+<li><p>高性能，一台机器的性能存在瓶颈，而且机器越贵，硬件上可提升的空间就越低</p>
+</li>
+<li><p>可扩展，数据密集型应用，无法一开始在单机上正确的预估及投入足够多的硬件，分散到多台机器上各自处理比较经济</p>
+</li>
+<li><p>高可用，单个节点提供服务有物理不能突破的上限，比如突然的断电、断网、硬件出现故障等等</p>
+</li>
+</ul>
+<p>而多台机器共同提供服务，就会有通信不可靠、节点不稳定、叛徒节点乱发数据等等问题。</p>
+<h3 id="CAP-不可能定理"><a href="#CAP-不可能定理" class="headerlink" title="CAP 不可能定理"></a>CAP 不可能定理</h3><blockquote>
+<p>我：这个问题在生活中可以通过反复确认消息来确保通信的稳定，但更严谨的答案是<strong>不可能</strong>，在计算机领域还针对这个现象提出了一个 CAP 理论。</p>
+<p>我：比如你刚才提到的通过飞鸽传书的方式通信，假如将军 A 发了一个鸽子给将军 B，但同时将军 A 也需要知道这个消息传成功了没有。</p>
+<p>所以将军B收到消息会给将军 A 回送一个鸽子，表示自己<strong>收到</strong>会按照约定进攻；与此同时，将军 B 也需要知道自己送回去的鸽子有没有被将军 A 收到，又需要将军 A 再送一个鸽子过来表示『<strong>我收到了你的收到</strong>』，就陷入了无限的通信循环，鸽子们都要累死了。</p>
+</blockquote>
+<p>PS：指着这张图跟他描述了上面的这个问题</p>
+<p><img src="/static/assets/2022-07-10-11-31-19-dc9f33b961d48ce6f3e0a3b754bc1bc.jpg"></p>
+<p>而 CAP 定理有一个比较好理解的反例，假设我们有 abcde 五个节点，<strong>正常工作时，五个节点的值都是 1</strong>，客户端访问任意节点都会<strong>得到一致的结果</strong>。</p>
+<p><img src="/static/assets/2022-07-10-14-36-40-image.png"></p>
+<p>然后假设机房的网线被挖掉几根，导致 abc 节点无法访问 de 两个节点，那么客户端1访问 abc 节点拿到的值与客户端2访问 de 两个节点拿到的值是不一致的（<strong>违背了一致性</strong>）。如果不想违背一致性，那么de 两个节点就不能返回值（<strong>违背了可用性</strong>）。</p>
+<p><img src="/static/assets/2022-07-10-14-36-52-image.png"></p>
+<p>CAP 定理是一致性（Consistency）、可用性（Availability）、分区容错性（Partition Tolerance）的首字母缩写，其指出<strong>在一个异步网络环境中，对于一个分布式读写存储系统来说，只能满足三项中的两项，不可能满足全部三项</strong>。</p>
+<h2 id="现实中怎么解决"><a href="#现实中怎么解决" class="headerlink" title="现实中怎么解决"></a>现实中怎么解决</h2><p>既然没有一个最完美的方案，我们就需要提高通信的成功率和可信度</p>
+<blockquote>
+<p>我：虽然在理论上是不可能的，但现实生活中会有各种各样的方式来确保消息的传达成功。你之前看过士兵们执行任务么？</p>
+<p>小萝莉：在电视上看过</p>
+<p>我：他们在作战的时候一般都会有一个指挥部，士兵每次汇报战场情况都会说一句 <strong>over</strong>，指挥部每次下达一个命令，士兵都会回复 <strong>收到</strong>，假设话说到一半，信号断掉了，指挥部没有听到『收到』、『over』等关键字，就知道通信有问题，需要想办法重新联系上队伍，确保命令准确下达。</p>
+<p>我：刚才的两个将军问题，现在听了这么多，有想到别的办法么</p>
+<p>小萝莉：我们也可以建一个指挥部，跟山两头的将军发送指令，并且在他们确认收到的情况下再进攻</p>
+<p>我：👏</p>
+</blockquote>
+<p>在技术上，TCP 协议通过三次握手、四次挥手尽可能保证在网络环境稳定的情况下的信息传输，RSA 非对称加密技术可以提高信息传输的安全性，避免叛徒节点中途篡改。</p>
+<p><img src="/static/assets/2022-07-10-15-09-55-image.png"></p>
+<blockquote>
+<p>网上针对 TCP 已经有很多博客了，这里就不再赘述，感兴趣可看：<a target="_blank" rel="noopener" href="https://blog.csdn.net/impact_factor/article/details/119394391">通俗易懂理解TCP协议三次握手和四次挥手及其常见问题_impact_factor的博客-CSDN博客_三次握手和四次挥手</a></p>
+</blockquote>
+<p>以及最近的 web3.0，区块链技术，以 权益证明（POS）/工作量证明（POW）让绝大部分节点稳定的为网络做贡献</p>
+<blockquote>
+<p>对这方面感兴趣的，可以看下网上博客<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38491875/article/details/109029306">区块链共识机制技术一——POW(工作量证明)共识机制_a soldiers的博客-CSDN博客_pow共识</a>，或者博主之前写的区块链相关的文章，<a href="https://blog.wj2015.com/2022/03/22/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%98%AF%E6%80%8E%E6%A0%B7%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E4%B8%8D%E8%A2%AB%E7%AF%A1%E6%94%B9%E7%9A%84%EF%BC%9F/">区块链是怎样保证数据不被篡改的？ - 九层台</a></p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>分布式系统就是在多个节点共同提供服务的前提下，保证高性能、可扩展和高可用，CAP 定理表明，我们<strong>无法在异步网络环境上实现一套即满足一致性、又满足可用性、还满足分区容错性的系统</strong>。</p>
+</body></html>
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>Jeffrey Wang<br>
+        <strong>本文链接：</strong><a href="https://blog.wj2015.com/2022/07/08/%E7%BB%99%E5%B0%8F%E8%90%9D%E8%8E%89%E8%AE%B2%E6%98%8E%E7%99%BD%E4%BB%80%E4%B9%88%E6%98%AF%E5%88%86%E5%B8%83%E5%BC%8F/" title="https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2022&#x2F;07&#x2F;08&#x2F;%E7%BB%99%E5%B0%8F%E8%90%9D%E8%8E%89%E8%AE%B2%E6%98%8E%E7%99%BD%E4%BB%80%E4%B9%88%E6%98%AF%E5%88%86%E5%B8%83%E5%BC%8F&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2022&#x2F;07&#x2F;08&#x2F;%E7%BB%99%E5%B0%8F%E8%90%9D%E8%8E%89%E8%AE%B2%E6%98%8E%E7%99%BD%E4%BB%80%E4%B9%88%E6%98%AF%E5%88%86%E5%B8%83%E5%BC%8F&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/Paxos/" rel="tag">Paxos</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          <section class="nexmoe-comment">
+    <link rel="stylesheet" href="/static/libs/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="/static/libs/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: 'd7b7061e43e1334a5aa9',
+        clientSecret: '5af2efcfc06b854bc5ccc23babfa3a06a7508c1e',
+        id: window.location.pathname,
+        repo: 'blog',
+        owner: 'wangerzi',
+        admin: 'wangerzi'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.</span> <span class="toc-text">什么是分布式系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%9C%E5%8D%A0%E5%BA%AD%E5%B0%86%E5%86%9B%E9%97%AE%E9%A2%98"><span class="toc-number">2.1.</span> <span class="toc-text">拜占庭将军问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CAP-%E4%B8%8D%E5%8F%AF%E8%83%BD%E5%AE%9A%E7%90%86"><span class="toc-number">2.2.</span> <span class="toc-text">CAP 不可能定理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%B0%E5%AE%9E%E4%B8%AD%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3"><span class="toc-number">3.</span> <span class="toc-text">现实中怎么解决</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    <script src="/static/libs/mdui.min.js"></script>
+<script src="/static/libs/jquery.min.js"></script>
+<script src="/static/libs/fancybox.umd.js"></script>
+
+ 
+
+<script async src="/js/app.js?v=1657438690875"></script>
+
+
+	<script async src="/js/search.js?v=1657438690875"></script>
+
+
+<script src="/static/libs/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHH2NFM6CG"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZHH2NFM6CG');
+</script>
+
+
+
+
+
+</body>
+
+</html>
