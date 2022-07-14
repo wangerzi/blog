@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+    
+    <title>【分布式系统】Paxos的原理和实现 - 九层台</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="前端开发,后端开发,LINUX,机器学习,软考">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
+
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="前言分布式系统是一个很大的话题，在前文给偶遇的小萝莉讲明白什么是分布式 - 九层台中，以拜占庭将军问题为引，带出了 CAP 定理；而 Paxos 算法就是满足一致性和分区一致性的分布式算法（CP）。  本篇将梳理 Basic Paxos 算法的核心原理以及在 golang 下的代码实现和单元测试。 原理本篇仅实现 Basic Paxos，所有节点只会决议出一个共识的值，虽然看起来实现的效果很简陋，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【分布式系统】Paxos的原理和实现">
+<meta property="og:url" content="https://blog.wj2015.com/2022/07/14/%E3%80%90%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E3%80%91Paxos%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E5%AE%9E%E7%8E%B0/">
+<meta property="og:site_name" content="九层台">
+<meta property="og:description" content="前言分布式系统是一个很大的话题，在前文给偶遇的小萝莉讲明白什么是分布式 - 九层台中，以拜占庭将军问题为引，带出了 CAP 定理；而 Paxos 算法就是满足一致性和分区一致性的分布式算法（CP）。  本篇将梳理 Basic Paxos 算法的核心原理以及在 golang 下的代码实现和单元测试。 原理本篇仅实现 Basic Paxos，所有节点只会决议出一个共识的值，虽然看起来实现的效果很简陋，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.wj2015.com/static/assets/2022-07-14-23-21-12-image.png">
+<meta property="article:published_time" content="2022-07-14T15:25:51.000Z">
+<meta property="article:modified_time" content="2022-07-14T15:27:37.973Z">
+<meta property="article:author" content="Jeffrey Wang">
+<meta property="article:tag" content="分布式">
+<meta property="article:tag" content="Paxos">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.wj2015.com/static/assets/2022-07-14-23-21-12-image.png">
+    <link
+        rel="stylesheet"
+        href="/static/libs/fancybox.css"
+    />
+    <link
+        rel="stylesheet"
+        href="/static/libs/justifiedGallery.min.css"
+    />
+    
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1657812478693">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1657812478693">
+    <link rel="stylesheet" href="/css/style.css?v=1657812478693">
+     
+    
+<meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="九层台" type="application/atom+xml">
+</head>
+
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(/static/background.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="Jeffrey Wang" class="mdui-btn mdui-btn-icon"><img src="/static/avatar.jpg" alt="Jeffrey Wang"></a>
+            </div>
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="Jeffrey Wang">
+            <img src="/static/avatar.jpg" alt="Jeffrey Wang" alt="Jeffrey Wang">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>文章</span>70</div>
+        <div><span>标签</span>131</div>
+        <div><span>分类</span>16</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive.html" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont icon-container"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博主">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博主
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/friends.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+        
+            <form id="search_form">
+                <label><input class="st-default-search-input" id="search_value" name="q" type="search" placeholder="搜索" style="
+                    font-size: 15px !important;
+                    height: 56px !important;
+                    background-image: none;
+                "></label>
+            </form>
+         
+    </div>
+</div>
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/2020/" style="font-size: 10px;">2020</a> <a href="/tags/B-tree/" style="font-size: 10px;">B+ tree</a> <a href="/tags/BP/" style="font-size: 10px;">BP</a> <a href="/tags/BP%E7%AE%97%E6%B3%95/" style="font-size: 10px;">BP算法</a> <a href="/tags/CDN/" style="font-size: 10px;">CDN</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/GithubAction/" style="font-size: 10px;">GithubAction</a> <a href="/tags/Hash/" style="font-size: 11.43px;">Hash</a> <a href="/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/tags/Linux/" style="font-size: 15.71px;">Linux</a> <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Mysql/" style="font-size: 14.29px;">Mysql</a> <a href="/tags/POW/" style="font-size: 10px;">POW</a> <a href="/tags/Paxos/" style="font-size: 11.43px;">Paxos</a> <a href="/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/tags/SVN/" style="font-size: 10px;">SVN</a> <a href="/tags/Serverless/" style="font-size: 10px;">Serverless</a> <a href="/tags/Vmware/" style="font-size: 10px;">Vmware</a> <a href="/tags/apply/" style="font-size: 10px;">apply</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/authorization/" style="font-size: 10px;">authorization</a> <a href="/tags/aws/" style="font-size: 11.43px;">aws</a> <a href="/tags/cloudfront/" style="font-size: 11.43px;">cloudfront</a> <a href="/tags/ctm/" style="font-size: 10px;">ctm</a> <a href="/tags/eth0/" style="font-size: 10px;">eth0</a> <a href="/tags/excel/" style="font-size: 10px;">excel</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/gasPrice/" style="font-size: 10px;">gasPrice</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gltf/" style="font-size: 10px;">gltf</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/iges/" style="font-size: 10px;">iges</a> <a href="/tags/ios/" style="font-size: 11.43px;">ios</a> <a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/js-xlsx/" style="font-size: 10px;">js-xlsx</a> <a href="/tags/kali/" style="font-size: 10px;">kali</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/layui/" style="font-size: 10px;">layui</a> <a href="/tags/layuiAdmin/" style="font-size: 10px;">layuiAdmin</a> <a href="/tags/nextTick/" style="font-size: 10px;">nextTick</a> <a href="/tags/nextcloud/" style="font-size: 10px;">nextcloud</a> <a href="/tags/nginx/" style="font-size: 12.86px;">nginx</a> <a href="/tags/php/" style="font-size: 20px;">php</a> <a href="/tags/php-fpm/" style="font-size: 11.43px;">php-fpm</a> <a href="/tags/php7/" style="font-size: 10px;">php7</a> <a href="/tags/phpMyAdmin/" style="font-size: 10px;">phpMyAdmin</a> <a href="/tags/phpunit/" style="font-size: 10px;">phpunit</a> <a href="/tags/python/" style="font-size: 12.86px;">python</a> <a href="/tags/pythonocc/" style="font-size: 10px;">pythonocc</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/stl/" style="font-size: 10px;">stl</a> <a href="/tags/stp/" style="font-size: 10px;">stp</a> <a href="/tags/style/" style="font-size: 10px;">style</a> <a href="/tags/syncting/" style="font-size: 10px;">syncting</a> <a href="/tags/three-js/" style="font-size: 10px;">three.js</a> <a href="/tags/utools/" style="font-size: 10px;">utools</a> <a href="/tags/vbot/" style="font-size: 10px;">vbot</a> <a href="/tags/video/" style="font-size: 11.43px;">video</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/web3/" style="font-size: 10px;">web3</a> <a href="/tags/web3d/" style="font-size: 10px;">web3d</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/%E4%BA%A4%E6%98%93/" style="font-size: 10px;">交易</a> <a href="/tags/%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0/" style="font-size: 10px;">代价函数</a> <a href="/tags/%E5%81%8F%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">偏导数</a> <a href="/tags/%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">关系式</a> <a href="/tags/%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8/" style="font-size: 10px;">内存占用</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 11.43px;">分布式</a> <a href="/tags/%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A/" style="font-size: 10px;">动态绑定</a> <a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/" style="font-size: 12.86px;">区块链</a> <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" style="font-size: 10px;">单元测试</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">博客</a> <a href="/tags/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" style="font-size: 11.43px;">卷积神经网络</a> <a href="/tags/%E5%8F%82%E6%95%B0%E8%8E%B7%E5%8F%96/" style="font-size: 10px;">参数获取</a> <a href="/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" style="font-size: 10px;">反向代理</a> <a href="/tags/%E5%8F%8D%E5%90%91%E9%80%92%E6%8E%A8%E5%85%B3%E7%B3%BB%E5%BC%8F/" style="font-size: 10px;">反向递推关系式</a> <a href="/tags/%E5%90%88%E7%BA%A6/" style="font-size: 10px;">合约</a> <a href="/tags/%E5%90%8C%E6%AD%A5/" style="font-size: 10px;">同步</a> <a href="/tags/%E5%90%91%E9%87%8F/" style="font-size: 10px;">向量</a> <a href="/tags/%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99/" style="font-size: 10px;">命名规则</a> <a href="/tags/%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0%E6%B1%82%E5%AF%BC/" style="font-size: 10px;">复合函数求导</a> <a href="/tags/%E5%A4%9A%E4%BA%BA%E5%8D%8F%E4%BD%9C/" style="font-size: 10px;">多人协作</a> <a href="/tags/%E5%A4%9A%E5%8F%98%E9%87%8F%E5%87%BD%E6%95%B0/" style="font-size: 10px;">多变量函数</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 10px;">安全</a> <a href="/tags/%E5%AF%BC%E5%87%BA%E6%A0%B7%E5%BC%8F/" style="font-size: 10px;">导出样式</a> <a href="/tags/%E5%AF%BC%E6%95%B0/" style="font-size: 10px;">导数</a> <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" style="font-size: 11.43px;">小程序</a> <a href="/tags/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" style="font-size: 10px;">异常处理</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%9C%8D/" style="font-size: 10px;">微信客服</a> <a href="/tags/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91/" style="font-size: 11.43px;">微信开发</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 10px;">思考</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5/" style="font-size: 10px;">拉格朗日</a> <a href="/tags/%E6%8F%92%E4%BB%B6/" style="font-size: 10px;">插件</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%94%B9%E9%80%A0/" style="font-size: 10px;">改造</a> <a href="/tags/%E6%95%A3%E5%88%97%E8%A1%A8/" style="font-size: 10px;">散列表</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" style="font-size: 10px;">数据类型</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 11.43px;">数据结构</a> <a href="/tags/%E6%97%85%E8%A1%8C/" style="font-size: 10px;">旅行</a> <a href="/tags/%E6%97%A0%E9%99%90%E7%BA%A7%E5%88%86%E7%B1%BB/" style="font-size: 10px;">无限级分类</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 18.57px;">机器学习</a> <a href="/tags/%E6%9E%81%E5%80%BC/" style="font-size: 10px;">极值</a> <a href="/tags/%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2/" style="font-size: 10px;">格式转换</a> <a href="/tags/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D/" style="font-size: 12.86px;">梯度下降</a> <a href="/tags/%E6%A8%A1%E5%9E%8B%E5%8E%8B%E7%BC%A9/" style="font-size: 10px;">模型压缩</a> <a href="/tags/%E6%AF%9B%E9%80%89/" style="font-size: 10px;">毛选</a> <a href="/tags/%E6%B1%A0%E5%8C%96/" style="font-size: 10px;">池化</a> <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 14.29px;">深度学习</a> <a href="/tags/%E7%89%B9%E5%BE%81%E6%98%A0%E5%B0%84/" style="font-size: 10px;">特征映射</a> <a href="/tags/%E7%9F%A9%E9%98%B5/" style="font-size: 10px;">矩阵</a> <a href="/tags/%E7%A5%9E%E7%BB%8F%E5%8D%95%E5%85%83%E8%AF%AF%E5%B7%AE/" style="font-size: 10px;">神经单元误差</a> <a href="/tags/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" style="font-size: 10px;">程序设计</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.43px;">算法</a> <a href="/tags/%E7%B4%A2%E5%BC%95/" style="font-size: 10px;">索引</a> <a href="/tags/%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86/" style="font-size: 10px;">索引原理</a> <a href="/tags/%E7%BD%91%E5%8D%A1/" style="font-size: 10px;">网卡</a> <a href="/tags/%E8%A7%86%E9%A2%91%E6%B5%81/" style="font-size: 11.43px;">视频流</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/" style="font-size: 10px;">计算机组成结构</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 10px;">计算机网络</a> <a href="/tags/%E8%AF%AF%E5%B7%AE%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E6%B3%95/" style="font-size: 10px;">误差反向传播法</a> <a href="/tags/%E8%B7%A8%E8%A1%A8/" style="font-size: 10px;">跨表</a> <a href="/tags/%E8%B8%A9%E5%9D%91/" style="font-size: 12.86px;">踩坑</a> <a href="/tags/%E8%BD%AF%E8%80%83/" style="font-size: 17.14px;">软考</a> <a href="/tags/%E8%BF%87%E6%BB%A4%E5%99%A8/" style="font-size: 10px;">过滤器</a> <a href="/tags/%E8%BF%91%E4%BC%BC%E5%85%AC%E5%BC%8F/" style="font-size: 10px;">近似公式</a> <a href="/tags/%E8%BF%AD%E4%BB%A3%E5%99%A8/" style="font-size: 10px;">迭代器</a>
+    </div>
+    
+      <script>
+        var maxTagcloud = parseInt(20);
+        var tags_length = parseInt(131);
+        var tags_arr = [];
+        for(var i = 0; i < tags_length; i++){
+          tags_arr.push(i);
+        }
+        tags_arr.sort(function (l, r) {
+          return Math.random() > 0.5 ? -1 : 1;
+        });
+        tags_arr = tags_arr.slice(0, maxTagcloud < tags_length ? tags_length - maxTagcloud : 0);
+        for(var tag_i = 0; tag_i < tags_arr.length; tag_i++){
+          document.getElementById("randomtagcloud").children[tags_arr[tag_i]].style.display = 'none';
+        }
+      </script>
+    
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/07/14/%E3%80%90%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E3%80%91Paxos%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E5%AE%9E%E7%8E%B0/">【分布式系统】Paxos的原理和实现</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/08/%E7%BB%99%E5%B0%8F%E8%90%9D%E8%8E%89%E8%AE%B2%E6%98%8E%E7%99%BD%E4%BB%80%E4%B9%88%E6%98%AF%E5%88%86%E5%B8%83%E5%BC%8F/">给偶遇的小萝莉讲明白什么是分布式</a>
+          </li>
+        
+          <li>
+            <a href="/2022/06/03/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/">【软考知识总结】数据结构和算法</a>
+          </li>
+        
+          <li>
+            <a href="/2022/06/02/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/">【软考知识总结】程序设计</a>
+          </li>
+        
+          <li>
+            <a href="/2022/05/19/%E3%80%90%E8%BD%AF%E8%80%83%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93%E3%80%91%E7%BD%91%E7%BB%9C%E5%92%8C%E5%A4%9A%E5%AA%92%E4%BD%93/">【软考知识总结】网络和多媒体</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/">2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/">2018</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/">2017</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://github.com/wangerzi/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a><a class="mdui-ripple" href="/atom.xml" target="_blank" mdui-tooltip="{content: 'RSS'}" style="color: rgb(247, 132, 34);background-color: rgba(247, 132, 34, .1);">
+            <i class="nexmoefont icon-rss"></i>
+        </a>
+    </div>
+</div>
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 Jeffrey Wang
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
+      
+          <div class="nexmoe-post-cover" style="padding-bottom: NaN%;"> 
+              <img src="/static/assets/2022-07-14-23-21-12-image.png" alt="【分布式系统】Paxos的原理和实现" loading="lazy">
+              <h1>【分布式系统】Paxos的原理和实现</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2022年07月14日</a>
+</div>
+
+      <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>分布式系统是一个很大的话题，在前文<a href="https://blog.wj2015.com/2022/07/08/%E7%BB%99%E5%B0%8F%E8%90%9D%E8%8E%89%E8%AE%B2%E6%98%8E%E7%99%BD%E4%BB%80%E4%B9%88%E6%98%AF%E5%88%86%E5%B8%83%E5%BC%8F/">给偶遇的小萝莉讲明白什么是分布式 - 九层台</a>中，以拜占庭将军问题为引，带出了 CAP 定理；而 Paxos 算法就是满足一致性和分区一致性的分布式算法（CP）。</p>
+<p><img src="/static/assets/2022-07-14-23-21-12-image.png"></p>
+<p>本篇将梳理 Basic Paxos 算法的核心原理以及在 golang 下的代码实现和单元测试。</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>本篇仅实现 Basic Paxos，所有节点只会决议出一个共识的值，虽然看起来实现的效果很简陋，但其中思想却是各大工程化分布式算法的基石。</p>
+<p>常规的分布式系统里边，网络比较可靠，不需要考虑拜占庭容错（网络节点里边有叛徒乱发消息），Basic Paxos 就是这样的算法。</p>
+<blockquote>
+<p>PS：如果想要了解防止拜占庭容错的分布式算法，可以看下 PBFT、用于区块链的 POW/POS 等等。</p>
+</blockquote>
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>先从数据结构和角色说起，Paxos 使用提案来推动算法，由系统决议出同一个提案（达成一致）。</p>
+<h4 id="节点角色"><a href="#节点角色" class="headerlink" title="节点角色"></a>节点角色</h4><p>Paxos 算法中存在四个角色：</p>
+<ul>
+<li><p>客户端，向系统<strong>发起请求</strong>（写请求、读请求）</p>
+</li>
+<li><p>提议者，接受客户端请求，并以此<strong>发起一个提案</strong>，试图让接收者接受提案，达成一致</p>
+</li>
+<li><p>接收者，可以接受提案或拒绝提案，系统中<strong>超过半数接受提案，那么该提案就被批准了</strong>（达成一致了）</p>
+</li>
+<li><p>学习者，只能<strong>学习被接收者们批准的提案</strong>，不参与决议，相当于只读节点</p>
+</li>
+</ul>
+<h4 id="节点通信"><a href="#节点通信" class="headerlink" title="节点通信"></a>节点通信</h4><p><strong>节点间的通信属于远程调用</strong>，也就是 RPC，golang 本身自带 rpc 包，可以实现 TCP 协议的信息传输调用，同样可以使用 gprc 等更兼容更常见的 rpc 方案。</p>
+<h4 id="提案"><a href="#提案" class="headerlink" title="提案"></a>提案</h4><p>提案由两个部分组成：</p>
+<ul>
+<li><p>提案编号，<strong>全局唯一，有先后顺序</strong></p>
+</li>
+<li><p>提案值，就是提案对应的数据</p>
+</li>
+</ul>
+<p>其中，在 Paxos 算法中，提案编号由轮次和服务器id一起组成，轮次的意思是这是第几次提案，在系统中每次提案都全局递增，服务器id每个节点都不一样，以此满足全局唯一且有先后顺序的要求。</p>
+<blockquote>
+<p>PS：如果这里用时间戳+serviceid 或者雪花数等分布式全局递增的方案也可以达到效果，但介于 Demo 的简单性和易理解性，不做对应的实现</p>
+</blockquote>
+<p>所以每次客户端发起<strong>写请求</strong>，想更新分布式系统整体的提案值，就会<strong>生成一个最新的最大的提案编号，去让接收者接受</strong>，而如何避免提案的冲突以及令大多数节点认可，就是 Paxos 算法的重点了。</p>
+<h4 id="Quorum机制"><a href="#Quorum机制" class="headerlink" title="Quorum机制"></a>Quorum机制</h4><p>与之相对的是 WARO协议，大概意思是我们的每次写入都需要<strong>让每个节点都写入并更新成功</strong>，这在实际工程应用中就会有效率上的问题（得等所有人完成）。</p>
+<p>而 Quorum 机制就是，每次写的时候需要让<strong>超过半数的节点更新成功</strong>，每次读的时候也需要有超过半数的节点返回同一版本的数据。</p>
+<p>因为写入的超半数节点和读取的超半数节点，中间一定会有交际，所以就可以保证读到最新的数据。</p>
+<blockquote>
+<p>PS：假如有三个节点 ABC，写入的时候写了 AB 两个节点，读取的时候需要超过半数，也就是得读两个节点，那么不管读 AB 还是 AC 还是 BC，都会读到写过的最新版本的数据。</p>
+<p>但分布式系统中时刻都有意外发生，在刚才的案例中，如果更新了 AB 但节点 B 由于网络或机器故障挂掉了，那么这时候客户端只能读到 A和C，通过版本号可以确定A 节点的数据是最新的值。</p>
+<p>要是超过半数的节点挂掉，这个机制就无法响应用户请求了。</p>
+</blockquote>
+<h3 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h3><h4 id="Prepare阶段"><a href="#Prepare阶段" class="headerlink" title="Prepare阶段"></a>Prepare阶段</h4><p>提议者收到客户端请求，使用最新的提案编号 n + 1 作为新的提案编号进行提案，向超过半数的接收者广播 Prepare 消息。</p>
+<blockquote>
+<p>PS：在 Prepare 请求的响应中，会响应这个节点的最新提案编号和提案值，如果提议者的提案编号不够新，会更新到最新的，并放弃这次新提案；所以最新提案的提案编号一定是全局最大的。</p>
+</blockquote>
+<p>接收者收到 Prepare 请求后，<strong>如果拿到的提案编号比他之前收到的都大，那么就把这个提案号保存起来并响应成功</strong>；以后碰到比这个提案小的 Prepare 请求，就拒绝掉。</p>
+<blockquote>
+<p>这一步相当于提议者探一探各个接收者的反应，如果超过半数的接收者都给到提议者成功的响应，就说明这些接收者都暂时认可他的提案，可以进行下一步操作了。</p>
+</blockquote>
+<p>如果在大于半数的 Prepare 响应中<strong>收到了比当前提案号更大的，已提交的提案</strong>，也就代表着我们这次提案比已有提案小，这提案的值会被更新为<strong>响应中给到的最新提案值和提案编号</strong>，并继续接下来的 Accept 阶段。<strong>相当于放弃新提案，转为把目前最新的已提交的提案推到更多的接收者上</strong></p>
+<blockquote>
+<p>因为每次发起提案和接收者确认提案只需要一半以上的节点批准即可，剩下的一半可以通过这个机制同步信息。</p>
+</blockquote>
+<p>接收者的伪代码</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 注意这里是大于，提案号一样是不能响应成功</span><br><span class="hljs-keyword">if</span> n &gt; max_n:<br>    max_n = n<br>    <span class="hljs-comment"># 节点接受过提案</span><br>    <span class="hljs-keyword">if</span> accepted:<br>        <span class="hljs-comment"># 如果提议者收到一个已接受的，比他提案号大的，要放弃他当前提案，推这个</span><br>        <span class="hljs-keyword">return</span> promise(n, accepted_N, accepted_V)<br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-keyword">return</span> promise(n)<br><span class="hljs-keyword">else</span>:<br>    <span class="hljs-comment"># 拒绝</span><br>    <span class="hljs-keyword">return</span> reject()<br></code></pre></td></tr></tbody></table></figure>
+
+<h4 id="Accpet阶段"><a href="#Accpet阶段" class="headerlink" title="Accpet阶段"></a>Accpet阶段</h4><p>在提议者的 Prepare 阶段结束后，会由提议者发起 Accept 请求，其中包含提案号、提案值。</p>
+<p>接收者在收到请求后，检查提案号是否<strong>大于等于</strong>自己见过的最大的提案号，如果是，才可以接受提案，接受提案也就是保存这次 Accept 请求中携带的提案号、提案值即可。如果不满足条件，响应拒绝。</p>
+<p>然后会把接收者批准这一提案的信息告知学习者，把自己最新的提案号和提案值告诉学习者，学习者在收到读请求时自行统计和判断哪个是当前系统认可的值。</p>
+<p>接收者的伪代码</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 注意这是大于等于，因为 prepare 阶段更新过 max_n 了，不然正常流程过来进不去逻辑</span><br><span class="hljs-keyword">if</span> n &gt;= max_n<br>    <span class="hljs-comment"># 标记为已接受过提案</span><br>    accetped = true<br>    max_n = n<br>    accetpted_N = n<br>    accepted_V = v<br><br>    <span class="hljs-keyword">for</span> <span class="hljs-built_in">all</span> learners:<br>        update(server_id, n, v)<br>    <span class="hljs-keyword">return</span> accepted(n, v)<br><span class="hljs-keyword">else</span>:<br>    <span class="hljs-keyword">return</span> reject()<br></code></pre></td></tr></tbody></table></figure>
+
+<h2 id="代码细节"><a href="#代码细节" class="headerlink" title="代码细节"></a>代码细节</h2><p>具体代码可见：<a target="_blank" rel="noopener" href="https://github.com/wangerzi/blog/tree/master/source/static/assets/code/basic-paxos">blog/source/static/assets/code/basic-paxos at master · wangerzi/blog · GitHub</a></p>
+<p>代码结构为：</p>
+<blockquote>
+<p>message.go – 基本的 RPC 通信和服务的封装，请求和响应的结构体</p>
+<p>proposer.go – 提议者逻辑</p>
+<p>acceptor.go – 接收者逻辑</p>
+<p>learner.go – 学习者逻辑</p>
+<p>paxos_test.go – 单元测试</p>
+</blockquote>
+<h4 id="消息通信"><a href="#消息通信" class="headerlink" title="消息通信"></a>消息通信</h4><p>使用了 golang 自带的 <code>net/rpc</code> 包，把调用和监听端口并服务封装了两个函数 <code>call</code> 和 <code>server</code></p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">"fmt"</span><br>    <span class="hljs-string">"log"</span><br>    <span class="hljs-string">"net"</span><br>    <span class="hljs-string">"net/rpc"</span><br>)<br><br><span class="hljs-comment">// MsgArgs 请求结构</span><br><span class="hljs-keyword">type</span> MsgArgs <span class="hljs-keyword">struct</span> {<br>    Number <span class="hljs-type">int</span><br>    Value  <span class="hljs-keyword">interface</span>{}<br>    From   <span class="hljs-type">int</span><br>    To     <span class="hljs-type">int</span><br>}<br><br><span class="hljs-comment">// MsgReply 响应结构</span><br><span class="hljs-keyword">type</span> MsgReply <span class="hljs-keyword">struct</span> {<br>    Ok     <span class="hljs-type">bool</span><br>    Number <span class="hljs-type">int</span><br>    Value  <span class="hljs-keyword">interface</span>{}<br>}<br><br><span class="hljs-comment">// 约定：接受者1开头，学习者端口2开头</span><br><span class="hljs-keyword">const</span> (<br>    AddrAccept = <span class="hljs-literal">iota</span> + <span class="hljs-number">1</span><br>    AddrLearner = <span class="hljs-literal">iota</span> + <span class="hljs-number">1</span><br>)<br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">generateAddr</span><span class="hljs-params">(id <span class="hljs-type">int</span>, t <span class="hljs-type">int</span>)</span></span> <span class="hljs-type">string</span> {<br>    <span class="hljs-keyword">return</span> fmt.Sprintf(<span class="hljs-string">"127.0.0.1:%d"</span>, id)<br>}<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">call</span><span class="hljs-params">(addr <span class="hljs-type">string</span>, name <span class="hljs-type">string</span>, args <span class="hljs-keyword">interface</span>{}, reply <span class="hljs-keyword">interface</span>{})</span></span> <span class="hljs-type">error</span> {<br>    c, err := rpc.Dial(<span class="hljs-string">"tcp"</span>,addr)<br><br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>        <span class="hljs-keyword">return</span> err<br>    }<br><br>    <span class="hljs-keyword">defer</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(c *rpc.Client)</span></span> {<br>        _ = c.Close()<br>    }(c)<br><br>    err = c.Call(name, args, reply)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>        <span class="hljs-keyword">return</span> err<br>    }<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>}<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">server</span><span class="hljs-params">(addr <span class="hljs-type">string</span>, obj <span class="hljs-keyword">interface</span>{})</span></span> (net.Listener, <span class="hljs-type">error</span>) {<br>    s := rpc.NewServer()<br>    <span class="hljs-keyword">if</span> err := s.Register(obj); err != <span class="hljs-literal">nil</span> {<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, err<br>    }<br><br>    l, err := net.Listen(<span class="hljs-string">"tcp"</span>, addr)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, err<br>    }<br><br>    <span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> {<br>        <span class="hljs-keyword">for</span> {<br>            conn, err := l.Accept()<br>            <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>                <span class="hljs-comment">// ignore error and continue</span><br>                log.Println(<span class="hljs-string">"[error] tcp"</span>, err)<br>                <span class="hljs-keyword">break</span><br>            }<br><br>            <span class="hljs-keyword">go</span> s.ServeConn(conn)<br>        }<br>    }()<br><br>    <span class="hljs-keyword">return</span> l, <span class="hljs-literal">nil</span><br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<h4 id="提议者"><a href="#提议者" class="headerlink" title="提议者"></a>提议者</h4><p>包含生成提案编号、向半数 Acceptor 发起 Prepare 请求并更新提案号、发起 Accept 请求等逻辑。</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">"errors"</span><br>    <span class="hljs-string">"log"</span><br>    <span class="hljs-string">"strconv"</span><br>)<br><br><span class="hljs-keyword">type</span> Proposer <span class="hljs-keyword">struct</span> {<br>    id        <span class="hljs-type">int</span>   <span class="hljs-comment">// 提议者服务器id</span><br>    round     <span class="hljs-type">int</span>   <span class="hljs-comment">// 已知最大轮次</span><br>    number    <span class="hljs-type">int</span>   <span class="hljs-comment">// 提案编号（轮次，服务器id）</span><br>    acceptors []<span class="hljs-type">int</span> <span class="hljs-comment">// 接收者</span><br>}<br><br><span class="hljs-comment">// 生成提案号，轮次在前，服务器在后，方便比较</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(p *Proposer)</span></span> generateNumber() <span class="hljs-type">int</span> {<br>    <span class="hljs-keyword">return</span> p.round &lt;&lt; <span class="hljs-number">16</span> | p.id<br>}<br><br><span class="hljs-comment">// 发起新提案</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(p *Proposer)</span></span> propose(v <span class="hljs-keyword">interface</span>{}) (<span class="hljs-keyword">interface</span>{}, <span class="hljs-type">error</span>) {<br>    p.round++<br>    p.number = p.generateNumber()<br>    log.Println(<span class="hljs-string">"[info] propose "</span>, p.number, v)<br><br>    prepareCount := <span class="hljs-number">0</span><br>    maxNumber := <span class="hljs-number">0</span><br>    majorAcceptorNum := <span class="hljs-built_in">len</span>(p.acceptors) / <span class="hljs-number">2</span> + <span class="hljs-number">1</span><br><br>    <span class="hljs-comment">// todo:: acceptor 打乱顺序</span><br>    <span class="hljs-comment">// 第一阶段</span><br>    <span class="hljs-keyword">for</span> _, aid := <span class="hljs-keyword">range</span> p.acceptors {<br>        args := MsgArgs{<br>            Number: p.number,<br>            From: p.id,<br>            To: aid,<br>        }<br>        <span class="hljs-keyword">if</span> p.number &gt; maxNumber {<br>            maxNumber = p.number<br>        }<br><br>        reply := <span class="hljs-built_in">new</span>(MsgReply)<br><br>        err := call(generateAddr(aid, AddrAccept), <span class="hljs-string">"Acceptor.Prepare"</span>, args, reply)<br>        <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>            <span class="hljs-comment">// 允许错误</span><br>            log.Println(<span class="hljs-string">"[error] prepare response error"</span>, aid, err)<br>            <span class="hljs-keyword">continue</span><br>        }<br><br>        <span class="hljs-keyword">if</span> reply.Ok {<br>            prepareCount++<br>            <span class="hljs-comment">// 如果 prepare 发现有提案号更高的，更新提案值</span><br>            <span class="hljs-keyword">if</span> reply.Number &gt; maxNumber {<br>                maxNumber = reply.Number<br>                v = reply.Value<br>            }<br>        } <span class="hljs-keyword">else</span> {<br>            log.Println(<span class="hljs-string">"reply is not valid"</span>, aid, reply)<br>        }<br><br>        <span class="hljs-keyword">if</span> prepareCount &gt;= majorAcceptorNum {<br>            <span class="hljs-keyword">break</span><br>        }<br>    }<br>    <span class="hljs-keyword">if</span> prepareCount &lt; majorAcceptorNum {<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, errors.New(<span class="hljs-string">"acceptor prepare is not enough"</span> + strconv.Itoa(prepareCount) + <span class="hljs-string">"-"</span> + strconv.Itoa(majorAcceptorNum))<br>    }<br><br>    <span class="hljs-comment">// 第二阶段</span><br>    acceptCount := <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> _, aid := <span class="hljs-keyword">range</span> p.acceptors {<br>        args := MsgArgs{<br>            Number: maxNumber,<br>            Value: v,<br>            From: p.id,<br>            To: aid,<br>        }<br><br>        reply := <span class="hljs-built_in">new</span>(MsgReply)<br><br>        err := call(generateAddr(aid, AddrAccept), <span class="hljs-string">"Acceptor.Accept"</span>, args, reply)<br>        <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>            <span class="hljs-comment">// 允许错误</span><br>            log.Println(<span class="hljs-string">"[error] accept response error"</span>, aid, err)<br>            <span class="hljs-keyword">continue</span><br>        }<br><br>        <span class="hljs-keyword">if</span> reply.Ok {<br>            acceptCount++<br>        } <span class="hljs-keyword">else</span> {<br>            log.Println(<span class="hljs-string">"[error] accept reply is not valid"</span>, aid, reply)<br>        }<br><br>        <span class="hljs-comment">// 超过半数</span><br>        <span class="hljs-keyword">if</span> acceptCount &gt;= majorAcceptorNum {<br>            <span class="hljs-keyword">return</span> v, <span class="hljs-literal">nil</span><br>        }<br>    }<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, errors.New(<span class="hljs-string">"acceptor accept is not enough"</span>)<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<h4 id="接收者"><a href="#接收者" class="headerlink" title="接收者"></a>接收者</h4><p>是刚才提到的 Prepare 阶段和 Accept 阶段的 golang 实现</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">"log"</span><br>    <span class="hljs-string">"net"</span><br>)<br><br><span class="hljs-keyword">type</span> Acceptor <span class="hljs-keyword">struct</span> {<br>    listener    net.Listener<br>    id          <span class="hljs-type">int</span>         <span class="hljs-comment">// 服务器id</span><br>    minProposal <span class="hljs-type">int</span>         <span class="hljs-comment">// 最小提案号</span><br>    acceptedN   <span class="hljs-type">int</span>         <span class="hljs-comment">// 已接受的值</span><br>    acceptedV   <span class="hljs-keyword">interface</span>{} <span class="hljs-comment">// 已接受的提案值</span><br>    learner     []<span class="hljs-type">int</span>       <span class="hljs-comment">// 学习者id</span><br>}<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(a *Acceptor)</span></span> Prepare(args *MsgArgs, reply *MsgReply) <span class="hljs-type">error</span> {<br>    <span class="hljs-keyword">if</span> args.Number &gt; a.minProposal {<br>        a.minProposal = args.Number<br>        reply.Number = a.acceptedN<br>        reply.Value = a.acceptedV<br>        reply.Ok = <span class="hljs-literal">true</span><br>    } <span class="hljs-keyword">else</span> {<br>        reply.Ok = <span class="hljs-literal">false</span><br>    }<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>}<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(a *Acceptor)</span></span> Accept(args *MsgArgs, reply *MsgReply) <span class="hljs-type">error</span> {<br>    <span class="hljs-keyword">if</span> args.Number &gt;= a.minProposal {<br>        a.minProposal = args.Number<br>        a.acceptedN = args.Number<br>        a.acceptedV = args.Value<br>        reply.Ok = <span class="hljs-literal">true</span><br><br>        <span class="hljs-comment">// 转发给学习者</span><br>        <span class="hljs-keyword">for</span> _, lid := <span class="hljs-keyword">range</span> a.learner {<br>            <span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(learner <span class="hljs-type">int</span>)</span></span> {<br>                addr := generateAddr(learner, AddrLearner)<br>                args.From = a.id<br>                args.To = learner<br><br>                resp := <span class="hljs-built_in">new</span>(MsgReply)<br><br>                err := call(addr, <span class="hljs-string">"Learner.Learn"</span>, args, resp)<br>                <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>                    log.Println(<span class="hljs-string">"[error] learn failed"</span>, err)<br>                }<br>                <span class="hljs-keyword">if</span> !resp.Ok {<br>                    log.Println(<span class="hljs-string">"[error] learn response is not valid"</span>)<br>                }<br>            }(lid)<br>        }<br>    } <span class="hljs-keyword">else</span> {<br>        log.Println(<span class="hljs-string">"[warn] can't accept"</span>, args, a)<br>        reply.Ok = <span class="hljs-literal">false</span><br>    }<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>}<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">newAcceptor</span><span class="hljs-params">(id <span class="hljs-type">int</span>, learner []<span class="hljs-type">int</span>)</span></span> (*Acceptor, <span class="hljs-type">error</span>) {<br>    acceptor := &amp;Acceptor{<br>        listener:    <span class="hljs-literal">nil</span>,<br>        id:          id,<br>        minProposal: <span class="hljs-number">0</span>,<br>        acceptedN:   <span class="hljs-number">0</span>,<br>        acceptedV:   <span class="hljs-literal">nil</span>,<br>        learner:      learner,<br>    }<br>    listener, err := server(generateAddr(id, AddrAccept), acceptor)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, err<br>    }<br><br>    acceptor.listener = listener<br><br>    <span class="hljs-keyword">return</span> acceptor, <span class="hljs-literal">nil</span><br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<h4 id="学习者"><a href="#学习者" class="headerlink" title="学习者"></a>学习者</h4><p>学习者比较简单，保存所有 Acceptor 何其接受值的映射关系，读的时候找到被一半以上节点认可的数据返回即可。</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">"log"</span><br>    <span class="hljs-string">"net"</span><br>)<br><br><span class="hljs-keyword">type</span> Learner <span class="hljs-keyword">struct</span> {<br>    listener    net.Listener<br>    id          <span class="hljs-type">int</span><br>    acceptedMsg <span class="hljs-keyword">map</span>[<span class="hljs-type">int</span>]MsgArgs<br>}<br><br><span class="hljs-comment">// Learn 接受 acceptor 发来的学习请求并更新</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(l *Learner)</span></span> Learn(args *MsgArgs, reply *MsgReply) <span class="hljs-type">error</span> {<br>    a := l.acceptedMsg[args.From]<br>    log.Println(<span class="hljs-string">"[info] learn"</span>, args)<br>    <span class="hljs-keyword">if</span> a.Number &lt; args.Number {<br>        l.acceptedMsg[args.From] = *args<br>        reply.Ok = <span class="hljs-literal">true</span><br>    } <span class="hljs-keyword">else</span> {<br>        reply.Ok = <span class="hljs-literal">false</span><br>    }<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>}<br><br><span class="hljs-comment">// 选出来最多 acceptor 认可的值即可</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(l *Learner)</span></span> choose() <span class="hljs-keyword">interface</span>{} {<br>    acceptCounts := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-type">int</span>]<span class="hljs-type">int</span>)<br>    <span class="hljs-comment">// number -&gt; msg的映射</span><br>    acceptMsg := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-type">int</span>]MsgArgs)<br>    majorCount := <span class="hljs-built_in">len</span>(l.acceptedMsg) / <span class="hljs-number">2</span><br><br>    <span class="hljs-comment">//log.Println("[info] learner ", l.id, l.acceptedMsg)</span><br>    <span class="hljs-keyword">for</span> _, accepted := <span class="hljs-keyword">range</span> l.acceptedMsg {<br>        <span class="hljs-keyword">if</span> accepted.Number != <span class="hljs-number">0</span> {<br>            acceptCounts[accepted.Number]++<br>            acceptMsg[accepted.Number] = accepted<br>        }<br><br>        <span class="hljs-keyword">if</span> acceptCounts[accepted.Number] &gt; majorCount {<br>            <span class="hljs-keyword">return</span> accepted.Value<br>        }<br>    }<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>}<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">NewLearner</span><span class="hljs-params">(id <span class="hljs-type">int</span>, acceptorIds []<span class="hljs-type">int</span>)</span></span> (*Learner, <span class="hljs-type">error</span>) {<br>    learner := &amp;Learner{<br>        listener:    <span class="hljs-literal">nil</span>,<br>        id:          id,<br>        acceptedMsg: <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-type">int</span>]MsgArgs),<br>    }<br><br>    listener, err := server(generateAddr(id, AddrLearner), learner)<br><br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>        <span class="hljs-keyword">return</span> learner, err<br>    }<br>    learner.listener = listener<br>    <span class="hljs-comment">// 初始化</span><br>    <span class="hljs-keyword">for</span> _, aid := <span class="hljs-keyword">range</span> acceptorIds {<br>        learner.acceptedMsg[aid] = MsgArgs{<br>            Number: <span class="hljs-number">0</span>,<br>            Value: <span class="hljs-literal">nil</span>,<br>        }<br>    }<br><br>    <span class="hljs-keyword">return</span> learner, <span class="hljs-literal">nil</span><br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<h4 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h4><p>这里的测试用例比较有限，很多边界条件还不太好实现，比如提议者发到一半挂掉了，Acceptor 响应成功前挂掉了，重启之后带来的问题等等。</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>    <span class="hljs-string">"testing"</span><br>    <span class="hljs-string">"time"</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">start</span><span class="hljs-params">(acceptorId []<span class="hljs-type">int</span>, learnerId []<span class="hljs-type">int</span>)</span></span>([]*Acceptor, []*Learner, <span class="hljs-type">error</span>) {<br>    acceptorList := <span class="hljs-built_in">make</span>([]*Acceptor, <span class="hljs-built_in">len</span>(acceptorId))<br>    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(acceptorId); i++ {<br>        acceptor, err := newAcceptor(acceptorId[i], learnerId)<br>        <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, <span class="hljs-literal">nil</span>, err<br>        }<br>        acceptorList[i] = acceptor<br>    }<br>    learnerList := <span class="hljs-built_in">make</span>([]*Learner, <span class="hljs-built_in">len</span>(learnerId))<br>    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(learnerId); i++ {<br>        learner, err := NewLearner(learnerId[i], acceptorId)<br>        <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, <span class="hljs-literal">nil</span>, err<br>        }<br>        learnerList[i] = learner<br>    }<br><br>    <span class="hljs-keyword">return</span> acceptorList, learnerList, <span class="hljs-literal">nil</span><br>}<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">cleanup</span><span class="hljs-params">(acceptorList []*Acceptor, learnerList []*Learner)</span></span> {<br>    <span class="hljs-keyword">for</span> _, a := <span class="hljs-keyword">range</span> acceptorList {<br>        _ = a.listener.Close()<br>    }<br>    <span class="hljs-keyword">for</span> _, l := <span class="hljs-keyword">range</span> learnerList {<br>        _ = l.listener.Close()<br>    }<br>}<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TestSingleProposer</span><span class="hljs-params">(t *testing.T)</span></span> {<br>    acceptorId := []<span class="hljs-type">int</span> {<span class="hljs-number">20001</span>, <span class="hljs-number">20002</span>, <span class="hljs-number">20003</span>}<br>    learnerId := []<span class="hljs-type">int</span> {<span class="hljs-number">30001</span>}<br><br>    acceptorList, learnerList, err := start(acceptorId, learnerId)<br><br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>        t.Error(<span class="hljs-string">"start failed"</span>, err)<br>    }<br><br>    <span class="hljs-keyword">defer</span> cleanup(acceptorList, learnerList)<br><br>    proposer := &amp;Proposer{<br>        id:        <span class="hljs-number">1</span>,<br>        acceptors: acceptorId,<br>    }<br><br>    <span class="hljs-comment">// 发起提案</span><br>    val, err := proposer.propose(<span class="hljs-string">"hello world"</span>)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>        t.Error(<span class="hljs-string">"propose failed"</span>, err)<br>    }<br><br>    <span class="hljs-comment">// 检查返回值</span><br>    <span class="hljs-keyword">if</span> val != <span class="hljs-string">"hello world"</span> {<br>        t.Error(<span class="hljs-string">"propose return value is not valid"</span>, val)<br>    }<br><br>    <span class="hljs-comment">// 等一秒同步完毕再检查</span><br>    time.Sleep(<span class="hljs-number">1</span> * time.Second)<br>    choose := learnerList[<span class="hljs-number">0</span>].choose()<br>    <span class="hljs-keyword">if</span> choose != <span class="hljs-string">"hello world"</span> {<br>        t.Error(<span class="hljs-string">"learn value is not valid"</span>, choose)<br>    }<br>}<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TestTwoProposer</span><span class="hljs-params">(t *testing.T)</span></span> {<br>    acceptorId := []<span class="hljs-type">int</span> {<span class="hljs-number">20001</span>, <span class="hljs-number">20002</span>, <span class="hljs-number">20003</span>}<br>    learnerId := []<span class="hljs-type">int</span> {<span class="hljs-number">30001</span>}<br><br>    acceptorList, learnerList, err := start(acceptorId, learnerId)<br><br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>        t.Error(<span class="hljs-string">"start failed"</span>, err)<br>    }<br><br>    <span class="hljs-keyword">defer</span> cleanup(acceptorList, learnerList)<br><br>    proposer := &amp;Proposer{<br>        id:        <span class="hljs-number">1</span>,<br>        acceptors: acceptorId,<br>    }<br><br>    <span class="hljs-comment">// 发起提案1</span><br>    val, err := proposer.propose(<span class="hljs-string">"hello world"</span>)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>        t.Error(<span class="hljs-string">"propose failed"</span>, err)<br>    }<br><br>    <span class="hljs-comment">// 检查返回值</span><br>    <span class="hljs-keyword">if</span> val != <span class="hljs-string">"hello world"</span> {<br>        t.Error(<span class="hljs-string">"propose return value is not valid"</span>, val)<br>    }<br><br>    <span class="hljs-comment">// 等一秒同步完毕再检查</span><br>    time.Sleep(<span class="hljs-number">1</span> * time.Second)<br>    choose := learnerList[<span class="hljs-number">0</span>].choose()<br>    <span class="hljs-keyword">if</span> choose != <span class="hljs-string">"hello world"</span> {<br>        t.Error(<span class="hljs-string">"learn value is not valid"</span>, choose)<br>    }<br><br>    <span class="hljs-comment">// 发起提案2</span><br>    proposer2 := &amp;Proposer{<br>        id:        <span class="hljs-number">2</span>,<br>        acceptors:  []<span class="hljs-type">int</span>{<span class="hljs-number">20003</span>, <span class="hljs-number">20002</span>, <span class="hljs-number">20001</span>},<br>    }<br>    val, err = proposer2.propose(<span class="hljs-string">"hello world2"</span>)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>        t.Error(<span class="hljs-string">"propose2 failed"</span>, err)<br>    }<br>    <span class="hljs-comment">// 检查返回值</span><br>    <span class="hljs-keyword">if</span> val != <span class="hljs-string">"hello world2"</span> {<br>        t.Error(<span class="hljs-string">"propose2 return value is not valid"</span>, val)<br>    }<br>    <span class="hljs-comment">// 再提一次</span><br>    val, err = proposer.propose(<span class="hljs-string">"hello world3"</span>)<br>    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {<br>        t.Error(<span class="hljs-string">"propose3 failed"</span>, err)<br>    }<br>    <span class="hljs-comment">// 检查返回值</span><br>    <span class="hljs-keyword">if</span> val != <span class="hljs-string">"hello world3"</span> {<br>        t.Error(<span class="hljs-string">"propose3 return value is not valid"</span>, val)<br>    }<br>    <span class="hljs-comment">// 等一秒同步完毕再检查，是提案3的值</span><br>    time.Sleep(<span class="hljs-number">1</span> * time.Second)<br>    choose = learnerList[<span class="hljs-number">0</span>].choose()<br>    <span class="hljs-keyword">if</span> choose != <span class="hljs-string">"hello world3"</span> {<br>        t.Error(<span class="hljs-string">"learn value is not valid"</span>, choose)<br>    }<br>}<br></code></pre></td></tr></tbody></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>核心还是理解 Paxos 算法为何可以让多数节点达成一致，为以后的学习和理解打下基础。虽然实现的并不是一个非常完美，可以生产使用的 Paxos 算法，但里边每一步操作、分支判断所蕴含的思想还是很值得学习的。</p>
+</body></html>
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>Jeffrey Wang<br>
+        <strong>本文链接：</strong><a href="https://blog.wj2015.com/2022/07/14/%E3%80%90%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E3%80%91Paxos%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E5%AE%9E%E7%8E%B0/" title="https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2022&#x2F;07&#x2F;14&#x2F;%E3%80%90%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E3%80%91Paxos%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E5%AE%9E%E7%8E%B0&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;blog.wj2015.com&#x2F;2022&#x2F;07&#x2F;14&#x2F;%E3%80%90%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E3%80%91Paxos%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E5%AE%9E%E7%8E%B0&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+    
+        <a class="nexmoefont icon-appstore-fill -link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a>
+    
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/Paxos/" rel="tag">Paxos</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag">分布式</a>
+    
+</div>
+
+  
+      <div class="nexmoe-post-footer">
+          <section class="nexmoe-comment">
+    <link rel="stylesheet" href="/static/libs/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="/static/libs/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: 'd7b7061e43e1334a5aa9',
+        clientSecret: '5af2efcfc06b854bc5ccc23babfa3a06a7508c1e',
+        id: window.location.pathname,
+        repo: 'blog',
+        owner: 'wangerzi',
+        admin: 'wangerzi'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+      </div>
+  
+</div>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                        
+                          
+                          
+                              <button class="mdui-fab catalog" style="overflow:unset;">
+                                  <i class="nexmoefont icon-i-catalog"></i>
+                                  <div class="nexmoe-toc">
+                                      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">2.1.</span> <span class="toc-text">基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8A%82%E7%82%B9%E8%A7%92%E8%89%B2"><span class="toc-number">2.1.1.</span> <span class="toc-text">节点角色</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8A%82%E7%82%B9%E9%80%9A%E4%BF%A1"><span class="toc-number">2.1.2.</span> <span class="toc-text">节点通信</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%90%E6%A1%88"><span class="toc-number">2.1.3.</span> <span class="toc-text">提案</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Quorum%E6%9C%BA%E5%88%B6"><span class="toc-number">2.1.4.</span> <span class="toc-text">Quorum机制</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B"><span class="toc-number">2.2.</span> <span class="toc-text">过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Prepare%E9%98%B6%E6%AE%B5"><span class="toc-number">2.2.1.</span> <span class="toc-text">Prepare阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Accpet%E9%98%B6%E6%AE%B5"><span class="toc-number">2.2.2.</span> <span class="toc-text">Accpet阶段</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%BB%86%E8%8A%82"><span class="toc-number">3.</span> <span class="toc-text">代码细节</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%80%9A%E4%BF%A1"><span class="toc-number">3.0.1.</span> <span class="toc-text">消息通信</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%90%E8%AE%AE%E8%80%85"><span class="toc-number">3.0.2.</span> <span class="toc-text">提议者</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%A5%E6%94%B6%E8%80%85"><span class="toc-number">3.0.3.</span> <span class="toc-text">接收者</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E8%80%85"><span class="toc-number">3.0.4.</span> <span class="toc-text">学习者</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="toc-number">3.0.5.</span> <span class="toc-text">单元测试</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+                                  </div>
+                              </button>
+                          
+                          
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="搜索" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
+
+    <script src="/static/libs/mdui.min.js"></script>
+<script src="/static/libs/jquery.min.js"></script>
+<script src="/static/libs/fancybox.umd.js"></script>
+
+ 
+
+<script async src="/js/app.js?v=1657812478722"></script>
+
+
+	<script async src="/js/search.js?v=1657812478722"></script>
+
+
+<script src="/static/libs/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
+
+
+    
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHH2NFM6CG"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZHH2NFM6CG');
+</script>
+
+
+
+
+
+</body>
+
+</html>
