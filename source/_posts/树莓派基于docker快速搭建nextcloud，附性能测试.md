@@ -4,14 +4,13 @@ tags:
   - nextcloud
   - syncting
   - 同步
+  - 树莓派
 id: '540'
 categories:
   - - Linux
 date: 2020-07-02 09:39:37
 cover: ../static/uploads/2020/07/20150428-cloud-computing.0.1489222360-1200x661.jpg
 ---
-
-
 
 ## 前言
 
@@ -256,8 +255,8 @@ root      2010  1343  0 04:29 pts/0    00:00:00 grep frpc
 
 这个时候就可以根据反向代理的域名，比如我的样例里边用的 [http://nextcloud.wj2015.com:8189/]("http://nextcloud.wj2015.com:8189/") 访问项目，但是这样并不友好，包括
 
-*   没有HTTPS
-*   端口是8189，不好看
+* 没有HTTPS
+* 端口是8189，不好看
 
 为解决上述两个问题，我在 fprs服务器配置了nginx反向代理，将域名 `nextcloud.wj2015.com` 配好https，再代理到 `raspi.nextcloud.wj2015.com:8189`，具体的 vhost 配置文件如下
 
@@ -296,7 +295,6 @@ server {
         proxy_pass  http://nextcloud-dashboard;
     }
 }
-
 ```
 
 访问 `https://nextcloud.wj2015.com` 可能会看到下面的提示 [![](../static/uploads/2020/04/2f500313ada9cdc421f34109902ee7c3.png)](../static/uploads/2020/04/2f500313ada9cdc421f34109902ee7c3.png) 根据提示改一下可信域名即可，或者一开始安装的时候就在此域名下安装（更推荐） 改可信域名需要使用 `docker exec -it nextcloud_app_1 /bin/bash` 进入到 `docker` 容器中更改对应文件，改动之后重新启动容器就需要慎重了；或者映射对应配置文件到真实路径下 最后能看到这个页面就算成功了 [![](../static/uploads/2020/04/b64d24d3f221b7a8528de78af1ce4f22.png)](../static/uploads/2020/04/b64d24d3f221b7a8528de78af1ce4f22.png)
