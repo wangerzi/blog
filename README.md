@@ -27,5 +27,3 @@ marktxt 配置：
 ![](source/static/assets/2023-02-20-23-29-08-image.png)
 
 然后提交图片前记得压缩一下，不然很大
-
-
