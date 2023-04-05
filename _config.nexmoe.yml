@@ -9,7 +9,7 @@ favicon:
 
 function: # 功能开关，可选值（true,false）
   globalToc: true # 开启该功能会自动开启文章 TOC（文章目录） 功能
-  darkmode: false # 是否启用暗色主题，可选值（true,false）
+  wordCount: true # 是否开启文章字数统计 (true, false)
 
 imageCDN: # 图片 CDN 功能
   enable: false # 开启该功能  
@@ -108,7 +108,7 @@ social:
     - rgba(247, 132, 34, .1)
 
 # 自定义样式，启用后可在站点的source文件夹下新建custom.css自定义站点样式
-customstyle: false  
+customstyle: true
 color: # 配色方案，从first到seventh为优先级为1-7的颜色，默认为彩虹配色
   first: # 同时作为主题色
     r: 255 

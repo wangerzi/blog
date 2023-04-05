@@ -1,0 +1,4 @@
+article li p {
+    display: inline-block !important;
+    vertical-align: text-top;
+}
