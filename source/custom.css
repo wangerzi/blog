@@ -2,3 +2,6 @@ article li p {
     display: inline-block !important;
     vertical-align: text-top;
 }
+article ul li {
+    line-height: 1.5rem;
+}
