@@ -8,7 +8,7 @@ Wordpress 已经是五年前在个人服务器上搭建的了，当时用的服�
 
 博客以 hexo + neoxeo + githubAction + githubPage + netlify + 腾讯云 CDN 搭建
 
-历程整理：
+历程整理（GitHub norefer 的 link 会触发防盗链导致无法打开博客，请复制链接后粘贴倒浏览器访问）：
 [测试环境升级整理实录](https://blog.wj2015.com/2022/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E5%8D%87%E7%BA%A7%E6%95%B4%E7%90%86%E5%AE%9E%E5%BD%95/)
 [hexo博客迁移](https://blog.wj2015.com/2022/05/08/hexo%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/)
 
