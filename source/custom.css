@@ -5,3 +5,32 @@ article li p {
 article ul li {
     line-height: 1.5rem;
 }
+
+.nexmoe-archives > .tagcloud.nexmoe-rainbow {
+    display: none;
+}
+
+#nexmoe-content .nexmoe-post .nexmoe-post-cover {
+    padding-bottom: 22%;
+}
+
+@media screen and (max-width: 1024px) {
+    #nexmoe-content .nexmoe-post .nexmoe-post-cover {
+        padding-bottom: 56%;
+    }
+    #nexmoe-content .nexmoe-post .nexmoe-post-cover.absolute h1 {
+        font-size: 1.6rem;
+        padding: 10px;
+    }
+    .nexmoe-post-right {
+        margin: 0;
+    }
+}
+
+/* highlight.js */
+.highlight {
+    background: #22272e;
+}
+article pre{
+    background: inherit;
+}
