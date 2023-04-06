@@ -177,19 +177,9 @@ slotSidebar: |
 slotComment: | 
   <link rel="stylesheet" href="/static/libs/gitalk.min.css">
   <div id="gitalk"></div>
-  <script src="/static/libs/gitalk.min.js"></script>
-  <script src="/static/libs/md5.min.js"></script>
-  <script type="text/javascript">
-      var gitalk = new Gitalk({
-          clientID: 'd7b7061e43e1334a5aa9',
-          clientSecret: '5af2efcfc06b854bc5ccc23babfa3a06a7508c1e',
-          id: md5(window.location.pathname),
-          repo: 'blog',
-          owner: 'wangerzi',
-          admin: 'wangerzi'
-      })
-      gitalk.render('gitalk')
-  </script>
+  <script defer src="/static/libs/gitalk.min.js"></script>
+  <script defer src="/static/libs/md5.min.js"></script>
+  <script defer src="/static/libs/gitalk-init.js"></script>
 slotCopyright: | 
   <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
 # slotArticleEnd: | 
