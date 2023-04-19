@@ -5,7 +5,7 @@ tags:
 - 分布式
 - Paxos
 categories:
-- 后端
+- 后端开发
 cover: ../static/assets/2022-07-14-23-21-12-image.png
 ---
 

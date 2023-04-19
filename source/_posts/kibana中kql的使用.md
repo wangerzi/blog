@@ -4,12 +4,9 @@ tags: []
 id: '620'
 categories:
   - - Linux
-    - ElasticSearch
 date: 2020-08-26 21:17:33
 cover: ../static/uploads/2020/08/Monasterio_Khor_Virap_Armenia_2016-10-01_DD_25.jpg
 ---
-
-
 
 ## 前言
 
