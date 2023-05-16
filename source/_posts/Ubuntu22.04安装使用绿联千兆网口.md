@@ -1,5 +1,4 @@
 ---
-layout: ubuntu
 title: Ubuntu 22.04 安装使用绿联千兆网口 AX88179
 date: 2023-05-16 06:47:54
 tags:
@@ -11,7 +10,7 @@ cover: ../static/assets/2023-05-16-06-59-00-img_v2_8c473334-bc0f-4e0c-b20a-ee753
 
 ## 前言
 
-此篇博客的目标是为 Ubuntu 服务器扩展一个千兆网口，JD 上踩过其他品牌的坑，最终还是选择了绿联（PS:没给广告费），虽然官网和驱动都很简陋，但好歹是 Linux 下一番踩坑还是能用的。
+此篇博客的目标是为 Ubuntu 22.04 的服务器扩展一个千兆网口，JD 上踩过其他品牌的坑，最终还是选择了绿联（PS:没给广告费），虽然官网比较简陋提供的驱动也都还有点问题，但好歹是 Linux 下一番折腾还是能用的。
 
 ![](../static/assets/2023-05-16-06-59-00-img_v2_8c473334-bc0f-4e0c-b20a-ee753896e0bh.jpg)
 
@@ -210,7 +209,7 @@ make: *** [Makefile:30：default] 错误 2
 
 不过内核版本直接影响系统稳定，肯定是不能随便降的，但是作为一个折腾服务器的老网络人，还是没有放弃，继续寻找解决方案，最终让我发现了这么一个 ISSUE: [Compile errors with kernel 5.16.10 // Getting your imrovements upstream into the Linux kernel · Issue #1 · nothingstopsme/AX88179_178A_Linux_Driver · GitHub](https://github.com/nothingstopsme/AX88179_178A_Linux_Driver/issues/1)
 
-作者说已经解决了，于是乎我就下载了这个开源的驱动仓库并尝试编译，成功！
+作者说已经解决了这个 BUG，于是乎我就下载了这个开源的驱动仓库并尝试编译，成功！
 
 ```bash
 $ git clone https://github.com/nothingstopsme/AX88179_178A_Linux_Driver
@@ -222,7 +221,64 @@ warning: the compiler differs from the one used to build the kernel
   The kernel was built by: x86_64-linux-gnu-gcc (Ubuntu 11.3.0-1ubuntu1~22.04.1) 11.3.0
   You are using:           gcc (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
   CC [M]  /home/wang/AX88179_178A_Linux_Driver_v1.20.0_source/AX88179_178A_Linux_Driver/source/ax88179_178a.o
+# 做 make install 之前，可以
+$ make install
 ```
+
+编译完成后会出现编译产物 `ax88179_178a.ko`，使用 `make install` 安装此模块，如果担心玩坏了，可以先备份一下 `/lib/modules/5.19.0-41-generic/kernel/drivers/net/usb/ax88179_178a.ko`
+
+```bash
+$ ls -lah
+总计 1.4M
+drwxrwxr-x 2 wang wang 4.0K  5月 16 07:20 .
+drwxrwxr-x 4 wang wang 4.0K  5月 16 07:20 ..
+-rw-rw-r-- 1 wang wang  68K  5月 16 07:20 ax88179_178a.c
+-rw-rw-r-- 1 wang wang  12K  5月 16 07:20 ax88179_178a.h
+-rw-rw-r-- 1 wang wang 574K  5月 16 07:20 ax88179_178a.ko
+-rw-rw-r-- 1 wang wang  497  5月 16 07:20 .ax88179_178a.ko.cmd
+-rw-rw-r-- 1 wang wang  100  5月 16 07:20 ax88179_178a.mod
+-rw-rw-r-- 1 wang wang 3.7K  5月 16 07:20 ax88179_178a.mod.c
+-rw-rw-r-- 1 wang wang  364  5月 16 07:20 .ax88179_178a.mod.cmd
+-rw-rw-r-- 1 wang wang  54K  5月 16 07:20 ax88179_178a.mod.o
+-rw-rw-r-- 1 wang wang  32K  5月 16 07:20 .ax88179_178a.mod.o.cmd
+-rw-rw-r-- 1 wang wang 522K  5月 16 07:20 ax88179_178a.o
+-rw-rw-r-- 1 wang wang  59K  5月 16 07:20 .ax88179_178a.o.cmd
+-rw-rw-r-- 1 wang wang 1.2K  5月 16 07:20 Makefile
+-rw-rw-r-- 1 wang wang  101  5月 16 07:20 modules.order
+-rw-rw-r-- 1 wang wang  343  5月 16 07:20 .modules.order.cmd
+-rw-rw-r-- 1 wang wang    0  5月 16 07:20 Module.symvers
+-rw-rw-r-- 1 wang wang  382  5月 16 07:20 .Module.symvers.cmd
+-rw-rw-r-- 1 wang wang 3.5K  5月 16 07:20 readme
+# 执行此操作前可以先备份一下
+$ make install
+# 安装完后重启
+$ sudo reboot
+```
+
+重启前 `dmesg` 检查下，没有再次出现之前的报错就算问题解决了，重启后就能看到新识别出来的网卡
+
+```bash
+$ ip addr
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: enp2s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether b8:97:5a:ff:45:cc brd ff:ff:ff:ff:ff:ff
+3: enx000ec68ee90d: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 00:0e:c6:8e:e9:0d brd ff:ff:ff:ff:ff:ff
+    inet 192.168.1.16/24 brd 192.168.1.255 scope global dynamic noprefixroute enx000ec68ee90d
+       valid_lft 56815sec preferred_lft 56815sec
+    inet6 240e:388:9f06:100:f4d:af8b:e099:f2d3/64 scope global temporary dynamic 
+       valid_lft 259180sec preferred_lft 56494sec
+    inet6 240e:388:9f06:100:3497:293c:4393:a48d/64 scope global dynamic mngtmpaddr noprefixroute 
+       valid_lft 259180sec preferred_lft 172780sec
+    inet6 fe80::8b25:81fe:35fb:b655/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+```
+
 
 翻阅了一下代码，发现是内核 API 变动导致的，作者使用 #IF 做了内核版本的判断，就解决了这个 BUG
 
@@ -252,56 +308,6 @@ static const struct net_device_ops ax88179_netdev_ops = {
 #endif
 };
 #endif
-```
-
-编译完成后会出现编译产物 `ax88179_178a.ko`，使用 `make install` 安装此模块，如果担心玩坏了，可以先备份一下 `/lib/modules/5.19.0-41-generic/kernel/drivers/net/usb/ax88179_178a.ko`
-
-```bash
-$ ls -lah
-总计 1.4M
-drwxrwxr-x 2 wang wang 4.0K  5月 16 07:20 .
-drwxrwxr-x 4 wang wang 4.0K  5月 16 07:20 ..
--rw-rw-r-- 1 wang wang  68K  5月 16 07:20 ax88179_178a.c
--rw-rw-r-- 1 wang wang  12K  5月 16 07:20 ax88179_178a.h
--rw-rw-r-- 1 wang wang 574K  5月 16 07:20 ax88179_178a.ko
--rw-rw-r-- 1 wang wang  497  5月 16 07:20 .ax88179_178a.ko.cmd
--rw-rw-r-- 1 wang wang  100  5月 16 07:20 ax88179_178a.mod
--rw-rw-r-- 1 wang wang 3.7K  5月 16 07:20 ax88179_178a.mod.c
--rw-rw-r-- 1 wang wang  364  5月 16 07:20 .ax88179_178a.mod.cmd
--rw-rw-r-- 1 wang wang  54K  5月 16 07:20 ax88179_178a.mod.o
--rw-rw-r-- 1 wang wang  32K  5月 16 07:20 .ax88179_178a.mod.o.cmd
--rw-rw-r-- 1 wang wang 522K  5月 16 07:20 ax88179_178a.o
--rw-rw-r-- 1 wang wang  59K  5月 16 07:20 .ax88179_178a.o.cmd
--rw-rw-r-- 1 wang wang 1.2K  5月 16 07:20 Makefile
--rw-rw-r-- 1 wang wang  101  5月 16 07:20 modules.order
--rw-rw-r-- 1 wang wang  343  5月 16 07:20 .modules.order.cmd
--rw-rw-r-- 1 wang wang    0  5月 16 07:20 Module.symvers
--rw-rw-r-- 1 wang wang  382  5月 16 07:20 .Module.symvers.cmd
--rw-rw-r-- 1 wang wang 3.5K  5月 16 07:20 readme
-```
-
-然后 `dmesg` 检查下，没有再次出现之前的报错就算问题解决了，然后重启，就能看到新识别出来的网卡了
-
-```bash
-$ ip addr
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-       valid_lft forever preferred_lft forever
-    inet6 ::1/128 scope host 
-       valid_lft forever preferred_lft forever
-2: enp2s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    link/ether b8:97:5a:ff:45:cc brd ff:ff:ff:ff:ff:ff
-3: enx000ec68ee90d: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    link/ether 00:0e:c6:8e:e9:0d brd ff:ff:ff:ff:ff:ff
-    inet 192.168.1.16/24 brd 192.168.1.255 scope global dynamic noprefixroute enx000ec68ee90d
-       valid_lft 56815sec preferred_lft 56815sec
-    inet6 240e:388:9f06:100:f4d:af8b:e099:f2d3/64 scope global temporary dynamic 
-       valid_lft 259180sec preferred_lft 56494sec
-    inet6 240e:388:9f06:100:3497:293c:4393:a48d/64 scope global dynamic mngtmpaddr noprefixroute 
-       valid_lft 259180sec preferred_lft 172780sec
-    inet6 fe80::8b25:81fe:35fb:b655/64 scope link noprefixroute 
-       valid_lft forever preferred_lft forever
 ```
 
 随后笔者为绿联客服反馈了相关解决方案，不过在笔者写这篇文章的时候，绿联官网上千兆网卡驱动的最后更新时间还是 "2022/07/29"，如果你也有类似的需求，请注意不要下错了。
