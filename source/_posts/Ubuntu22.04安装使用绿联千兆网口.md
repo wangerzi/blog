@@ -1,6 +1,6 @@
 ---
 layout: ubuntu
-title: 安装使用绿联千兆网口 AX88179
+title: Ubuntu 22.04 安装使用绿联千兆网口 AX88179
 date: 2023-05-16 06:47:54
 tags:
 - NAS
