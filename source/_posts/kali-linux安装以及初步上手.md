@@ -7,9 +7,8 @@ tags:
 id: '174'
 categories:
   - - Linux
-  - - 安全相关
 date: 2018-03-30 23:59:08
-cover: ../static/uploads/2018/03/%E5%B0%81%E9%9D%A2.png
+cover: ../static/uploads/renyue.jpeg
 ---
 
 
