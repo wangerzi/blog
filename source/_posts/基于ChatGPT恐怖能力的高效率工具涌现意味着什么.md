@@ -3,8 +3,10 @@ title: 基于ChatGPT恐怖能力的高效率工具涌现意味着什么
 date: 2023-04-05 15:10:06
 tags:
 - 思考
+- chatgpt
 categories:
-- 随笔
+- - 机器学习
+- - 随笔
 cover: ../../static/robot.jpeg
 ---
 
