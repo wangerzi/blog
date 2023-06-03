@@ -80,6 +80,17 @@ cover: ../static/assets/38a6112a28460a6c5f12cb07b41ff8e659450ae4.jpg
 
 ![](../static/assets/2023-06-02-22-32-40-img_v2_97a8c31f-3e69-42bd-8552-45a808fd520h.jpg)
 
+### 写小说
+
+[仅用自然语言，让ChatGPT输出连贯的长篇小说！苏黎世联邦理工大学提出RecurrentGPT](https://mp.weixin.qq.com/s/26S-y9ZhTxi3KHWL6v62Ew)
+
+本质是使用 prompt 引导 GPT 思考情节，并对每次新增的内容不断的做总结（压缩），思考后续场景时把前面次总结 + 总体的大纲带上，模拟人类长期记忆过程。
+
+开源项目地址：[https://github.com/aiwaves-cn/RecurrentGPT](https://github.com/aiwaves-cn/RecurrentGPT)
+作者开放体验地址：[交互式小说生成](https://www.aiwaves.org/interactivefiction)
+
+![](../static/assets/2023-06-03-11-12-34-a081c51f5c5ffaece100657672c016e.jpg)
+
 ### 自建 GPT 服务
 
 [GitHub - Yidadaa/ChatGPT-Next-Web: One-Click to deploy well-designed ChatGPT web UI on Vercel. 一键拥有你自己的 ChatGPT 网页服务。](https://github.com/Yidadaa/ChatGPT-Next-Web)
