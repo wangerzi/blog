@@ -12,7 +12,7 @@ cover: ../static/assets/38a6112a28460a6c5f12cb07b41ff8e659450ae4.jpg
 
 博主其实并不是专门从事 LLM 方向的程序员，但 23年初 ChatGPT 横空出世的时候着实震惊了我一把，博主也算第一时间注册了账号进行体验；
 
-事实证明这很明智，这两个月发现新账号越来越难注册了，界面也越来越不稳定，于是乎我又化身为一个光荣的付费用户，直到今天。
+事实证明这很明智，这两个月发现新账号越来越难注册了，界面也越来越不稳定，于是乎我又化身为一个资(bei)源(po)的付费用户，直到今天。
 
 与 GPT 交流的时间长了，然后就一直很好奇一些问题：
 
@@ -114,6 +114,8 @@ cover: ../static/assets/38a6112a28460a6c5f12cb07b41ff8e659450ae4.jpg
 [GitHub - jerryjliu/llama_index: LlamaIndex (GPT Index) is a data framework for your LLM applications](https://github.com/jerryjliu/llama_index)
 
 基于 LangChain 可以让 GPT 做更多的事情，比如与一篇 PDF 文档聊天、读论文等等
+
+> PS:  这张图是 gpt_academic 项目截图，底层并非使用 langchain，只有一个理解 pdf 功能与 langchain 的 combine 总结功能类似。
 
 ![thumbnailwebp](https://static.flomoapp.com/file/2023-05-28/73871/2b8019867a4c451bb4e60500383a57b9.png?OSSAccessKeyId=LTAI4G9PcaGksWVKCPrE1TVL&Expires=1685889191&Signature=SfYEb7j9z69Bf3RdJmccpAWYtUI%3D)
 
