@@ -17,6 +17,14 @@ Wordpress 已经是五年前在个人服务器上搭建的了，当时用的服�
 
 ## 博客管理
 
+本地环境：
+
+```shell
+npm i
+npm run server
+```
+访问 http://localhost:4000/
+
 新建博客：
 
 ```shell
