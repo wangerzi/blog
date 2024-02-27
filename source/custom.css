@@ -11,12 +11,12 @@ article ul li {
 }
 
 #nexmoe-content .nexmoe-post .nexmoe-post-cover {
-    padding-bottom: 36% !important;
+    padding-bottom: 15% !important;
 }
 
 @media screen and (max-width: 1024px) {
     #nexmoe-content .nexmoe-post .nexmoe-post-cover {
-        padding-bottom: 56% !important;
+        padding-bottom: 28% !important;
     }
     #nexmoe-content .nexmoe-post .nexmoe-post-cover.absolute h1 {
         font-size: 1.6rem;
