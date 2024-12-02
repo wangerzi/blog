@@ -5,23 +5,32 @@ const cos = new COS({
   SecretId: process.env.TENCENT_SECRET_ID,
   SecretKey: process.env.TENCENT_SECRET_KEY,
 });
+
 const uploadDir = (dir, bucket, region, prefix) => {
-  fs.readdirSync(dir).forEach((file) => {
-    const filePath = path.join(dir, file);
-    cos.putObject(
-      {
-        Bucket: bucket,
-        Region: region,
-        Key: `${prefix}/${file}`,
-        Body: fs.readFileSync(filePath),
-      },
-      (err, data) => {
-        if (err) console.error(err);
-        else console.log(`Uploaded: ${file}`);
-      }
-    );
+  const files = fs.readdirSync(dir).map(file => ({
+    Bucket: bucket,
+    Region: region,
+    Key: `${prefix}/${file}`,
+    FilePath: path.join(dir, file)  // 使用 FilePath 以便使用 uploadFiles 方法
+  }));
+
+  // 使用 uploadFiles 方法批量上传
+  cos.uploadFiles({
+    files: files,
+    SliceSize: 1024 * 1024,  // 1MB
+    onProgress: (progressData) => {
+      console.log(JSON.stringify(progressData));
+    },
+    async: true,
+  }, (err, data) => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log("上传完成:", data);
+    }
   });
 };
+
 uploadDir(
   "public",
   process.env.COS_BUCKET,
