@@ -1,0 +1,29 @@
+name: Upload to Tencent COS
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Build project
+      run: yarn build
+
+    - name: Upload files to COS
+      env:
+        COS_BUCKET: ${{ secrets.COS_BUCKET }} # webstatic-1252276051
+        COS_REGION: ${{ secrets.COS_REGION }} # ap-shanghai
+        COS_UPLOAD_PATH: ${{ secrets.COS_UPLOAD_PATH }} # blog.wj2015.com
+        TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
+        TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
+      run: node publish-cos.js
