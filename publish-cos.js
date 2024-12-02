@@ -53,8 +53,8 @@ const uploadDir = async (dir, bucket, region, prefix) => {
         },
         (err, headResponse) => {
           if (err) {
-            // 如果错误码为 NoSuchKey，表示 COS 中不存在该文件
-            if (err.code === "NoSuchKey") {
+            // 如果 HTTP 状态码为 404，表示 COS 中不存在该文件
+            if (err.statusCode === 404) {
               resolve(file);
             } else {
               console.error("Error checking file:", file.Key, err);
