@@ -9,7 +9,7 @@ tags:
 - 安全
 categories:
 - Linux
-cover: /static/assets/blog-nas-free-https/cover.jpg
+cover: /../static/assets/blog-nas-free-https/cover.jpg
 ---
 
 ## 前言

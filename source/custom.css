@@ -1,3 +1,9 @@
+article p {
+    line-height: 28px;
+    /* letter-spacing: 1px; */
+    font-size: 16px;
+}
+
 article li p {
     display: inline-block !important;
     vertical-align: text-top;
