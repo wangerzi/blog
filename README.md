@@ -48,3 +48,28 @@ marktxt 配置：
 [Unsplash](https://unsplash.com/s/photos/cc0)
 
 [Pexels](https://www.pexels.com/zh-cn/)
+
+## 问题
+
+如果碰到推不上去，报如下异常时
+
+```
+% git push
+Enumerating objects: 38, done.
+Counting objects: 100% (38/38), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (32/32), done.
+error: RPC failed; HTTP 400 curl 22 The requested URL returned error: 400
+send-pack: unexpected disconnect while reading sideband packet
+Writing objects: 100% (32/32), 12.92 MiB | 12.31 MiB/s, done.
+Total 32 (delta 6), reused 0 (delta 0), pack-reused 0
+fatal: the remote end hung up unexpectedly
+Everything up-to-date
+```
+
+可以尝试如下命令
+
+```bash
+git config http.postBuffer 524288000  # 设置为 500 MB
+git config http.maxRequestBuffer 100M
+```
