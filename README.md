@@ -42,3 +42,9 @@ marktxt 配置：
 ![](source/static/assets/2023-02-20-23-29-08-image.png)
 
 然后提交图片前记得压缩一下，不然很大
+
+封面可以如如下网站找：
+
+[Unsplash](https://unsplash.com/s/photos/cc0)
+
+[Pexels](https://www.pexels.com/zh-cn/)
