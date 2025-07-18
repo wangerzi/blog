@@ -5,8 +5,8 @@
 # Site
 title: 九层台 - Jeffrey Wang 的个人博客
 subtitle: '合抱之木，生于毫末；九层之台，起于累土；千里之行，始于足下。'
-description: '聚少成多，铸九层之台，分享技术，分享生活。'
-keywords: '前端开发,后端开发,LINUX,机器学习,软考,AI,LLM,RAG,AI Agent,AI Agent 框架,AI Agent 应用,AI Agent 开发,AI Agent 教程,AI Agent 实战,AI Agent 案例,AI Agent 分享,AI Agent 经验,AI Agent 心得,AI Agent 总结,AI Agent 分享,AI Agent 经验,AI Agent 心得,AI Agent 总结'
+description: '一个专注于 AI、全栈开发和技术探索的个人博客。分享从 AI Agent、RAG、深度学习到后端架构、前端开发、软硬件折腾的实践与思考。'
+keywords: 'AI, LLM, RAG, AI Agent, AI编程, 深度学习, 全栈开发, 后端开发, 前端开发, 分布式系统, 数据库, Linux, Docker, NAS, 树莓派, 技术分享, 个人博客'
 author: Jeffrey Wang
 language: zh-CN
 timezone: 'Asia/Shanghai'
