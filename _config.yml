@@ -3,10 +3,10 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: 九层台
+title: 九层台 - Jeffrey Wang 的个人博客
 subtitle: '合抱之木，生于毫末；九层之台，起于累土；千里之行，始于足下。'
-description: '聚少成多，铸九层之台'
-keywords: '前端开发,后端开发,LINUX,机器学习,软考'
+description: '聚少成多，铸九层之台，分享技术，分享生活。'
+keywords: '前端开发,后端开发,LINUX,机器学习,软考,AI,LLM,RAG,AI Agent,AI Agent 框架,AI Agent 应用,AI Agent 开发,AI Agent 教程,AI Agent 实战,AI Agent 案例,AI Agent 分享,AI Agent 经验,AI Agent 心得,AI Agent 总结,AI Agent 分享,AI Agent 经验,AI Agent 心得,AI Agent 总结'
 author: Jeffrey Wang
 language: zh-CN
 timezone: 'Asia/Shanghai'
