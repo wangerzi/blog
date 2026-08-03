@@ -1,9 +1,8 @@
 name: Upload to Tencent COS
 
 on:
-  push:
-    branches:
-      - master
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -20,6 +19,7 @@ jobs:
       run: yarn build
 
     - name: Upload files to COS
+      if: github.event_name == 'workflow_dispatch'
       env:
         COS_BUCKET: ${{ secrets.COS_BUCKET }} # webstatic-1252276051
         COS_REGION: ${{ secrets.COS_REGION }} # ap-shanghai
