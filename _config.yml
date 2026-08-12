@@ -3,10 +3,10 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: 九层台 - Jeffrey Wang 的个人博客
-subtitle: '合抱之木，生于毫末；九层之台，起于累土；千里之行，始于足下。'
-description: '一个专注于 AI、全栈开发和技术探索的个人博客。分享从 AI Agent、RAG、深度学习到后端架构、前端开发、软硬件折腾的实践与思考。'
-keywords: 'AI, LLM, RAG, AI Agent, AI编程, 深度学习, 全栈开发, 后端开发, 前端开发, 分布式系统, 数据库, Linux, Docker, NAS, 树莓派, 技术分享, 个人博客'
+title: 九层台 - Jeffrey Wang
+subtitle: '把复杂问题讲清楚，把实践留下来。'
+description: 'Jeffrey Wang 的个人博客，记录 AI 编程、RAG、Agent、全栈工程与日常技术实践。'
+keywords: 'AI 编程, RAG, AI Agent, 大语言模型, 全栈开发, 软件工程, 技术实践, Jeffrey Wang'
 author: Jeffrey Wang
 language: zh-CN
 timezone: 'Asia/Shanghai'
